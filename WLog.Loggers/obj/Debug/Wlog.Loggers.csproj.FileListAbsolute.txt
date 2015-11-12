@@ -1,0 +1,8 @@
+D:\projects\codeplex\wlog\trunk\WLog.Loggers\bin\Debug\NLog.WebLog.dll
+D:\projects\codeplex\wlog\trunk\WLog.Loggers\bin\Debug\NLog.WebLog.pdb
+D:\projects\codeplex\wlog\trunk\WLog.Loggers\bin\Debug\Newtonsoft.Json.dll
+D:\projects\codeplex\wlog\trunk\WLog.Loggers\bin\Debug\NLog.dll
+D:\projects\codeplex\wlog\trunk\WLog.Loggers\bin\Debug\Newtonsoft.Json.xml
+D:\projects\codeplex\wlog\trunk\WLog.Loggers\bin\Debug\NLog.xml
+D:\projects\codeplex\wlog\trunk\WLog.Loggers\obj\Debug\NLog.WebLog.dll
+D:\projects\codeplex\wlog\trunk\WLog.Loggers\obj\Debug\NLog.WebLog.pdb

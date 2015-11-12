@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>System.Net.Http.WebRequest</name>
+  </assembly>
+  <members>
+    <member name="T:System.Net.Http.RtcRequestFactory">
+      <summary>Rappresenta la classe che viene utilizzata per creare un oggetto <see cref="T:System.Net.Http.HttpRequestMessage" /> speciale per l'utilizzo con l'infrastruttura di notifica in background RTC (Real-Time-Communications).</summary>
+    </member>
+    <member name="M:System.Net.Http.RtcRequestFactory.Create(System.Net.Http.HttpMethod,System.Uri)">
+      <summary>Crea uno speciale <see cref="T:System.Net.Http.HttpRequestMessage" /> per l'utilizzo con l'infrastruttura di notifica in background RTC (Real-Time-Communications).</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.HttpRequestMessage" />. Messaggio di richiesta HTTP da utilizzare con l'infrastruttura di notifica in background (RTC).</returns>
+      <param name="method">Metodo HTTP.</param>
+      <param name="uri">URI a cui viene inviata la richiesta.</param>
+    </member>
+    <member name="T:System.Net.Http.WebRequestHandler">
+      <summary>Fornisce funzionalità specifiche del desktop non disponibili per le App Windows Store o altri ambienti. </summary>
+    </member>
+    <member name="M:System.Net.Http.WebRequestHandler.#ctor">
+      <summary>Inizializza una nuova istanza della classe <see cref="T:System.Net.Http.WebRequestHandler" />.</summary>
+    </member>
+    <member name="P:System.Net.Http.WebRequestHandler.AllowPipelining">
+      <summary>Ottiene o imposta un valore che indica se effettuare il pipeline della richiesta alla risorsa Internet.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se è previsto il pipeline della richiesta; in caso contrario, false. Il valore predefinito è true.</returns>
+    </member>
+    <member name="P:System.Net.Http.WebRequestHandler.AuthenticationLevel">
+      <summary>Ottiene o imposta un valore che indica il livello di autenticazione e di rappresentazione utilizzato per questa richiesta.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Security.AuthenticationLevel" />. Combinazione bit per bit dei valori di <see cref="T:System.Net.Security.AuthenticationLevel" />. Il valore predefinito è <see cref="F:System.Net.Security.AuthenticationLevel.MutualAuthRequested" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.WebRequestHandler.CachePolicy">
+      <summary>Ottiene o imposta i criteri di cache per questa richiesta.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Cache.RequestCachePolicy" />. Oggetto <see cref="T:System.Net.Cache.RequestCachePolicy" /> che definisce i criteri di cache. Il valore predefinito è <see cref="P:System.Net.WebRequest.DefaultCachePolicy" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.WebRequestHandler.ClientCertificates">
+      <summary>Ottiene o imposta l'insieme dei certificati di sicurezza associati alla richiesta.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Security.Cryptography.X509Certificates.X509CertificateCollection" />. Raccolta di certificati di sicurezza associati a questa richiesta.</returns>
+    </member>
+    <member name="P:System.Net.Http.WebRequestHandler.ContinueTimeout">
+      <summary>Ottiene o imposta l'intervallo di tempo, in millisecondi, in cui l'applicazione attende 100-Continue dal server prima di caricare i dati.</summary>
+      <returns>Restituisca il valore <see cref="T:System.TimeSpan" />. La quantità di tempo, in millisecondi, di attesa dell'applicazione. "100-continue " dal server prima di caricare i dati. Il valore predefinito è 350 millisecondi.</returns>
+    </member>
+    <member name="P:System.Net.Http.WebRequestHandler.ImpersonationLevel">
+      <summary>Ottiene o imposta il livello di rappresentazione per la richiesta corrente.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Security.Principal.TokenImpersonationLevel" />. Livello di rappresentazione della richiesta. Il valore predefinito è <see cref="F:System.Security.Principal.TokenImpersonationLevel.Delegation" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.WebRequestHandler.MaxResponseHeadersLength">
+      <summary>Ottiene o imposta la lunghezza massima consentita delle intestazioni di risposta.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Int32" />. Lunghezza espressa in kilobyte (1024 byte) delle intestazioni di risposta.</returns>
+    </member>
+    <member name="P:System.Net.Http.WebRequestHandler.ReadWriteTimeout">
+      <summary>Ottiene o imposta un timeout in millisecondi quando si scrive una richiesta o si legge una risposta da un server.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Int32" />. Il numero di millisecondi prima che si verifichi il timeout di scrittura o di lettura. Il valore predefinito è 300.000 millisecondi (5 minuti).</returns>
+    </member>
+    <member name="P:System.Net.Http.WebRequestHandler.ServerCertificateValidationCallback">
+      <summary>Ottiene o imposta un metodo di callback per convalidare il certificato server.</summary>
+      <returns>Restituisce <see cref="T:System.Net.Security.RemoteCertificateValidationCallback" />. Metodo di callback per convalidare il certificato server.</returns>
+    </member>
+    <member name="P:System.Net.Http.WebRequestHandler.UnsafeAuthenticatedConnectionSharing">
+      <summary>Ottiene o imposta un valore che indica se consentire la condivisione di connessione con autenticazione NTLM ad alta velocità.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true per tenere aperta la connessione autenticata; in caso contrario, false.</returns>
+    </member>
+  </members>
+</doc>

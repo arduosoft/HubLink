@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.AspNet.Mvc.it</id>
+    <version>4.0.20710.0</version>
+    <title>Microsoft ASP.NET MVC 4 - Risorse per l'italiano</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <licenseUrl>http://www.microsoft.com/web/webpi/eula/MVC_4_eula_ITA.htm</licenseUrl>
+    <projectUrl>http://www.asp.net/mvc</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Il pacchetto contiene gli assembly satellite di ASP.NET MVC per l'italiano.</description>
+    <summary>Risorse del pacchetto Microsoft.AspNet.Mvc per l'italiano</summary>
+    <language>it</language>
+    <tags>Microsoft AspNet Mvc AspNetMvc</tags>
+    <dependencies>
+      <dependency id="Microsoft.AspNet.Mvc" version="[4.0.20710.0]" />
+    </dependencies>
+  </metadata>
+</package>

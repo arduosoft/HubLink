@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.AspNet.Web.Optimization.it</id>
+    <version>1.0.0</version>
+    <title>Microsoft ASP.NET Web Optimization - Risorse per l'italiano</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <licenseUrl>http://www.microsoft.com/web/webpi/eula/weboptimization_1_eula_ITA.htm</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Il pacchetto contiene gli assembly satellite di ASP.NET Web Optimization per l'italiano.</description>
+    <summary>Risorse del pacchetto Microsoft.AspNet.Web.Optimization per l'italiano</summary>
+    <language>it</language>
+    <tags>Microsoft AspNet optimization bundling minification</tags>
+    <dependencies>
+      <dependency id="Microsoft.AspNet.Web.Optimization" version="[1.0.0]" />
+    </dependencies>
+  </metadata>
+</package>

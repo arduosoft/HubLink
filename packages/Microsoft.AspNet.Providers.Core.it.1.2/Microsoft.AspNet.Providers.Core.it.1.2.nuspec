@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.AspNet.Providers.Core.it</id>
+    <version>1.2</version>
+    <title>Microsoft ASP.NET Universal Providers Core Libraries - Risorse per l'italiano</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <licenseUrl>http://www.microsoft.com/web/webpi/eula/Providers_1_eula_ITA.htm</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Il pacchetto contiene gli assembly satellite di ASP.NET Universal Providers per l'italiano.</description>
+    <summary>Risorse del pacchetto Microsoft.AspNet.Providers.Core per l'italiano</summary>
+    <language>it</language>
+    <dependencies>
+      <dependency id="Microsoft.AspNet.Providers.Core" version="[1.2]" />
+    </dependencies>
+  </metadata>
+</package>

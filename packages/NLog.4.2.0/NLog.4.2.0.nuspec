@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>NLog</id>
+    <version>4.2.0</version>
+    <title>NLog</title>
+    <authors>Kim Christensen,  Julian Verdurmen</authors>
+    <owners>Kim Christensen,  Julian Verdurmen</owners>
+    <licenseUrl>http://raw.github.com/NLog/NLog/master/LICENSE.txt</licenseUrl>
+    <projectUrl>http://nlog-project.org/</projectUrl>
+    <iconUrl>http://nlog-project.org/N.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>NLog is a logging platform for .NET with rich log routing and management capabilities. It can help you produce and manage high-quality logs for your application regardless of its size or complexity.
+This package installs NLog.dll with includes core logging functionality.
+For your main project also need to install "NLog Configuration" package.
+
+[BSD license]</description>
+    <summary>NLog - Advanced .NET and Silverlight Logging [BSD]</summary>
+    <releaseNotes>##Features
+- Performance Counter Target: it's now possible to configure the step size for the counter target. Before the step size was always one.
+- Mail Target: `pickupDirectoryLocation` and `deliveryMethod` are configurable from the NLog config.
+- Cached Layout Renderer: a `clearCache` option has been added for more control over clearing the cache.
+- File target: auto add `.zip` to compressed archive  when `archiveName` isn't specified. 
+
+##Bug fixes
+- Inner layout can now contain colons
+- Colored Console Target: highlight whole words was broken.
+- Mail Target: when `useSystemNetMailSettings` was `false`, some settings were still used from the `&lt;mailSettings&gt;` of the .Net config.
+- Removed unnecessary System.Drawing references for Xamarin.
+- File Target: sometimes an exception was thrown when archiving was enabled.
+- File Target: file archiving DateAndSequence &amp; FileArchivePeriod.Day won't always work.
+- GetTargetsByLevelForLogger could throw a "Collection was modified" exception. 
+
+In more detail: http://nlog-project.org/2015/10/24/nlog-4-2-is-here.html</releaseNotes>
+    <language>en-US</language>
+    <tags>logging log tracing logfiles NLog</tags>
+  </metadata>
+</package>

@@ -1,0 +1,64 @@
+﻿using NHibernate;
+using NHibernate.Cfg;
+using NHibernate.Cfg.MappingSchema;
+using NHibernate.Dialect;
+using NHibernate.Mapping.ByCode;
+using NHibernate.Tool.hbm2ddl;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Web;
+using System.Web.Http;
+using System.Web.Mvc;
+using System.Web.Optimization;
+using System.Web.Routing;
+
+namespace Wlog.Web
+{
+    // Nota: per istruzioni su come abilitare la modalità classica di IIS6 o IIS7, 
+    // visitare il sito Web all'indirizzo http://go.microsoft.com/?LinkId=9394801
+
+    public class WebApiApplication : System.Web.HttpApplication
+    {
+        public static ISessionFactory CurrentSessionFactory;
+        public static Configuration cfg;
+        protected void Application_Start()
+        {
+            AreaRegistration.RegisterAllAreas();
+
+            WebApiConfig.Register(GlobalConfiguration.Configuration);
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+
+
+           cfg  = new Configuration();
+          
+           
+
+           
+
+
+
+            ModelMapper mapper = new ModelMapper();
+            mapper.AddMappings(Assembly.GetExecutingAssembly().GetExportedTypes());
+            HbmMapping domainMapping =
+              mapper.CompileMappingForAllExplicitlyAddedEntities();
+            cfg.AddMapping(domainMapping);
+
+
+            cfg.Configure();
+            CurrentSessionFactory = cfg.BuildSessionFactory();
+        SchemaMetadataUpdater.QuoteTableAndColumns(cfg);
+        NHibernate.Tool.hbm2ddl.SchemaExport schema = new NHibernate.Tool.hbm2ddl.SchemaExport(cfg);
+
+        schema.Create(false, true);
+        
+
+
+
+        }
+    }
+}

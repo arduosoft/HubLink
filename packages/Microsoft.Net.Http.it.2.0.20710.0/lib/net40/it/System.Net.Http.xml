@@ -1,0 +1,1972 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>System.Net.Http</name>
+  </assembly>
+  <members>
+    <member name="T:System.Net.Http.ByteArrayContent">
+      <summary>Fornisce il contenuto HTTP basato su una matrice di byte.</summary>
+    </member>
+    <member name="M:System.Net.Http.ByteArrayContent.#ctor(System.Byte[])">
+      <summary>Inizializza una nuova istanza della classe <see cref="T:System.Net.Http.ByteArrayContent" />.</summary>
+      <param name="content">Contenuto utilizzato per inizializzare l'oggetto <see cref="T:System.Net.Http.ByteArrayContent" />.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="content" /> è null.</exception>
+    </member>
+    <member name="M:System.Net.Http.ByteArrayContent.#ctor(System.Byte[],System.Int32,System.Int32)">
+      <summary>Inizializza una nuova istanza della classe <see cref="T:System.Net.Http.ByteArrayContent" />.</summary>
+      <param name="content">Contenuto utilizzato per inizializzare l'oggetto <see cref="T:System.Net.Http.ByteArrayContent" />.</param>
+      <param name="offset">Offset, in byte, nel parametro <paramref name="content" /> utilizzato per inizializzare l'oggetto <see cref="T:System.Net.Http.ByteArrayContent" />.</param>
+      <param name="count">Numero di byte in <paramref name="content" /> a partire dal parametro <paramref name="offset" /> utilizzato per inizializzare <see cref="T:System.Net.Http.ByteArrayContent" />.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="content" /> è null.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">Il valore del parametro <paramref name="offset" /> è minore di zero. In alternativa Il parametro <paramref name="offset" /> è maggiore della lunghezza del contenuto specificato dal parametro <paramref name="content" />. In alternativa Il valore del parametro <paramref name="count " /> è minore di zero. In alternativa Il parametro <paramref name="count" /> è maggiore della lunghezza del contenuto specificato dal parametro <paramref name="content" />, meno il parametro <paramref name="offset" />.</exception>
+    </member>
+    <member name="M:System.Net.Http.ByteArrayContent.CreateContentReadStreamAsync">
+      <summary>Crea un flusso di contenuto HTTP come operazione asincrona per la lettura il cui archivio di backup è la memoria di <see cref="T:System.Net.Http.ByteArrayContent" />.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+    </member>
+    <member name="M:System.Net.Http.ByteArrayContent.SerializeToStreamAsync(System.IO.Stream,System.Net.TransportContext)">
+      <summary>Serializzare e scrivere la matrice di byte fornita nel costruttore in un flusso di contenuto HTTP come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task" />.  Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="stream">Flusso di destinazione.</param>
+      <param name="context">Informazioni sul trasporto, quali il token di associazione del canale. Il parametro può essere null.</param>
+    </member>
+    <member name="M:System.Net.Http.ByteArrayContent.TryComputeLength(System.Int64@)">
+      <summary>Determina se una matrice di byte ha una lunghezza valida in byte.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se il <paramref name="length" /> è una lunghezza valida; in caso contrario,false.</returns>
+      <param name="length">Lunghezza in byte della matrice di byte.</param>
+    </member>
+    <member name="T:System.Net.Http.ClientCertificateOption">
+      <summary>Specifica come i certificati client vengono forniti.</summary>
+    </member>
+    <member name="F:System.Net.Http.ClientCertificateOption.Manual">
+      <summary>L'applicazione manualmente fornisce i certificati client a <see cref="T:System.Net.Http.WebRequestHandler" />. Questo valore è quello predefinito.</summary>
+    </member>
+    <member name="F:System.Net.Http.ClientCertificateOption.Automatic">
+      <summary>L'oggetto <see cref="T:System.Net.Http.HttpClientHandler" /> tenterà di fornire tutti i certificati client disponibili automaticamente.</summary>
+    </member>
+    <member name="T:System.Net.Http.DelegatingHandler">
+      <summary>Tipo di base per gestori HTTP che delegano l'elaborazione dei messaggi di risposta HTTP a un altro gestore, chiamato gestore interno.</summary>
+    </member>
+    <member name="M:System.Net.Http.DelegatingHandler.#ctor">
+      <summary>Crea una nuova istanza della classe <see cref="T:System.Net.Http.DelegatingHandler" />.</summary>
+    </member>
+    <member name="M:System.Net.Http.DelegatingHandler.#ctor(System.Net.Http.HttpMessageHandler)">
+      <summary>Crea una nuova istanza di una classe <see cref="T:System.Net.Http.DelegatingHandler" /> con un gestore interno specificato.</summary>
+      <param name="innerHandler">Gestore interno responsabile per l'elaborazione dei messaggi di risposta HTTP.</param>
+    </member>
+    <member name="M:System.Net.Http.DelegatingHandler.Dispose(System.Boolean)">
+      <summary>Rilascia le risorse non gestite utilizzate dall'oggetto <see cref="T:System.Net.Http.DelegatingHandler" /> ed eventualmente elimina le risorse gestite.</summary>
+      <param name="disposing">true per liberare sia le risorse gestite che quelle non gestite; false per rilasciare solo le risorse non gestite.</param>
+    </member>
+    <member name="P:System.Net.Http.DelegatingHandler.InnerHandler">
+      <summary>Ottiene o imposta il gestore interno che elabora i messaggi di risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.HttpMessageHandler" />. Il gestore interno per i messaggi di risposta HTTP.</returns>
+    </member>
+    <member name="M:System.Net.Http.DelegatingHandler.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)">
+      <summary>Invia una richiesta HTTP al gestore interno da inviare al server come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />.  Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="request">Messaggio di richiesta HTTP da inviare al server.</param>
+      <param name="cancellationToken">Token di annullamento per annullare l'operazione.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="request" /> era null.</exception>
+    </member>
+    <member name="T:System.Net.Http.FormUrlEncodedContent">
+      <summary>Contenitore per le tuple nome/valore codificate utilizzando il tipo MIME application/x-www-form-urlencoded.</summary>
+    </member>
+    <member name="M:System.Net.Http.FormUrlEncodedContent.#ctor(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}})">
+      <summary>Inizializza una nuova istanza della classe <see cref="T:System.Net.Http.FormUrlEncodedContent" /> con una raccolta di coppie nome/valore specifica.</summary>
+      <param name="nameValueCollection">Raccolta di coppie nome/valore.</param>
+    </member>
+    <member name="T:System.Net.Http.HttpClient">
+      <summary>Fornisce una classe di base per l'invio di richieste HTTP e la ricezione di risposte HTTP da una risorsa identificata da un URI.</summary>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.#ctor">
+      <summary>Inizializza una nuova istanza della classe <see cref="T:System.Net.Http.HttpClient" />.</summary>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.#ctor(System.Net.Http.HttpMessageHandler)">
+      <summary>Inizializza una nuova istanza della classe <see cref="T:System.Net.Http.HttpClient" /> con un gestore specifico.</summary>
+      <param name="handler">Lo stack del gestore HTTP da utilizzare per inviare le richieste.</param>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.#ctor(System.Net.Http.HttpMessageHandler,System.Boolean)">
+    </member>
+    <member name="P:System.Net.Http.HttpClient.BaseAddress">
+      <summary>Ottiene o imposta l'indirizzo di base dell'URI (Uniform Resource Identifier) della risorsa Internet utilizzata quando si inviano le richieste.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Uri" />. L'indirizzo di base dell'URI (Uniform Resource Identifier) della risorsa Internet utilizzata quando si inviano le richieste.</returns>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.CancelPendingRequests">
+      <summary>Annullare tutte le richieste in corso in questa istanza.</summary>
+    </member>
+    <member name="P:System.Net.Http.HttpClient.DefaultRequestHeaders">
+      <summary>Ottiene le intestazioni che devono essere inviate con ogni richiesta.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpRequestHeaders" />. Le intestazioni che devono essere inviate con ogni richiesta.</returns>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.DeleteAsync(System.String)">
+      <summary>Inviare una richiesta DELETE all'URI specificato come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.DeleteAsync(System.String,System.Threading.CancellationToken)">
+      <summary>Inviare una richiesta DELETE all'URI specificato con un token di annullamento come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <param name="cancellationToken">Un token di annullamento che può essere utilizzato da altri oggetti o thread al ricevimento dell'avviso di annullamento.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.DeleteAsync(System.Uri)">
+      <summary>Inviare una richiesta DELETE all'URI specificato come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.DeleteAsync(System.Uri,System.Threading.CancellationToken)">
+      <summary>Inviare una richiesta DELETE all'URI specificato con un token di annullamento come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <param name="cancellationToken">Un token di annullamento che può essere utilizzato da altri oggetti o thread al ricevimento dell'avviso di annullamento.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.Dispose(System.Boolean)">
+      <summary>Rilascia le risorse non gestite utilizzate dall'oggetto <see cref="T:System.Net.Http.HttpClient" /> ed eventualmente elimina le risorse gestite.</summary>
+      <param name="disposing">true per liberare sia le risorse gestite che quelle non gestite; false per rilasciare solo le risorse non gestite.</param>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.GetAsync(System.String)">
+      <summary>Inviare una richiesta GET all'URI specificato come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.GetAsync(System.String,System.Net.Http.HttpCompletionOption)">
+      <summary>Inviare una richiesta GET all'URI specificato con un'opzione di completamento HTTP e un token di annullamento come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <param name="completionOption">Un valore di opzione di completamento HTTP che indica quando l'operazione deve essere considerata completata.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.GetAsync(System.String,System.Net.Http.HttpCompletionOption,System.Threading.CancellationToken)">
+      <summary>Inviare una richiesta GET all'URI specificato con un'opzione di completamento HTTP e un token di annullamento come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <param name="completionOption">Un valore di opzione di completamento HTTP che indica quando l'operazione deve essere considerata completata.</param>
+      <param name="cancellationToken">Un token di annullamento che può essere utilizzato da altri oggetti o thread al ricevimento dell'avviso di annullamento.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.GetAsync(System.String,System.Threading.CancellationToken)">
+      <summary>Inviare una richiesta GET all'URI specificato con un token di annullamento come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <param name="cancellationToken">Un token di annullamento che può essere utilizzato da altri oggetti o thread al ricevimento dell'avviso di annullamento.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.GetAsync(System.Uri)">
+      <summary>Inviare una richiesta GET all'URI specificato come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.GetAsync(System.Uri,System.Net.Http.HttpCompletionOption)">
+      <summary>Inviare una richiesta GET all'URI specificato con un'opzione di completamento HTTP e un token di annullamento come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <param name="completionOption">Un valore di opzione di completamento HTTP che indica quando l'operazione deve essere considerata completata.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.GetAsync(System.Uri,System.Net.Http.HttpCompletionOption,System.Threading.CancellationToken)">
+      <summary>Inviare una richiesta GET all'URI specificato con un'opzione di completamento HTTP e un token di annullamento come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <param name="completionOption">Un valore di opzione di completamento HTTP che indica quando l'operazione deve essere considerata completata.</param>
+      <param name="cancellationToken">Un token di annullamento che può essere utilizzato da altri oggetti o thread al ricevimento dell'avviso di annullamento.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.GetAsync(System.Uri,System.Threading.CancellationToken)">
+      <summary>Inviare una richiesta GET all'URI specificato con un token di annullamento come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <param name="cancellationToken">Un token di annullamento che può essere utilizzato da altri oggetti o thread al ricevimento dell'avviso di annullamento.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.GetByteArrayAsync(System.String)">
+      <summary>Inviare una richiesta GET all'URI specificato e restituire il corpo della risposta come matrice di byte in un'operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.GetByteArrayAsync(System.Uri)">
+      <summary>Inviare una richiesta GET all'URI specificato e restituire il corpo della risposta come matrice di byte in un'operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.GetStreamAsync(System.String)">
+      <summary>Inviare una richiesta GET all'URI specificato e restituire il corpo della risposta come flusso in un'operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.GetStreamAsync(System.Uri)">
+      <summary>Inviare una richiesta GET all'URI specificato e restituire il corpo della risposta come flusso in un'operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.GetStringAsync(System.String)">
+      <summary>Inviare una richiesta GET all'URI specificato e restituire il corpo della risposta come stringa in un'operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.GetStringAsync(System.Uri)">
+      <summary>Inviare una richiesta GET all'URI specificato e restituire il corpo della risposta come stringa in un'operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="P:System.Net.Http.HttpClient.MaxResponseContentBufferSize">
+      <summary>Ottiene o imposta il numero massimo di byte per la memorizzazione nel buffer durante la lettura del contenuto della risposta.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Int32" />. Il numero massimo di byte per la memorizzazione nel buffer durante la lettura del contenuto della risposta. Il valore predefinito di questa proprietà è 64 KB.</returns>
+      <exception cref="T:System.ArgumentOutOfRangeException">La dimensione specificata è minore o uguale a zero.</exception>
+      <exception cref="T:System.InvalidOperationException">È già stata avviata un'operazione di lettura asincrona sull'istanza corrente.</exception>
+      <exception cref="T:System.ObjectDisposedException">L'istanza corrente è stata eliminata.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.PostAsync(System.String,System.Net.Http.HttpContent)">
+      <summary>Invia una richiesta POST all'URI specificato come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <param name="content">Contenuto della richiesta HTTP inviato al server.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.PostAsync(System.String,System.Net.Http.HttpContent,System.Threading.CancellationToken)">
+      <summary>Inviare una richiesta POST con un token di annullamento come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <param name="content">Contenuto della richiesta HTTP inviato al server.</param>
+      <param name="cancellationToken">Un token di annullamento che può essere utilizzato da altri oggetti o thread al ricevimento dell'avviso di annullamento.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.PostAsync(System.Uri,System.Net.Http.HttpContent)">
+      <summary>Invia una richiesta POST all'URI specificato come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <param name="content">Contenuto della richiesta HTTP inviato al server.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.PostAsync(System.Uri,System.Net.Http.HttpContent,System.Threading.CancellationToken)">
+      <summary>Inviare una richiesta POST con un token di annullamento come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <param name="content">Contenuto della richiesta HTTP inviato al server.</param>
+      <param name="cancellationToken">Un token di annullamento che può essere utilizzato da altri oggetti o thread al ricevimento dell'avviso di annullamento.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.PutAsync(System.String,System.Net.Http.HttpContent)">
+      <summary>Invia una richiesta PUT all'URI specificato come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <param name="content">Contenuto della richiesta HTTP inviato al server.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.PutAsync(System.String,System.Net.Http.HttpContent,System.Threading.CancellationToken)">
+      <summary>Invia una richiesta PUT con un token di annullamento come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <param name="content">Contenuto della richiesta HTTP inviato al server.</param>
+      <param name="cancellationToken">Un token di annullamento che può essere utilizzato da altri oggetti o thread al ricevimento dell'avviso di annullamento.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.PutAsync(System.Uri,System.Net.Http.HttpContent)">
+      <summary>Invia una richiesta PUT all'URI specificato come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <param name="content">Contenuto della richiesta HTTP inviato al server.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.PutAsync(System.Uri,System.Net.Http.HttpContent,System.Threading.CancellationToken)">
+      <summary>Invia una richiesta PUT con un token di annullamento come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="requestUri">URI a cui viene inviata la richiesta.</param>
+      <param name="content">Contenuto della richiesta HTTP inviato al server.</param>
+      <param name="cancellationToken">Un token di annullamento che può essere utilizzato da altri oggetti o thread al ricevimento dell'avviso di annullamento.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="requestUri" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.SendAsync(System.Net.Http.HttpRequestMessage)">
+      <summary>Inviare una richiesta HTTP come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="request">Messaggio di richiesta HTTP da inviare.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="request" /> era null.</exception>
+      <exception cref="T:System.InvalidOperationException">Il messaggio di richiesta è già stato inviato dall'istanza di <see cref="T:System.Net.Http.HttpClient" /> .</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.SendAsync(System.Net.Http.HttpRequestMessage,System.Net.Http.HttpCompletionOption)">
+      <summary>Inviare una richiesta HTTP come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="request">Messaggio di richiesta HTTP da inviare.</param>
+      <param name="completionOption">Quando l'operazione deve completare (non appena la risposta è disponibile o dopo aver letto l'intero contenuto della risposta).</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="request" /> era null.</exception>
+      <exception cref="T:System.InvalidOperationException">Il messaggio di richiesta è già stato inviato dall'istanza di <see cref="T:System.Net.Http.HttpClient" /> .</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.SendAsync(System.Net.Http.HttpRequestMessage,System.Net.Http.HttpCompletionOption,System.Threading.CancellationToken)">
+      <summary>Inviare una richiesta HTTP come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="request">Messaggio di richiesta HTTP da inviare.</param>
+      <param name="completionOption">Quando l'operazione deve completare (non appena la risposta è disponibile o dopo aver letto l'intero contenuto della risposta).</param>
+      <param name="cancellationToken">Il token di annullamento per annullare l'operazione.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="request" /> era null.</exception>
+      <exception cref="T:System.InvalidOperationException">Il messaggio di richiesta è già stato inviato dall'istanza di <see cref="T:System.Net.Http.HttpClient" /> .</exception>
+    </member>
+    <member name="M:System.Net.Http.HttpClient.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)">
+      <summary>Inviare una richiesta HTTP come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="request">Messaggio di richiesta HTTP da inviare.</param>
+      <param name="cancellationToken">Il token di annullamento per annullare l'operazione.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="request" /> era null.</exception>
+      <exception cref="T:System.InvalidOperationException">Il messaggio di richiesta è già stato inviato dall'istanza di <see cref="T:System.Net.Http.HttpClient" /> .</exception>
+    </member>
+    <member name="P:System.Net.Http.HttpClient.Timeout">
+      <summary>Ottiene o imposta il tempo di attesa espresso in millisecondi prima che si verifichi il timeout della richiesta.</summary>
+      <returns>Restituisca il valore <see cref="T:System.TimeSpan" />. Il tempo di attesa espresso in millisecondi prima che si verifichi il timeout della richiesta.</returns>
+      <exception cref="T:System.ArgumentOutOfRangeException">Il timeout specificato è minore o uguale a zero e non rappresenta il campo <see cref="F:System.Threading.Timeout.Infinite" />.</exception>
+      <exception cref="T:System.InvalidOperationException">È già stata avviata un'operazione di lettura asincrona sull'istanza corrente.</exception>
+      <exception cref="T:System.ObjectDisposedException">L'istanza corrente è stata eliminata.</exception>
+    </member>
+    <member name="T:System.Net.Http.HttpClientHandler">
+      <summary>Il gestore messaggi predefinito utilizzato da <see cref="T:System.Net.Http.HttpClient" />.</summary>
+    </member>
+    <member name="M:System.Net.Http.HttpClientHandler.#ctor">
+      <summary>Crea un'istanza di una classe <see cref="T:System.Net.Http.HttpClientHandler" />.</summary>
+    </member>
+    <member name="P:System.Net.Http.HttpClientHandler.AllowAutoRedirect">
+      <summary>Recupera o imposta un valore che indica se il gestore deve seguire le risposte di reindirizzamento.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se il gestore deve seguire le risposte di reindirizzamento; in caso contrario, false. Il valore predefinito è true.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpClientHandler.AutomaticDecompression">
+      <summary>Ottiene o imposta il tipo di metodo di decompressione utilizzato dal gestore per la decompressione automatica della risposta del contenuto HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.DecompressionMethods" />. Il metodo automatico di decompressione utilizzato dal gestore. Il valore predefinito è <see cref="F:System.Net.DecompressionMethods.None" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpClientHandler.ClientCertificateOptions">
+      <summary>Ottiene o imposta la raccolta dei certificati di sicurezza associati al gestore.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.ClientCertificateOption" />. Raccolta di certificati di sicurezza associati a questo gestore.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpClientHandler.CookieContainer">
+      <summary>Ottiene o imposta il contenitore di cookie utilizzato per archiviare i cookie del server tramite il gestore.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.CookieContainer" />. Il contenitore di cookie utilizzato per archiviare i cookie del server tramite il gestore.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpClientHandler.Credentials">
+      <summary>Ottiene o imposta le informazioni di autenticazione utilizzate da questo gestore.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.ICredentials" />. Credenziali di autenticazione associate al gestore. Il valore predefinito è null.</returns>
+    </member>
+    <member name="M:System.Net.Http.HttpClientHandler.Dispose(System.Boolean)">
+      <summary>Rilascia le risorse non gestite utilizzate dall'oggetto <see cref="T:System.Net.Http.HttpClientHandler" /> ed eventualmente elimina le risorse gestite.</summary>
+      <param name="disposing">true per liberare sia le risorse gestite che quelle non gestite; false per rilasciare solo le risorse non gestite.</param>
+    </member>
+    <member name="P:System.Net.Http.HttpClientHandler.MaxAutomaticRedirections">
+      <summary>Ottiene o imposta il numero massimo di reindirizzamenti che il gestore segue.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Int32" />. Numero massimo di risposte di reindirizzamento seguite dal gestore. Il valore predefinito è 50.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpClientHandler.MaxRequestContentBufferSize">
+      <summary>Ottiene o imposta la dimensione massima del buffer di contenuto della richiesta utilizzato dal gestore.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Int32" />. Dimensione massima in byte del buffer di contenuto della richiesta. Il valore predefinito è 65.536 byte.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpClientHandler.PreAuthenticate">
+      <summary>Ottiene o imposta un valore che indica se il gestore invia un'intestazione di autorizzazione con la richiesta.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true per inviare un'intestazione Autorizzazione HTTP con le richieste una volta eseguita l'autenticazione; in caso contrario, false. Il valore predefinito è false.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpClientHandler.Proxy">
+      <summary>Ottiene o imposta le informazioni sul proxy utilizzato dal gestore.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.IWebProxy" />. Informazioni sul proxy utilizzato dal gestore. Il valore predefinito è null.</returns>
+    </member>
+    <member name="M:System.Net.Http.HttpClientHandler.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)">
+      <summary>Crea un'istanza di <see cref="T:System.Net.Http.HttpResponseMessage" /> in base alle informazioni fornite in <see cref="T:System.Net.Http.HttpRequestMessage" /> come operazione che non si bloccherà.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="request">Messaggio di richiesta HTTP.</param>
+      <param name="cancellationToken">Token di annullamento per annullare l'operazione.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="request" /> era null.</exception>
+    </member>
+    <member name="P:System.Net.Http.HttpClientHandler.SupportsAutomaticDecompression">
+      <summary>Ottiene un valore che indica se il gestore supporta la decompressione automatica del contenuto di risposta.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se il gestore supporta la decompressione automatica del contenuto della risposta; in caso contrario, false. Il valore predefinito è true.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpClientHandler.SupportsProxy">
+      <summary>Ottiene un valore che indica se il gestore supporta le impostazioni proxy.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se il gestore supporta le impostazioni proxy; in caso contrario, false. Il valore predefinito è true.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpClientHandler.SupportsRedirectConfiguration">
+      <summary>Ottiene un valore che indica se il gestore supporta le impostazioni di configurazione per le proprietà <see cref="P:System.Net.Http.HttpClientHandler.MaxAutomaticRedirections" /> e <see cref="P:System.Net.Http.HttpClientHandler.AllowAutoRedirect" /> .</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se il gestore supporta le impostazioni di configurazione per le proprietà <see cref="P:System.Net.Http.HttpClientHandler.MaxAutomaticRedirections" /> e <see cref="P:System.Net.Http.HttpClientHandler.AllowAutoRedirect" />; in caso contrario, false. Il valore predefinito è true.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpClientHandler.UseCookies">
+      <summary>Ottiene o imposta un valore che indica se il gestore utilizza la proprietà <see cref="P:System.Net.Http.HttpClientHandler.CookieContainer" /> per memorizzare i cookie del server e utilizza questi cookie durante l'invio delle richieste.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se il gestore supporta la proprietà <see cref="P:System.Net.Http.HttpClientHandler.CookieContainer" /> per archiviare i cookie del server e utilizza tali cookie quando invia richieste; in caso contrario, false. Il valore predefinito è true.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpClientHandler.UseDefaultCredentials">
+      <summary>Ottiene o imposta un valore che controlla se le credenziali predefinite sono inviate con le richieste dal gestore.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se vengono utilizzate le credenziali predefinite; in caso contrario, false. Il valore predefinito è false.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpClientHandler.UseProxy">
+      <summary>Recupera o imposta un valore che indica se il gestore utilizza un proxy per le richieste.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se il gestore deve utilizzare un proxy per le richieste; in caso contrario, false. Il valore predefinito è true.</returns>
+    </member>
+    <member name="T:System.Net.Http.HttpCompletionOption">
+      <summary>Indica se le operazioni di <see cref="T:System.Net.Http.HttpClient" /> devono essere considerate completate non appena la risposta è disponibile o dopo la lettura dell'intero messaggio di risposta, incluso il contenuto.</summary>
+    </member>
+    <member name="F:System.Net.Http.HttpCompletionOption.ResponseContentRead">
+      <summary>L'operazione deve essere completata dopo la lettura della risposta intera che include il contenuto.</summary>
+    </member>
+    <member name="F:System.Net.Http.HttpCompletionOption.ResponseHeadersRead">
+      <summary>L'operazione deve essere completata non appena una risposta è disponibile e le intestazioni vengono lette. Il contenuto non è ancora pronto.</summary>
+    </member>
+    <member name="T:System.Net.Http.HttpContent">
+      <summary>Classe base che rappresenta un corpo di entità e intestazioni di contenuto HTTP.</summary>
+    </member>
+    <member name="M:System.Net.Http.HttpContent.#ctor">
+      <summary>Inizializza una nuova istanza della classe <see cref="T:System.Net.Http.HttpContent" />.</summary>
+    </member>
+    <member name="M:System.Net.Http.HttpContent.CopyToAsync(System.IO.Stream)">
+      <summary>Scrive il contenuto HTTP in un flusso come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="stream">Flusso di destinazione.</param>
+    </member>
+    <member name="M:System.Net.Http.HttpContent.CopyToAsync(System.IO.Stream,System.Net.TransportContext)">
+      <summary>Scrive il contenuto HTTP in un flusso come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="stream">Flusso di destinazione.</param>
+      <param name="context">Informazioni sul trasporto (ad esempio sul token di associazione del canale). Il parametro può essere null.</param>
+    </member>
+    <member name="M:System.Net.Http.HttpContent.CreateContentReadStreamAsync">
+      <summary>Scrive il contenuto HTTP in un flusso di memoria come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+    </member>
+    <member name="M:System.Net.Http.HttpContent.Dispose">
+      <summary>Rilascia le risorse non gestite ed elimina le risorse gestite utilizzate dall'oggetto <see cref="T:System.Net.Http.HttpContent" />.</summary>
+    </member>
+    <member name="M:System.Net.Http.HttpContent.Dispose(System.Boolean)">
+      <summary>Rilascia le risorse non gestite utilizzate dall'oggetto <see cref="T:System.Net.Http.HttpContent" /> ed eventualmente elimina le risorse gestite.</summary>
+      <param name="disposing">true per liberare sia le risorse gestite che quelle non gestite; false per rilasciare solo le risorse non gestite.</param>
+    </member>
+    <member name="P:System.Net.Http.HttpContent.Headers">
+      <summary>Ottiene le intestazioni di contenuto HTTP come definito nello standard RFC 2616.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpContentHeaders" />. Le intestazioni di contenuto HTTP come definito nello standard RFC 2616.</returns>
+    </member>
+    <member name="M:System.Net.Http.HttpContent.LoadIntoBufferAsync">
+      <summary>Serializzare il contenuto HTTP in un buffer di memoria come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+    </member>
+    <member name="M:System.Net.Http.HttpContent.LoadIntoBufferAsync(System.Int64)">
+    </member>
+    <member name="M:System.Net.Http.HttpContent.ReadAsByteArrayAsync">
+      <summary>Scrive il contenuto HTTP in una matrice di byte come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+    </member>
+    <member name="M:System.Net.Http.HttpContent.ReadAsStreamAsync">
+      <summary>Scrive il contenuto HTTP in un flusso come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+    </member>
+    <member name="M:System.Net.Http.HttpContent.ReadAsStringAsync">
+      <summary>Scrive il contenuto HTTP in una stringa come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+    </member>
+    <member name="M:System.Net.Http.HttpContent.SerializeToStreamAsync(System.IO.Stream,System.Net.TransportContext)">
+      <summary>Serializzare il contenuto HTTP in un flusso come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="stream">Flusso di destinazione.</param>
+      <param name="context">Informazioni sul trasporto (ad esempio sul token di associazione del canale). Il parametro può essere null.</param>
+    </member>
+    <member name="M:System.Net.Http.HttpContent.TryComputeLength(System.Int64@)">
+      <summary>Determina se il contenuto HTTP ha una lunghezza valida in byte.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se il <paramref name="length" /> è una lunghezza valida; in caso contrario,false.</returns>
+      <param name="length">Lunghezza in byte del contenuto HTTP.</param>
+    </member>
+    <member name="T:System.Net.Http.HttpMessageHandler">
+      <summary>Tipo di base per gestori messaggi HTTP.</summary>
+    </member>
+    <member name="M:System.Net.Http.HttpMessageHandler.#ctor">
+      <summary>Inizializza una nuova istanza della classe <see cref="T:System.Net.Http.HttpMessageHandler" />.</summary>
+    </member>
+    <member name="M:System.Net.Http.HttpMessageHandler.Dispose">
+      <summary>Rilascia le risorse non gestite ed elimina le risorse gestite utilizzate dall'oggetto <see cref="T:System.Net.Http.HttpMessageHandler" />.</summary>
+    </member>
+    <member name="M:System.Net.Http.HttpMessageHandler.Dispose(System.Boolean)">
+      <summary>Rilascia le risorse non gestite utilizzate dall'oggetto <see cref="T:System.Net.Http.HttpMessageHandler" /> ed eventualmente elimina le risorse gestite.</summary>
+      <param name="disposing">true per liberare sia le risorse gestite che quelle non gestite; false per rilasciare solo le risorse non gestite.</param>
+    </member>
+    <member name="M:System.Net.Http.HttpMessageHandler.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)">
+      <summary>Inviare una richiesta HTTP come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="request">Messaggio di richiesta HTTP da inviare.</param>
+      <param name="cancellationToken">Il token di annullamento per annullare l'operazione.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="request" /> era null.</exception>
+    </member>
+    <member name="T:System.Net.Http.HttpMessageInvoker">
+    </member>
+    <member name="M:System.Net.Http.HttpMessageInvoker.#ctor(System.Net.Http.HttpMessageHandler)">
+    </member>
+    <member name="M:System.Net.Http.HttpMessageInvoker.#ctor(System.Net.Http.HttpMessageHandler,System.Boolean)">
+    </member>
+    <member name="M:System.Net.Http.HttpMessageInvoker.Dispose">
+    </member>
+    <member name="M:System.Net.Http.HttpMessageInvoker.Dispose(System.Boolean)">
+    </member>
+    <member name="M:System.Net.Http.HttpMessageInvoker.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)">
+    </member>
+    <member name="T:System.Net.Http.HttpMethod">
+      <summary>Classe di helper per recuperare e confrontare i metodi HTTP standard.</summary>
+    </member>
+    <member name="M:System.Net.Http.HttpMethod.#ctor(System.String)">
+      <summary>Inizializza una nuova istanza della classe <see cref="T:System.Net.Http.HttpMethod" /> con un metodo HTTP specifico.</summary>
+      <param name="method">Metodo HTTP.</param>
+    </member>
+    <member name="P:System.Net.Http.HttpMethod.Delete">
+      <summary>Rappresenta un metodo di protocollo HTTP DELETE.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.HttpMethod" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.HttpMethod.Equals(System.Net.Http.HttpMethod)">
+      <summary>Determina se l'oggetto <see cref="T:System.Net.Http.HttpMethod" /> specificato è uguale all'oggetto <see cref="T:System.Object" /> corrente.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se l'oggetto specificato è uguale all'oggetto corrente; in caso contrario false.</returns>
+      <param name="other">Metodo HTTP da confrontare con l'oggetto corrente.</param>
+    </member>
+    <member name="M:System.Net.Http.HttpMethod.Equals(System.Object)">
+      <summary>Determina se l'oggetto <see cref="T:System.Object" /> specificato è uguale all'oggetto <see cref="T:System.Object" /> corrente.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se l'oggetto specificato è uguale all'oggetto corrente; in caso contrario false.</returns>
+      <param name="obj">Oggetto da confrontare con l'oggetto corrente.</param>
+    </member>
+    <member name="P:System.Net.Http.HttpMethod.Get">
+      <summary>Rappresenta un metodo di protocollo HTTP GET.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.HttpMethod" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.HttpMethod.GetHashCode">
+      <summary>Funge da funzione hash per questo tipo.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Int32" />. Codice hash per la classe <see cref="T:System.Object" /> corrente.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpMethod.Head">
+      <summary>Rappresenta un metodo di protocollo HTTP HEAD. Il metodo HEAD è identico al metodo GET ad eccezione del fatto che, nella risposta, il server restituisce solo intestazioni di messaggio senza un corpo del messaggio.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.HttpMethod" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpMethod.Method">
+      <summary>Metodo HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.String" />. Metodo HTTP rappresentato come <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.HttpMethod.op_Equality(System.Net.Http.HttpMethod,System.Net.Http.HttpMethod)">
+      <summary>Operatore di uguaglianza per il confronto di due oggetti <see cref="T:System.Net.Http.HttpMethod" />.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se i parametri <paramref name="left" /> e <paramref name="right" /> specificati non sono equivalenti; in caso contrario, false.</returns>
+      <param name="left">Oggetto <see cref="T:System.Net.Http.HttpMethod" /> a sinistra di un operatore di uguaglianza.</param>
+      <param name="right">Oggetto <see cref="T:System.Net.Http.HttpMethod" /> a destra di un operatore di uguaglianza.</param>
+    </member>
+    <member name="M:System.Net.Http.HttpMethod.op_Inequality(System.Net.Http.HttpMethod,System.Net.Http.HttpMethod)">
+      <summary>Operatore di disuguaglianza per il confronto di due oggetti <see cref="T:System.Net.Http.HttpMethod" />.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se i parametri <paramref name="left" /> e <paramref name="right" /> specificati non sono uguali; in caso contrario, false.</returns>
+      <param name="left">Oggetto <see cref="T:System.Net.Http.HttpMethod" /> a sinistra di un operatore di disuguaglianza.</param>
+      <param name="right">Oggetto <see cref="T:System.Net.Http.HttpMethod" /> a destra di un operatore di disuguaglianza.</param>
+    </member>
+    <member name="P:System.Net.Http.HttpMethod.Options">
+      <summary>Rappresenta un metodo di protocollo HTTP OPTIONS.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.HttpMethod" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpMethod.Post">
+      <summary>Rappresenta un metodo di protocollo HTTP POST utilizzato per inviare una nuova entità come aggiunta a un URI.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.HttpMethod" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpMethod.Put">
+      <summary>Rappresenta un metodo di protocollo HTTP PUT utilizzato per sostituire un'entità identificata da un URI.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.HttpMethod" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.HttpMethod.ToString">
+      <summary>Restituisce una stringa che rappresenta l'oggetto corrente.</summary>
+      <returns>Restituisca il valore <see cref="T:System.String" />. Stringa che rappresenta l'oggetto corrente.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpMethod.Trace">
+      <summary>Rappresenta un metodo di protocollo HTTP TRACE.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.HttpMethod" />.</returns>
+    </member>
+    <member name="T:System.Net.Http.HttpRequestException">
+      <summary>Classe base per eccezioni generate dalle classi <see cref="T:System.Net.Http.HttpClient" /> e <see cref="T:System.Net.Http.HttpMessageHandler" />.</summary>
+    </member>
+    <member name="M:System.Net.Http.HttpRequestException.#ctor">
+      <summary>Inizializza una nuova istanza della classe <see cref="T:System.Net.Http.HttpRequestException" />.</summary>
+    </member>
+    <member name="M:System.Net.Http.HttpRequestException.#ctor(System.String)">
+      <summary>Inizializza una nuova istanza della classe <see cref="T:System.Net.Http.HttpRequestException" /> con un messaggio specifico che descrive l'eccezione corrente.</summary>
+      <param name="message">Messaggio che descrive l'eccezione corrente.</param>
+    </member>
+    <member name="M:System.Net.Http.HttpRequestException.#ctor(System.String,System.Exception)">
+      <summary>Inizializza una nuova istanza della classe <see cref="T:System.Net.Http.HttpRequestException" /> con un messaggio specifico che descrive l'eccezione corrente e l'eccezione interna.</summary>
+      <param name="message">Messaggio che descrive l'eccezione corrente.</param>
+      <param name="inner">Eccezione interna.</param>
+    </member>
+    <member name="T:System.Net.Http.HttpRequestMessage">
+      <summary>Rappresenta un messaggio di richiesta HTTP.</summary>
+    </member>
+    <member name="M:System.Net.Http.HttpRequestMessage.#ctor">
+      <summary>Inizializza una nuova istanza della classe <see cref="T:System.Net.Http.HttpRequestMessage" />.</summary>
+    </member>
+    <member name="M:System.Net.Http.HttpRequestMessage.#ctor(System.Net.Http.HttpMethod,System.String)">
+      <summary>Inizializza una nuova istanza della classe <see cref="T:System.Net.Http.HttpRequestMessage" /> con un metodo HTTP e una richiesta <see cref="T:System.Uri" />.</summary>
+      <param name="method">Metodo HTTP.</param>
+      <param name="requestUri">Stringa che rappresenta la richiesta <see cref="T:System.Uri" />.</param>
+    </member>
+    <member name="M:System.Net.Http.HttpRequestMessage.#ctor(System.Net.Http.HttpMethod,System.Uri)">
+      <summary>Inizializza una nuova istanza della classe <see cref="T:System.Net.Http.HttpRequestMessage" /> con un metodo HTTP e una richiesta <see cref="T:System.Uri" />.</summary>
+      <param name="method">Metodo HTTP.</param>
+      <param name="requestUri">Oggetto <see cref="T:System.Uri" /> da richiedere.</param>
+    </member>
+    <member name="P:System.Net.Http.HttpRequestMessage.Content">
+      <summary>Ottiene o imposta il contenuto del messaggio HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.HttpContent" />. Contenuto di un messaggio</returns>
+    </member>
+    <member name="M:System.Net.Http.HttpRequestMessage.Dispose">
+      <summary>Rilascia le risorse non gestite ed elimina le risorse gestite utilizzate dall'oggetto <see cref="T:System.Net.Http.HttpRequestMessage" />.</summary>
+    </member>
+    <member name="M:System.Net.Http.HttpRequestMessage.Dispose(System.Boolean)">
+      <summary>Rilascia le risorse non gestite utilizzate dall'oggetto <see cref="T:System.Net.Http.HttpRequestMessage" /> ed eventualmente elimina le risorse gestite.</summary>
+      <param name="disposing">true per liberare sia le risorse gestite che quelle non gestite; false per rilasciare solo le risorse non gestite.</param>
+    </member>
+    <member name="P:System.Net.Http.HttpRequestMessage.Headers">
+      <summary>Ottiene la raccolta delle intestazioni delle richieste HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpRequestHeaders" />. Raccolta di intestazioni di richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpRequestMessage.Method">
+      <summary>Ottiene o imposta il metodo HTTP utilizzato dal messaggio di richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.HttpMethod" />. Metodo HTTP utilizzato dal messaggio di richiesta. Il valore predefinito è il metodo GET.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpRequestMessage.Properties">
+      <summary>Ottiene un set di proprietà per la richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Collections.Generic.IDictionary`2" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpRequestMessage.RequestUri">
+      <summary>Recupera o imposta <see cref="T:System.Uri" /> utilizzato per la richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Uri" />. <see cref="T:System.Uri" /> utilizzato per la richiesta HTTP.</returns>
+    </member>
+    <member name="M:System.Net.Http.HttpRequestMessage.ToString">
+      <summary>Restituisce una stringa che rappresenta l'oggetto corrente.</summary>
+      <returns>Restituisca il valore <see cref="T:System.String" />. Rappresentazione stringa dell'oggetto corrente.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpRequestMessage.Version">
+      <summary>Ottiene o imposta la versione del messaggio HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Version" />. La versione del messaggio HTTP. Il valore predefinito è 1.1.</returns>
+    </member>
+    <member name="T:System.Net.Http.HttpResponseMessage">
+      <summary>Rappresenta un messaggio di risposta HTTP.</summary>
+    </member>
+    <member name="M:System.Net.Http.HttpResponseMessage.#ctor">
+      <summary>Inizializza una nuova istanza della classe <see cref="T:System.Net.Http.HttpResponseMessage" />.</summary>
+    </member>
+    <member name="M:System.Net.Http.HttpResponseMessage.#ctor(System.Net.HttpStatusCode)">
+      <summary>Inizializza una nuova istanza della classe <see cref="T:System.Net.Http.HttpResponseMessage" /> con un <see cref="P:System.Net.Http.HttpResponseMessage.StatusCode" /> specifico.</summary>
+      <param name="statusCode">Codice di stato della risposta HTTP.</param>
+    </member>
+    <member name="P:System.Net.Http.HttpResponseMessage.Content">
+      <summary>Ottiene o imposta il messaggio di risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.HttpContent" />. Contenuto del messaggio di risposta HTTP.</returns>
+    </member>
+    <member name="M:System.Net.Http.HttpResponseMessage.Dispose">
+      <summary>Rilascia le risorse non gestite ed elimina le risorse non gestite utilizzate dall'oggetto <see cref="T:System.Net.Http.HttpResponseMessage" />.</summary>
+    </member>
+    <member name="M:System.Net.Http.HttpResponseMessage.Dispose(System.Boolean)">
+      <summary>Rilascia le risorse non gestite utilizzate dall'oggetto <see cref="T:System.Net.Http.HttpResponseMessage" /> ed eventualmente elimina le risorse gestite.</summary>
+      <param name="disposing">true per liberare sia le risorse gestite che quelle non gestite; false per rilasciare solo le risorse non gestite.</param>
+    </member>
+    <member name="M:System.Net.Http.HttpResponseMessage.EnsureSuccessStatusCode">
+      <summary>Genera un'eccezione se la proprietà <see cref="P:System.Net.Http.HttpResponseMessage.IsSuccessStatusCode" /> della risposta HTTP è false.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.HttpResponseMessage" />. Il messaggio di risposta HTTP se la chiamata ha esito positivo.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpResponseMessage.Headers">
+      <summary>Ottiene la raccolta delle intestazioni di risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpResponseHeaders" />. Raccolta di intestazioni di risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpResponseMessage.IsSuccessStatusCode">
+      <summary>Ottiene un valore che indica se la risposta HTTP è stata completata.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. Valore che indica se la risposta HTTP è stata completata. true se l'oggetto <see cref="P:System.Net.Http.HttpResponseMessage.StatusCode" /> è stato compreso nell'intervallo tra 200 e 299; in caso contrario, false.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpResponseMessage.ReasonPhrase">
+      <summary>Ottiene o imposta la frase del motivo solitamente inviata dai server insieme al codice di stato.</summary>
+      <returns>Restituisca il valore <see cref="T:System.String" />. Frase del motivo inviata dal server.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpResponseMessage.RequestMessage">
+      <summary>Ottiene o imposta il messaggio di richiesta che ha determinato questo messaggio di risposta.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.HttpRequestMessage" />. Messaggio di richiesta che ha determinato questo messaggio di risposta.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpResponseMessage.StatusCode">
+      <summary>Ottiene o imposta il codice di stato della risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.HttpStatusCode" />. Codice di stato della risposta HTTP.</returns>
+    </member>
+    <member name="M:System.Net.Http.HttpResponseMessage.ToString">
+      <summary>Restituisce una stringa che rappresenta l'oggetto corrente.</summary>
+      <returns>Restituisca il valore <see cref="T:System.String" />. Rappresentazione stringa dell'oggetto corrente.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpResponseMessage.Version">
+      <summary>Ottiene o imposta la versione del messaggio HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Version" />. La versione del messaggio HTTP. Il valore predefinito è 1.1.</returns>
+    </member>
+    <member name="T:System.Net.Http.MessageProcessingHandler">
+      <summary>Tipo di base per gestori che possono elaborare soltanto piccole richieste e/o messaggi di risposta.</summary>
+    </member>
+    <member name="M:System.Net.Http.MessageProcessingHandler.#ctor">
+      <summary>Crea un'istanza di una classe <see cref="T:System.Net.Http.MessageProcessingHandler" />.</summary>
+    </member>
+    <member name="M:System.Net.Http.MessageProcessingHandler.#ctor(System.Net.Http.HttpMessageHandler)">
+      <summary>Crea un'istanza di una classe <see cref="T:System.Net.Http.MessageProcessingHandler" /> con un gestore interno specificato.</summary>
+      <param name="innerHandler">Gestore interno responsabile per l'elaborazione dei messaggi di risposta HTTP.</param>
+    </member>
+    <member name="M:System.Net.Http.MessageProcessingHandler.ProcessRequest(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)">
+      <summary>Elabora un messaggio di richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.HttpRequestMessage" />. Messaggio di richiesta HTTP elaborato.</returns>
+      <param name="request">Messaggio di richiesta HTTP da elaborare.</param>
+      <param name="cancellationToken">Un token di annullamento che può essere utilizzato da altri oggetti o thread al ricevimento dell'avviso di annullamento.</param>
+    </member>
+    <member name="M:System.Net.Http.MessageProcessingHandler.ProcessResponse(System.Net.Http.HttpResponseMessage,System.Threading.CancellationToken)">
+      <summary>Elabora un messaggio di risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.HttpResponseMessage" />. Messaggio di risposta HTTP elaborato.</returns>
+      <param name="response">Messaggio di risposta HTTP da elaborare.</param>
+      <param name="cancellationToken">Un token di annullamento che può essere utilizzato da altri oggetti o thread al ricevimento dell'avviso di annullamento.</param>
+    </member>
+    <member name="M:System.Net.Http.MessageProcessingHandler.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)">
+      <summary>Invia una richiesta HTTP al gestore interno da inviare al server come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="request">Messaggio di richiesta HTTP da inviare al server.</param>
+      <param name="cancellationToken">Un token di annullamento che può essere utilizzato da altri oggetti o thread al ricevimento dell'avviso di annullamento.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="request" /> era null.</exception>
+    </member>
+    <member name="T:System.Net.Http.MultipartContent">
+      <summary>Fornisce una raccolta di oggetti <see cref="T:System.Net.Http.HttpContent" /> che vengono serializzati utilizzando la specifica di tipo di contenuto multipart/*.</summary>
+    </member>
+    <member name="M:System.Net.Http.MultipartContent.#ctor">
+      <summary>Crea una nuova istanza della classe <see cref="T:System.Net.Http.MultipartContent" />.</summary>
+    </member>
+    <member name="M:System.Net.Http.MultipartContent.#ctor(System.String)">
+      <summary>Crea una nuova istanza della classe <see cref="T:System.Net.Http.MultipartContent" />.</summary>
+      <param name="subtype">Sottotipo del contenuto multiparte.</param>
+      <exception cref="T:System.ArgumentException">Il parametro <paramref name="subtype" /> era null o contiene solo spazi vuoti.</exception>
+    </member>
+    <member name="M:System.Net.Http.MultipartContent.#ctor(System.String,System.String)">
+      <summary>Crea una nuova istanza della classe <see cref="T:System.Net.Http.MultipartContent" />.</summary>
+      <param name="subtype">Sottotipo del contenuto multiparte.</param>
+      <param name="boundary">La stringa limite per il contenuto a più parti.</param>
+      <exception cref="T:System.ArgumentException">Il parametro <paramref name="subtype" /> era null o una stringa vuota. <paramref name="boundary" /> è null o contiene solo spazi vuoti. In alternativa <paramref name="boundary" /> termina con un spazio.</exception>
+      <exception cref="T:System.OutOfRangeException">La lunghezza di <paramref name="boundary" /> è maggiore di 70.</exception>
+    </member>
+    <member name="M:System.Net.Http.MultipartContent.Add(System.Net.Http.HttpContent)">
+      <summary>Aggiungere contenuto HTTP multipart a una raccolta di oggetti di <see cref="T:System.Net.Http.HttpContent" /> che vengono serializzati utilizzando la specifica di tipo di contenuto multipart/*.</summary>
+      <param name="content">Contenuto HTTP da aggiungere alla raccolta.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="content" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.MultipartContent.Dispose(System.Boolean)">
+      <summary>Rilascia le risorse non gestite utilizzate dall'oggetto <see cref="T:System.Net.Http.MultipartContent" /> ed eventualmente elimina le risorse gestite.</summary>
+      <param name="disposing">true per liberare sia le risorse gestite che quelle non gestite; false per rilasciare solo le risorse non gestite.</param>
+    </member>
+    <member name="M:System.Net.Http.MultipartContent.GetEnumerator">
+      <summary>Restituisce un enumeratore che scorre la raccolta di oggetti <see cref="T:System.Net.Http.HttpContent" /> che vengono serializzati utilizzando la specifica del tipo di contenuto multipart/*.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Collections.Generic.IEnumerator`1" />. Oggetto che può essere utilizzato per scorrere l'insieme.</returns>
+    </member>
+    <member name="M:System.Net.Http.MultipartContent.SerializeToStreamAsync(System.IO.Stream,System.Net.TransportContext)">
+      <summary>Serializzare il contenuto HTTP multipart in un flusso come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="stream">Flusso di destinazione.</param>
+      <param name="context">Informazioni sul trasporto (ad esempio sul token di associazione del canale). Il parametro può essere null.</param>
+    </member>
+    <member name="M:System.Net.Http.MultipartContent.System#Collections#IEnumerable#GetEnumerator">
+      <summary>Implementazione esplicita del metodo <see cref="M:System.Net.Http.MultipartContent.GetEnumerator" />.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Collections.IEnumerator" />. Oggetto che può essere utilizzato per scorrere l'insieme.</returns>
+    </member>
+    <member name="M:System.Net.Http.MultipartContent.TryComputeLength(System.Int64@)">
+      <summary>Determina se il contenuto multiparte HTTP ha una lunghezza valida in byte.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se il <paramref name="length" /> è una lunghezza valida; in caso contrario,false.</returns>
+      <param name="length">Lunghezza in byte del contenuto HTTP.</param>
+    </member>
+    <member name="T:System.Net.Http.MultipartFormDataContent">
+      <summary>Fornisce un contenitore per contenuto codificato utilizzando il tipo MIME multipart/form-data.</summary>
+    </member>
+    <member name="M:System.Net.Http.MultipartFormDataContent.#ctor">
+      <summary>Crea una nuova istanza della classe <see cref="T:System.Net.Http.MultipartFormDataContent" />.</summary>
+    </member>
+    <member name="M:System.Net.Http.MultipartFormDataContent.#ctor(System.String)">
+      <summary>Crea una nuova istanza della classe <see cref="T:System.Net.Http.MultipartFormDataContent" />.</summary>
+      <param name="boundary">La stringa limite per il contenuto dati del form a più parti.</param>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="boundary" /> è null o contiene solo spazi vuoti. In alternativa <paramref name="boundary" /> termina con un spazio.</exception>
+      <exception cref="T:System.OutOfRangeException">La lunghezza di <paramref name="boundary" /> è maggiore di 70.</exception>
+    </member>
+    <member name="M:System.Net.Http.MultipartFormDataContent.Add(System.Net.Http.HttpContent)">
+      <summary>Aggiungere il contenuto HTTP multipart a una raccolta di oggetti di <see cref="T:System.Net.Http.HttpContent" /> che vengono serializzati nel tipo MIME multipart/form-data.</summary>
+      <param name="content">Contenuto HTTP da aggiungere alla raccolta.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="content" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.MultipartFormDataContent.Add(System.Net.Http.HttpContent,System.String)">
+      <summary>Aggiungere il contenuto HTTP multipart a una raccolta di oggetti di <see cref="T:System.Net.Http.HttpContent" /> che vengono serializzati nel tipo MIME multipart/form-data.</summary>
+      <param name="content">Contenuto HTTP da aggiungere alla raccolta.</param>
+      <param name="name">Nome del contenuto HTTP da aggiungere.</param>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="name" /> è null o contiene solo spazi vuoti.</exception>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="content" /> era null.</exception>
+    </member>
+    <member name="M:System.Net.Http.MultipartFormDataContent.Add(System.Net.Http.HttpContent,System.String,System.String)">
+      <summary>Aggiungere il contenuto HTTP multipart a una raccolta di oggetti di <see cref="T:System.Net.Http.HttpContent" /> che vengono serializzati nel tipo MIME multipart/form-data.</summary>
+      <param name="content">Contenuto HTTP da aggiungere alla raccolta.</param>
+      <param name="name">Nome del contenuto HTTP da aggiungere.</param>
+      <param name="fileName">Nome file del contenuto HTTP da aggiungere alla raccolta.</param>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="name" /> è null o contiene solo spazi vuoti. In alternativa <paramref name="fileName" /> è null o contiene solo spazi vuoti.</exception>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="content" /> era null.</exception>
+    </member>
+    <member name="T:System.Net.Http.StreamContent">
+      <summary>Fornisce il contenuto HTTP basato su un flusso.</summary>
+    </member>
+    <member name="M:System.Net.Http.StreamContent.#ctor(System.IO.Stream)">
+      <summary>Crea una nuova istanza della classe <see cref="T:System.Net.Http.StreamContent" />.</summary>
+      <param name="content">Contenuto utilizzato per inizializzare l'oggetto <see cref="T:System.Net.Http.StreamContent" />.</param>
+    </member>
+    <member name="M:System.Net.Http.StreamContent.#ctor(System.IO.Stream,System.Int32)">
+      <summary>Crea una nuova istanza della classe <see cref="T:System.Net.Http.StreamContent" />.</summary>
+      <param name="content">Contenuto utilizzato per inizializzare l'oggetto <see cref="T:System.Net.Http.StreamContent" />.</param>
+      <param name="bufferSize">Dimensione del buffer, in byte, per <see cref="T:System.Net.Http.StreamContent" />.</param>
+      <exception cref="T:System.ArgumentNullException">Il parametro <paramref name="content" /> era null.</exception>
+      <exception cref="T:System.OutOfRangeException">
+        <paramref name="bufferSize" /> è minore o uguale a zero.</exception>
+    </member>
+    <member name="M:System.Net.Http.StreamContent.CreateContentReadStreamAsync">
+      <summary>Scrive il contenuto del flusso HTTP in un flusso di memoria come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task`1" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+    </member>
+    <member name="M:System.Net.Http.StreamContent.Dispose(System.Boolean)">
+      <summary>Rilascia le risorse non gestite utilizzate dall'oggetto <see cref="T:System.Net.Http.StreamContent" /> ed eventualmente elimina le risorse gestite.</summary>
+      <param name="disposing">true per liberare sia le risorse gestite che quelle non gestite; false per rilasciare solo le risorse non gestite.</param>
+    </member>
+    <member name="M:System.Net.Http.StreamContent.SerializeToStreamAsync(System.IO.Stream,System.Net.TransportContext)">
+      <summary>Serializzare il contenuto HTTP in un flusso come operazione asincrona.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Threading.Tasks.Task" />. Oggetto dell'attività che rappresenta l'operazione asincrona.</returns>
+      <param name="stream">Flusso di destinazione.</param>
+      <param name="context">Informazioni sul trasporto (ad esempio sul token di associazione del canale). Il parametro può essere null.</param>
+    </member>
+    <member name="M:System.Net.Http.StreamContent.TryComputeLength(System.Int64@)">
+      <summary>Determina se il contenuto del flusso ha una lunghezza valida in byte.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se il <paramref name="length" /> è una lunghezza valida; in caso contrario,false.</returns>
+      <param name="length">Lunghezza in byte del contenuto del flusso.</param>
+    </member>
+    <member name="T:System.Net.Http.StringContent">
+      <summary>Fornisce il contenuto HTTP basato su una stringa.</summary>
+    </member>
+    <member name="M:System.Net.Http.StringContent.#ctor(System.String)">
+      <summary>Crea una nuova istanza della classe <see cref="T:System.Net.Http.StringContent" />.</summary>
+      <param name="content">Contenuto utilizzato per inizializzare l'oggetto <see cref="T:System.Net.Http.StringContent" />.</param>
+    </member>
+    <member name="M:System.Net.Http.StringContent.#ctor(System.String,System.Text.Encoding)">
+      <summary>Crea una nuova istanza della classe <see cref="T:System.Net.Http.StringContent" />.</summary>
+      <param name="content">Contenuto utilizzato per inizializzare l'oggetto <see cref="T:System.Net.Http.StringContent" />.</param>
+      <param name="encoding">Codifica da utilizzare per il contenuto.</param>
+    </member>
+    <member name="M:System.Net.Http.StringContent.#ctor(System.String,System.Text.Encoding,System.String)">
+      <summary>Crea una nuova istanza della classe <see cref="T:System.Net.Http.StringContent" />.</summary>
+      <param name="content">Contenuto utilizzato per inizializzare l'oggetto <see cref="T:System.Net.Http.StringContent" />.</param>
+      <param name="encoding">Codifica da utilizzare per il contenuto.</param>
+      <param name="mediaType">Tipo di dati multimediali da utilizzare per il contenuto.</param>
+    </member>
+    <member name="T:System.Net.Http.Headers.AuthenticationHeaderValue">
+      <summary>Rappresenta le informazioni di autenticazione nei valori di intestazione Authorization, ProxyAuthorization, WWW-Authneticate e Proxy-Authenticate.</summary>
+    </member>
+    <member name="M:System.Net.Http.Headers.AuthenticationHeaderValue.#ctor(System.String)">
+      <summary>Inizializza una nuova istanza della classe <see cref="T:System.Net.Http.Headers.AuthenticationHeaderValue" />.</summary>
+      <param name="scheme">Schema da utilizzare per l'autorizzazione.</param>
+    </member>
+    <member name="M:System.Net.Http.Headers.AuthenticationHeaderValue.#ctor(System.String,System.String)">
+      <summary>Inizializza una nuova istanza della classe <see cref="T:System.Net.Http.Headers.AuthenticationHeaderValue" />.</summary>
+      <param name="scheme">Schema da utilizzare per l'autorizzazione.</param>
+      <param name="parameter">Le credenziali che contengono le informazioni di autenticazione dell'agente utente per la risorsa richiesta.</param>
+    </member>
+    <member name="M:System.Net.Http.Headers.AuthenticationHeaderValue.Equals(System.Object)">
+      <summary>Consente di determinare se l'oggetto <see cref="T:System.Object" /> specificato è uguale all'oggetto <see cref="T:System.Net.Http.Headers.AuthenticationHeaderValue" /> corrente.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se l'oggetto specificato è uguale all'oggetto <see cref="T:System.Object" /> corrente; in caso contrario, false.</returns>
+      <param name="obj">Oggetto da confrontare con l'oggetto corrente.</param>
+    </member>
+    <member name="M:System.Net.Http.Headers.AuthenticationHeaderValue.GetHashCode">
+      <summary>Funge da funzione hash per un oggetto <see cref="T:System.Net.Http.Headers.AuthenticationHeaderValue" />.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Int32" />. Codice hash per l'oggetto corrente.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.AuthenticationHeaderValue.Parameter">
+      <summary>Ottiene le credenziali che contengono le informazioni di autenticazione dell'agente utente per la risorsa richiesta.</summary>
+      <returns>Restituisca il valore <see cref="T:System.String" />. Credenziali contenenti le informazioni di autenticazione.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.AuthenticationHeaderValue.Parse(System.String)">
+      <summary>Converte una stringa in un'istanza di <see cref="T:System.Net.Http.Headers.AuthenticationHeaderValue" />.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.AuthenticationHeaderValue" />. Istanza di <see cref="T:System.Net.Http.Headers.AuthenticationHeaderValue" />.</returns>
+      <param name="input">Stringa che rappresenta le informazioni sul valore intestazione di autenticazione.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="input" /> è un riferimento null.</exception>
+      <exception cref="T:System.FormatException">
+        <paramref name="input" /> non contiene informazioni sul valore dell'intestazione di autenticazione valide.</exception>
+    </member>
+    <member name="P:System.Net.Http.Headers.AuthenticationHeaderValue.Scheme">
+      <summary>Ottiene lo schema da utilizzare per l'autorizzazione.</summary>
+      <returns>Restituisca il valore <see cref="T:System.String" />. Schema da utilizzare per l'autorizzazione.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.AuthenticationHeaderValue.System#ICloneable#Clone">
+      <summary>Crea un nuovo oggetto che consiste in una copia dell'istanza corrente <see cref="T:System.Net.Http.Headers.AuthenticationHeaderValue" />.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Object" />. Copia dell'istanza corrente.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.AuthenticationHeaderValue.ToString">
+      <summary>Restituisce una stringa che rappresenta l'oggetto <see cref="T:System.Net.Http.Headers.AuthenticationHeaderValue" /> corrente.</summary>
+      <returns>Restituisca il valore <see cref="T:System.String" />. Stringa che rappresenta l'oggetto corrente.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.AuthenticationHeaderValue.TryParse(System.String,System.Net.Http.Headers.AuthenticationHeaderValue@)">
+      <summary>Determina se una stringa rappresenta informazioni <see cref="T:System.Net.Http.Headers.AuthenticationHeaderValue" /> valide.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se <paramref name="input" /> è valido <see cref="T:System.Net.Http.Headers.AuthenticationHeaderValue" />; in caso contrario, false.</returns>
+      <param name="input">Stringa da convalidare.</param>
+      <param name="parsedValue">Versione <see cref="T:System.Net.Http.Headers.AuthenticationHeaderValue" /> della stringa.</param>
+    </member>
+    <member name="T:System.Net.Http.Headers.CacheControlHeaderValue">
+      <summary>Rappresenta il valore dell'intestazione Cache-Control.</summary>
+    </member>
+    <member name="M:System.Net.Http.Headers.CacheControlHeaderValue.#ctor">
+      <summary>Inizializza una nuova istanza della classe <see cref="T:System.Net.Http.Headers.CacheControlHeaderValue" />.</summary>
+    </member>
+    <member name="M:System.Net.Http.Headers.CacheControlHeaderValue.Equals(System.Object)">
+      <summary>Consente di determinare se l'oggetto <see cref="T:System.Object" /> specificato è uguale all'oggetto <see cref="T:System.Net.Http.Headers.CacheControlHeaderValue" /> corrente.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se l'oggetto specificato è uguale all'oggetto <see cref="T:System.Object" /> corrente; in caso contrario, false.</returns>
+      <param name="obj">Oggetto da confrontare con l'oggetto corrente.</param>
+    </member>
+    <member name="P:System.Net.Http.Headers.CacheControlHeaderValue.Extensions">
+      <summary>Token di estensione cache, ognuno con un valore assegnato facoltativo.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Collections.Generic.ICollection`1" />. Raccolta di token di estensione cache, ognuno con un valore assegnato facoltativo.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.CacheControlHeaderValue.GetHashCode">
+      <summary>Funge da funzione hash per un oggetto <see cref="T:System.Net.Http.Headers.CacheControlHeaderValue" />.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Int32" />. Codice hash per l'oggetto corrente.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.CacheControlHeaderValue.MaxAge">
+      <summary>La durata massima, in secondi, di un client HTTP per accettare una risposta.</summary>
+      <returns>Restituisca il valore <see cref="T:System.TimeSpan" />. Tempo in secondi.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.CacheControlHeaderValue.MaxStale">
+      <summary>Se un client HTTP è disposto ad accettare una risposta che ha superato l'ora di scadenza.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se il client HTTP è disposto ad accettare una risposta che ha superato la data di scadenza; in caso contrario, false.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.CacheControlHeaderValue.MaxStaleLimit">
+      <summary>Il tempo massimo, in secondi, quando un client HTTP è disposto ad accettare una risposta che ha superato l'ora di scadenza.</summary>
+      <returns>Restituisca il valore <see cref="T:System.TimeSpan" />. Tempo in secondi.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.CacheControlHeaderValue.MinFresh">
+      <summary>La durata di validità, in secondi, di un client HTTP per accettare una risposta.</summary>
+      <returns>Restituisca il valore <see cref="T:System.TimeSpan" />. Tempo in secondi.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.CacheControlHeaderValue.MustRevalidate">
+      <summary>Se il server di origine richiede la riconvalida di una voce della cache su qualsiasi utilizzo successivo quando la voce della cache non risulta più aggiornata.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se il server di origine richiede la riconvalida di una voce della cache su qualsiasi utilizzo successivo quando la voce non risulta più aggiornata; in caso contrario, false.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.CacheControlHeaderValue.NoCache">
+      <summary>Se un client HTTP è disposto ad accettare una risposta memorizzata nella cache.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se il client HTTP è disposto ad accettare una risposta memorizzata nella cache; in caso contrario, false.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.CacheControlHeaderValue.NoCacheHeaders">
+      <summary>Raccolta di fieldname nella direttiva “no-cache" in un campo di intestazione controllo cache su una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Collections.Generic.ICollection`1" />. Raccolta di nomicampo.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.CacheControlHeaderValue.NoStore">
+      <summary>Se una cache non deve memorizzare una parte del messaggio di richiesta HTTP o una risposta.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se una cache non deve memorizzare alcuna parte del messaggio di richiesta HTTP o alcuna risposta; in caso contrario, false.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.CacheControlHeaderValue.NoTransform">
+      <summary>Se una cache o un proxy non deve modificare alcuna parte del corpo dell'entità.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se una cache o un proxy non deve modificare alcun aspetto del corpo di entità; in caso contrario, false.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.CacheControlHeaderValue.OnlyIfCached">
+      <summary>Se una cache deve rispondere utilizzando una voce della cache coerente con gli altri vincoli della richiesta HTTP o rispondere con uno stato 504 (timeout gateway.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se una cache deve rispondere utilizzando una voce della cache coerente con gli altri vincoli della richiesta HTTP o rispondere con uno stato 504 (timeout gateway); in caso contrario, false.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.CacheControlHeaderValue.Parse(System.String)">
+      <summary>Converte una stringa in un'istanza di <see cref="T:System.Net.Http.Headers.CacheControlHeaderValue" />.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.CacheControlHeaderValue" />. Istanza di <see cref="T:System.Net.Http.Headers.CacheControlHeaderValue" />.</returns>
+      <param name="input">Stringa che rappresenta le informazioni sul valore intestazione del controllo della cache.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="input" /> è un riferimento null.</exception>
+      <exception cref="T:System.FormatException">
+        <paramref name="input" /> non contiene informazioni sul valore dell'intestazione Cache Control valide.</exception>
+    </member>
+    <member name="P:System.Net.Http.Headers.CacheControlHeaderValue.Private">
+      <summary>Se tutto o parte del messaggio di risposta HTTP è destinato a un singolo utente e non deve essere memorizzato nella cache da una cache condivisa.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se il messaggio di risposta HTTP è destinato a un singolo utente e non deve essere memorizzato nella cache da una cache condivisa; in caso contrario, false.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.CacheControlHeaderValue.PrivateHeaders">
+      <summary>Fieldname della raccolta nella direttiva “privata" in un campo di intestazione controllo cache su una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Collections.Generic.ICollection`1" />. Raccolta di nomicampo.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.CacheControlHeaderValue.ProxyRevalidate">
+      <summary>Se il server di origine richiede la riconvalida di una voce della cache su qualsiasi utilizzo successivo quando la voce della cache non risulta più aggiornata per le cache condivise dell'agente utente.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se il server di origine richiede la riconvalida di una voce della cache su qualsiasi utilizzo successivo quando la voce non risulta più aggiornata per le cache condivise dell'agente utente; in caso contrario, false.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.CacheControlHeaderValue.Public">
+      <summary>Se una risposta HTTP può essere memorizzata nella cache da qualsiasi cache, anche se sarebbe generalmente non memorizzabile o memorizzabile nella cache solo all'interno di una cache non condivisa.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se la risposta HTTP può essere memorizzata nella cache da qualsiasi cache, anche se sarebbe generalmente non memorizzabile o memorizzabile nella cache solo all'interno di una cache non condivisa; in caso contrario, false.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.CacheControlHeaderValue.SharedMaxAge">
+      <summary>Durata massima condivisa, specificata in secondi, in una risposta HTTP che sostituisce la direttiva di durata massima in un'intestazione Cache-Control o in un'intestazione Expires per una cache condivisa.</summary>
+      <returns>Restituisca il valore <see cref="T:System.TimeSpan" />. Tempo in secondi.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.CacheControlHeaderValue.System#ICloneable#Clone">
+      <summary>Crea un nuovo oggetto che consiste in una copia dell'istanza corrente <see cref="T:System.Net.Http.Headers.CacheControlHeaderValue" />.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Object" />. Copia dell'istanza corrente.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.CacheControlHeaderValue.ToString">
+      <summary>Restituisce una stringa che rappresenta l'oggetto <see cref="T:System.Net.Http.Headers.CacheControlHeaderValue" /> corrente.</summary>
+      <returns>Restituisca il valore <see cref="T:System.String" />. Stringa che rappresenta l'oggetto corrente.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.CacheControlHeaderValue.TryParse(System.String,System.Net.Http.Headers.CacheControlHeaderValue@)">
+      <summary>Determina se una stringa rappresenta informazioni <see cref="T:System.Net.Http.Headers.CacheControlHeaderValue" /> valide.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se <paramref name="input" /> è valido <see cref="T:System.Net.Http.Headers.CacheControlHeaderValue" />; in caso contrario, false.</returns>
+      <param name="input">Stringa da convalidare.</param>
+      <param name="parsedValue">Versione <see cref="T:System.Net.Http.Headers.CacheControlHeaderValue" /> della stringa.</param>
+    </member>
+    <member name="T:System.Net.Http.Headers.ContentDispositionHeaderValue">
+      <summary>Rappresenta il valore dell'intestazione Content-Disposition.</summary>
+    </member>
+    <member name="M:System.Net.Http.Headers.ContentDispositionHeaderValue.#ctor(System.Net.Http.Headers.ContentDispositionHeaderValue)">
+      <summary>Inizializza una nuova istanza della classe <see cref="T:System.Net.Http.Headers.ContentDispositionHeaderValue" />.</summary>
+    </member>
+    <member name="M:System.Net.Http.Headers.ContentDispositionHeaderValue.#ctor(System.String)">
+      <summary>Inizializza una nuova istanza della classe <see cref="T:System.Net.Http.Headers.ContentDispositionHeaderValue" />.</summary>
+    </member>
+    <member name="P:System.Net.Http.Headers.ContentDispositionHeaderValue.CreationDate">
+      <summary>Data di creazione del file.</summary>
+      <returns>Restituisca il valore <see cref="T:System.DateTimeOffset" />. Data di creazione del file.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.ContentDispositionHeaderValue.DispositionType">
+      <summary>Il tipo di disposizione per una parte del corpo del contenuto.</summary>
+      <returns>Restituisca il valore <see cref="T:System.String" />. Il tipo di disposizione.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ContentDispositionHeaderValue.Equals(System.Object)">
+      <summary>Consente di determinare se l'oggetto <see cref="T:System.Object" /> specificato è uguale all'oggetto <see cref="T:System.Net.Http.Headers.ContentDispositionHeaderValue" /> corrente.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se l'oggetto specificato è uguale all'oggetto <see cref="T:System.Object" /> corrente; in caso contrario, false.</returns>
+      <param name="obj">Oggetto da confrontare con l'oggetto corrente.</param>
+    </member>
+    <member name="P:System.Net.Http.Headers.ContentDispositionHeaderValue.FileName">
+      <summary>Suggerimento su come creare un nome file per archiviare il payload del messaggio da utilizzare se l'entità è stata rimossa e archiviata in un file separato.</summary>
+      <returns>Restituisca il valore <see cref="T:System.String" />. Nome file consigliato.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.ContentDispositionHeaderValue.FileNameStar">
+      <summary>Suggerimento su come creare nomi file per archiviare il payload del messaggio da utilizzare se le entità sono state rimosse e archiviate in file separati.</summary>
+      <returns>Restituisca il valore <see cref="T:System.String" />. Nome file consigliato del form nomefile*.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ContentDispositionHeaderValue.GetHashCode">
+      <summary>Funge da funzione hash per un oggetto <see cref="T:System.Net.Http.Headers.ContentDispositionHeaderValue" />.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Int32" />. Codice hash per l'oggetto corrente.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.ContentDispositionHeaderValue.ModificationDate">
+      <summary>Data dell'ultima modifica apportata al file.</summary>
+      <returns>Restituisca il valore <see cref="T:System.DateTimeOffset" />. Data di modifica del file.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.ContentDispositionHeaderValue.Name">
+      <summary>Nome per una parte del corpo del contenuto.</summary>
+      <returns>Restituisca il valore <see cref="T:System.String" />. Nome per la parte del corpo del contenuto.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.ContentDispositionHeaderValue.Parameters">
+      <summary>Set di parametri che include l'intestazione Content-Disposition.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Collections.Generic.ICollection`1" />. Insieme di parametri.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ContentDispositionHeaderValue.Parse(System.String)">
+      <summary>Converte una stringa in un'istanza di <see cref="T:System.Net.Http.Headers.ContentDispositionHeaderValue" />.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.ContentDispositionHeaderValue" />. Istanza di <see cref="T:System.Net.Http.Headers.ContentDispositionHeaderValue" />.</returns>
+      <param name="input">Stringa che rappresenta le informazioni sul valore dell'intestazione di disposizione dei contenuti.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="input" /> è un riferimento null.</exception>
+      <exception cref="T:System.FormatException">
+        <paramref name="input" /> non contiene informazioni sul valore dell'intestazione di disposizione del contenuto valide.</exception>
+    </member>
+    <member name="P:System.Net.Http.Headers.ContentDispositionHeaderValue.ReadDate">
+      <summary>Data dell'ultima lettura del file.</summary>
+      <returns>Restituisca il valore <see cref="T:System.DateTimeOffset" />. Data ultimo lettura.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.ContentDispositionHeaderValue.Size">
+      <summary>Dimensione approssimativa del file espressa in byte.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Int64" />. Dimensione approssimativa espressa in byte.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ContentDispositionHeaderValue.System#ICloneable#Clone">
+      <summary>Crea un nuovo oggetto che consiste in una copia dell'istanza corrente <see cref="T:System.Net.Http.Headers.ContentDispositionHeaderValue" />.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Object" />. Copia dell'istanza corrente.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ContentDispositionHeaderValue.ToString">
+      <summary>Restituisce una stringa che rappresenta l'oggetto <see cref="T:System.Net.Http.Headers.ContentDispositionHeaderValue" /> corrente.</summary>
+      <returns>Restituisca il valore <see cref="T:System.String" />. Stringa che rappresenta l'oggetto corrente.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ContentDispositionHeaderValue.TryParse(System.String,System.Net.Http.Headers.ContentDispositionHeaderValue@)">
+      <summary>Determina se una stringa rappresenta informazioni <see cref="T:System.Net.Http.Headers.ContentDispositionHeaderValue" /> valide.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se <paramref name="input" /> è valido <see cref="T:System.Net.Http.Headers.ContentDispositionHeaderValue" />; in caso contrario, false.</returns>
+      <param name="input">Stringa da convalidare.</param>
+      <param name="parsedValue">Versione <see cref="T:System.Net.Http.Headers.ContentDispositionHeaderValue" /> della stringa.</param>
+    </member>
+    <member name="T:System.Net.Http.Headers.ContentRangeHeaderValue">
+      <summary>Rappresenta il valore dell'intestazione Content-Range.</summary>
+    </member>
+    <member name="M:System.Net.Http.Headers.ContentRangeHeaderValue.#ctor(System.Int64)">
+    </member>
+    <member name="M:System.Net.Http.Headers.ContentRangeHeaderValue.#ctor(System.Int64,System.Int64)">
+    </member>
+    <member name="M:System.Net.Http.Headers.ContentRangeHeaderValue.#ctor(System.Int64,System.Int64,System.Int64)">
+    </member>
+    <member name="M:System.Net.Http.Headers.ContentRangeHeaderValue.Equals(System.Object)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.ContentRangeHeaderValue.From">
+      <returns>Restituisca il valore <see cref="T:System.Int64" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ContentRangeHeaderValue.GetHashCode">
+      <returns>Restituisca il valore <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.ContentRangeHeaderValue.HasLength">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.ContentRangeHeaderValue.HasRange">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.ContentRangeHeaderValue.Length">
+      <returns>Restituisca il valore <see cref="T:System.Int64" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ContentRangeHeaderValue.Parse(System.String)">
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.ContentRangeHeaderValue" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ContentRangeHeaderValue.System#ICloneable#Clone">
+      <returns>Restituisca il valore <see cref="T:System.Object" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.ContentRangeHeaderValue.To">
+      <returns>Restituisca il valore <see cref="T:System.Int64" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ContentRangeHeaderValue.ToString">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ContentRangeHeaderValue.TryParse(System.String,System.Net.Http.Headers.ContentRangeHeaderValue@)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.ContentRangeHeaderValue.Unit">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="T:System.Net.Http.Headers.EntityTagHeaderValue">
+      <summary>Rappresenta un valore di intestazione del tag di entità.</summary>
+    </member>
+    <member name="M:System.Net.Http.Headers.EntityTagHeaderValue.#ctor(System.String)">
+    </member>
+    <member name="M:System.Net.Http.Headers.EntityTagHeaderValue.#ctor(System.String,System.Boolean)">
+    </member>
+    <member name="P:System.Net.Http.Headers.EntityTagHeaderValue.Any">
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.EntityTagHeaderValue" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.EntityTagHeaderValue.Equals(System.Object)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.EntityTagHeaderValue.GetHashCode">
+      <returns>Restituisca il valore <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.EntityTagHeaderValue.IsWeak">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.EntityTagHeaderValue.Parse(System.String)">
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.EntityTagHeaderValue" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.EntityTagHeaderValue.System#ICloneable#Clone">
+      <returns>Restituisca il valore <see cref="T:System.Object" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.EntityTagHeaderValue.Tag">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.EntityTagHeaderValue.ToString">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.EntityTagHeaderValue.TryParse(System.String,System.Net.Http.Headers.EntityTagHeaderValue@)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="T:System.Net.Http.Headers.HttpContentHeaders">
+      <summary>Rappresenta la raccolta di intestazioni di contenuto secondo quanto definito in RFC 2616.</summary>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpContentHeaders.Allow">
+      <summary>Ottiene il valore dell'intestazione del contenuto Allow in una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Collections.Generic.ICollection`1" />. Valore dell'intestazione Allow su una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpContentHeaders.ContentDisposition">
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.ContentDispositionHeaderValue" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpContentHeaders.ContentEncoding">
+      <summary>Ottiene il valore dell'intestazione del contenuto Content-Encoding in una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Collections.Generic.ICollection`1" />. Valore dell'intestazione del contenuto Content-Encoding in una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpContentHeaders.ContentLanguage">
+      <summary>Ottiene il valore dell'intestazione del contenuto Content-Language in una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Collections.Generic.ICollection`1" />. Valore dell'intestazione del contenuto Content-Language in una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpContentHeaders.ContentLength">
+      <summary>Ottiene o imposta il valore dell'intestazione del contenuto Content-Length in una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Int64" />. Valore dell'intestazione del contenuto Content-Length in una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpContentHeaders.ContentLocation">
+      <summary>Ottiene o imposta il valore dell'intestazione del contenuto Content-Location in una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Uri" />. Valore dell'intestazione del contenuto Content-Location in una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpContentHeaders.ContentMD5">
+      <summary>Ottiene o imposta il valore dell'intestazione del contenuto Content-MD5 in una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Byte" />. Valore dell'intestazione del contenuto Content-MD5 in una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpContentHeaders.ContentRange">
+      <summary>Ottiene o imposta il valore dell'intestazione del contenuto Content-Range in una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.ContentRangeHeaderValue" />. Valore dell'intestazione del contenuto Content-Range in una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpContentHeaders.ContentType">
+      <summary>Ottiene o imposta il valore dell'intestazione del contenuto Content-Type in una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.MediaTypeHeaderValue" />. Valore dell'intestazione del contenuto Content-Type in una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpContentHeaders.Expires">
+      <summary>Ottiene o imposta il valore dell'intestazione del contenuto Expires in una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.DateTimeOffset" />. Valore dell'intestazione del contenuto Expires in una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpContentHeaders.LastModified">
+      <summary>Ottiene o imposta il valore dell'intestazione del contenuto Last-Modified per una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.DateTimeOffset" />. Valore dell'intestazione del contenuto Last-Modified in una risposta HTTP.</returns>
+    </member>
+    <member name="T:System.Net.Http.Headers.HttpHeaders">
+      <summary>Raccolta di intestazioni e i relativi valori definiti nello standard RFC 2616.</summary>
+    </member>
+    <member name="M:System.Net.Http.Headers.HttpHeaders.#ctor">
+      <summary>Inizializza una nuova istanza della classe <see cref="T:System.Net.Http.Headers.HttpHeaders" />.</summary>
+    </member>
+    <member name="M:System.Net.Http.Headers.HttpHeaders.Add(System.String,System.Collections.Generic.IEnumerable{System.String})">
+      <summary>Aggiunge l'intestazione specificata e i valori relativi nella raccolta <see cref="T:System.Net.Http.Headers.HttpHeaders" />.</summary>
+      <param name="name">L'intestazione da aggiungere all'insieme.</param>
+      <param name="values">Elenco di valori dell'intestazione da aggiungere alla raccolta.</param>
+    </member>
+    <member name="M:System.Net.Http.Headers.HttpHeaders.Add(System.String,System.String)">
+      <summary>Aggiunge l'intestazione specificata e il valore relativo nella raccolta <see cref="T:System.Net.Http.Headers.HttpHeaders" />.</summary>
+      <param name="name">L'intestazione da aggiungere all'insieme.</param>
+      <param name="value">Il contenuto dell'intestazione.</param>
+    </member>
+    <member name="M:System.Net.Http.Headers.HttpHeaders.Clear">
+      <summary>Rimuove tutte le intestazioni dalla raccolta <see cref="T:System.Net.Http.Headers.HttpHeaders" />.</summary>
+    </member>
+    <member name="M:System.Net.Http.Headers.HttpHeaders.Contains(System.String)">
+      <summary>Restituisce un valore che indica se un'intestazione specifica è presente nella raccolta <see cref="T:System.Net.Http.Headers.HttpHeaders" />.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true e l'intestazione specificata è presente nella raccolta; in caso contrario, false.</returns>
+      <param name="name">Intestazione specifica.</param>
+    </member>
+    <member name="M:System.Net.Http.Headers.HttpHeaders.GetEnumerator">
+      <summary>Restituisce un enumeratore che consente di scorrere l'istanza di <see cref="T:System.Net.Http.Headers.HttpHeaders" />.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Collections.Generic.IEnumerator`1" />. Enumeratore per l'oggetto <see cref="T:System.Net.Http.Headers.HttpHeaders" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.HttpHeaders.GetValues(System.String)">
+      <summary>Restituisce tutti i valori di intestazione per un'intestazione specificata archiviata nella raccolta <see cref="T:System.Net.Http.Headers.HttpHeaders" />.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Collections.Generic.IEnumerable`1" />. Matrice di stringhe di intestazione.</returns>
+      <param name="name">Intestazione specificata per cui restituire i valori.</param>
+    </member>
+    <member name="M:System.Net.Http.Headers.HttpHeaders.Remove(System.String)">
+      <summary>Rimuove l'intestazione specificata dalla raccolta <see cref="T:System.Net.Http.Headers.HttpHeaders" />.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+      <param name="name">Il nome dell'intestazione da rimuovere dall'insieme.</param>
+    </member>
+    <member name="M:System.Net.Http.Headers.HttpHeaders.System#Collections#IEnumerable#GetEnumerator">
+      <returns>Restituisca il valore <see cref="T:System.Collections.IEnumerator" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.HttpHeaders.ToString">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.HttpHeaders.TryAddWithoutValidation(System.String,System.Collections.Generic.IEnumerable{System.String})">
+    </member>
+    <member name="M:System.Net.Http.Headers.HttpHeaders.TryAddWithoutValidation(System.String,System.String)">
+    </member>
+    <member name="M:System.Net.Http.Headers.HttpHeaders.TryGetValues(System.String,System.Collections.Generic.IEnumerable{System.String}@)">
+      <summary>Restituisce un valore che indica se i valori e un'intestazione specificati sono archiviati nella raccolta <see cref="T:System.Net.Http.Headers.HttpHeaders" />.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se gli oggetti <paramref name="name" /> e values dell'intestazione specificata vengono archiviati nella raccolta; in caso contrario, false.</returns>
+      <param name="name">Intestazione specificata.</param>
+      <param name="values">Valori intestazione specificati.</param>
+    </member>
+    <member name="T:System.Net.Http.Headers.HttpHeaderValueCollection`1">
+      <summary>Rappresenta una raccolta di valori dell'intestazione.</summary>
+      <typeparam name="T">
+      </typeparam>
+    </member>
+    <member name="M:System.Net.Http.Headers.HttpHeaderValueCollection`1.Add(`0)">
+    </member>
+    <member name="M:System.Net.Http.Headers.HttpHeaderValueCollection`1.Clear">
+    </member>
+    <member name="M:System.Net.Http.Headers.HttpHeaderValueCollection`1.Contains(`0)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.HttpHeaderValueCollection`1.CopyTo(`0[],System.Int32)">
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpHeaderValueCollection`1.Count">
+      <returns>Restituisca il valore <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.HttpHeaderValueCollection`1.GetEnumerator">
+      <returns>Restituisca il valore <see cref="T:System.Collections.Generic.IEnumerator`1" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpHeaderValueCollection`1.IsReadOnly">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.HttpHeaderValueCollection`1.ParseAdd(System.String)">
+    </member>
+    <member name="M:System.Net.Http.Headers.HttpHeaderValueCollection`1.Remove(`0)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.HttpHeaderValueCollection`1.System#Collections#IEnumerable#GetEnumerator">
+      <returns>Restituisca il valore <see cref="T:System.Collections.IEnumerator" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.HttpHeaderValueCollection`1.ToString">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.HttpHeaderValueCollection`1.TryParseAdd(System.String)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="T:System.Net.Http.Headers.HttpRequestHeaders">
+      <summary>Rappresenta la raccolta di intestazioni di richiesta secondo quanto definito in RFC 2616.</summary>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.Accept">
+      <summary>Ottiene il valore dell'intestazione Accept per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione Accept per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.AcceptCharset">
+      <summary>Ottiene il valore dell'intestazione Accept-Charset per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione Accept-Charset per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.AcceptEncoding">
+      <summary>Ottiene il valore dell'intestazione Accept-Encoding per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione Accept-Encoding per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.AcceptLanguage">
+      <summary>Ottiene il valore dell'intestazione Accept-Language per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione Accept-Language per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.Authorization">
+      <summary>Ottiene o imposta il valore dell'intestazione Authorization per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.AuthenticationHeaderValue" />. Valore dell'intestazione Authorization per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.CacheControl">
+      <summary>Ottiene o imposta il valore dell'intestazione Cache-Control per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.CacheControlHeaderValue" />. Valore dell'intestazione Cache-Control per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.Connection">
+      <summary>Ottiene il valore dell'intestazione Connection per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione Connection per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.ConnectionClose">
+      <summary>Ottiene o imposta un valore che indica se l'intestazione di Connection per una richiesta HTTP contiene Close.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se l'intestazione Connection contiene Close; in caso contrario, false.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.Date">
+      <summary>Ottiene o imposta il valore dell'intestazione Date per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.DateTimeOffset" />. Valore dell'intestazione Date per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.Expect">
+      <summary>Ottiene il valore dell'intestazione Expect per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione Expect per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.ExpectContinue">
+      <summary>Ottiene o imposta un valore che indica se l'intestazione di Expect per una richiesta HTTP contiene Continue.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se l'intestazione Expect contiene Continue; in caso contrario, false.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.From">
+      <summary>Ottiene o imposta il valore dell'intestazione From per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.String" />. Valore dell'intestazione From per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.Host">
+      <summary>Ottiene o imposta il valore dell'intestazione Host per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.String" />. Valore dell'intestazione Host per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.IfMatch">
+      <summary>Ottiene il valore dell'intestazione If-Match per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione If-Match per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.IfModifiedSince">
+      <summary>Ottiene o imposta il valore dell'intestazione If-Modified-Since per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.DateTimeOffset" />. Valore dell'intestazione If-Modified-Since per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.IfNoneMatch">
+      <summary>Ottiene il valore dell'intestazione If-None-Match per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Ottiene il valore dell'intestazione If-None-Match per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.IfRange">
+      <summary>Ottiene o imposta il valore dell'intestazione If-Range per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.RangeConditionHeaderValue" />. Valore dell'intestazione If-Range per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.IfUnmodifiedSince">
+      <summary>Ottiene o imposta il valore dell'intestazione If-Unmodified-Since per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.DateTimeOffset" />. Valore dell'intestazione If-Unmodified-Since per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.MaxForwards">
+      <summary>Ottiene o imposta il valore dell'intestazione Max-Forwards per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Int32" />. Valore dell'intestazione Max-Forwards per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.Pragma">
+      <summary>Ottiene il valore dell'intestazione Pragma per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione Pragma per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.ProxyAuthorization">
+      <summary>Ottiene o imposta il valore dell'intestazione Proxy-Authorization per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.AuthenticationHeaderValue" />. Valore dell'intestazione Proxy-Authorization per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.Range">
+      <summary>Ottiene o imposta il valore dell'intestazione Range per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.RangeHeaderValue" />. Valore dell'intestazione Range per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.Referrer">
+      <summary>Ottiene o imposta il valore dell'intestazione Referer per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Uri" />. Valore dell'intestazione Referer per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.TE">
+      <summary>Ottiene il valore dell'intestazione TE per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione TE per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.Trailer">
+      <summary>Ottiene il valore dell'intestazione Trailer per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione Trailer per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.TransferEncoding">
+      <summary>Ottiene il valore dell'intestazione Transfer-Encoding per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione Transfer-Encoding per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.TransferEncodingChunked">
+      <summary>Ottiene o imposta un valore che indica se l'intestazione di Transfer-Encoding per una richiesta HTTP contiene Chunked.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se l'intestazione Transfer-Encoding contiene Chunked; in caso contrario, false.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.Upgrade">
+      <summary>Ottiene il valore dell'intestazione Upgrade per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione Upgrade per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.UserAgent">
+      <summary>Ottiene il valore dell'intestazione User-Agent per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione User-Agent per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.Via">
+      <summary>Ottiene il valore dell'intestazione Via per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione Via per una richiesta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.Warning">
+      <summary>Ottiene il valore dell'intestazione Warning per una richiesta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione Warning per una richiesta HTTP.</returns>
+    </member>
+    <member name="T:System.Net.Http.Headers.HttpResponseHeaders">
+      <summary>Rappresenta la raccolta di intestazioni di risposta secondo quanto definito in RFC 2616.</summary>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpResponseHeaders.AcceptRanges">
+      <summary>Ottiene il valore dell'intestazione Accept-Ranges per una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione Accept-Ranges per una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpResponseHeaders.Age">
+      <summary>Ottiene o imposta il valore dell'intestazione Age per una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.TimeSpan" />. Valore dell'intestazione Age per una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpResponseHeaders.CacheControl">
+      <summary>Ottiene o imposta il valore dell'intestazione Cache-Control per una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.CacheControlHeaderValue" />. Valore dell'intestazione Cache-Control per una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpResponseHeaders.Connection">
+      <summary>Ottiene il valore dell'intestazione Connection per una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione Connection per una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpResponseHeaders.ConnectionClose">
+      <summary>Ottiene o imposta un valore che indica se l'intestazione di Connection per una risposta HTTP contiene Close.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se l'intestazione Connection contiene Close; in caso contrario, false.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpResponseHeaders.Date">
+      <summary>Ottiene o imposta il valore dell'intestazione Date per una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.DateTimeOffset" />. Valore dell'intestazione Date per una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpResponseHeaders.ETag">
+      <summary>Ottiene o imposta il valore dell'intestazione ETag per una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.EntityTagHeaderValue" />. Valore dell'intestazione ETag per una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpResponseHeaders.Location">
+      <summary>Ottiene o imposta il valore dell'intestazione Location per una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Uri" />. Valore dell'intestazione Location per una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpResponseHeaders.Pragma">
+      <summary>Ottiene il valore dell'intestazione Pragma per una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione Pragma per una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpResponseHeaders.ProxyAuthenticate">
+      <summary>Ottiene il valore dell'intestazione Proxy-Authenticate per una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione Proxy-Authenticate per una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpResponseHeaders.RetryAfter">
+      <summary>Ottiene o imposta il valore dell'intestazione Retry-After per una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.RetryConditionHeaderValue" />. Valore dell'intestazione Retry-After per una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpResponseHeaders.Server">
+      <summary>Ottiene il valore dell'intestazione Server per una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione Server per una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpResponseHeaders.Trailer">
+      <summary>Ottiene il valore dell'intestazione Trailer per una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione Trailer per una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpResponseHeaders.TransferEncoding">
+      <summary>Ottiene il valore dell'intestazione Transfer-Encoding per una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione Transfer-Encoding per una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpResponseHeaders.TransferEncodingChunked">
+      <summary>Ottiene o imposta un valore che indica se l'intestazione di Transfer-Encoding per una risposta HTTP contiene Chunked.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />. true se l'intestazione Transfer-Encoding contiene Chunked; in caso contrario, false.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpResponseHeaders.Upgrade">
+      <summary>Ottiene il valore dell'intestazione Upgrade per una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione Upgrade per una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpResponseHeaders.Vary">
+      <summary>Ottiene il valore dell'intestazione Vary per una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione Vary per una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpResponseHeaders.Via">
+      <summary>Ottiene il valore dell'intestazione Via per una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione Via per una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpResponseHeaders.Warning">
+      <summary>Ottiene il valore dell'intestazione Warning per una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione Warning per una risposta HTTP.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.HttpResponseHeaders.WwwAuthenticate">
+      <summary>Ottiene il valore dell'intestazione WWW-Authenticate per una risposta HTTP.</summary>
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.HttpHeaderValueCollection`1" />. Valore dell'intestazione WWW-Authenticate per una risposta HTTP.</returns>
+    </member>
+    <member name="T:System.Net.Http.Headers.MediaTypeHeaderValue">
+      <summary>Rappresenta un tipo di supporto secondo quanto definito in RFC 2616.</summary>
+    </member>
+    <member name="M:System.Net.Http.Headers.MediaTypeHeaderValue.#ctor(System.Net.Http.Headers.MediaTypeHeaderValue)">
+    </member>
+    <member name="M:System.Net.Http.Headers.MediaTypeHeaderValue.#ctor(System.String)">
+    </member>
+    <member name="P:System.Net.Http.Headers.MediaTypeHeaderValue.CharSet">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.MediaTypeHeaderValue.Equals(System.Object)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.MediaTypeHeaderValue.GetHashCode">
+      <returns>Restituisca il valore <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.MediaTypeHeaderValue.MediaType">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.MediaTypeHeaderValue.Parameters">
+      <returns>Restituisca il valore <see cref="T:System.Collections.Generic.ICollection`1" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.MediaTypeHeaderValue.Parse(System.String)">
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.MediaTypeHeaderValue" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.MediaTypeHeaderValue.System#ICloneable#Clone">
+      <returns>Restituisca il valore <see cref="T:System.Object" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.MediaTypeHeaderValue.ToString">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.MediaTypeHeaderValue.TryParse(System.String,System.Net.Http.Headers.MediaTypeHeaderValue@)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="T:System.Net.Http.Headers.MediaTypeWithQualityHeaderValue">
+      <summary>Rappresenta un valore di intestazione content-type con una qualità aggiuntiva.</summary>
+    </member>
+    <member name="M:System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.#ctor(System.String)">
+    </member>
+    <member name="M:System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.#ctor(System.String,System.Double)">
+    </member>
+    <member name="M:System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse(System.String)">
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.MediaTypeWithQualityHeaderValue" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Quality">
+      <returns>Restituisca il valore <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.System#ICloneable#Clone">
+      <returns>Restituisca il valore <see cref="T:System.Object" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.TryParse(System.String,System.Net.Http.Headers.MediaTypeWithQualityHeaderValue@)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="T:System.Net.Http.Headers.NameValueHeaderValue">
+      <summary>Rappresenta una coppia nome/valore.</summary>
+    </member>
+    <member name="M:System.Net.Http.Headers.NameValueHeaderValue.#ctor(System.Net.Http.Headers.NameValueHeaderValue)">
+    </member>
+    <member name="M:System.Net.Http.Headers.NameValueHeaderValue.#ctor(System.String)">
+    </member>
+    <member name="M:System.Net.Http.Headers.NameValueHeaderValue.#ctor(System.String,System.String)">
+    </member>
+    <member name="M:System.Net.Http.Headers.NameValueHeaderValue.Equals(System.Object)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.NameValueHeaderValue.GetHashCode">
+      <returns>Restituisca il valore <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.NameValueHeaderValue.Name">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.NameValueHeaderValue.Parse(System.String)">
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.NameValueHeaderValue" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.NameValueHeaderValue.System#ICloneable#Clone">
+      <returns>Restituisca il valore <see cref="T:System.Object" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.NameValueHeaderValue.ToString">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.NameValueHeaderValue.TryParse(System.String,System.Net.Http.Headers.NameValueHeaderValue@)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.NameValueHeaderValue.Value">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="T:System.Net.Http.Headers.NameValueWithParametersHeaderValue">
+      <summary>Rappresenta una coppia nome/valore con parametri.</summary>
+    </member>
+    <member name="M:System.Net.Http.Headers.NameValueWithParametersHeaderValue.#ctor(System.Net.Http.Headers.NameValueWithParametersHeaderValue)">
+    </member>
+    <member name="M:System.Net.Http.Headers.NameValueWithParametersHeaderValue.#ctor(System.String)">
+    </member>
+    <member name="M:System.Net.Http.Headers.NameValueWithParametersHeaderValue.#ctor(System.String,System.String)">
+    </member>
+    <member name="M:System.Net.Http.Headers.NameValueWithParametersHeaderValue.Equals(System.Object)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.NameValueWithParametersHeaderValue.GetHashCode">
+      <returns>Restituisca il valore <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.NameValueWithParametersHeaderValue.Parameters">
+      <returns>Restituisca il valore <see cref="T:System.Collections.Generic.ICollection`1" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.NameValueWithParametersHeaderValue.Parse(System.String)">
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.NameValueWithParametersHeaderValue" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.NameValueWithParametersHeaderValue.System#ICloneable#Clone">
+      <returns>Restituisca il valore <see cref="T:System.Object" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.NameValueWithParametersHeaderValue.ToString">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.NameValueWithParametersHeaderValue.TryParse(System.String,System.Net.Http.Headers.NameValueWithParametersHeaderValue@)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="T:System.Net.Http.Headers.ProductHeaderValue">
+      <summary>Rappresenta un valore di intestazione del prodotto.</summary>
+    </member>
+    <member name="M:System.Net.Http.Headers.ProductHeaderValue.#ctor(System.String)">
+    </member>
+    <member name="M:System.Net.Http.Headers.ProductHeaderValue.#ctor(System.String,System.String)">
+    </member>
+    <member name="M:System.Net.Http.Headers.ProductHeaderValue.Equals(System.Object)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ProductHeaderValue.GetHashCode">
+      <returns>Restituisca il valore <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.ProductHeaderValue.Name">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ProductHeaderValue.Parse(System.String)">
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.ProductHeaderValue" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ProductHeaderValue.System#ICloneable#Clone">
+      <returns>Restituisca il valore <see cref="T:System.Object" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ProductHeaderValue.ToString">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ProductHeaderValue.TryParse(System.String,System.Net.Http.Headers.ProductHeaderValue@)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.ProductHeaderValue.Version">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="T:System.Net.Http.Headers.ProductInfoHeaderValue">
+      <summary>Rappresenta un valore che può essere un prodotto o un commento.</summary>
+    </member>
+    <member name="M:System.Net.Http.Headers.ProductInfoHeaderValue.#ctor(System.Net.Http.Headers.ProductHeaderValue)">
+    </member>
+    <member name="M:System.Net.Http.Headers.ProductInfoHeaderValue.#ctor(System.String)">
+    </member>
+    <member name="M:System.Net.Http.Headers.ProductInfoHeaderValue.#ctor(System.String,System.String)">
+    </member>
+    <member name="P:System.Net.Http.Headers.ProductInfoHeaderValue.Comment">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ProductInfoHeaderValue.Equals(System.Object)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ProductInfoHeaderValue.GetHashCode">
+      <returns>Restituisca il valore <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ProductInfoHeaderValue.Parse(System.String)">
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.ProductInfoHeaderValue" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.ProductInfoHeaderValue.Product">
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.ProductHeaderValue" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ProductInfoHeaderValue.System#ICloneable#Clone">
+      <returns>Restituisca il valore <see cref="T:System.Object" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ProductInfoHeaderValue.ToString">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ProductInfoHeaderValue.TryParse(System.String,System.Net.Http.Headers.ProductInfoHeaderValue@)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="T:System.Net.Http.Headers.RangeConditionHeaderValue">
+      <summary>Rappresenta un valore di intestazione che può essere un valore di tipo Date/Time o tag entità.</summary>
+    </member>
+    <member name="M:System.Net.Http.Headers.RangeConditionHeaderValue.#ctor(System.DateTimeOffset)">
+    </member>
+    <member name="M:System.Net.Http.Headers.RangeConditionHeaderValue.#ctor(System.Net.Http.Headers.EntityTagHeaderValue)">
+    </member>
+    <member name="M:System.Net.Http.Headers.RangeConditionHeaderValue.#ctor(System.String)">
+    </member>
+    <member name="P:System.Net.Http.Headers.RangeConditionHeaderValue.Date">
+      <returns>Restituisca il valore <see cref="T:System.DateTimeOffset" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.RangeConditionHeaderValue.EntityTag">
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.EntityTagHeaderValue" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.RangeConditionHeaderValue.Equals(System.Object)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.RangeConditionHeaderValue.GetHashCode">
+      <returns>Restituisca il valore <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.RangeConditionHeaderValue.Parse(System.String)">
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.RangeConditionHeaderValue" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.RangeConditionHeaderValue.System#ICloneable#Clone">
+      <returns>Restituisca il valore <see cref="T:System.Object" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.RangeConditionHeaderValue.ToString">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.RangeConditionHeaderValue.TryParse(System.String,System.Net.Http.Headers.RangeConditionHeaderValue@)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="T:System.Net.Http.Headers.RangeHeaderValue">
+      <summary>Rappresenta il valore dell'intestazione Range.</summary>
+    </member>
+    <member name="M:System.Net.Http.Headers.RangeHeaderValue.#ctor">
+    </member>
+    <member name="M:System.Net.Http.Headers.RangeHeaderValue.#ctor(System.Nullable{System.Int64},System.Nullable{System.Int64})">
+    </member>
+    <member name="M:System.Net.Http.Headers.RangeHeaderValue.Equals(System.Object)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.RangeHeaderValue.GetHashCode">
+      <returns>Restituisca il valore <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.RangeHeaderValue.Parse(System.String)">
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.RangeHeaderValue" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.RangeHeaderValue.Ranges">
+      <returns>Restituisca il valore <see cref="T:System.Collections.Generic.ICollection`1" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.RangeHeaderValue.System#ICloneable#Clone">
+      <returns>Restituisca il valore <see cref="T:System.Object" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.RangeHeaderValue.ToString">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.RangeHeaderValue.TryParse(System.String,System.Net.Http.Headers.RangeHeaderValue@)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.RangeHeaderValue.Unit">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="T:System.Net.Http.Headers.RangeItemHeaderValue">
+      <summary>Rappresenta un valore di intestazione con intervallo di byte.</summary>
+    </member>
+    <member name="M:System.Net.Http.Headers.RangeItemHeaderValue.#ctor(System.Nullable{System.Int64},System.Nullable{System.Int64})">
+    </member>
+    <member name="M:System.Net.Http.Headers.RangeItemHeaderValue.Equals(System.Object)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.RangeItemHeaderValue.From">
+      <returns>Restituisca il valore <see cref="T:System.Int64" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.RangeItemHeaderValue.GetHashCode">
+      <returns>Restituisca il valore <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.RangeItemHeaderValue.System#ICloneable#Clone">
+      <returns>Restituisca il valore <see cref="T:System.Object" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.RangeItemHeaderValue.To">
+      <returns>Restituisca il valore <see cref="T:System.Int64" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.RangeItemHeaderValue.ToString">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="T:System.Net.Http.Headers.RetryConditionHeaderValue">
+      <summary>Rappresenta un valore di intestazione che può essere un valore di tipo Date/Time o Timespan.</summary>
+    </member>
+    <member name="M:System.Net.Http.Headers.RetryConditionHeaderValue.#ctor(System.DateTimeOffset)">
+    </member>
+    <member name="M:System.Net.Http.Headers.RetryConditionHeaderValue.#ctor(System.TimeSpan)">
+    </member>
+    <member name="P:System.Net.Http.Headers.RetryConditionHeaderValue.Date">
+      <returns>Restituisca il valore <see cref="T:System.DateTimeOffset" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.RetryConditionHeaderValue.Delta">
+      <returns>Restituisca il valore <see cref="T:System.TimeSpan" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.RetryConditionHeaderValue.Equals(System.Object)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.RetryConditionHeaderValue.GetHashCode">
+      <returns>Restituisca il valore <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.RetryConditionHeaderValue.Parse(System.String)">
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.RetryConditionHeaderValue" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.RetryConditionHeaderValue.System#ICloneable#Clone">
+      <returns>Restituisca il valore <see cref="T:System.Object" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.RetryConditionHeaderValue.ToString">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.RetryConditionHeaderValue.TryParse(System.String,System.Net.Http.Headers.RetryConditionHeaderValue@)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="T:System.Net.Http.Headers.StringWithQualityHeaderValue">
+      <summary>Rappresenta un valore di intestazione di stringa con una qualità facoltativa.</summary>
+    </member>
+    <member name="M:System.Net.Http.Headers.StringWithQualityHeaderValue.#ctor(System.String)">
+    </member>
+    <member name="M:System.Net.Http.Headers.StringWithQualityHeaderValue.#ctor(System.String,System.Double)">
+    </member>
+    <member name="M:System.Net.Http.Headers.StringWithQualityHeaderValue.Equals(System.Object)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.StringWithQualityHeaderValue.GetHashCode">
+      <returns>Restituisca il valore <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.StringWithQualityHeaderValue.Parse(System.String)">
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.StringWithQualityHeaderValue" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.StringWithQualityHeaderValue.Quality">
+      <returns>Restituisca il valore <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.StringWithQualityHeaderValue.System#ICloneable#Clone">
+      <returns>Restituisca il valore <see cref="T:System.Object" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.StringWithQualityHeaderValue.ToString">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.StringWithQualityHeaderValue.TryParse(System.String,System.Net.Http.Headers.StringWithQualityHeaderValue@)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.StringWithQualityHeaderValue.Value">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="T:System.Net.Http.Headers.TransferCodingHeaderValue">
+      <summary>Rappresenta un valore di intestazione della codifica di trasferimento.</summary>
+    </member>
+    <member name="M:System.Net.Http.Headers.TransferCodingHeaderValue.#ctor(System.Net.Http.Headers.TransferCodingHeaderValue)">
+    </member>
+    <member name="M:System.Net.Http.Headers.TransferCodingHeaderValue.#ctor(System.String)">
+    </member>
+    <member name="M:System.Net.Http.Headers.TransferCodingHeaderValue.Equals(System.Object)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.TransferCodingHeaderValue.GetHashCode">
+      <returns>Restituisca il valore <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.TransferCodingHeaderValue.Parameters">
+      <returns>Restituisca il valore <see cref="T:System.Collections.Generic.ICollection`1" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.TransferCodingHeaderValue.Parse(System.String)">
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.TransferCodingHeaderValue" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.TransferCodingHeaderValue.System#ICloneable#Clone">
+      <returns>Restituisca il valore <see cref="T:System.Object" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.TransferCodingHeaderValue.ToString">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.TransferCodingHeaderValue.TryParse(System.String,System.Net.Http.Headers.TransferCodingHeaderValue@)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.TransferCodingHeaderValue.Value">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="T:System.Net.Http.Headers.TransferCodingWithQualityHeaderValue">
+      <summary>Rappresenta un valore di intestazione della codifica di trasferimento con qualità facoltativa.</summary>
+    </member>
+    <member name="M:System.Net.Http.Headers.TransferCodingWithQualityHeaderValue.#ctor(System.String)">
+    </member>
+    <member name="M:System.Net.Http.Headers.TransferCodingWithQualityHeaderValue.#ctor(System.String,System.Double)">
+    </member>
+    <member name="M:System.Net.Http.Headers.TransferCodingWithQualityHeaderValue.Parse(System.String)">
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.TransferCodingWithQualityHeaderValue" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.TransferCodingWithQualityHeaderValue.Quality">
+      <returns>Restituisca il valore <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.TransferCodingWithQualityHeaderValue.System#ICloneable#Clone">
+      <returns>Restituisca il valore <see cref="T:System.Object" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.TransferCodingWithQualityHeaderValue.TryParse(System.String,System.Net.Http.Headers.TransferCodingWithQualityHeaderValue@)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="T:System.Net.Http.Headers.ViaHeaderValue">
+      <summary>Rappresenta il valore di un'intestazione Via.</summary>
+    </member>
+    <member name="M:System.Net.Http.Headers.ViaHeaderValue.#ctor(System.String,System.String)">
+    </member>
+    <member name="M:System.Net.Http.Headers.ViaHeaderValue.#ctor(System.String,System.String,System.String)">
+    </member>
+    <member name="M:System.Net.Http.Headers.ViaHeaderValue.#ctor(System.String,System.String,System.String,System.String)">
+    </member>
+    <member name="P:System.Net.Http.Headers.ViaHeaderValue.Comment">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ViaHeaderValue.Equals(System.Object)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ViaHeaderValue.GetHashCode">
+      <returns>Restituisca il valore <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ViaHeaderValue.Parse(System.String)">
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.ViaHeaderValue" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.ViaHeaderValue.ProtocolName">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.ViaHeaderValue.ProtocolVersion">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.ViaHeaderValue.ReceivedBy">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ViaHeaderValue.System#ICloneable#Clone">
+      <returns>Restituisca il valore <see cref="T:System.Object" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ViaHeaderValue.ToString">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.ViaHeaderValue.TryParse(System.String,System.Net.Http.Headers.ViaHeaderValue@)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="T:System.Net.Http.Headers.WarningHeaderValue">
+      <summary>Rappresenta un valore di avviso utilizzato dall'intestazione di avviso.</summary>
+    </member>
+    <member name="M:System.Net.Http.Headers.WarningHeaderValue.#ctor(System.Int32,System.String,System.String)">
+    </member>
+    <member name="M:System.Net.Http.Headers.WarningHeaderValue.#ctor(System.Int32,System.String,System.String,System.DateTimeOffset)">
+    </member>
+    <member name="P:System.Net.Http.Headers.WarningHeaderValue.Agent">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.WarningHeaderValue.Code">
+      <returns>Restituisca il valore <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.WarningHeaderValue.Date">
+      <returns>Restituisca il valore <see cref="T:System.DateTimeOffset" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.WarningHeaderValue.Equals(System.Object)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.WarningHeaderValue.GetHashCode">
+      <returns>Restituisca il valore <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.WarningHeaderValue.Parse(System.String)">
+      <returns>Restituisca il valore <see cref="T:System.Net.Http.Headers.WarningHeaderValue" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.WarningHeaderValue.System#ICloneable#Clone">
+      <returns>Restituisca il valore <see cref="T:System.Object" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.Headers.WarningHeaderValue.Text">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.WarningHeaderValue.ToString">
+      <returns>Restituisca il valore <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.Headers.WarningHeaderValue.TryParse(System.String,System.Net.Http.Headers.WarningHeaderValue@)">
+      <returns>Restituisca il valore <see cref="T:System.Boolean" />.</returns>
+    </member>
+  </members>
+</doc>
