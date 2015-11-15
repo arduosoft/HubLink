@@ -51,10 +51,12 @@ namespace Wlog.Web
 
             cfg.Configure();
             CurrentSessionFactory = cfg.BuildSessionFactory();
-        SchemaMetadataUpdater.QuoteTableAndColumns(cfg);
-        NHibernate.Tool.hbm2ddl.SchemaExport schema = new NHibernate.Tool.hbm2ddl.SchemaExport(cfg);
 
-        schema.Create(false, true);
+            //TODO: Expot this snippest inside DbUpgrader util class, and make it conservative ( upgrades musk apply only the delta)
+            SchemaMetadataUpdater.QuoteTableAndColumns(cfg);
+            NHibernate.Tool.hbm2ddl.SchemaExport schema = new NHibernate.Tool.hbm2ddl.SchemaExport(cfg);
+
+            schema.Create(false, true);
         
 
 
