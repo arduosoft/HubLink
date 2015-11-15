@@ -21,6 +21,7 @@ namespace Wlog.Web
 
     public class WebApiApplication : System.Web.HttpApplication
     {
+        //Todo: Move nhibernate init stuff in a dedicated class. Implement a DataContext or Operation manager pattern to wrap data access
         public static ISessionFactory CurrentSessionFactory;
         public static Configuration cfg;
         protected void Application_Start()
