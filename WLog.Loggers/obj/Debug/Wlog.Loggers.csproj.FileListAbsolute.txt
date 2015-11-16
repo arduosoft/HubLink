@@ -15,3 +15,12 @@ C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Loggers\bin\Deb
 C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Loggers\obj\Debug\Wlog.Loggers.csprojResolveAssemblyReference.cache
 C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Loggers\obj\Debug\NLog.WebLog.dll
 C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Loggers\obj\Debug\NLog.WebLog.pdb
+D:\projects\codeplex\wlog\Wlog.Loggers\bin\Debug\NLog.WebLog.dll
+D:\projects\codeplex\wlog\Wlog.Loggers\bin\Debug\NLog.WebLog.pdb
+D:\projects\codeplex\wlog\Wlog.Loggers\bin\Debug\Newtonsoft.Json.dll
+D:\projects\codeplex\wlog\Wlog.Loggers\bin\Debug\NLog.dll
+D:\projects\codeplex\wlog\Wlog.Loggers\bin\Debug\Newtonsoft.Json.xml
+D:\projects\codeplex\wlog\Wlog.Loggers\bin\Debug\NLog.xml
+D:\projects\codeplex\wlog\Wlog.Loggers\obj\Debug\Wlog.Loggers.csprojResolveAssemblyReference.cache
+D:\projects\codeplex\wlog\Wlog.Loggers\obj\Debug\NLog.WebLog.dll
+D:\projects\codeplex\wlog\Wlog.Loggers\obj\Debug\NLog.WebLog.pdb

@@ -50,6 +50,11 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test\WLogBulkTest.cs" />
+    <Compile Include="Test\WlogTest.cs" />
+    <Compile Include="Test\FileTest.cs" />
+    <Compile Include="Test\TestInstance.cs" />
+    <Compile Include="Test\TestIterator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

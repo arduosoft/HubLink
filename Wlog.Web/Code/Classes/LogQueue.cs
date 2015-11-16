@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NHibernate;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -39,6 +40,31 @@ namespace Wlog.Web.Code.Classes
             }
             return result;
         }
+
+        public void Run()
+        {
+           
+
+            
+                if (LogQueue.Current.Count > 0)
+                {
+                    LogEntry log = LogQueue.Current.Dequeue();
+
+
+
+                    using (ISession session = WebApiApplication.CurrentSessionFactory.OpenSession())
+                    {
+                        using (ITransaction transaction = session.BeginTransaction())
+                        {
+                            session.Save(log);
+                            transaction.Commit();
+                        }
+                    }
+
+                }
+            
+        }
+
         public LogEntry Dequeue()
         {
             return queque.Dequeue();

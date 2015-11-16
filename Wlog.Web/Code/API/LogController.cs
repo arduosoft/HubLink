@@ -19,23 +19,8 @@ namespace Wlog.Web.Code.API
             
             LogQueue.Current.Enqueue(value);
 
-            //Move this to a background job
-            if (LogQueue.Current.Count > 0)
-            {
-                LogEntry log = LogQueue.Current.Dequeue();
-
-
-
-                using (ISession session = WebApiApplication.CurrentSessionFactory.OpenSession())
-                {
-                    using (ITransaction transaction = session.BeginTransaction())
-                    {
-                        session.Save(log);
-                        transaction.Commit();
-                    }
-                }
-
-            }
+           
+            
         }
 
     }

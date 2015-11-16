@@ -6,7 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using Wlog.TestApp.Test;
 
 namespace Wlog.TestApp
 {
@@ -27,6 +29,15 @@ namespace Wlog.TestApp
 
             double ms = DateTime.Now.Subtract(d1).TotalMilliseconds;
 
+
+            TestIterator it = new TestIterator();
+            it.RepeatCount = 1000;
+         
+            it.Instances.Add(new WlogTest());           
+            it.Instances.Add(new WLogBulkTest());      
+            it.Instances.Add(new FileTest());
+
+            it.DoTest();
 
             //Test with log
             
