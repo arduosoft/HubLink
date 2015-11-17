@@ -65,12 +65,12 @@ namespace Wlog.Web
             JobStorage.Current=new MemoryStorage();
             //Hangfire.GlobalConfiguration.Configuration.UseNLogLogProvider();
             _backgroundJobServer = new BackgroundJobServer();
-           
-      
-            
-            
 
-            BackgroundJob.Schedule(() => LogQueue.Current.Run(), TimeSpan.FromSeconds(1));
+
+
+
+
+            RecurringJob.AddOrUpdate(() => LogQueue.Current.Run(), Cron.Minutely());
 
 
         }

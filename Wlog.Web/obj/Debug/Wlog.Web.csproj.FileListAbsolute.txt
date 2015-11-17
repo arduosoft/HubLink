@@ -268,3 +268,13 @@ D:\projects\codeplex\wlog\Wlog.Web\bin\Hangfire.Core.xml
 D:\projects\codeplex\wlog\Wlog.Web\bin\NLog.dll
 D:\projects\codeplex\wlog\Wlog.Web\bin\NLog.xml
 D:\projects\codeplex\wlog\Wlog.Web\bin\Hangfire.MemoryStorage.dll
+C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\bin\Hangfire.Core.dll
+C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\bin\Hangfire.MemoryStorage.dll
+C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\bin\NLog.dll
+C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\bin\Owin.dll
+C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\bin\Hangfire.Core.xml
+C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\bin\NLog.xml
+C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\bin\Microsoft.Owin.dll
+C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\bin\Microsoft.Owin.Host.SystemWeb.dll
+C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\bin\Microsoft.Owin.xml
+C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\bin\Microsoft.Owin.Host.SystemWeb.xml
