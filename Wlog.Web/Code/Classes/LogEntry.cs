@@ -18,6 +18,7 @@ namespace Wlog.Web.Code.Classes
         */
         public virtual DateTime SourceDate { get; set; }
         public  virtual string Message { get; set; }
+        public virtual string Level { get; set; }
         public  virtual Guid Uid {get;set;}
 
     }
@@ -32,6 +33,7 @@ namespace Wlog.Web.Code.Classes
             Schema("dbo");
             Id(x => x.Uid,map=> map.Generator(Generators.Guid) );
             Property(x => x.Message);
+            Property(x => x.Level);
             Property(x => x.SourceDate);
         }
     }
