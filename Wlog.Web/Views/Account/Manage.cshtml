@@ -1,0 +1,32 @@
+﻿@model Wlog.Web.Models.LocalPasswordModel
+@{
+    ViewBag.Title = "Gestione account";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+<p class="message-success">@ViewBag.StatusMessage</p>
+
+<p>L'utente ha eseguito l'accesso come <strong>@User.Identity.Name</strong>.</p>
+
+@if (ViewBag.HasLocalPassword)
+{
+    @Html.Partial("_ChangePasswordPartial")
+}
+else
+{ 
+    @Html.Partial("_SetPasswordPartial")
+}
+
+<section id="externalLogins">
+    @Html.Action("RemoveExternalLogins")
+
+    <h3>Aggiungi account di accesso esterno</h3>
+    @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
+</section>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

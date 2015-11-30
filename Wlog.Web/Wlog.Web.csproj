@@ -68,6 +68,12 @@
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="PagedList">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
@@ -186,15 +192,18 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Code\Authentication\ApplicationContext.cs" />
+    <Compile Include="Code\Authentication\UserProfileContext.cs" />
     <Compile Include="Code\Authentication\WLogMembershipProvider.cs" />
     <Compile Include="Code\Authentication\WLogRoleProvider.cs" />
     <Compile Include="Code\Classes\LogEntry.cs" />
     <Compile Include="Code\Classes\LogQueue.cs" />
     <Compile Include="Code\Jobs\ApplicationPreload.cs" />
     <Compile Include="Code\Jobs\Startup.cs" />
+    <Compile Include="Code\Repository\ApplicationRepository.cs" />
     <Compile Include="Code\Repository\UserRepository.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -206,6 +215,8 @@
     <Compile Include="Code\Entry\AppUserRoleEntry.cs" />
     <Compile Include="Code\Entry\RolesEntry.cs" />
     <Compile Include="Code\Entry\UserEntry.cs" />
+    <Compile Include="Models\ApplicationModel.cs" />
+    <Compile Include="Models\LogModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -216,6 +227,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\images\glyphicons-halflings-white.png" />
     <Content Include="Content\images\glyphicons-halflings.png" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
@@ -275,7 +287,6 @@
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
@@ -292,6 +303,8 @@
     </Content>
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Log\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

@@ -1,0 +1,36 @@
+﻿@model Wlog.Web.Models.RegisterExternalLoginModel
+@{
+    ViewBag.Title = "Registrazione";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    <h2>Associare l'account @ViewBag.ProviderDisplayName.</h2>
+</hgroup>
+
+@using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl })) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Form di associazione</legend>
+        <p>
+            L'utente ha eseguito l'autenticazione con <strong>@ViewBag.ProviderDisplayName</strong>.
+            Immettere di seguito un nome utente per il sito corrente e fare clic sul pulsante Conferma per completare
+            l'accesso.
+        </p>
+        <ol>
+            <li class="name">
+                @Html.LabelFor(m => m.UserName)
+                @Html.TextBoxFor(m => m.UserName)
+                @Html.ValidationMessageFor(m => m.UserName)
+            </li>
+        </ol>
+        @Html.HiddenFor(m => m.ExternalLoginData)
+        <input type="submit" value="Registrazione" />
+    </fieldset>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

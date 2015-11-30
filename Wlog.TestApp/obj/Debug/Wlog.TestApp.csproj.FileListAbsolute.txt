@@ -34,3 +34,15 @@ D:\projects\codeplex\wlog\Wlog.TestApp\bin\Debug\NLog.WebLog.dll
 D:\projects\codeplex\wlog\Wlog.TestApp\bin\Debug\NLog.WebLog.pdb
 D:\projects\codeplex\wlog\Wlog.TestApp\bin\Debug\Newtonsoft.Json.xml
 D:\projects\codeplex\wlog\Wlog.TestApp\bin\Debug\NLog.xml
+Z:\PersonalProject\wlog\Wlog.TestApp\bin\Debug\Wlog.TestApp.exe.config
+Z:\PersonalProject\wlog\Wlog.TestApp\bin\Debug\Wlog.TestApp.exe
+Z:\PersonalProject\wlog\Wlog.TestApp\bin\Debug\Wlog.TestApp.pdb
+Z:\PersonalProject\wlog\Wlog.TestApp\bin\Debug\Newtonsoft.Json.dll
+Z:\PersonalProject\wlog\Wlog.TestApp\bin\Debug\NLog.dll
+Z:\PersonalProject\wlog\Wlog.TestApp\bin\Debug\NLog.WebLog.dll
+Z:\PersonalProject\wlog\Wlog.TestApp\bin\Debug\NLog.WebLog.pdb
+Z:\PersonalProject\wlog\Wlog.TestApp\bin\Debug\Newtonsoft.Json.xml
+Z:\PersonalProject\wlog\Wlog.TestApp\bin\Debug\NLog.xml
+Z:\PersonalProject\wlog\Wlog.TestApp\obj\Debug\Wlog.TestApp.csprojResolveAssemblyReference.cache
+Z:\PersonalProject\wlog\Wlog.TestApp\obj\Debug\Wlog.TestApp.exe
+Z:\PersonalProject\wlog\Wlog.TestApp\obj\Debug\Wlog.TestApp.pdb

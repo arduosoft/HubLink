@@ -11,77 +11,52 @@
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <body>
-    <header>
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    @*    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>*@
-
-
-                    <ul class="nav navbar-nav underline">
-                        <li><a class="navbar-brand" href="/">
-                            <img src="~/Images/Logo.png"></a></li>
-                        <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
-                        <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
-                        @if (Request.IsAuthenticated)
-                        {
-                            <li>@Html.ActionLink("Salve " + User.Identity.Name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })!
-                            </li>
-                            <li>
-                                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
-                                {
-                                    @Html.AntiForgeryToken()
-                                    <a href="javascript:document.getElementById('logoutForm').submit()">Disconnetti</a>
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a href="/" class="navbar-brand">
+                    <img src="~/Images/Logo.png"></a>
+                <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse" id="navbar-main">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    @if (Request.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Salve " + User.Identity.Name+"!", "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })
+                        </li>
+                        <li>
+                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <a href="javascript:document.getElementById('logoutForm').submit()">Disconnetti</a>
                                 }
-                            </li>
+                        </li>
                         }
-                        else
-                        {
+                    else
+                    {
 
-                            <li>@Html.ActionLink("Registrazione", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-                            <li>@Html.ActionLink("Accedi", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                        <li>@Html.ActionLink("Registrazione", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+                        <li>@Html.ActionLink("Accedi", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
 
                         }
-                    </ul>
-                </div>
+                </ul>
 
-                <!-- /.navbar-collapse -->
             </div>
-            <!-- /.container-fluid -->
-        </nav>
-
-
-
-
-
-        @*        <div class="row">
-            <div class="float-left">
-                <p class="site-title">
-                    <a href="~/">WLog</a>
-                </p>
             </div>
-            <div class="float-right">
-                <nav>
-                    <ul id="menu">
-                        <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
-                        <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
-                    </ul>
-                </nav>
-                <section id="login">
-                    @Html.Partial("_LoginPartial")
-                </section>
+        </div>
+
+
+            <div class="container" style="padding-top: 100px">
+                @RenderBody()
             </div>
-        </div>*@
-    </header>
-    <div class="container" style="padding-top:100px">
-        @RenderBody()
-    </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrapjs")

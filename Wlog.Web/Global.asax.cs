@@ -73,6 +73,9 @@ namespace Wlog.Web
             BackgroundJob.Schedule(() => LogQueue.Current.Run(), TimeSpan.FromSeconds(1));
 
 
+            (new Wlog.Web.Code.Repository.ApplicationRepository()).Save();
+
+
         }
 
         protected void Application_End(object sender, EventArgs e)

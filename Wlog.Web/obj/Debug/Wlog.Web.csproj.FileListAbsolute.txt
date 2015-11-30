@@ -372,3 +372,7 @@ Z:\PersonalProject\wlog\Wlog.Web\bin\zh-Hant\System.Spatial.resources.dll
 Z:\PersonalProject\wlog\Wlog.Web\obj\Debug\Wlog.Web.csprojResolveAssemblyReference.cache
 Z:\PersonalProject\wlog\Wlog.Web\obj\Debug\Wlog.Web.dll
 Z:\PersonalProject\wlog\Wlog.Web\obj\Debug\Wlog.Web.pdb
+Z:\PersonalProject\wlog\Wlog.Web\bin\PagedList.dll
+Z:\PersonalProject\wlog\Wlog.Web\bin\PagedList.Mvc.dll
+Z:\PersonalProject\wlog\Wlog.Web\bin\PagedList.xml
+Z:\PersonalProject\wlog\Wlog.Web\bin\PagedList.Mvc.xml

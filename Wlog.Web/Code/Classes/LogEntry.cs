@@ -20,6 +20,7 @@ namespace Wlog.Web.Code.Classes
         public  virtual string Message { get; set; }
         public virtual string Level { get; set; }
         public  virtual Guid Uid {get;set;}
+        public virtual int ApplictionId { get; set; }
 
     }
 
@@ -35,6 +36,7 @@ namespace Wlog.Web.Code.Classes
             Property(x => x.Message);
             Property(x => x.Level);
             Property(x => x.SourceDate);
+            Property(x => x.ApplictionId);
         }
     }
 }
