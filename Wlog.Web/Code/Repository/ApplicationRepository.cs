@@ -39,6 +39,8 @@ namespace Wlog.Web.Code.Repository
         public List<ApplicationHomeModel> GetHomeApp()
         {
             List<ApplicationHomeModel> result = new List<ApplicationHomeModel>();
+            if (UserProfileContext.Current.User!=null)
+            { 
             WLogRoleProvider roleProvider = new WLogRoleProvider();
             using (ISession session = WebApiApplication.CurrentSessionFactory.OpenSession())
             {
@@ -51,11 +53,12 @@ namespace Wlog.Web.Code.Repository
                     }
                     else
                     {
-                        entity = session.Query<AppUserRoleEntry>().Where(x => x.User.Id == UserProfileContext.Current.User.Id).Select(x => x.Application).Where(x=>x.IsActive==true).ToList();
+                        entity = session.Query<AppUserRoleEntry>().Where(x => x.User.Id == UserProfileContext.Current.User.Id).Select(x => x.Application).Where(x => x.IsActive == true).ToList();
                     }
                     result.AddRange(ConvertListEntityToListApplicationHome(entity));
                 }
             };
+        }
             return result;
         }
 

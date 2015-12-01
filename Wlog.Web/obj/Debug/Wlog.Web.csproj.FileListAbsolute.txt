@@ -274,10 +274,6 @@ C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\bin\NLog.dl
 C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\bin\Owin.dll
 C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\bin\Hangfire.Core.xml
 C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\bin\NLog.xml
-C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\bin\Microsoft.Owin.dll
-C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\bin\Microsoft.Owin.Host.SystemWeb.dll
-C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\bin\Microsoft.Owin.xml
-C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\bin\Microsoft.Owin.Host.SystemWeb.xml
 Z:\PersonalProject\wlog\Wlog.Web\bin\Wlog.Web.dll
 Z:\PersonalProject\wlog\Wlog.Web\bin\Wlog.Web.pdb
 Z:\PersonalProject\wlog\Wlog.Web\bin\Antlr3.Runtime.dll
@@ -376,3 +372,7 @@ Z:\PersonalProject\wlog\Wlog.Web\bin\PagedList.dll
 Z:\PersonalProject\wlog\Wlog.Web\bin\PagedList.Mvc.dll
 Z:\PersonalProject\wlog\Wlog.Web\bin\PagedList.xml
 Z:\PersonalProject\wlog\Wlog.Web\bin\PagedList.Mvc.xml
+C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\bin\PagedList.dll
+C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\bin\PagedList.Mvc.dll
+C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\bin\PagedList.xml
+C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\bin\PagedList.Mvc.xml

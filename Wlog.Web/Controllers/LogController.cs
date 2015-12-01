@@ -11,10 +11,13 @@ namespace Wlog.Web.Controllers
 {
     public class LogController : Controller
     {
-        //
-        // GET: /Log/
+        public ActionResult Index()
+        {
+            return View();
+        }
 
-        public ActionResult Index(int ApplicationId,string sortOrder,string currentFilter,string SerchMessage,int? page)
+
+        public ActionResult List(int ApplicationId,string sortOrder,string currentFilter,string SerchMessage,int? page)
         {
 
             ViewBag.ApplicationId = ApplicationId;
