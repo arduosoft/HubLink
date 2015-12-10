@@ -14,7 +14,7 @@ namespace Wlog.Web.Code.API
 
 
         // POST api/<controller>
-        public void Post([FromBody]LogEntry value)
+        public void Post([FromBody]LogEntity value)
         {
             
             LogQueue.Current.Enqueue(value);

@@ -7,13 +7,14 @@ using System.Text;
 using System.Web;
 using System.Web.Security;
 using Wlog.Models;
-using Wlog.Web.Code.Repository;
+using Wlog.Web.Code.Classes;
+using Wlog.Web.Code.Helpers;
 
 namespace Wlog.Web.Code.Authentication
 {
     public class WLogMembershipProvider:MembershipProvider
     {
-        private static UserRepository _UserRep = new UserRepository();
+     
 
         public override string ApplicationName
         {
@@ -60,39 +61,42 @@ namespace Wlog.Web.Code.Authentication
             {
                 DateTime createDate = DateTime.Now;
 
-                using (ISession session = WebApiApplication.CurrentSessionFactory.OpenSession())
+                using (UnitOfWork uow = new UnitOfWork())
                 {
-                    using (ITransaction transaction = session.BeginTransaction())
-                    {
-                        UserEntry user = new UserEntry();
-                        user.Username = username;
-                        user.Password = EncodePassword(password);
-                        user.Email = email;
-                        user.IsAdmin = false;
-                        user.PasswordQuestion = passwordQuestion;
-                        user.PasswordAnswer = passwordAnswer;//EncodePassword(passwordAnswer);
-                        user.IsApproved = isApproved;
-                        user.CreationDate = createDate;
-                        user.LastPasswordChangedDate = createDate;
-                        user.LastActivityDate = createDate;
-                        user.IsLockedOut = false;
-                        user.LastLockedOutDate = createDate;
-                        
-                        try
-                        {
-                            int retId = (int)session.Save(user);
 
-                            transaction.Commit();
-                            if ((retId < 1))
-                                status = MembershipCreateStatus.UserRejected;
-                            else
-                                status = MembershipCreateStatus.Success;
-                        }
-                        catch (Exception e)
+                    UserEntity user = new UserEntity();
+                    user.Username = username;
+                    user.Password = EncodePassword(password);
+                    user.Email = email;
+                    user.IsAdmin = false;
+                    user.PasswordQuestion = passwordQuestion;
+                    user.PasswordAnswer = passwordAnswer;//EncodePassword(passwordAnswer);
+                    user.IsApproved = isApproved;
+                    user.CreationDate = createDate;
+                    user.LastPasswordChangedDate = createDate;
+                    user.LastActivityDate = createDate;
+                    user.IsLockedOut = false;
+                    user.LastLockedOutDate = createDate;
+
+                    try
+                    {
+                        uow.SaveOrUpdate(user);
+
+
+                        if (user.Id < 1)
+                            status = MembershipCreateStatus.UserRejected;
+                        else
                         {
-                            status = MembershipCreateStatus.ProviderError;
+                            uow.Commit();
+                            status = MembershipCreateStatus.Success;
                         }
                     }
+                    catch (Exception e)
+                    {
+                        status = MembershipCreateStatus.ProviderError;
+                        
+                    }
+
                 }
 
                 return GetUser(username, false);
@@ -144,23 +148,22 @@ namespace Wlog.Web.Code.Authentication
 
         public override MembershipUser GetUser(string username, bool userIsOnline)
         {
-            UserRepository repo = new UserRepository();
-            UserEntry u = repo.GetByUsername(username);
-            if (u == null)
+            UserEntity usr = UserHelper.GetByUsername(username);
+            if (usr == null)
                 return null;
-            return GetMembershipUserFromUser(u);
+            return GetMembershipUserFromUser(usr);
         }
 
         public override MembershipUser GetUser(object providerUserKey, bool userIsOnline)
         {
-            UserEntry usr = _UserRep.GetById((int)providerUserKey);
+            UserEntity usr = UserHelper.GetByUsername(providerUserKey as string);
             return GetMembershipUserFromUser(usr);
         }
 
         public override string GetUserNameByEmail(string email)
         {
             string result = "";
-            UserEntry usr = _UserRep.GetByEmail(email);
+            UserEntity usr = UserHelper.GetByEmail(email);
             if (usr != null) result = usr.Username;
             return result;
         }
@@ -217,19 +220,19 @@ namespace Wlog.Web.Code.Authentication
 
         public override void UpdateUser(MembershipUser user)
         {
-            UserEntry usr = _UserRep.GetByUsername(user.UserName);
+            UserEntity usr = UserHelper.GetByUsername(user.UserName);
             if (usr != null)
             {
                 usr.Email = user.Email;
                 usr.LastActivityDate = DateTime.Now;
-                _UserRep.UpdateUser(usr);
+                UserHelper.UpdateUser(usr);
             }
         }
 
         public override bool ValidateUser(string username, string password)
         {
             bool isValid = false;
-            UserEntry usr = _UserRep.GetByUsername(username);
+            UserEntity usr = UserHelper.GetByUsername(username);
 
             if (usr == null)
                 return isValid;
@@ -238,7 +241,7 @@ namespace Wlog.Web.Code.Authentication
             {
                 isValid = true;
                 usr.LastLoginDate = DateTime.Now;
-                _UserRep.UpdateUser(usr);
+                UserHelper.UpdateUser(usr);
             }
 
             return isValid;
@@ -247,11 +250,8 @@ namespace Wlog.Web.Code.Authentication
 
         private string EncodePassword(string password)
         {
-            //TODO:Set Security encode
-            using (SHA1CryptoServiceProvider Sha = new SHA1CryptoServiceProvider())
-            {
-                return Convert.ToBase64String( Sha.ComputeHash(Encoding.ASCII.GetBytes(password)));
-            }
+
+            return UserHelper.EncodePassword(password);
         }
 
         /// <summary>
@@ -259,7 +259,7 @@ namespace Wlog.Web.Code.Authentication
         /// </summary>
         /// <param name="usr"></param>
         /// <returns></returns>
-        private MembershipUser GetMembershipUserFromUser(UserEntry usr)
+        private MembershipUser GetMembershipUserFromUser(UserEntity usr)
         {
             MembershipUser u = new MembershipUser("WLogMembershipProvider",
                                                   usr.Username,

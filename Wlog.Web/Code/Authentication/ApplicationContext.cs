@@ -6,31 +6,27 @@ using System.Linq;
 using System.Security.Principal;
 using System.Web;
 using Wlog.Models;
+using Wlog.Web.Code.Classes;
 
 namespace Wlog.Web.Code.Authentication
 {
     public class ApplicationContext
     {
-        public ApplicationEntry ApplicationEntry;
-        public List<RolesEntry> Roles;
-        private ApplicationContext _Current;
+        public ApplicationEntity ApplicationEntity;
+        public List<RolesEntity> Roles;
 
 
         public ApplicationContext(int IdApplication)
         {
-            using (ISession session = WebApiApplication.CurrentSessionFactory.OpenSession())
+            using (UnitOfWork uof = new UnitOfWork())
             {
-                using (ITransaction transaction = session.BeginTransaction())
+                this.ApplicationEntity = uof.Session.Query<ApplicationEntity>().Where(x => x.Id == IdApplication).FirstOrDefault();
+                if (this.ApplicationEntity != null)
                 {
-                    ApplicationEntry app=session.Query<ApplicationEntry>().Where(x => x.Id == IdApplication).FirstOrDefault();
-                    if (app == null || app.Id < 1)
-                    {
-                        throw new Exception("Application not found");
-                    }
-                    this.ApplicationEntry = app;
-                    this.Roles = session.Query<ApplicationRoleEntry>().Where(x => x.Application.Id == IdApplication).Select(x => x.Role).ToList();
+                    this.Roles = uof.Session.Query<ApplicationRoleEntity>().Where(x => x.Application.Id == IdApplication).Select(x => x.Role).ToList();
                 }
             }
+           
         }
 
         public static ApplicationContext Current

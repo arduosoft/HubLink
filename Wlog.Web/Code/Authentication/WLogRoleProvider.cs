@@ -7,8 +7,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Security;
 using Wlog.Models;
-using Wlog.Web.Code.Repository;
-
+using Wlog.Web.Code.Classes;
+using Wlog.Web.Code.Helpers;
 namespace Wlog.Web.Code.Authentication
 {
     public class WLogRoleProvider:RoleProvider
@@ -58,14 +58,12 @@ namespace Wlog.Web.Code.Authentication
         public override string[] GetRolesForUser(string username)
         {
             List<string> Roles = new List<string>();
-            using (ISession session = WebApiApplication.CurrentSessionFactory.OpenSession())
-            {
-                using (ITransaction transaction = session.BeginTransaction())
-                {
-                    UserEntry u = session.Query<UserEntry>().Where(x => x.Username == username).FirstOrDefault();
+            using (UnitOfWork uow = new UnitOfWork())
+            { 
+                UserEntity u = uow.Query<UserEntity>().Where(x => x.Username == username).FirstOrDefault();
                     if (u != null && u.IsAdmin)
                         Roles.Add(ADMIN);
-                }
+                
             }
             Roles.Add(USER);
             return Roles.ToArray();
@@ -82,8 +80,8 @@ namespace Wlog.Web.Code.Authentication
                 return true;
             if (roleName == ADMIN)
             {
-                UserRepository repo = new UserRepository();
-                UserEntry usr = repo.GetByUsername(username);
+               
+                UserEntity usr = UserHelper.GetByUsername(username);
                 if (usr == null || !usr.IsAdmin)
                     return false;
                 return true;

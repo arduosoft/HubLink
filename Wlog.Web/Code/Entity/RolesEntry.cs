@@ -7,18 +7,18 @@ using System.Web;
 
 namespace Wlog.Models
 {
-    public class RolesEntry
+    public class RolesEntity
     {
         public virtual int Id { get; protected set; }
         public virtual string RoleName { get; set; }
 
     }
 
-    public class RolesMap : ClassMapping<RolesEntry>
+    public class RolesMap : ClassMapping<RolesEntity>
     {
         public RolesMap()
         {
-            Table("Roles");
+            Table("WL_Roles");
             Schema("dbo");
             Id(x => x.Id, map => { map.Column("IdRole"); map.Generator(Generators.Identity); });
             Property(x => x.RoleName);

@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Wlog.Web.Code.Classes
 {
-    public class LogEntry
+    public class LogEntity
     {
         //TODO: Extend this entity by introducing field like:
         /*
@@ -24,13 +24,13 @@ namespace Wlog.Web.Code.Classes
 
     }
 
-    public class LogEntryMap:ClassMapping<LogEntry>
+    public class LogEntityMap:ClassMapping<LogEntity>
     {
        
     
-        public LogEntryMap()
+        public LogEntityMap()
         {
-            Table("LogEntry");
+            Table("LogEntity");
             Schema("dbo");
             Id(x => x.Uid,map=> map.Generator(Generators.Guid) );
             Property(x => x.Message);

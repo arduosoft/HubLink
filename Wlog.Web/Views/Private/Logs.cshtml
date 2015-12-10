@@ -1,5 +1,5 @@
-﻿@model PagedList.IPagedList<Wlog.Web.Models.LogModel>
-@using PagedList.Mvc;
+﻿@model Wlog.Web.Models.LogListModel
+
 
 @{
     Layout = "~/Views/Shared/_LayoutInternal.cshtml";
@@ -9,9 +9,11 @@
 
     <div class="row">
         <h1>Log Messages</h1>
-        @using (Html.BeginForm("Index", "Log", FormMethod.Get))
+        @using (Html.BeginForm("Logs", "Private", FormMethod.Get))
         {
             @Html.TextBox("ApplicationId", ViewBag.ApplicationId as string, new { @class = "hidden" })
+
+            @Html.DropDownListFor(m => m.Model_Id, Enumerable.Empty<SelectListItem>(), HeelpResources.DropdownlistModelFirstRecord)
             <p>
                 Find Message: @Html.TextBox("SerchMessage", ViewBag.CurrentFilter as string)
                 <input type="submit" value="Search" class="btn btn-default" />

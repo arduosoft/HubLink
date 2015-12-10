@@ -69,12 +69,6 @@
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
-    <Reference Include="PagedList">
-      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
-    </Reference>
-    <Reference Include="PagedList.Mvc">
-      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
@@ -196,28 +190,32 @@
     <Compile Include="Code\Authentication\UserProfileContext.cs" />
     <Compile Include="Code\Authentication\WLogMembershipProvider.cs" />
     <Compile Include="Code\Authentication\WLogRoleProvider.cs" />
+    <Compile Include="Code\Classes\Constants.cs" />
     <Compile Include="Code\Classes\LogEntry.cs" />
     <Compile Include="Code\Classes\LogQueue.cs" />
+    <Compile Include="Code\Classes\UnitOfWork.cs" />
+    <Compile Include="Code\Helpers\ConversionHelper.cs" />
+    <Compile Include="Code\Helpers\DBContext.cs" />
+    <Compile Include="Code\Helpers\LogHelper.cs" />
+    <Compile Include="Code\Helpers\SystemDataHelper.cs" />
+    <Compile Include="Code\Helpers\UserHelper.cs" />
     <Compile Include="Code\Jobs\ApplicationPreload.cs" />
     <Compile Include="Code\Jobs\Startup.cs" />
-    <Compile Include="Code\Repository\ApplicationRepository.cs" />
-    <Compile Include="Code\Repository\UserRepository.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LogController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\PrivateController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Code\API\LogController.cs" />
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Code\Entry\ApplicationEntry.cs" />
-    <Compile Include="Code\Entry\ApplicationRoleEntry.cs" />
-    <Compile Include="Code\Entry\AppUserRoleEntry.cs" />
-    <Compile Include="Code\Entry\RolesEntry.cs" />
-    <Compile Include="Code\Entry\UserEntry.cs" />
+    <Compile Include="Code\Entity\ApplicationEntity.cs" />
+    <Compile Include="Code\Entity\ApplicationRoleEntry.cs" />
+    <Compile Include="Code\Entity\AppUserRoleEntry.cs" />
+    <Compile Include="Code\Entity\RolesEntry.cs" />
+    <Compile Include="Code\Entity\UserEntry.cs" />
     <Compile Include="Models\ApplicationModel.cs" />
-    <Compile Include="Models\LogModel.cs" />
+    <Compile Include="Models\LogListModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -337,8 +335,9 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutInternal.cshtml" />
-    <Content Include="Views\Log\List.cshtml" />
-    <Content Include="Views\Log\Index.cshtml" />
+    <Content Include="Views\Private\Logs.cshtml" />
+    <Content Include="Views\Private\Index.cshtml" />
+    <Content Include="Views\Private\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

@@ -7,19 +7,19 @@ using System.Web;
 
 namespace Wlog.Models
 {
-    public class AppUserRoleEntry
+    public class AppUserRoleEntity
     {
         public virtual int Id { get; protected set; }
-        public virtual ApplicationEntry Application { get; set; }
-        public virtual UserEntry User { get; set; }
-        public virtual RolesEntry Role { get; set; }
+        public virtual ApplicationEntity Application { get; set; }
+        public virtual UserEntity User { get; set; }
+        public virtual RolesEntity Role { get; set; }
     }
 
-    public class AppUserRoleMap : ClassMapping<AppUserRoleEntry>
+    public class AppUserRoleMap : ClassMapping<AppUserRoleEntity>
     {
         public AppUserRoleMap()
         {
-            Table("AppUserRoleEntry");
+            Table("WL_AppUserRole");
             Schema("dbo");
             Id(x => x.Id, map => map.Generator(Generators.Identity));
             ManyToOne(x => x.Application, map => { map.Column("IdApplication"); map.Cascade(Cascade.None); });

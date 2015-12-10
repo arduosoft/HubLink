@@ -16,6 +16,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Wlog.Web.Code.Classes;
+using Wlog.Web.Code.Helpers;
 
 namespace Wlog.Web
 {
@@ -25,8 +26,7 @@ namespace Wlog.Web
     public class WebApiApplication : System.Web.HttpApplication
     {
         //Todo: Move nhibernate init stuff in a dedicated class. Implement a DataContext or Operation manager pattern to wrap data access
-        public static ISessionFactory CurrentSessionFactory;
-        public static Configuration cfg;
+      
         private BackgroundJobServer _backgroundJobServer;
         protected void Application_Start()
         {
@@ -37,31 +37,11 @@ namespace Wlog.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            
-           cfg  = new Configuration();
-          
-           
+
+            //Apply schema changes
+            DBContext.ApplySchemaChanges();
 
            
-
-
-
-            ModelMapper mapper = new ModelMapper();
-            mapper.AddMappings(Assembly.GetExecutingAssembly().GetExportedTypes());
-            HbmMapping domainMapping =
-              mapper.CompileMappingForAllExplicitlyAddedEntities();
-            cfg.AddMapping(domainMapping);
-
-
-            cfg.Configure();
-            CurrentSessionFactory = cfg.BuildSessionFactory();
-
-            //TODO: Expot this snippest inside DbUpgrader util class, and make it conservative ( upgrades musk apply only the delta)
-            SchemaMetadataUpdater.QuoteTableAndColumns(cfg);
-            NHibernate.Tool.hbm2ddl.SchemaExport schema = new NHibernate.Tool.hbm2ddl.SchemaExport(cfg);
-
-            schema.Create(false, true);
-            
             JobStorage.Current=new MemoryStorage();
             //Hangfire.GlobalConfiguration.Configuration.UseNLogLogProvider();
             _backgroundJobServer = new BackgroundJobServer();
@@ -72,8 +52,9 @@ namespace Wlog.Web
 
             BackgroundJob.Schedule(() => LogQueue.Current.Run(), TimeSpan.FromSeconds(1));
 
-
-            (new Wlog.Web.Code.Repository.ApplicationRepository()).Save();
+            SystemDataHelper.InsertRoles();
+            SystemDataHelper.EnsureSampleData();
+           
 
 
         }

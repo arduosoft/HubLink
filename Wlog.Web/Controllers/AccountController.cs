@@ -35,6 +35,7 @@ namespace Wlog.Web.Controllers
             if (provider.ValidateUser(model.UserName, model.Password))
             {
                 FormsAuthentication.SetAuthCookie(model.UserName, true);
+                if (returnUrl == null) returnUrl = "~/private";
                 return RedirectToLocal(returnUrl);
             }
 

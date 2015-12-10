@@ -8,7 +8,7 @@ using System.Web;
 
 namespace Wlog.Models
 {
-    public class ApplicationEntry
+    public class ApplicationEntity
     {
         public virtual int Id { get; protected set; }
         [Required]
@@ -26,7 +26,7 @@ namespace Wlog.Models
         public virtual System.Nullable<DateTime> EndDate { get; set; }
         //public virtual IList<ApplicationRoleEntry> AppRoles { get; set; }
 
-        public ApplicationEntry()
+        public ApplicationEntity()
         {
             this.Id = 0;
             this.ApplicationName = "Default";
@@ -37,11 +37,11 @@ namespace Wlog.Models
 
     }
 
-    public class ApplicationMap : ClassMapping<ApplicationEntry>
+    public class ApplicationMap : ClassMapping<ApplicationEntity>
     {
         public ApplicationMap()
         {
-            Table("ApplicationEntry");
+            Table("WL_Application");
             Schema("dbo");
             Id(x => x.Id, map => { map.Column("IdApplication"); map.Generator(Generators.Identity); });
             Property(x => x.ApplicationName);

@@ -15,7 +15,7 @@ namespace NLog.WebLog
         [Target("WebTarget")]
         public  class WebTarget : TargetWithLayout
         {
-            public class LogEntry
+            public class LogEntity
             {
                 public DateTime SourceDate { get; set; }
                 public string Message { get; set; }
@@ -41,7 +41,7 @@ namespace NLog.WebLog
             {
                 string logMessage = this.Layout.Render(logEvent);
                 
-                LogEntry entry = new LogEntry();
+                LogEntity entry = new LogEntity();
                 entry.Message = logMessage;
                 entry.SourceDate = DateTime.Now;
                 

@@ -4,8 +4,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Wlog.Web.Models;
-using System.Collections.Generic;
-using Wlog.Web.Code.Repository;
+using Wlog.Models;
+using Wlog.Web.Code.Authentication;
+using Wlog.Web.Code.Classes;
+using Wlog.Web.Code.Helpers;
+using System.Web.Security;
 
 namespace Wlog.Web.Controllers
 {
@@ -16,8 +19,26 @@ namespace Wlog.Web.Controllers
 
         public ActionResult Index()
         {
-            ApplicationRepository repo = new ApplicationRepository();
-            List<ApplicationHomeModel> result = repo.GetHomeApp();
+    
+            List<ApplicationHomeModel> result = new List<ApplicationHomeModel>();
+            if (UserProfileContext.Current.User != null)
+            {
+                WLogRoleProvider roleProvider = new WLogRoleProvider();
+                using (UnitOfWork uof = new UnitOfWork())
+                { 
+                    List<ApplicationEntity> entity;
+                        if (roleProvider.IsUserInRole(Membership.GetUser().UserName, "ADMIN"))
+                        {
+                            entity = uof.Query<ApplicationEntity>().ToList();
+                        }
+                        else
+                        {
+                            entity = uof.Query<AppUserRoleEntity>().Where(x => x.User.Id == UserProfileContext.Current.User.Id).Select(x => x.Application).Where(x => x.IsActive == true).ToList();
+                        }
+                        result.AddRange(ConversionHelper.ConvertListEntityToListApplicationHome(entity));
+                    }
+                
+            }
             return View(result);
         }
 

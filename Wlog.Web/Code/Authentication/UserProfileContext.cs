@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Wlog.Models;
-using Wlog.Web.Code.Repository;
+using Wlog.Web.Code.Helpers;
 
 namespace Wlog.Web.Code.Authentication
 {
     public class UserProfileContext
     {
-        public UserEntry User { get; set; }
+        public UserEntity User { get; set; }
         //TODO: set property for usercontext
 
         public UserProfileContext()
         {
-            UserRepository repo=new UserRepository();
-            this.User = repo.GetByUsername(HttpContext.Current.User.Identity.Name);
+          
+            this.User = UserHelper.GetByUsername(HttpContext.Current.User.Identity.Name);
             
         }
 

@@ -9,7 +9,7 @@ using System.Web;
 
 namespace Wlog.Models
 {
-    public class UserEntry
+    public class UserEntity
     {
         public virtual int Id { get; protected set; }
         [Required]
@@ -38,10 +38,10 @@ namespace Wlog.Models
         public virtual bool IsLockedOut { get; set; }
         [DataType(DataType.Date)]
         public virtual DateTime LastLockedOutDate { get; set; }
-        public virtual IList<ApplicationEntry> Application { get; set; }
+        public virtual IList<ApplicationEntity> Application { get; set; }
 
 
-        public UserEntry()
+        public UserEntity()
         {
             this.PasswordQuestion = "";
             this.PasswordAnswer = "";
@@ -57,7 +57,7 @@ namespace Wlog.Models
             this.LastLockedOutDate = DateTime.Now;
             this.LastLoginDate = DateTime.Now;
         }
-        //public virtual void AddApplication(ApplicationEntry application,RolesEntry role)
+        //public virtual void AddApplication(ApplicationEntity application,RolesEntry role)
         //{
 
         //    role.UsersInRole.Add(this);
@@ -71,11 +71,11 @@ namespace Wlog.Models
         //}
     }
 
-    public class UsersMap : ClassMapping<UserEntry>
+    public class UsersMap : ClassMapping<UserEntity>
     {
         public UsersMap()
         {
-            Table("UserEntry");
+            Table("WL_User");
             Schema("dbo");
             Id(x => x.Id, map => { map.Column("IdUser"); map.Generator(Generators.Identity); });
             Property(x => x.Username);

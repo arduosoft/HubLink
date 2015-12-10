@@ -3,27 +3,28 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Wlog.Web.Code.Helpers;
 
 namespace Wlog.Web.Code.Classes
 {
     public class LogQueue
     {
-        private Queue<LogEntry> queque = new Queue<LogEntry>();
+        private Queue<LogEntity> queque = new Queue<LogEntity>();
 
         public long Count
         {
             get { return queque.Count; }
         }
 
-        public void Enqueue(LogEntry le)
+        public void Enqueue(LogEntity le)
         {
             queque.Enqueue(le);
         }
 
-        public List<LogEntry> Dequeue(int count)
+        public List<LogEntity> Dequeue(int count)
         {
-            List<LogEntry> result = new List<LogEntry>();
-            LogEntry newElem;
+            List<LogEntity> result = new List<LogEntity>();
+            LogEntity newElem;
             int i = 0;
             while (i < count)
             {
@@ -48,24 +49,18 @@ namespace Wlog.Web.Code.Classes
             
                 if (LogQueue.Current.Count > 0)
                 {
-                    LogEntry log = LogQueue.Current.Dequeue();
+                    LogEntity log = LogQueue.Current.Dequeue();
 
 
+                LogHelper.AppendLog(log);
 
-                    using (ISession session = WebApiApplication.CurrentSessionFactory.OpenSession())
-                    {
-                        using (ITransaction transaction = session.BeginTransaction())
-                        {
-                            session.Save(log);
-                            transaction.Commit();
-                        }
-                    }
+                   
 
                 }
             
         }
 
-        public LogEntry Dequeue()
+        public LogEntity Dequeue()
         {
             return queque.Dequeue();
         }
