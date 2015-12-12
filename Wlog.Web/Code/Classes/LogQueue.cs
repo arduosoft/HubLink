@@ -44,20 +44,25 @@ namespace Wlog.Web.Code.Classes
 
         public void Run()
         {
-           
 
-            
-                if (LogQueue.Current.Count > 0)
+
+
+            if (LogQueue.Current.Count > 0)
+            {
+                using (UnitOfWork uow = new UnitOfWork())
                 {
-                    LogEntity log = LogQueue.Current.Dequeue();
+                    for (int i = 0; i < Math.Min(LogQueue.Current.Count, 10000); i++)
+                    {
+
+                        LogEntity log = LogQueue.Current.Dequeue();
+                        log.Uid = Guid.NewGuid();
+                        LogHelper.AppendLog(uow, log);
 
 
-                LogHelper.AppendLog(log);
-
-                   
-
+                    }
+                    uow.Commit();
                 }
-            
+            }
         }
 
         public LogEntity Dequeue()

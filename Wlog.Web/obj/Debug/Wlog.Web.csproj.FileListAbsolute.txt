@@ -372,3 +372,7 @@ C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\bin\zh-Hant
 C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\obj\Debug\Wlog.Web.csprojResolveAssemblyReference.cache
 C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\obj\Debug\Wlog.Web.dll
 C:\Users\Daniele\Documents\Visual Studio 2015\Projects\wlog\Wlog.Web\obj\Debug\Wlog.Web.pdb
+D:\projects\codeplex\wlog\Wlog.Web\bin\PagedList.dll
+D:\projects\codeplex\wlog\Wlog.Web\bin\PagedList.Mvc.dll
+D:\projects\codeplex\wlog\Wlog.Web\bin\PagedList.xml
+D:\projects\codeplex\wlog\Wlog.Web\bin\PagedList.Mvc.xml

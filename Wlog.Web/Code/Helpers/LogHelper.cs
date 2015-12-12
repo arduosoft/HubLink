@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,19 +10,34 @@ namespace Wlog.Web.Code.Helpers
 {
     public class LogHelper
     {
-       
 
-        internal static IList<LogEntity> GetLogs(int? applicationId, string sortOrder, string serchMessage, int pageSize, int pageNumber)
-        {
-            return new List<LogEntity>();
-        }
 
-        public static void AppendLog(LogEntity log)
+        public static IPagedList<LogEntity> GetLogs(int? applicationId, string sortOrder, string serchMessage, int pageSize, int pageNumber)
         {
+           
+
             using (UnitOfWork uow = new UnitOfWork())
             {
-                uow.SaveOrUpdate(log);
+                IEnumerable<LogEntity> query = uow.Query<LogEntity>();
+                if(!String.IsNullOrWhiteSpace(serchMessage))
+                {
+                    query = query.Where(p => p.Message != null && p.Message.ToLower().Contains(serchMessage));
+                }
+                //query = query.Skip((pageNumber - 1) * pageSize);
+                //query = query.Take(pageSize);
+
+
+                PagedList<LogEntity> result = new PagedList<LogEntity>(query, pageNumber, pageSize);
+            
+                 return result;
             }
+        }
+
+        public static void AppendLog(UnitOfWork uow,LogEntity log)
+        {
+            
+                uow.SaveOrUpdate(log);
+            
         }
     }
 }

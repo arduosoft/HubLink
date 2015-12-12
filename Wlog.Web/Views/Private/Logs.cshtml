@@ -1,4 +1,7 @@
-﻿@model Wlog.Web.Models.LogListModel
+﻿@using PagedList.Mvc
+
+@model Wlog.Web.Models.LogListModel
+
 
 
 @{
@@ -13,7 +16,7 @@
         {
             @Html.TextBox("ApplicationId", ViewBag.ApplicationId as string, new { @class = "hidden" })
 
-            @Html.DropDownListFor(m => m.Model_Id, Enumerable.Empty<SelectListItem>(), HeelpResources.DropdownlistModelFirstRecord)
+            @Html.DropDownListFor(m => Model.Input.Apps, Enumerable.Empty<SelectListItem>())
             <p>
                 Find Message: @Html.TextBox("SerchMessage", ViewBag.CurrentFilter as string)
                 <input type="submit" value="Search" class="btn btn-default" />
@@ -25,15 +28,15 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.ActionLink("Date", "Index", new {ApplicationId=ViewBag.ApplicationId, sortOrder = ViewBag.DateSortParm, ViewBag.CurrentFilter })
+                        @Html.ActionLink("Date", "Logs", new {ApplicationId=ViewBag.ApplicationId, sortOrder = ViewBag.DateSortParm, ViewBag.CurrentFilter })
                     </th>
                     <th>
-                        @Html.ActionLink("Level", "Index", new {ApplicationId=ViewBag.ApplicationId, sortOrder = ViewBag.LevelSortParm, ViewBag.CurrentFilter })
+                        @Html.ActionLink("Level", "Logs", new {ApplicationId=ViewBag.ApplicationId, sortOrder = ViewBag.LevelSortParm, ViewBag.CurrentFilter })
                     </th>
                     <th>Message
                     </th>
                 </tr>
-                @foreach(var item in Model)
+                @foreach(var item in Model.Items)
                 {
                     <tr>
                         <td>
@@ -51,9 +54,10 @@
             <tbody></tbody>
         </table>
         <br />
-        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        Page @(Model.Items.PageCount < Model.Items.PageNumber ? 0 : Model.Items.PageNumber) of @Model.Items.PageCount
 
-        @Html.PagedListPager(Model, page => Url.Action("Index",
+       @Html.PagedListPager(Model.Items, page => Url.Action("Logs",
     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
     </div>
 
