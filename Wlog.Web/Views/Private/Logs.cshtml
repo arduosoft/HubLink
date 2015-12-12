@@ -14,11 +14,14 @@
         <h1>Log Messages</h1>
         @using (Html.BeginForm("Logs", "Private", FormMethod.Get))
         {
-            @Html.TextBox("ApplicationId", ViewBag.ApplicationId as string, new { @class = "hidden" })
 
-            @Html.DropDownListFor(m => Model.Input.Apps, Enumerable.Empty<SelectListItem>())
+          
             <p>
-                Find Message: @Html.TextBox("SerchMessage", ViewBag.CurrentFilter as string)
+                Application: 
+                  @Html.DropDownListFor(m=>m.ApplicationId, new SelectList(Model.Apps, 
+                               "IdApplication", "ApplicationName", 
+                               Model.ApplicationId==0 ? null: Model.ApplicationId))
+                Find Message: @Html.TextBox("SerchMessage", Model.SerchMessage)
                 <input type="submit" value="Search" class="btn btn-default" />
             </p>
         }
@@ -28,10 +31,10 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.ActionLink("Date", "Logs", new {ApplicationId=ViewBag.ApplicationId, sortOrder = ViewBag.DateSortParm, ViewBag.CurrentFilter })
+                        @Html.ActionLink("Date", "Logs", new {ApplicationId=Model.ApplicationId, sortOrder = "Date", Model.SerchMessage })
                     </th>
                     <th>
-                        @Html.ActionLink("Level", "Logs", new {ApplicationId=ViewBag.ApplicationId, sortOrder = ViewBag.LevelSortParm, ViewBag.CurrentFilter })
+                        @Html.ActionLink("Level", "Logs", new {ApplicationId=Model.ApplicationId, sortOrder ="Level", Model.SerchMessage })
                     </th>
                     <th>Message
                     </th>

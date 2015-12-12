@@ -23,6 +23,7 @@ namespace Wlog.Web.Code.Helpers
                     app.IsActive = true;
                     app.StartDate = DateTime.Now;
                     app.EndDate = DateTime.Now.AddYears(1);
+                    app.PublicKey = new Guid("{8C075ED0-45A7-495A-8E09-3A98FD6E8248}");
                     uow.SaveOrUpdate(app);
 
                     // Insert admin user

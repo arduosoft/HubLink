@@ -9,22 +9,22 @@ namespace Wlog.Web.Code.Classes
 {
     public class LogQueue
     {
-        private Queue<LogEntity> queque = new Queue<LogEntity>();
+        private Queue<LogMessage> queque = new Queue<LogMessage>();
 
         public long Count
         {
             get { return queque.Count; }
         }
 
-        public void Enqueue(LogEntity le)
+        public void Enqueue(LogMessage le)
         {
             queque.Enqueue(le);
         }
 
-        public List<LogEntity> Dequeue(int count)
+        public List<LogMessage> Dequeue(int count)
         {
-            List<LogEntity> result = new List<LogEntity>();
-            LogEntity newElem;
+            List<LogMessage> result = new List<LogMessage>();
+            LogMessage newElem;
             int i = 0;
             while (i < count)
             {
@@ -54,9 +54,10 @@ namespace Wlog.Web.Code.Classes
                     for (int i = 0; i < Math.Min(LogQueue.Current.Count, 10000); i++)
                     {
 
-                        LogEntity log = LogQueue.Current.Dequeue();
-                        log.Uid = Guid.NewGuid();
-                        LogHelper.AppendLog(uow, log);
+                        LogMessage log = LogQueue.Current.Dequeue();
+                        
+                        LogEntity entToSave = ConversionHelper.ConvertLog(uow,log);
+                        LogHelper.AppendLog(uow, entToSave);
 
 
                     }
@@ -65,7 +66,7 @@ namespace Wlog.Web.Code.Classes
             }
         }
 
-        public LogEntity Dequeue()
+        public LogMessage Dequeue()
         {
             return queque.Dequeue();
         }

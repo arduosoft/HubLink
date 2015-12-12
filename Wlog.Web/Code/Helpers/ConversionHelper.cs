@@ -49,7 +49,7 @@ namespace Wlog.Web.Code.Helpers
         public static ApplicationHomeModel ConvertEntityToApplicationHome(ApplicationEntity entity)
         {
             ApplicationHomeModel result = new ApplicationHomeModel();
-            result.Id = entity.Id;
+            result.Id = entity.IdApplication;
             result.ApplicationName = entity.ApplicationName;
             result.StartDate = entity.StartDate;
             result.IsActive = entity.IsActive;
@@ -73,5 +73,27 @@ namespace Wlog.Web.Code.Helpers
             return result;
         }
         #endregion
+
+        internal static LogEntity ConvertLog(UnitOfWork uow,LogMessage log)
+        {
+            LogEntity result = new LogEntity();
+            result.Uid = Guid.NewGuid();
+            result.Level = log.Level;
+            result.Message = log.Message;
+            result.SourceDate = log.SourceDate;
+
+            result.UpdateDate = DateTime.Now;
+
+            try
+            {
+                Guid searchGuid = new Guid(log.ApplicationKey);
+                result.ApplictionId = uow.Query<ApplicationEntity>().Where(p => p.PublicKey == searchGuid).First().IdApplication;
+            }
+            catch
+            { }
+
+            return result;
+
+        }
     }
 }

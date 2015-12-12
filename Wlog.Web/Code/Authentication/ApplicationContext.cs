@@ -20,10 +20,10 @@ namespace Wlog.Web.Code.Authentication
         {
             using (UnitOfWork uof = new UnitOfWork())
             {
-                this.ApplicationEntity = uof.Session.Query<ApplicationEntity>().Where(x => x.Id == IdApplication).FirstOrDefault();
+                this.ApplicationEntity = uof.Session.Query<ApplicationEntity>().Where(x => x.IdApplication == IdApplication).FirstOrDefault();
                 if (this.ApplicationEntity != null)
                 {
-                    this.Roles = uof.Session.Query<ApplicationRoleEntity>().Where(x => x.Application.Id == IdApplication).Select(x => x.Role).ToList();
+                    this.Roles = uof.Session.Query<ApplicationRoleEntity>().Where(x => x.Application.IdApplication == IdApplication).Select(x => x.Role).ToList();
                 }
             }
            

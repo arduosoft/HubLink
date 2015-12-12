@@ -21,7 +21,7 @@ namespace Wlog.TestApp
 
             //Manual call to log service to test plain performance
             DateTime d1 = DateTime.Now;
-            WebTarget.DoRequest("Http://localhost:55044/api/log", JsonConvert.SerializeObject(new NLog.WebLog.WebTarget.LogEntity() 
+            WebTarget.DoRequest("Http://localhost:55044/api/log", JsonConvert.SerializeObject(new NLog.WebLog.WebTarget.LogMessage() 
             { 
                 Message="TEST MANUAL MESSAGE" + DateTime.Now,
                 SourceDate=DateTime.Now

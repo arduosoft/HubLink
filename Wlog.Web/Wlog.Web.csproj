@@ -199,7 +199,8 @@
     <Compile Include="Code\Authentication\WLogMembershipProvider.cs" />
     <Compile Include="Code\Authentication\WLogRoleProvider.cs" />
     <Compile Include="Code\Classes\Constants.cs" />
-    <Compile Include="Code\Classes\LogEntry.cs" />
+    <Compile Include="Code\Classes\LogMessage.cs" />
+    <Compile Include="Code\Entity\LogEntity.cs" />
     <Compile Include="Code\Classes\LogQueue.cs" />
     <Compile Include="Code\Classes\UnitOfWork.cs" />
     <Compile Include="Code\Helpers\ConversionHelper.cs" />

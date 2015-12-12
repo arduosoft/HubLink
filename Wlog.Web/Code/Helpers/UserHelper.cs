@@ -45,13 +45,25 @@ namespace Wlog.Web.Code.Helpers
             return user;
         }
 
-        internal static List<ApplicationEntity> GetAppsForUser(string userName)
+        public static List<ApplicationEntity> GetAppsForUser(string userName)
+        {
+            using (UnitOfWork uow = new UnitOfWork())
+            {
+                int userId = uow.Query<UserEntity>().Where(p => p.Username == userName).Select(p => p.Id).First();
+                List<int> appIds = uow.Query<AppUserRoleEntity>().Where(p => p.User.Id == userId).Select(p => p.Application.IdApplication).ToList();
+                return uow.Query<ApplicationEntity>().Where(p => appIds.Contains(p.IdApplication)).ToList();
+
+            }
+
+        }
+        
+        public static List<int> GetAppsIdsForUser(string userName)
         {
             using (UnitOfWork uow = new UnitOfWork())
             {
                 int userId=uow.Query<UserEntity>().Where(p => p.Username == userName).Select(p =>  p.Id ).First();
-                List<int> appIds= uow.Query<AppUserRoleEntity>().Where(p => p.User.Id == userId).Select(p=>p.Application.Id).ToList();
-                return uow.Query<ApplicationEntity>().Where(p => appIds.Contains(p.Id)).ToList();
+                List<int> appIds = uow.Query<AppUserRoleEntity>().Where(p => p.User.Id == userId).Select(p => p.Application.IdApplication).ToList();
+                return appIds;
 
             }
         }

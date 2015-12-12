@@ -15,10 +15,12 @@ namespace NLog.WebLog
         [Target("WebTarget")]
         public  class WebTarget : TargetWithLayout
         {
-            public class LogEntity
+            public class LogMessage
             {
                 public DateTime SourceDate { get; set; }
                 public string Message { get; set; }
+                public string Level { get; set; }
+                public string ApplicationKey { get; set; }
             }
 
              
@@ -37,14 +39,18 @@ namespace NLog.WebLog
             [RequiredParameter]
             public string Destination { get; set; }
 
+            [RequiredParameter]
+            public string ApplicationKey { get; set; }
+
             protected override void Write(LogEventInfo logEvent)
             {
                 string logMessage = this.Layout.Render(logEvent);
                 
-                LogEntity entry = new LogEntity();
+                LogMessage entry = new LogMessage();
                 entry.Message = logMessage;
                 entry.SourceDate = DateTime.Now;
-                
+                entry.ApplicationKey = ApplicationKey;
+                entry.Level = logEvent.Level.ToString();
 
                 DoRequest(Destination, JsonConvert.SerializeObject(entry));
              

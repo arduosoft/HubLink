@@ -170,7 +170,6 @@ D:\projects\codeplex\wlog\Wlog.Web\bin\ko\System.Spatial.resources.dll
 D:\projects\codeplex\wlog\Wlog.Web\bin\ru\System.Spatial.resources.dll
 D:\projects\codeplex\wlog\Wlog.Web\bin\zh-Hans\System.Spatial.resources.dll
 D:\projects\codeplex\wlog\Wlog.Web\bin\zh-Hant\System.Spatial.resources.dll
-D:\projects\codeplex\wlog\Wlog.Web\obj\Debug\Wlog.Web.csprojResolveAssemblyReference.cache
 D:\projects\codeplex\wlog\Wlog.Web\obj\Debug\Wlog.Web.dll
 D:\projects\codeplex\wlog\Wlog.Web\obj\Debug\Wlog.Web.pdb
 D:\projects\codeplex\wlog\Wlog.Web\bin\Hangfire.Core.dll
@@ -376,3 +375,4 @@ D:\projects\codeplex\wlog\Wlog.Web\bin\PagedList.dll
 D:\projects\codeplex\wlog\Wlog.Web\bin\PagedList.Mvc.dll
 D:\projects\codeplex\wlog\Wlog.Web\bin\PagedList.xml
 D:\projects\codeplex\wlog\Wlog.Web\bin\PagedList.Mvc.xml
+D:\projects\codeplex\wlog\Wlog.Web\obj\Debug\Wlog.Web.csprojResolveAssemblyReference.cache

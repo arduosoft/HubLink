@@ -39,7 +39,7 @@ namespace Wlog.Web
 
 
             //Apply schema changes
-            //DBContext.ApplySchemaChanges();
+            DBContext.ApplySchemaChanges();
 
            
             JobStorage.Current=new MemoryStorage();

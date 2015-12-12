@@ -49,8 +49,13 @@ namespace Wlog.Web.Code.Helpers
             Configuration cfg = GetConfiguration();
 
             SchemaMetadataUpdater.QuoteTableAndColumns(cfg);
-            NHibernate.Tool.hbm2ddl.SchemaExport schema = new NHibernate.Tool.hbm2ddl.SchemaExport(cfg);
-            schema.Create(false, true);
+            //NHibernate.Tool.hbm2ddl.SchemaExport schema = new NHibernate.Tool.hbm2ddl.SchemaExport(cfg);
+            
+            //schema.Create(false, true);
+            var update = new SchemaUpdate(cfg);
+            
+            update.Execute(true, true);
+
         }
 
 

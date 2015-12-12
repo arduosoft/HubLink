@@ -11,10 +11,11 @@ namespace Wlog.Web.Code.API
 {
     public class LogController : ApiController
     {
+       
 
 
         // POST api/<controller>
-        public void Post([FromBody]LogEntity value)
+        public void Post([FromBody]LogMessage value)
         {
             
             LogQueue.Current.Enqueue(value);
