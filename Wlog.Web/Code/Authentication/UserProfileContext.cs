@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Wlog.Models;
+using Wlog.Web.Code.Classes;
 using Wlog.Web.Code.Helpers;
 
 namespace Wlog.Web.Code.Authentication

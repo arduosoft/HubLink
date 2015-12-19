@@ -15,7 +15,32 @@ namespace Wlog.Web.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            string username = Membership.GetUser().UserName;
+            List<int> apps = UserHelper.GetAppsIdsForUser(username);
+            using (UnitOfWork uow = new UnitOfWork())
+            {
+                
+
+                DashboardModel dm = new DashboardModel();
+                dm.ErrorCount = uow.Query<LogEntity>().Count(p => p.Level != null && p.Level.ToLower().Contains("err"));
+                dm.InfoCount = uow.Query<LogEntity>().Count(p => p.Level != null && p.Level.ToLower().Contains("info"));
+                dm.LogCount = uow.Query<LogEntity>().Count();
+                dm.WarnCount = uow.Query<LogEntity>().Count(p => p.Level != null && p.Level.ToLower().Contains("warn"));
+                dm.LastTen = ConversionHelper.ConvertLogEntityToMessage(uow, uow.Query<LogEntity>().Where(p=> apps.Contains(p.ApplictionId)).OrderByDescending(p => p.SourceDate).Take(10).ToList());
+
+                dm.AppLastTen = new List<MessagesListModel>();
+                foreach (ApplicationEntity app in UserHelper.GetAppsForUser(username))
+                {
+                    MessagesListModel list = new MessagesListModel();
+                    list.ApplicationName = app.ApplicationName;
+                    list.IdApplication = app.IdApplication;
+                    list.Messages= ConversionHelper.ConvertLogEntityToMessage(uow,uow.Query<LogEntity>().Where(p => p.ApplictionId==app.IdApplication).OrderByDescending(p => p.SourceDate).Take(10).ToList());
+                    dm.AppLastTen.Add(list);
+
+                }
+
+                return View(dm);
+            }
         }
 
 
@@ -32,7 +57,7 @@ namespace Wlog.Web.Controllers
             };
             MembershipUser current = Membership.GetUser();
             mm.Apps = UserHelper.GetAppsForUser(current.UserName);
-            mm.Apps.Insert(0, new Wlog.Models.ApplicationEntity() {                
+            mm.Apps.Insert(0, new ApplicationEntity() {                
                 ApplicationName="All application"
             });
 

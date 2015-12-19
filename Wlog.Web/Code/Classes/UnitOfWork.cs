@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using NHibernate.Linq;
 using Wlog.Web.Code.Helpers;
-using Wlog.Models;
+
 
 namespace Wlog.Web.Code.Classes
 {

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Web;
-using Wlog.Models;
 using Wlog.Web.Code.Classes;
 
 namespace Wlog.Web.Code.Authentication

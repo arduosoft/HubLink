@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Wlog.Models
+namespace Wlog.Web.Code.Classes
 {
     public class RolesEntity
     {

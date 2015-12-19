@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Wlog.Web.Models;
-using Wlog.Models;
 using Wlog.Web.Code.Authentication;
 using Wlog.Web.Code.Classes;
 using Wlog.Web.Code.Helpers;

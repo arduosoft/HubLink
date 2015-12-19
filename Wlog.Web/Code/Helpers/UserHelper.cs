@@ -4,7 +4,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
-using Wlog.Models;
 using Wlog.Web.Code.Classes;
 
 namespace Wlog.Web.Code.Helpers

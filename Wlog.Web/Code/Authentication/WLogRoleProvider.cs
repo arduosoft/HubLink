@@ -6,7 +6,6 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
 using System.Web.Security;
-using Wlog.Models;
 using Wlog.Web.Code.Classes;
 using Wlog.Web.Code.Helpers;
 namespace Wlog.Web.Code.Authentication
