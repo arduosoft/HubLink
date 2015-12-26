@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Wlog.TestApp.Test
 {
-    public interface TestInstance
+    public abstract class TestInstance
     {
-         void Execute();
+        public double Avg { get; set; }
+        public abstract void Execute();
     }
 }

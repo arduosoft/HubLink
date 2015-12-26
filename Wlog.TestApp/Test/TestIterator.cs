@@ -13,6 +13,7 @@ namespace Wlog.TestApp.Test
     {
         Logger l = LogManager.GetCurrentClassLogger();
         public int RepeatCount { get; set; }
+      
 
         public List<TestInstance> Instances { get; set; }
 
@@ -25,11 +26,11 @@ namespace Wlog.TestApp.Test
         public void DoTest()
         { 
             Stopwatch sw= new Stopwatch();
-            l.Info("TEST START");
+            l.Info("TEST START RepeatCount:"+ RepeatCount);
             foreach(TestInstance t in Instances)
             {
-                l.Info("TEST START"+t.ToString());
-                sw.Reset();
+                // l.Info("TEST START"+t.ToString());
+                sw = new Stopwatch();
                 sw.Start();
                 for(int i=0; i< RepeatCount;i++)
                 {
@@ -39,10 +40,10 @@ namespace Wlog.TestApp.Test
                    
                 }
                 sw.Stop();
-                 double ms =   1000.0 * (double)sw.ElapsedTicks / Stopwatch.Frequency;
-                 double med=ms/RepeatCount;
-                 l.Info("TEST TIME" + ms+" avg:"+med);
-                 Thread.Sleep(10000);
+               
+                t.Avg = (double)sw.Elapsed.TotalMilliseconds / RepeatCount;
+                l.Info("TEST TIME for "+t.GetType().ToString()+": "+ sw.ElapsedMilliseconds + " avg:" + t.Avg);
+                 Thread.Sleep(1000);
             }
         }
     }

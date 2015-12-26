@@ -11,7 +11,7 @@ namespace Wlog.TestApp.Test
     {
         static Logger logger = LogManager.GetLogger("wlog.logger");
 
-        public void Execute()
+        public override void Execute()
         {
             logger.Info("THIS IS A SAMPLE MESSEGE TO LOG.");
         }
