@@ -83,7 +83,7 @@ namespace Wlog.Web.Controllers
             };
 
 
-            model.UserList = UserHelper.FilterUserList(serchMessage, page ?? 1, pageSize ?? 1);
+            model.UserList = UserHelper.FilterUserList(serchMessage, page ?? 1, pageSize ?? 30);
 
             return View(model);
         }
@@ -233,7 +233,7 @@ namespace Wlog.Web.Controllers
             {
                 SerchMessage = serchMessage
             };
-            model.AppList = ApplicationHelper.FilterApplicationList(serchMessage, page ?? 1, pageSize ?? 1);
+            model.AppList = ApplicationHelper.FilterApplicationList(serchMessage, page ?? 1, pageSize ?? 30);
             return View(model);
         }
 
