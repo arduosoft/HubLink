@@ -209,8 +209,9 @@
     <Compile Include="Code\Helpers\LogHelper.cs" />
     <Compile Include="Code\Helpers\SystemDataHelper.cs" />
     <Compile Include="Code\Helpers\UserHelper.cs" />
+    <Compile Include="Code\Helpers\WlogLogger.cs" />
     <Compile Include="Code\Jobs\ApplicationPreload.cs" />
-    <Compile Include="Code\Jobs\_Startup.cs" />
+    <Compile Include="Code\Jobs\Startup.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PrivateController.cs" />
@@ -235,7 +236,6 @@
     <Compile Include="Models\User\NewUser.cs" />
     <Compile Include="Models\User\UserData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />

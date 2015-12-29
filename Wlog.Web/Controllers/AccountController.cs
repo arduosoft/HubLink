@@ -81,6 +81,7 @@ namespace Wlog.Web.Controllers
             {
                 UserProfileContext.Current.Refresh();
                 ModelState.AddModelError("", "Error");
+                RedirectToAction("Manage");
             }
             else
             {

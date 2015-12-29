@@ -58,6 +58,7 @@
                         <tr>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Application.ApplicationName)
+                                @Html.HiddenFor(modelItem=>item.Application.IdApplication)
                             </td>
                             <td>
                                 @Html.DropDownListFor(modelItem => item.Role.Id, new SelectList(Model.RoleList, "Id", "RoleName", item.Role.Id))

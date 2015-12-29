@@ -85,7 +85,6 @@ namespace Wlog.Web.Controllers
 
             model.UserList = UserHelper.FilterUserList(serchMessage, page ?? 1, pageSize ?? 1);
 
-            //TODO: add paging
             return View(model);
         }
 
@@ -105,7 +104,7 @@ namespace Wlog.Web.Controllers
         //Post Private/EditUser/
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditUser(EditUser model)
+        public ActionResult EditUser(EditUser model, IEnumerable<UserApps> UserApps)
         {
             if (ModelState.IsValid)
             {

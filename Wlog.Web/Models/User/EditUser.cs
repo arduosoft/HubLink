@@ -18,7 +18,7 @@ namespace Wlog.Web.Models.User
     {
 
         public UserEntity DataUser { get; set; }
-        public List<UserApps> Apps { get; set; }
+        public IEnumerable<UserApps> Apps { get; set; }
         public IEnumerable<RolesEntity> RoleList
         { 
             get 
