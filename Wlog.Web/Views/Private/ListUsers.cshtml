@@ -1,0 +1,82 @@
+﻿@using PagedList.Mvc
+@model Wlog.Web.Models.User.ListUser
+
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/_LayoutInternal.cshtml";
+}
+
+<div class="row">
+    <h2>Users</h2>
+
+    <p>
+        @Html.ActionLink("Create New", "NewUser")
+    </p>
+</div>
+<div class="row">
+    @using (Html.BeginForm("ListUsers", "Private", FormMethod.Get,new{serch=Model.SerchMessage}))
+    {
+        <p>
+            Find User: @Html.TextBox("serchMessage", Model.SerchMessage)
+            <input type="submit" value="Search" class="btn btn-default" />
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayName("UserName")
+                </th>
+                <th>
+                    @Html.DisplayName("Email")
+                </th>
+                <th>
+                    @Html.DisplayName("Is Admin")
+                </th>
+                <th>
+                    @Html.DisplayName("Last Login Date")
+                </th>
+                <th>
+                    @Html.DisplayName("Creation Date")
+                </th>
+                <th>
+                    @Html.DisplayName("Is Online")
+                </th>
+            </tr>
+
+            @foreach (var item in Model.UserList)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(item.Username, "EditUser", new { id = item.Id })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsAdmin)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastLoginDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreationDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsOnLine)
+                    </td>
+
+                    @*                <td>
+                    @Html.ActionLink("Edit", "EditUser", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "DetailsUser", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "DeleteUser", new { id = item.Id })
+                </td>*@
+                </tr>
+            }
+
+        </table>
+            }
+                <br />
+        Page @(Model.UserList.PageCount < Model.UserList.PageNumber ? 0 : Model.UserList.PageNumber) of @Model.UserList.PageCount
+
+       @Html.PagedListPager(Model.UserList, page => Url.Action("ListUsers",new { page, serchmessage=Model.SerchMessage }))
+
+</div>

@@ -85,5 +85,10 @@ namespace Wlog.Web.Code.Classes
         {
             return Session.Query<T>();
         }
+
+        public void Delete(object entity)
+        {
+            Session.Delete(entity);
+        }
     }
 }

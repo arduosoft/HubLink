@@ -1,32 +1,20 @@
 ﻿@model Wlog.Web.Models.LocalPasswordModel
 @{
-    ViewBag.Title = "Gestione account";
+    Layout = "~/Views/Shared/_LayoutInternal.cshtml";
+    ViewBag.Title = "User Setting";
 }
 
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-</hgroup>
-
-<p class="message-success">@ViewBag.StatusMessage</p>
-
-<p>L'utente ha eseguito l'accesso come <strong>@User.Identity.Name</strong>.</p>
-
-@if (ViewBag.HasLocalPassword)
-{
-    @Html.Partial("_ChangePasswordPartial")
-}
-else
-{ 
-    @Html.Partial("_SetPasswordPartial")
-}
-
-<section id="externalLogins">
-    @Html.Action("RemoveExternalLogins")
-
-    <h3>Aggiungi account di accesso esterno</h3>
-    @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
-</section>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+<div class="row">
+    <hgroup class="title">
+        <h1>@ViewBag.Title</h1>
+    </hgroup>
+</div>
+<div class="row">
+    <p>L'utente ha eseguito l'accesso come <strong>@User.Identity.Name</strong>.</p>
+    <div class="col-lg-6" style="border-right: solid 1px;">
+        @Html.Partial("_ChangePasswordPartial",Model.password)
+    </div>
+    <div class="col-lg-6">
+        @Html.Partial("_ChangeEmailPartial",Model.email)
+    </div>
+</div>

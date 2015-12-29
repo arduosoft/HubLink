@@ -1,0 +1,65 @@
+﻿@model Wlog.Web.Models.User.EditUser
+
+@{
+    Layout = "~/Views/Shared/_LayoutInternal.cshtml";
+}
+
+<div class="row">
+    <h2>Info</h2>
+
+    <fieldset>
+        <legend>User Info</legend>
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.LabelFor(model => model.DataUser.Username, new { @class = "col-lg-2 control-label" })
+                <div class="col-lg-10">
+                    @Html.DisplayFor(model => model.DataUser.Username, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.DataUser.Email, new { @class = "col-lg-2 control-label" })
+                <div class="col-lg-10">
+                    @Html.DisplayFor(model => model.DataUser.Email, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.DataUser.IsAdmin, new { @class = "col-lg-2 control-label" })
+                <div class="col-lg-10">
+                    @Html.DisplayFor(model => model.DataUser.IsAdmin, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.DataUser.CreationDate, new { @class = "col-lg-2 control-label" })
+                <div class="col-lg-10">
+                    @Html.DisplayFor(model => model.DataUser.CreationDate, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <table class="table">
+            <tr>
+                <th>Application
+                </th>
+                <th>Role
+                </th>
+            </tr>
+            @foreach (var item in Model.Apps)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Application.ApplicationName)
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(modelItem => item.Role.Id, new SelectList(Model.RoleList, "Id", "RoleName", item.Role.Id), new { disabled = "disabled" })
+                    </td>
+                </tr>
+            }
+        </table>
+    </fieldset>
+</div>
+
+
+
+
+<p>
+    @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-success" })
+</p>

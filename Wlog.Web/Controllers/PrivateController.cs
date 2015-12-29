@@ -8,6 +8,8 @@ using Wlog.Web.Code.Helpers;
 using Wlog.Web.Code.Classes;
 using System.Web.Security;
 using PagedList;
+using Wlog.Web.Models.User;
+using Wlog.Web.Code.Authentication;
 
 namespace Wlog.Web.Controllers
 {
@@ -70,5 +72,196 @@ namespace Wlog.Web.Controllers
             return View(mm);
         }
 
+        // Get  /Private/ListUsers
+        // TODO: set role [Authorize(Roles="ADMIN")]
+        public ActionResult ListUsers(string serchMessage, int? page, int? pageSize)
+        {
+            ListUser model = new ListUser
+            {
+                SerchMessage = serchMessage
+            };
+
+
+            model.UserList = UserHelper.FilterUserList(serchMessage, page ?? 1, pageSize ?? 1);
+
+            //TODO: add paging
+            return View(model);
+        }
+
+        //Get Private/EditUser/1
+        [HttpGet]
+        public ActionResult EditUser(int Id)
+        {
+            UserEntity user = UserHelper.GetById(Id);
+            ViewBag.Title = user.Username;
+            EditUser model = new EditUser();
+            model.DataUser = user;
+            model.Apps = UserHelper.GetApp(Id);
+            return View(model);
+        }
+
+
+        //Post Private/EditUser/
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditUser(EditUser model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    UserHelper.UpdateUser(model.DataUser);
+                    using (UnitOfWork uow = new UnitOfWork())
+                    {
+                        uow.BeginTransaction();
+                        foreach (Wlog.Web.Models.User.EditUser.UserApps app in model.Apps)
+                        {
+                            AppUserRoleEntity e = uow.Query<AppUserRoleEntity>().Where(x => x.User.Id == model.DataUser.Id && x.Application.IdApplication == app.Application.IdApplication).FirstOrDefault();
+                            if (app.Role.Id == 0)
+                            {
+                                if (e != null)
+                                    uow.Delete(e);
+                            }
+                            else
+                            {
+                                if (e != null)
+                                {
+                                    uow.SaveOrUpdate(e);
+                                }
+                                else
+                                {
+                                    uow.SaveOrUpdate(new AppUserRoleEntity { User = model.DataUser, Application = app.Application, Role = app.Role });
+                                }
+                            }
+
+                            uow.Commit();
+                        }
+                    }
+                    return RedirectToAction("ListUsers");
+                }
+                catch (Exception e)
+                {
+                    ModelState.AddModelError("", "Error");
+                }
+            }
+            ModelState.AddModelError("", "Error");
+            return View(model);
+        }
+
+        //Get Private/NewUser
+        [HttpGet]
+        public ActionResult NewUser()
+        {
+            return View(new NewUser());
+        }
+
+        //Post Private/NewUser
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult NewUser(NewUser user)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    MembershipCreateStatus status;
+                    WLogMembershipProvider provider = new WLogMembershipProvider();
+                    provider.CreateUser(user.UserName, user.Password, user.Email, null, null, true, null, out status);
+                    if (status == MembershipCreateStatus.Success)
+                    {
+                        UserEntity entity = UserHelper.GetByUsername(user.UserName);
+                        entity.IsAdmin = user.IsAdmin;
+                        UserHelper.UpdateUser(entity);
+                        return RedirectToAction("EditUser", "Private", new { Id = entity.Id });
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", ErrorCodeToString(status));
+                    }
+
+                }
+                catch (MembershipCreateUserException e)
+                {
+                    ModelState.AddModelError("", ErrorCodeToString(e.StatusCode));
+                }
+            }
+
+            // Se si arriva a questo punto, significa che si è verificato un errore, rivisualizzare il form
+            return View(user);
+        }
+
+        //Get Private/DeleteUser/1
+        [HttpGet]
+        public ActionResult DeleteUser(int Id)
+        {
+
+            UserEntity User = UserHelper.GetById(Id);
+            UserData result = new UserData
+            {
+                Id = User.Id,
+                Email = User.Email,
+                Username = User.Username,
+                CreationDate = User.CreationDate,
+                IsAdmin = User.IsAdmin,
+                IsOnLine = User.IsOnLine,
+                LastLoginDate = User.LastLoginDate
+            };
+            return View(result);
+        }
+
+        //Post Private/DeleteUser/1
+        [HttpPost]
+        public ActionResult DeleteUser(UserData User)
+        {
+            if (UserHelper.DeleteById(User.Id))
+            {
+                return RedirectToAction("ListUsers");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Si è Verificato un Errore.");
+            }
+            return View(User);
+        }
+
+        #region HElper
+        private static string ErrorCodeToString(MembershipCreateStatus createStatus)
+        {
+            // Vedere http://go.microsoft.com/fwlink/?LinkID=177550 per
+            // un elenco completo di codici di stato.
+            switch (createStatus)
+            {
+                case MembershipCreateStatus.DuplicateUserName:
+                    return "Il nome utente esiste già. Immettere un nome utente differente.";
+
+                case MembershipCreateStatus.DuplicateEmail:
+                    return "Un nome utente per l'indirizzo di posta elettronica esiste già. Immettere un nome utente differente.";
+
+                case MembershipCreateStatus.InvalidPassword:
+                    return "La password fornita non è valida. Immettere un valore valido per la password.";
+
+                case MembershipCreateStatus.InvalidEmail:
+                    return "L'indirizzo di posta elettronica fornito non è valido. Controllare il valore e riprovare.";
+
+                case MembershipCreateStatus.InvalidAnswer:
+                    return "La risposa fornita per il recupero della password non è valida. Controllare il valore e riprovare.";
+
+                case MembershipCreateStatus.InvalidQuestion:
+                    return "La domanda fornita per il recupero della password non è valida. Controllare il valore e riprovare.";
+
+                case MembershipCreateStatus.InvalidUserName:
+                    return "Il nome utente fornito non è valido. Controllare il valore e riprovare.";
+
+                case MembershipCreateStatus.ProviderError:
+                    return "Il provider di autenticazione ha restituito un errore. Verificare l'immissione e riprovare. Se il problema persiste, contattare l'amministratore di sistema.";
+
+                case MembershipCreateStatus.UserRejected:
+                    return "La richiesta di creazione dell'utente è stata annullata. Verificare l'immissione e riprovare. Se il problema persiste, contattare l'amministratore di sistema.";
+
+                default:
+                    return "Si è verificato un errore sconosciuto. Verificare l'immissione e riprovare. Se il problema persiste, contattare l'amministratore di sistema.";
+            }
+        }
+        #endregion
     }
 }

@@ -10,13 +10,31 @@ namespace Wlog.Web.Code.Authentication
     public class UserProfileContext
     {
         public UserEntity User { get; set; }
+        public bool IsEditorUser { get; set; }
         //TODO: set property for usercontext
 
         public UserProfileContext()
         {
           
             this.User = UserHelper.GetByUsername(HttpContext.Current.User.Identity.Name);
-            
+            if (this.User.IsAdmin)
+            {
+                this.IsEditorUser = true;
+            }
+            else
+           {
+                int count;
+                using (UnitOfWork uow = new UnitOfWork())
+                {
+                    count = uow.Query<AppUserRoleEntity>().Where(x => x.User.Id == this.User.Id && (x.Role.RoleName == Constants.Roles.Admin || x.Role.RoleName == Constants.Roles.Write)).Count();
+                    if (count > 0)
+                    {
+                        this.IsEditorUser = true;
+                    }
+                    else
+                        this.IsEditorUser = false;
+                }
+            }
         }
 
 
@@ -34,6 +52,11 @@ namespace Wlog.Web.Code.Authentication
                 HttpContext.Current.Cache["UserProfileContext" + HttpContext.Current.Session.SessionID] = _current;
                 return _current;
             }
+        }
+
+        public void Refresh()
+        {
+            HttpContext.Current.Cache.Remove("UserProfileContext" + HttpContext.Current.Session.SessionID);
         }
     }
 }

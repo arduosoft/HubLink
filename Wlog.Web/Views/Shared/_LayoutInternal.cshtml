@@ -1,5 +1,5 @@
 ﻿@using Wlog.Web.Code.Helpers;
-<!DOCTYPE html>
+@using Wlog.Web.Code.Authentication;
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -8,9 +8,9 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/bootstrap.css")
     @Styles.Render("~/Content/metisMenu.css")
-     @Styles.Render("~/Content/timeline.css")
+    @Styles.Render("~/Content/timeline.css")
     @Styles.Render("~/Content/sb-admin-2.css")
-        @Styles.Render("~/Content/morris.css")
+    @Styles.Render("~/Content/morris.css")
     @Styles.Render("~/Content/font-awesome.css")
 
     @Scripts.Render("~/Scripts/jquery-1.8.2.min.js")
@@ -44,7 +44,7 @@
             </div>
             <!-- /.navbar-header -->
             <ul class="nav navbar-top-links navbar-right">
-            
+
                 <li>
                     @Html.ActionLink("Salve " + User.Identity.Name + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })
 
@@ -52,14 +52,14 @@
                 <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                        <i class="fa fa-user fa-fw"></i><i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
                         <li>
-                            <a href="/account/manage"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                            <a href="/account/info"><i class="fa fa-user fa-fw"></i>User Profile</a>
                         </li>
                         <li>
-                            <a href="/account/manage"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                            <a href="/account/manage"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>
                         <li>
@@ -67,9 +67,9 @@
                             {
                                 @Html.AntiForgeryToken()
                              
-                                <a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                                <a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
                             }
-                           
+
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -92,10 +92,10 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="/private"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="/private"><i class="fa fa-dashboard fa-fw"></i>Dashboard</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-list-alt fa-fw"></i> Logs<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-list-alt fa-fw"></i>Logs<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="/private/Logs">All Logs</a>
@@ -104,46 +104,50 @@
                                 {
                                     foreach (var app in UserHelper.GetAppsForUser(Membership.GetUser().UserName))
                                     {
-                                          <li>
-                                                <a href = "/private/Logs?applicationId=@app.IdApplication" > @app.ApplicationName </a>
-                                            </li>
-                                     }
+                                    <li>
+                                        <a href = "/private/Logs?applicationId=@app.IdApplication" >@app.ApplicationName </a>
+                                    </li>
                                     }
-                                @*<li>
+                                }
+@*<li>
                                     <a href="morris.html">add  one item for application...</a>
                                 </li>*@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
+                        @if (UserProfileContext.Current.IsEditorUser)
+                        {
+                            <li>
+                                <a href="/private/ListUsers"><i class="fa fa-users fa-fw"></i>Users</a>
+                            </li>
+                        }
+
                         <li>
-                            <a href="/account/manage"><i class="fa fa-users fa-fw"></i>Users</a>
+                            <a href="/account/logout"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
                         </li>
-                        <li>
-                            <a href="/account/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                        </li>
-                        </ul>
-                    
+                    </ul>
+
                 </div>
                 <!-- /.sidebar-collapse -->
             </div>
             <!-- /.navbar-static-side -->
         </nav>
-        <div id="page-wrapper">    
+        <div id="page-wrapper">
             @RenderBody()
         </div>
         <!-- /#page-wrapper -->
     </div>
     <!-- /#wrapper -->
 
-           
 
 
 
 
-  
-  @Scripts.Render("~/Scripts/bootstrap.min.js")
+
+
+    @Scripts.Render("~/Scripts/bootstrap.min.js")
     <!-- Metis Menu Plugin JavaScript -->
-   @Scripts.Render("~/Scripts/metisMenu.min.js")
+    @Scripts.Render("~/Scripts/metisMenu.min.js")
     <!-- Morris Charts JavaScript -->
     @Scripts.Render("~/Scripts/raphael-min.js")
     @Scripts.Render("~/Scripts/morris.min.js")

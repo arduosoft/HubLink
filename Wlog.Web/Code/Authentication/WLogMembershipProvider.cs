@@ -29,7 +29,32 @@ namespace Wlog.Web.Code.Authentication
 
         public override bool ChangePassword(string username, string oldPassword, string newPassword)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            try
+            {
+                if (ValidateUser(username, oldPassword))
+                {
+                    ValidatePasswordEventArgs args = new ValidatePasswordEventArgs(username, newPassword, false);
+                    OnValidatingPassword(args);
+                    if (!args.Cancel)
+                    {
+                        using (UnitOfWork uow = new UnitOfWork())
+                        {
+                            uow.BeginTransaction();
+                            UserEntity usr = UserHelper.GetByUsername(username);
+                            usr.Password = EncodePassword(newPassword);
+                            usr.LastActivityDate = DateTime.Now;
+                            usr.LastPasswordChangedDate = DateTime.Now;
+                            uow.SaveOrUpdate(usr);
+                            uow.Commit();
+                            result = true;
+                        }
+                    }
+                }
+            }
+            catch { }
+
+            return result;
         }
 
         public override bool ChangePasswordQuestionAndAnswer(string username, string password, string newPasswordQuestion, string newPasswordAnswer)

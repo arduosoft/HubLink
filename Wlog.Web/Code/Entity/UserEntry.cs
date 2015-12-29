@@ -11,7 +11,7 @@ namespace Wlog.Web.Code.Classes
 {
     public class UserEntity
     {
-        public virtual int Id { get; protected set; }
+        public virtual int Id { get; set; }
         [Required]
         [Display(Name = "User name")]
         public virtual string Username { get; set; }

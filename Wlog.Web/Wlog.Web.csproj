@@ -227,6 +227,10 @@
     <Compile Include="Models\DashboardModel.cs" />
     <Compile Include="Models\LogListModel.cs" />
     <Compile Include="Models\MessagesListModel.cs" />
+    <Compile Include="Models\User\EditUser.cs" />
+    <Compile Include="Models\User\ListUser.cs" />
+    <Compile Include="Models\User\NewUser.cs" />
+    <Compile Include="Models\User\UserData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -332,15 +336,10 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Manage.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
-    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Views\Account\_RemoveExternalLoginsPartial.cshtml" />
-    <Content Include="Views\Account\_SetPasswordPartial.cshtml" />
     <Content Include="Views\Home\About.cshtml">
       <SubType>Code</SubType>
     </Content>
@@ -351,6 +350,13 @@
     <Content Include="Views\Private\Logs.cshtml" />
     <Content Include="Views\Private\Index.cshtml" />
     <Content Include="Views\Private\Web.config" />
+    <Content Include="Views\Private\DeleteUser.cshtml" />
+    <Content Include="Views\Private\EditUser.cshtml" />
+    <Content Include="Views\Private\ListUsers.cshtml" />
+    <Content Include="Views\Private\NewUser.cshtml" />
+    <Content Include="Views\Account\_ChangeEmailPartial.cshtml" />
+    <Content Include="Views\Account\Info.cshtml" />
+    <Content Include="Views\Private\test.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
