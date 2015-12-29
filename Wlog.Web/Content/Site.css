@@ -52,3 +52,7 @@ button.btn.btn-default.menu { background: #444444; border: #444444; color: #FFF;
 .navbar-default .navbar-nav>li>form>a {
     color: #ebebeb;
 }
+
+.labellength {
+    min-width: 300px;
+}

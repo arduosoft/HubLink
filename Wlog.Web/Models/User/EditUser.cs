@@ -6,15 +6,16 @@ using Wlog.Web.Code.Classes;
 
 namespace Wlog.Web.Models.User
 {
+    public class UserApps
+    {
+        public int Id { get; set; }
+        public ApplicationEntity Application { get; set; }
+        public RolesEntity Role { get; set; }
+
+    }
+
     public class EditUser
     {
-        public class UserApps
-        {
-            public int Id { get; set; }
-            public ApplicationEntity Application { get; set; }
-            public RolesEntity Role { get; set; }
-
-        }
 
         public UserEntity DataUser { get; set; }
         public List<UserApps> Apps { get; set; }

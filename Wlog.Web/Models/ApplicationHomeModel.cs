@@ -22,16 +22,4 @@ namespace Wlog.Web.Models
 
     }
 
-    //public class ApplicationHome
-    //{
-    //    public virtual int Id;
-    //    [Display(Name = "Application Name")]
-    //    public virtual string ApplicationName { get; set; }
-    //    [Display(Name = "Start Date")]
-    //    [DataType(DataType.Date)]
-    //    public virtual DateTime StartDate { get; set; }
-    //    [Display(Name="Active")]
-    //    public virtual bool IsActive { get; set; }
-        
-    //}
 }

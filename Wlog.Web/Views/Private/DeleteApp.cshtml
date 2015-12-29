@@ -1,0 +1,67 @@
+﻿@model Wlog.Web.Models.ApplicationModel
+
+@{
+    ViewBag.Title = "Delete App";
+    Layout = "~/Views/Shared/_LayoutInternal.cshtml";
+}
+<div class="row">
+<h2>Delete Application</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend></legend>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="col-lg-2 control-label">
+                @Html.DisplayNameFor(model => model.ApplicationName)
+            </label>
+            <div class="col-lg-10">
+                @Html.DisplayFor(model => model.ApplicationName, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-2 control-label">
+                @Html.DisplayNameFor(model => model.PublicKey)
+            </label>
+            <div class="col-lg-10">
+                @Html.DisplayFor(model => model.PublicKey, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-2 control-label">
+                @Html.DisplayNameFor(model => model.IsActive)
+            </label>
+            <div class="col-lg-10">
+                @Html.DisplayFor(model => model.IsActive, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-2 control-label">
+                @Html.DisplayNameFor(model => model.StartDate)
+            </label>
+            <div class="col-lg-10">
+                @Html.DisplayFor(model => model.StartDate, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-2 control-label">
+                @Html.DisplayNameFor(model => model.EndDate)
+            </label>
+            <div class="col-lg-10">
+                @Html.DisplayFor(model => model.EndDate, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+
+</fieldset>
+ @using (Html.BeginForm("DeleteApp", "Private",new { idApplication = Model.IdApplication }, FormMethod.Post))
+ {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(false)
+        <p>
+            @Html.ActionLink("Back to List", "ListApps", null, new { @class = "btn btn-success" })
+            <input type="submit" value="Delete" class="btn btn-danger" />
+        </p>
+ }
+
+</div>

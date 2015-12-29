@@ -203,13 +203,14 @@
     <Compile Include="Code\Entity\LogEntity.cs" />
     <Compile Include="Code\Classes\LogQueue.cs" />
     <Compile Include="Code\Classes\UnitOfWork.cs" />
+    <Compile Include="Code\Helpers\ApplicationHelper.cs" />
     <Compile Include="Code\Helpers\ConversionHelper.cs" />
     <Compile Include="Code\Helpers\DBContext.cs" />
     <Compile Include="Code\Helpers\LogHelper.cs" />
     <Compile Include="Code\Helpers\SystemDataHelper.cs" />
     <Compile Include="Code\Helpers\UserHelper.cs" />
     <Compile Include="Code\Jobs\ApplicationPreload.cs" />
-    <Compile Include="Code\Jobs\Startup.cs" />
+    <Compile Include="Code\Jobs\_Startup.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PrivateController.cs" />
@@ -223,7 +224,9 @@
     <Compile Include="Code\Entity\AppUserRoleEntry.cs" />
     <Compile Include="Code\Entity\RolesEntry.cs" />
     <Compile Include="Code\Entity\UserEntry.cs" />
-    <Compile Include="Models\ApplicationModel.cs" />
+    <Compile Include="Models\ApplicationHomeModel.cs" />
+    <Compile Include="Models\Application\ApplicationList.cs" />
+    <Compile Include="Models\Application\ApplicationModel.cs" />
     <Compile Include="Models\DashboardModel.cs" />
     <Compile Include="Models\LogListModel.cs" />
     <Compile Include="Models\MessagesListModel.cs" />
@@ -232,6 +235,7 @@
     <Compile Include="Models\User\NewUser.cs" />
     <Compile Include="Models\User\UserData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -351,12 +355,15 @@
     <Content Include="Views\Private\Index.cshtml" />
     <Content Include="Views\Private\Web.config" />
     <Content Include="Views\Private\DeleteUser.cshtml" />
-    <Content Include="Views\Private\EditUser.cshtml" />
     <Content Include="Views\Private\ListUsers.cshtml" />
     <Content Include="Views\Private\NewUser.cshtml" />
     <Content Include="Views\Account\_ChangeEmailPartial.cshtml" />
     <Content Include="Views\Account\Info.cshtml" />
-    <Content Include="Views\Private\test.cshtml" />
+    <Content Include="Views\Private\ListApps.cshtml" />
+    <Content Include="Views\Private\NewApp.cshtml" />
+    <Content Include="Views\Private\DeleteApp.cshtml" />
+    <Content Include="Views\Private\EditApp.cshtml" />
+    <Content Include="Views\Private\EditUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

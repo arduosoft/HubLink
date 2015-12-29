@@ -1,0 +1,49 @@
+﻿@model Wlog.Web.Models.ApplicationModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutInternal.cshtml";
+    ViewBag.Title = "New App";
+}
+
+<h2>New Application</h2>
+
+@using (Html.BeginForm("NewApp", "Private", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+
+    <fieldset>
+        <legend></legend>
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.LabelFor(model => model.ApplicationName, new { @class = "col-lg-2 control-label" })
+                <div class="col-lg-10">
+                    @Html.EditorFor(model => model.ApplicationName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ApplicationName)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.StartDate, new { @class = "col-lg-2 control-label" })
+                <div class="col-lg-10">
+                    @Html.EditorFor(model => model.StartDate, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.StartDate)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.PublicKey, new { @class = "col-lg-2 control-label" })
+                <div class="col-lg-10">
+                    @Html.EditorFor(model => model.PublicKey, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.PublicKey)
+                </div>
+            </div>
+        </div>
+
+
+        <p>
+            @Html.ActionLink("Back to List", "ListApps", null, new { @class = "btn btn-success" })
+            <input type="submit" value="Create" class="btn btn-warning" />
+        </p>
+    </fieldset>
+}
+
+

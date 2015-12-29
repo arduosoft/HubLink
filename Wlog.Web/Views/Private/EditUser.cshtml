@@ -11,9 +11,6 @@
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
 
-        @Html.HiddenFor(model=>model.DataUser.Id)
-        @Html.HiddenFor(model=>model.DataUser.Username)
-        @Html.HiddenFor(model=>model.DataUser.Password)
         <fieldset>
             <legend></legend>
             <div class="form-horizontal">

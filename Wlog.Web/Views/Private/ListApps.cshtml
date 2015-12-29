@@ -1,0 +1,65 @@
+﻿@using PagedList.Mvc
+@model  Wlog.Web.Models.Application.ApplicationList
+
+@{
+    ViewBag.Title = "Applications";
+    Layout = "~/Views/Shared/_LayoutInternal.cshtml";
+}
+
+<div class="row">
+    <h2>Applications</h2>
+
+    <p>
+        @Html.ActionLink("Create New", "NewApp")
+    </p>
+</div>
+<div class="row">
+    @using (Html.BeginForm("ListApps", "Private", FormMethod.Get, new { serch = Model.SerchMessage }))
+    {
+        <p>
+            Find Application: @Html.TextBox("serchMessage", Model.SerchMessage)
+            <input type="submit" value="Search" class="btn btn-default" />
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayName("Application Name")
+                </th>
+                <th>
+                    @Html.DisplayName("Is Active")
+                </th>
+                <th>
+                    @Html.DisplayName("Start Date")
+                </th>
+                <th>
+                    @Html.DisplayName("End Date")
+                </th>
+            </tr>
+
+            @foreach (var item in Model.AppList)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(item.ApplicationName, "EditApp", new { id = item.IdApplication })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsActive)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                </tr>
+            }
+
+        </table>
+            }
+                <br />
+        Page @(Model.AppList.PageCount < Model.AppList.PageNumber ? 0 : Model.AppList.PageNumber) of @Model.AppList.PageCount
+
+       @Html.PagedListPager(Model.AppList, page => Url.Action("ListApps",new { page, serchmessage=Model.SerchMessage }))
+
+</div>
+

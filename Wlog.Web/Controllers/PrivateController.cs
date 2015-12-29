@@ -10,6 +10,7 @@ using System.Web.Security;
 using PagedList;
 using Wlog.Web.Models.User;
 using Wlog.Web.Code.Authentication;
+using Wlog.Web.Models.Application;
 
 namespace Wlog.Web.Controllers
 {
@@ -114,7 +115,7 @@ namespace Wlog.Web.Controllers
                     using (UnitOfWork uow = new UnitOfWork())
                     {
                         uow.BeginTransaction();
-                        foreach (Wlog.Web.Models.User.EditUser.UserApps app in model.Apps)
+                        foreach (UserApps app in model.Apps)
                         {
                             AppUserRoleEntity e = uow.Query<AppUserRoleEntity>().Where(x => x.User.Id == model.DataUser.Id && x.Application.IdApplication == app.Application.IdApplication).FirstOrDefault();
                             if (app.Role.Id == 0)
@@ -223,6 +224,116 @@ namespace Wlog.Web.Controllers
             }
             return View(User);
         }
+
+
+        #region Application
+        // Get  /Private/ListApps
+        public ActionResult ListApps(string serchMessage, int? page, int? pageSize)
+        {
+            ApplicationList model = new ApplicationList
+            {
+                SerchMessage = serchMessage
+            };
+            model.AppList = ApplicationHelper.FilterApplicationList(serchMessage, page ?? 1, pageSize ?? 1);
+            return View(model);
+        }
+
+        //Get Private/NewApp
+        [HttpGet]
+        public ActionResult NewApp()
+        {
+            return View(new ApplicationModel());
+        }
+
+        //Post Private/NewApp
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult NewApp(ApplicationModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                using (UnitOfWork uow = new UnitOfWork())
+                {
+                    uow.BeginTransaction();
+                    ApplicationEntity entity = new ApplicationEntity();
+                    entity.ApplicationName = model.ApplicationName;
+                    entity.IsActive = true;
+                    entity.StartDate = model.StartDate;
+                    entity.PublicKey = model.PublicKey;
+
+                    uow.SaveOrUpdate(entity);
+                    uow.Commit();
+                }
+                return RedirectToAction("ListApps");
+            }
+            else
+            {
+                ModelState.AddModelError("", "error");
+            }
+
+            return View(model);
+        }
+
+
+        //Get Private/EditApp/1
+        [HttpGet]
+        public ActionResult EditApp(int Id)
+        {
+            return View(ApplicationHelper.GetById(Id));
+        }
+
+
+        //Post Private/EditApp/
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditApp(ApplicationModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                using(UnitOfWork uow=new UnitOfWork())
+                {
+                    uow.BeginTransaction();
+                    ApplicationEntity entity=uow.Query<ApplicationEntity>().Where(x=>x.IdApplication==model.IdApplication).First();
+                    entity.ApplicationName=model.ApplicationName;
+                    entity.IsActive=model.IsActive;
+                    entity.StartDate=model.StartDate;
+                    entity.EndDate=model.EndDate;
+                    entity.PublicKey=model.PublicKey;
+                    uow.SaveOrUpdate(entity);
+                    uow.Commit();
+
+                }
+                return RedirectToAction("ListApps");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Error");
+            }
+            return View(model);
+        }
+
+        //Get Private/DeleteApp/1
+        [HttpGet]
+        public ActionResult DeleteApp(int Id)
+        {
+            return View(ApplicationHelper.GetById(Id));
+        }
+
+        //Post Private/DeleteApp/1
+        [HttpPost]
+        public ActionResult DeleteApp(ApplicationModel model)
+        {
+            if (ApplicationHelper.DeleteById(model.IdApplication))
+            {
+                return RedirectToAction("ListApps");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Si è Verificato un Errore.");
+            }
+            return View(model);
+        }
+#endregion
 
         #region HElper
         private static string ErrorCodeToString(MembershipCreateStatus createStatus)

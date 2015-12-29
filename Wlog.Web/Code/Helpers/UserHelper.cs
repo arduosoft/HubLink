@@ -190,9 +190,9 @@ namespace Wlog.Web.Code.Helpers
 
             return result;
         }
-        public static List<Wlog.Web.Models.User.EditUser.UserApps> GetApp(int id)
+        public static List<UserApps> GetApp(int id)
         {
-            List<Wlog.Web.Models.User.EditUser.UserApps> result = new List<Wlog.Web.Models.User.EditUser.UserApps>();
+            List<UserApps> result = new List<UserApps>();
             using (UnitOfWork uow = new UnitOfWork())
             {
                 List<AppUserRoleEntity> entity;
@@ -220,7 +220,7 @@ namespace Wlog.Web.Code.Helpers
                 {
                     if (entity.Where(x => x.Application.IdApplication == ae.IdApplication) != null && entity.Where(x => x.Application.IdApplication == ae.IdApplication).Select(x => x.Role).Count() != 0)
                     {
-                        result.Add(new Wlog.Web.Models.User.EditUser.UserApps
+                        result.Add(new UserApps
                         {
                             Application = ae,
                             Role = entity.Where(x => x.Application.IdApplication == ae.IdApplication).Select(x => x.Role).FirstOrDefault()
@@ -228,7 +228,7 @@ namespace Wlog.Web.Code.Helpers
                     }
                     else
                     {
-                        result.Add(new Wlog.Web.Models.User.EditUser.UserApps
+                        result.Add(new UserApps
                         {
                             Application = ae,
                             Role = new RolesEntity { RoleName = "No Role" }
