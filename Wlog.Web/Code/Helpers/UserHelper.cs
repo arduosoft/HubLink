@@ -220,18 +220,23 @@ namespace Wlog.Web.Code.Helpers
                 {
                     if (entity.Where(x => x.Application.IdApplication == ae.IdApplication) != null && entity.Where(x => x.Application.IdApplication == ae.IdApplication).Select(x => x.Role).Count() != 0)
                     {
+                        RolesEntity r = entity.Where(x => x.Application.IdApplication == ae.IdApplication).Select(x => x.Role).FirstOrDefault();
                         result.Add(new UserApps
                         {
-                            Application = ae,
-                            Role = entity.Where(x => x.Application.IdApplication == ae.IdApplication).Select(x => x.Role).FirstOrDefault()
+                            ApplicationName = ae.ApplicationName,
+                             IdApplication=ae.IdApplication,
+                            RoleId=r.Id,
+                           RoleName=r.RoleName
                         });
                     }
                     else
                     {
                         result.Add(new UserApps
                         {
-                            Application = ae,
-                            Role = new RolesEntity { RoleName = "No Role" }
+                            ApplicationName = ae.ApplicationName,
+                            IdApplication = ae.IdApplication,
+                            RoleId = 0,
+                            RoleName = "No Role"
                         });
                     }
                 }

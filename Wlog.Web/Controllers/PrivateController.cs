@@ -104,7 +104,7 @@ namespace Wlog.Web.Controllers
         //Post Private/EditUser/
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditUser(EditUser model, IEnumerable<UserApps> UserApps)
+        public ActionResult EditUser(EditUser model)
         {
             if (ModelState.IsValid)
             {
@@ -116,8 +116,8 @@ namespace Wlog.Web.Controllers
                         uow.BeginTransaction();
                         foreach (UserApps app in model.Apps)
                         {
-                            AppUserRoleEntity e = uow.Query<AppUserRoleEntity>().Where(x => x.User.Id == model.DataUser.Id && x.Application.IdApplication == app.Application.IdApplication).FirstOrDefault();
-                            if (app.Role.Id == 0)
+                            AppUserRoleEntity e = uow.Query<AppUserRoleEntity>().Where(x => x.User.Id == model.DataUser.Id && x.Application.IdApplication == app.IdApplication).FirstOrDefault();
+                            if (app.RoleId == 0)
                             {
                                 if (e != null)
                                     uow.Delete(e);
@@ -130,12 +130,11 @@ namespace Wlog.Web.Controllers
                                 }
                                 else
                                 {
-                                    uow.SaveOrUpdate(new AppUserRoleEntity { User = model.DataUser, Application = app.Application, Role = app.Role });
+                                    uow.SaveOrUpdate(new AppUserRoleEntity { User = model.DataUser, Application = new ApplicationEntity { IdApplication = app.IdApplication }, Role = new RolesEntity { Id = app.RoleId } });
                                 }
                             }
-
-                            uow.Commit();
                         }
+                        uow.Commit();
                     }
                     return RedirectToAction("ListUsers");
                 }

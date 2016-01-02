@@ -9,7 +9,7 @@ namespace Wlog.Web.Code.Classes
 {
     public class RolesEntity
     {
-        public virtual int Id { get; protected set; }
+        public virtual int Id { get; set; }
         public virtual string RoleName { get; set; }
 
     }

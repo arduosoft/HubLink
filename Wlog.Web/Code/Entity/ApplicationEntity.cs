@@ -10,7 +10,7 @@ namespace Wlog.Web.Code.Classes
 {
     public class ApplicationEntity
     {
-        public virtual int IdApplication { get; protected set; }
+        public virtual int IdApplication { get; set; }
         [Required]
         [Display(Name = "Application name")]
         public virtual string ApplicationName { get; set; }
