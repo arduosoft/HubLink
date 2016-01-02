@@ -1,3 +1,4 @@
 bin
 obj
-Wlog.Web.csproj.user
+*.user
+*.log
