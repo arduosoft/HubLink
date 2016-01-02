@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Wlog.Web.Code.Authentication;
 using Wlog.Web.Code.Classes;
 using Wlog.Web.Models;
 using Wlog.Web.Models.Application;
@@ -50,7 +51,9 @@ namespace Wlog.Web.Code.Helpers
 
                 foreach (ApplicationEntity e in entity)
                 {
-                    data.Add(EntityToModel(e));
+                    AppUserRoleEntity r = uow.Query<AppUserRoleEntity>().Where(x => (x.Role.RoleName == Constants.Roles.Admin || x.Role.RoleName == Constants.Roles.Write)&&x.Application.IdApplication==e.IdApplication && x.User.Id==UserProfileContext.Current.User.Id).FirstOrDefault();
+                    if (UserProfileContext.Current.User.IsAdmin || r != null)
+                        data.Add(EntityToModel(e));
                 }
             }
 
