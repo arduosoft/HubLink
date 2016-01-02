@@ -1,9 +1,0 @@
-c:\users\danielefontani\documents\visual studio 2012\Projects\MvcApplication1\Loggers\bin\Debug\Newtonsoft.Json.dll
-c:\users\danielefontani\documents\visual studio 2012\Projects\MvcApplication1\Loggers\bin\Debug\NLog.dll
-c:\users\danielefontani\documents\visual studio 2012\Projects\MvcApplication1\Loggers\bin\Debug\Newtonsoft.Json.xml
-c:\users\danielefontani\documents\visual studio 2012\Projects\MvcApplication1\Loggers\bin\Debug\NLog.xml
-c:\users\danielefontani\documents\visual studio 2012\Projects\MvcApplication1\Loggers\bin\Debug\NLog.WebLog.dll
-c:\users\danielefontani\documents\visual studio 2012\Projects\MvcApplication1\Loggers\bin\Debug\NLog.WebLog.pdb
-c:\users\danielefontani\documents\visual studio 2012\Projects\MvcApplication1\Loggers\obj\Debug\NLog.WebLog.dll
-c:\users\danielefontani\documents\visual studio 2012\Projects\MvcApplication1\Loggers\obj\Debug\NLog.WebLog.pdb
-c:\users\danielefontani\documents\visual studio 2012\Projects\MvcApplication1\Loggers\obj\Debug\Loggers.csprojResolveAssemblyReference.cache
