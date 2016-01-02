@@ -67,8 +67,7 @@
                             @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
                             {
                                 @Html.AntiForgeryToken()
-                             
-                                <a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                                <a href="javascript:document.getElementById('logoutForm').submit()">Disconnetti</a>
                             }
 
                         </li>
@@ -126,9 +125,14 @@
                         <li>
                             <a href="/private/ListApps"><i class="fa fa-gear fa-fw"></i>Applications</a>
                         </li>
-                        
                         <li>
-                            <a href="/account/logout"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                            {
+                                @Html.AntiForgeryToken()
+@*<input type="submit" value="Logout" class="fa fa-sign-out fa-fw" />*@
+                                <a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                            }
+
                         </li>
                     </ul>
 

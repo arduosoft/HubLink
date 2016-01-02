@@ -211,6 +211,7 @@
     <Compile Include="Code\Helpers\UserHelper.cs" />
     <Compile Include="Code\Helpers\WlogLogger.cs" />
     <Compile Include="Code\Jobs\ApplicationPreload.cs" />
+    <Compile Include="Code\Jobs\HangFireAuthorizationFilter.cs" />
     <Compile Include="Code\Jobs\Startup.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />

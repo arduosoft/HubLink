@@ -51,6 +51,8 @@ namespace Wlog.Web.Code.Classes
             {
                 using (UnitOfWork uow = new UnitOfWork())
                 {
+                    uow.BeginTransaction();
+
                     for (int i = 0; i < Math.Min(LogQueue.Current.Count, 10000); i++)
                     {
 

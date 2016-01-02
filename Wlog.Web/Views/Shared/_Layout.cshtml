@@ -24,39 +24,39 @@
             </div>
             <div class="navbar-collapse collapse" id="navbar-main">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
-                    <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
+                    @*                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>*@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     @if (Request.IsAuthenticated)
                     {
-                        <li>@Html.ActionLink("Salve " + User.Identity.Name+"!", "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })
+                        <li>@Html.ActionLink("Salve " + User.Identity.Name + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })
                         </li>
                         <li>
                             @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
                             {
                                 @Html.AntiForgeryToken()
                                 <a href="javascript:document.getElementById('logoutForm').submit()">Disconnetti</a>
-                                }
-                        </li>
+                            }
+                        </li>@*
                         }
                     else
                     {
 
                         <li>@Html.ActionLink("Registrazione", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-                        <li>@Html.ActionLink("Accedi", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                        <li>@Html.ActionLink("Accedi", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>*@
 
-                        }
+                    }
                 </ul>
 
             </div>
-            </div>
         </div>
+    </div>
 
 
-            <div class="container" style="padding-top: 100px">
-                @RenderBody()
-            </div>
+    <div class="container" style="padding-top: 100px">
+        @RenderBody()
+    </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrapjs")

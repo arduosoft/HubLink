@@ -16,13 +16,16 @@ namespace Wlog.Web.Code.Jobs
         {
             var options = new DashboardOptions
             {
+                 AppPath = VirtualPathUtility.ToAbsolute("~"),
                 AuthorizationFilters = new[]
             {
-                new LocalRequestsOnlyAuthorizationFilter()
+                
+                new HangFireAuthorizationFilter()
             }
             };
 
             app.UseHangfireDashboard("/hangfire", options);
+            app.UseHangfireServer();
         }
     }
 }
