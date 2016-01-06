@@ -69,9 +69,8 @@ namespace Wlog.Web.Code.Classes
                     {
 
                         LogMessage log = LogQueue.Current.Dequeue();
-                        
-                        LogEntity entToSave = ConversionHelper.ConvertLog(uow,log);
-                        LogHelper.AppendLog(uow, entToSave);
+
+                        PersistLog(log);
 
                        
                     }
@@ -79,6 +78,23 @@ namespace Wlog.Web.Code.Classes
                 }
                 LogQueue.Current.AppendLoadValue(LogQueue.Current.Count, LogQueue.Current.MaxQueueSize);
             }
+        }
+
+
+        public void PersistLog( LogMessage log)
+        {
+            using (UnitOfWork uow = new UnitOfWork())
+            {
+                uow.BeginTransaction();
+                PersistLog(uow, log);
+                uow.Commit();
+            }
+            
+        }
+        public void PersistLog(UnitOfWork uow ,LogMessage log)
+        {
+            LogEntity entToSave = ConversionHelper.ConvertLog(uow, log);
+            LogHelper.AppendLog(uow, entToSave);
         }
 
         private void AppendLoadValue(long count, int maxQueueSize)

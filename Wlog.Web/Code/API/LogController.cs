@@ -19,8 +19,14 @@ namespace Wlog.Web.Code.API
         // POST api/<controller>
         public void Post([FromBody]LogMessage value)
         {
-            
-            LogQueue.Current.Enqueue(value);
+            if (LogQueue.Current.MaxQueueSize > LogQueue.Current.Count)
+            {
+                LogQueue.Current.Enqueue(value);
+            }
+            else
+            {
+                LogQueue.Current.PersistLog(value);
+            }
 
         }
 
