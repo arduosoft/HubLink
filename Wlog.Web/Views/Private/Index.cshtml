@@ -244,16 +244,21 @@
         Morris.Area({
             element: 'morris-area-chart',
             data: [
-                @foreach (QueueLoad ql in Model.QueueLoad)
+                @for(int i=0;i< Model.QueueLoad.Count;i++)
                 {
-
-                   <text>
-                       {time: '@ql.Time.ToString("yyyy-MM-dd HH:mm")',
+                    var ql = Model.QueueLoad[i];
+                                       <text>
+                           
+                       {time: '@ql.Time.ToString("yyyy-MM-dd (HH:mm:ss)")',
                        load:  @ql.QueueSize,
                        max: @ql.MaxSize}
                   </text>
 
-            }
+                    if (Model.QueueLoad.Count - 1 > i)
+                    {
+                        <text>,</text>
+                    }
+                }
         ],
             xkey: 'time',
             ykeys: ['load', 'max'],
