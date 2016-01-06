@@ -56,3 +56,8 @@ button.btn.btn-default.menu { background: #444444; border: #444444; color: #FFF;
 .labellength {
     min-width: 300px;
 }
+
+.btn-list {
+    min-width: 120px;
+    margin-right: 10px;
+}

@@ -9,16 +9,17 @@
 <div class="row">
     <h2>Users</h2>
 
-    <p>
-        @Html.ActionLink("Create New", "NewUser")
-    </p>
+   
 </div>
 <div class="row">
-    @using (Html.BeginForm("ListUsers", "Private", FormMethod.Get,new{serch=Model.SerchMessage}))
-    {
-        <p>
-            Find User: @Html.TextBox("serchMessage", Model.SerchMessage)
-            <input type="submit" value="Search" class="btn btn-default" />
+        @using (Html.BeginForm("ListUsers", "Private", FormMethod.Get, new { serch = Model.SerchMessage }))
+        {
+            <p>
+                Find User: @Html.TextBox("serchMessage", Model.SerchMessage)
+                <input type="submit" value="Search" class="btn btn-default" />
+            
+                @Html.ActionLink("Create New", "NewUser", null, new { @class = "btn btn-success  btn-list pull-right" })
+            
         </p>
         <table class="table">
             <tr>

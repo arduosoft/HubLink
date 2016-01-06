@@ -88,9 +88,11 @@
             </div>
 
             <p>
-                @Html.ActionLink("Back to List", "ListUsers", null, new { @class = "btn btn-success" })
-                <input type="submit" value="Save" class="btn btn-warning" />
-                @Html.ActionLink("Delete User", "DeleteUser", new { Id = Model.DataUser.Id }, new { @class = "btn btn-danger" })
+                @Html.ActionLink("Back to List", "ListUsers", null, new { @class = "btn btn-success btn-list" })
+               
+                <input type="submit" value="Save" class="btn btn-warning pull-right btn-list"  />&nbsp;
+                @Html.ActionLink("Delete User", "DeleteUser", new { Id = Model.DataUser.Id }, new { @class = "btn btn-danger pull-right btn-list" })
+               
             </p>
         </fieldset>
     }

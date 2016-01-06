@@ -110,7 +110,7 @@
 <div class="row">
     <div class="col-lg-8">
        
-
+        <div id="morris-area-chart"></div>
         @foreach(MessagesListModel app in Model.AppLastTen)
         {
 
@@ -235,3 +235,32 @@
     <!-- /.col-lg-4 -->
 </div>
 <!-- /.row -->
+
+
+<script>
+
+    $(function () {
+
+        Morris.Area({
+            element: 'morris-area-chart',
+            data: [
+                @foreach (QueueLoad ql in Model.QueueLoad)
+                {
+
+                   <text>
+                       {time: '@ql.Time.ToString("yyyy-MM-dd HH:mm")',
+                       load:  @ql.QueueSize,
+                       max: @ql.MaxSize}
+                  </text>
+
+            }
+        ],
+            xkey: 'time',
+            ykeys: ['load', 'max'],
+            labels: ['load', 'max'],
+            pointSize: 2,
+            hideHover: 'auto',
+            resize: true
+        });
+    });
+</script>

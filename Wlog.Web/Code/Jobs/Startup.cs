@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
+
 //Wlog.Web.Code.Jobs.Startup
 namespace Wlog.Web.Code.Jobs
 {
@@ -24,7 +25,7 @@ namespace Wlog.Web.Code.Jobs
             }
             };
 
-            app.UseHangfireDashboard("/hangfire", options);
+            app.UseHangfireDashboard("/private/hangfire", options);
             app.UseHangfireServer();
         }
     }

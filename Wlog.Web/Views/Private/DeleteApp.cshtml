@@ -59,8 +59,8 @@
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(false)
         <p>
-            @Html.ActionLink("Back to List", "ListApps", null, new { @class = "btn btn-success" })
-            <input type="submit" value="Delete" class="btn btn-danger" />
+            @Html.ActionLink("Back to List", "ListApps", null, new { @class = "btn btn-success btn-list" })
+            <input type="submit" value="Delete" class="btn btn-danger btn-list pull-right" />
         </p>
  }
 

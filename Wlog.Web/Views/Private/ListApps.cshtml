@@ -9,9 +9,6 @@
 <div class="row">
     <h2>Applications</h2>
 
-    <p>
-        @Html.ActionLink("Create New", "NewApp")
-    </p>
 </div>
 <div class="row">
     @using (Html.BeginForm("ListApps", "Private", FormMethod.Get, new { serch = Model.SerchMessage }))
@@ -19,11 +16,15 @@
         <p>
             Find Application: @Html.TextBox("serchMessage", Model.SerchMessage)
             <input type="submit" value="Search" class="btn btn-default" />
+            @Html.ActionLink("Create New", "NewApp",null, new { @class = "btn btn-success  btn-list pull-right" })
         </p>
         <table class="table">
             <tr>
                 <th>
                     @Html.DisplayName("Application Name")
+                </th>
+                <th>
+                    @Html.DisplayName("Public key")
                 </th>
                 <th>
                     @Html.DisplayName("Is Active")
@@ -39,8 +40,12 @@
             @foreach (var item in Model.AppList)
             {
                 <tr>
+
                     <td>
                         @Html.ActionLink(item.ApplicationName, "EditApp", new { id = item.IdApplication })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PublicKey)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.IsActive)

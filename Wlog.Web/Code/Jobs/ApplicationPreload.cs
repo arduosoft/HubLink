@@ -12,7 +12,7 @@ namespace Wlog.Web.Code.Jobs
     {
         public void Preload(string[] parameters)
         {
-            //HangfireBootstrapper.Instance.Start();
+          //  HangfireBootstrapper.Instance.Start();
         }
     }
 }

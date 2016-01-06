@@ -30,8 +30,9 @@ namespace Wlog.Web.Controllers
                 dm.LogCount = uow.Query<LogEntity>().Count();
                 dm.WarnCount = uow.Query<LogEntity>().Count(p => p.Level != null && p.Level.ToLower().Contains("warn"));
                 dm.LastTen = ConversionHelper.ConvertLogEntityToMessage(uow, uow.Query<LogEntity>().Where(p=> apps.Contains(p.ApplictionId)).OrderByDescending(p => p.SourceDate).Take(10).ToList());
-
+                dm.QueueLoad = LogQueue.Current.QueueLoad;
                 dm.AppLastTen = new List<MessagesListModel>();
+
                 foreach (ApplicationEntity app in UserHelper.GetAppsForUser(username))
                 {
                     MessagesListModel list = new MessagesListModel();
@@ -240,6 +241,7 @@ namespace Wlog.Web.Controllers
         [HttpGet]
         public ActionResult NewApp()
         {
+      
             return View(new ApplicationModel());
         }
 
@@ -258,7 +260,7 @@ namespace Wlog.Web.Controllers
                     entity.IsActive = true;
                     entity.StartDate = model.StartDate;
                     entity.PublicKey = model.PublicKey;
-
+                    entity.PublicKey = Guid.NewGuid();
                     uow.SaveOrUpdate(entity);
                     uow.Commit();
                 }
@@ -296,7 +298,7 @@ namespace Wlog.Web.Controllers
                     entity.IsActive=model.IsActive;
                     entity.StartDate=model.StartDate;
                     entity.EndDate=model.EndDate;
-                    entity.PublicKey=model.PublicKey;
+                    //entity.PublicKey=model.PublicKey; Do not change this is not editable
                     uow.SaveOrUpdate(entity);
                     uow.Commit();
 

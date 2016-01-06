@@ -10,6 +10,10 @@ namespace Wlog.Web.Code.Classes
     public class LogQueue
     {
         private Queue<LogMessage> queque = new Queue<LogMessage>();
+        public List<QueueLoad> QueueLoad { get; set; }
+
+        public int MaxProcessedItems { get; set; }
+        public int MaxQueueSize { get; set; }
 
         public long Count
         {
@@ -19,6 +23,14 @@ namespace Wlog.Web.Code.Classes
         public void Enqueue(LogMessage le)
         {
             queque.Enqueue(le);
+        }
+
+        public LogQueue()
+        {
+            MaxProcessedItems = 10000;
+            MaxQueueSize = 100000;
+            QueueLoad = new List<Classes.QueueLoad>();
+            AppendLoadValue(0, MaxQueueSize);
         }
 
         public List<LogMessage> Dequeue(int count)
@@ -45,7 +57,7 @@ namespace Wlog.Web.Code.Classes
         public void Run()
         {
 
-
+            LogQueue.Current.AppendLoadValue(LogQueue.Current.Count, LogQueue.Current.MaxQueueSize);
 
             if (LogQueue.Current.Count > 0)
             {
@@ -53,7 +65,7 @@ namespace Wlog.Web.Code.Classes
                 {
                     uow.BeginTransaction();
 
-                    for (int i = 0; i < Math.Min(LogQueue.Current.Count, 10000); i++)
+                    for (int i = 0; i < Math.Min(LogQueue.Current.Count, LogQueue.Current.MaxProcessedItems); i++)
                     {
 
                         LogMessage log = LogQueue.Current.Dequeue();
@@ -61,11 +73,26 @@ namespace Wlog.Web.Code.Classes
                         LogEntity entToSave = ConversionHelper.ConvertLog(uow,log);
                         LogHelper.AppendLog(uow, entToSave);
 
-
+                       
                     }
                     uow.Commit();
                 }
+                LogQueue.Current.AppendLoadValue(LogQueue.Current.Count, LogQueue.Current.MaxQueueSize);
             }
+        }
+
+        private void AppendLoadValue(long count, int maxQueueSize)
+        {
+            if (this.QueueLoad.Count > 100)
+            {
+                this.QueueLoad.RemoveAt(0);
+            }
+
+            this.QueueLoad.Add(new Classes.QueueLoad() {
+                MaxSize = maxQueueSize,
+                QueueSize = (int)count,
+                Time = DateTime.Now
+            });
         }
 
         public LogMessage Dequeue()

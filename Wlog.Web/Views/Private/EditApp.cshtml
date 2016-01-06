@@ -26,7 +26,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.PublicKey, new { @class = "col-lg-2 control-label" })
                     <div class="col-lg-10">
-                        @Html.EditorFor(model => model.PublicKey, new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.PublicKey,null, new { @class = "form-control"  , disabled = "disabled", @readonly = "readonly" })
                         @Html.ValidationMessageFor(model => model.PublicKey)
                     </div>
                 </div>
@@ -55,9 +55,9 @@
 
 
             <p>
-                @Html.ActionLink("Back to List", "ListApps", null, new { @class = "btn btn-success" })
-                <input type="submit" value="Save" class="btn btn-warning" />
-                @Html.ActionLink("Delete", "DeleteApp", new { Id = Model.IdApplication }, new { @class = "btn btn-danger" })
+                @Html.ActionLink("Back to List", "ListApps", null, new { @class = "btn btn-success btn-list" })
+                <input type="submit" value="Save" class="btn btn-warning btn-list  pull-right" />
+                @Html.ActionLink("Delete", "DeleteApp", new { Id = Model.IdApplication }, new { @class = "btn btn-danger pull-right btn-list" })
             </p>
         </fieldset>
     }
