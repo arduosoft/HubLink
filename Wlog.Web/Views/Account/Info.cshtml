@@ -46,10 +46,10 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Application.ApplicationName)
+                        @Html.DisplayFor(modelItem => item.ApplicationName)
                     </td>
                     <td>
-                        @Html.DropDownListFor(modelItem => item.Role.Id, new SelectList(Model.RoleList, "Id", "RoleName", item.Role.Id), new { disabled = "disabled" })
+                        @Html.DropDownListFor(modelItem => item.RoleId, new SelectList(Model.RoleList, "Id", "RoleName", item.RoleId), new { disabled = "disabled" })
                     </td>
                 </tr>
             }
@@ -61,5 +61,5 @@
 
 
 <p>
-    @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-success" })
+    @Html.ActionLink("Back", "Index", "Private",null, new { @class = "btn btn-success" })
 </p>

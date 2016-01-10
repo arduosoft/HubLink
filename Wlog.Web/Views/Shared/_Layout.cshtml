@@ -5,61 +5,66 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    @Styles.Render("~/Content/bootstrapcss")
-    @Styles.Render("~/Content/SiteCss")
-    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/bootstrap.css")
+    @Styles.Render("~/Content/metisMenu.css")
+    @Styles.Render("~/Content/timeline.css")
+    @Styles.Render("~/Content/sb-admin-2.css")
+    @Styles.Render("~/Content/morris.css")
+    @Styles.Render("~/Content/font-awesome.css")
+    @Styles.Render("~/Content/Site.css");
+
+    @Scripts.Render("~/Scripts/jquery-1.8.2.min.js")
+    @Scripts.Render("~/Scripts/metisMenu.min.js")
+
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <body>
-    <div class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
+
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
-                <a href="/" class="navbar-brand">
-                    <img src="~/Images/Logo.png"></a>
-                <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+                <img src="/Content/images/logo.png" width="32" height="32" class="pull-right" /><a class="navbar-brand pull-left" href="/log">Wlog</a>
             </div>
-            <div class="navbar-collapse collapse" id="navbar-main">
-                <ul class="nav navbar-nav">
-                    @*                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
-                    <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>*@
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    @if (Request.IsAuthenticated)
-                    {
-                        <li>@Html.ActionLink("Salve " + User.Identity.Name + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })
-                        </li>
-                        <li>
-                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
-                            {
-                                @Html.AntiForgeryToken()
-                                <a href="javascript:document.getElementById('logoutForm').submit()">Disconnetti</a>
-                            }
-                        </li>@*
-                        }
-                    else
-                    {
-
-                        <li>@Html.ActionLink("Registrazione", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-                        <li>@Html.ActionLink("Accedi", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>*@
-
-                    }
-                </ul>
-
-            </div>
+            
+        </nav>
+        <div id="page-wrapper">
+            @RenderBody()
         </div>
+        <!-- /#page-wrapper -->
     </div>
+    <!-- /#wrapper -->
 
 
-    <div class="container" style="padding-top: 100px">
-        @RenderBody()
-    </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrapjs")
+
+
+
+
+    @Scripts.Render("~/Scripts/bootstrap.min.js")
+    <!-- Metis Menu Plugin JavaScript -->
+    @Scripts.Render("~/Scripts/metisMenu.min.js")
+    <!-- Morris Charts JavaScript -->
+    @Scripts.Render("~/Scripts/raphael-min.js")
+    @Scripts.Render("~/Scripts/morris.min.js")
+    <!-- Custom Theme JavaScript -->
+    @Scripts.Render("~/Scripts/sb-admin-2.js")
     @RenderSection("scripts", required: false)
 </body>
 </html>

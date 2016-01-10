@@ -60,7 +60,7 @@ namespace Wlog.Web.Models
     public class LoginModel
     {
         [Required]
-        [Display(Name = "Nome utente")]
+        [Display(Name = "User")]
         public string UserName { get; set; }
 
         [Required]
@@ -68,14 +68,14 @@ namespace Wlog.Web.Models
         [Display(Name = "Password")]
         public string Password { get; set; }
 
-        [Display(Name = "Memorizza account")]
+        [Display(Name = "Remember me")]
         public bool RememberMe { get; set; }
     }
 
     public class RegisterModel
     {
         [Required]
-        [Display(Name = "Nome utente")]
+        [Display(Name = "User")]
         public string UserName { get; set; }
 
         [Required]
@@ -85,7 +85,7 @@ namespace Wlog.Web.Models
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Conferma password")]
+        [Display(Name = "Confirm")]
         [Compare("Password", ErrorMessage = "La password e la password di conferma non corrispondono.")]
         public string ConfirmPassword { get; set; }
 
