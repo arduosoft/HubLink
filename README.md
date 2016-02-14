@@ -1,5 +1,5 @@
 # wlog
-
+[![Build status](https://ci.appveyor.com/api/projects/status/c4v8ill28a9wbjaj?svg=true)](https://ci.appveyor.com/project/zeppaman/wlog)
 ### Project Description
 Wlog is an easy-to-install, intuitive and lightweight remote log serivice made in asp.net.
 
