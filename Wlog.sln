@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wlog.TestApp", "Wlog.TestAp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wlog.Loggers", "Wlog.Loggers\Wlog.Loggers.csproj", "{96B4C016-6835-4C7B-A9D0-C5BBECE53AE7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wlog.Test", "Wlog.Test\Wlog.Test.csproj", "{4E0840A0-4D2C-4351-ABCE-5D11E95EF5B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{96B4C016-6835-4C7B-A9D0-C5BBECE53AE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96B4C016-6835-4C7B-A9D0-C5BBECE53AE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96B4C016-6835-4C7B-A9D0-C5BBECE53AE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E0840A0-4D2C-4351-ABCE-5D11E95EF5B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E0840A0-4D2C-4351-ABCE-5D11E95EF5B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E0840A0-4D2C-4351-ABCE-5D11E95EF5B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E0840A0-4D2C-4351-ABCE-5D11E95EF5B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
