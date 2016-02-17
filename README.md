@@ -17,7 +17,6 @@ How to integrate in your application
 
 Nowadays it's easy to inegrate a new output for your log. I hope most of application will yest employ logging framework as log4net or Nlog, so in these cases you just need to implement a new "output" ( they are calledapppenders for log4net and target for Nlog..) and without edit any line of code all your log will be routed to our platform. 
 
-
 Do you think it is to much complicate? just download our library that integrate with Nlog, so you'll need only to edit few settings in configuration. See Integrate wlog in your application using Nlog
 
 You do not use a log framework? Easy, start to use it; even if you won't to employ wlog tecnology.
