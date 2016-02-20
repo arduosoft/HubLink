@@ -9,9 +9,9 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 
-namespace Wlog.Web.Code.Helpers
+namespace Wlog.DAL.NHibernate.Helpers
 {
-    public class DBContext
+    internal class DBContext
     {
         /// <summary>
         /// Get a configuration using settings in web.config and map entities in this assembly

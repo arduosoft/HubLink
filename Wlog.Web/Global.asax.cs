@@ -15,8 +15,10 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using Wlog.Web.Code.Classes;
 using Wlog.Web.Code.Helpers;
+using Wlog.BLL.Classes;
+using Wlog.DAL.NHibernate.Helpers;
+using Wlog.Library.BLL.Reporitories;
 
 namespace Wlog.Web
 {
@@ -39,7 +41,7 @@ namespace Wlog.Web
 
 
             //Apply schema changes
-            DBContext.ApplySchemaChanges();
+            RepositoryContext.Current.System.ApplySchemaChanges();
 
            
             JobStorage.Current=new MemoryStorage();

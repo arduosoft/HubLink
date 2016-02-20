@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Wlog.Web</RootNamespace>
     <AssemblyName>Wlog.Web</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -27,6 +27,7 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
     <UseGlobalApplicationHostFile />
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -87,14 +88,14 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
@@ -174,6 +175,7 @@
       <Private>True</Private>
       <HintPath>..\packages\System.Spatial.5.2.0\lib\net40\System.Spatial.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.3.0\lib\WebGrease.dll</HintPath>
@@ -203,18 +205,10 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Code\Authentication\ApplicationContext.cs" />
-    <Compile Include="Code\Authentication\UserProfileContext.cs" />
     <Compile Include="Code\Authentication\WLogMembershipProvider.cs" />
     <Compile Include="Code\Authentication\WLogRoleProvider.cs" />
-    <Compile Include="Code\Classes\Constants.cs" />
-    <Compile Include="Code\Classes\LogMessage.cs" />
-    <Compile Include="Code\Classes\QueueLoad.cs" />
-    <Compile Include="Code\Entity\LogEntity.cs" />
-    <Compile Include="Code\Classes\LogQueue.cs" />
-    <Compile Include="Code\Classes\UnitOfWork.cs" />
     <Compile Include="Code\Helpers\ApplicationHelper.cs" />
     <Compile Include="Code\Helpers\ConversionHelper.cs" />
-    <Compile Include="Code\Helpers\DBContext.cs" />
     <Compile Include="Code\Helpers\LogHelper.cs" />
     <Compile Include="Code\Helpers\SystemDataHelper.cs" />
     <Compile Include="Code\Helpers\UserHelper.cs" />
@@ -230,11 +224,6 @@
     </Compile>
     <Compile Include="Code\API\LogController.cs" />
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Code\Entity\ApplicationEntity.cs" />
-    <Compile Include="Code\Entity\ApplicationRoleEntry.cs" />
-    <Compile Include="Code\Entity\AppUserRoleEntry.cs" />
-    <Compile Include="Code\Entity\RolesEntry.cs" />
-    <Compile Include="Code\Entity\UserEntry.cs" />
     <Compile Include="Models\ApplicationHomeModel.cs" />
     <Compile Include="Models\Application\ApplicationList.cs" />
     <Compile Include="Models\Application\ApplicationModel.cs" />
@@ -383,6 +372,12 @@
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Wlog.Library\Wlog.Library.csproj">
+      <Project>{e331b212-3af2-468d-9a5e-519162b2c8d1}</Project>
+      <Name>Wlog.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -397,7 +392,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>59240</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

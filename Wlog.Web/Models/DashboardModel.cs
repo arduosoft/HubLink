@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Wlog.Web.Code.Classes;
+using Wlog.BLL.Classes;
 
 namespace Wlog.Web.Models
 {
     public class DashboardModel
     {
-        public int ErrorCount { get; set; }
-        public int LogCount { get; set; }
-        public int WarnCount { get; set; }
-        public int InfoCount { get; set; }
+        public long ErrorCount { get; set; }
+        public long LogCount { get; set; }
+        public long WarnCount { get; set; }
+        public long InfoCount { get; set; }
 
         public List<QueueLoad> QueueLoad { get; set; }
 

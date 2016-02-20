@@ -5,12 +5,16 @@ using System.Web;
 using System.Web.Mvc;
 using Wlog.Web.Models;
 using Wlog.Web.Code.Helpers;
-using Wlog.Web.Code.Classes;
 using System.Web.Security;
 using PagedList;
 using Wlog.Web.Models.User;
 using Wlog.Web.Code.Authentication;
 using Wlog.Web.Models.Application;
+using Wlog.BLL.Entities;
+using Wlog.Library.BLL.Reporitories;
+using Wlog.BLL.Classes;
+using Wlog.Library.BLL.Classes;
+using Wlog.Library.BLL.Enums;
 
 namespace Wlog.Web.Controllers
 {
@@ -19,36 +23,57 @@ namespace Wlog.Web.Controllers
         public ActionResult Index()
         {
             string username = Membership.GetUser().UserName;
-            List<int> apps = UserHelper.GetAppsIdsForUser(username);
-            using (UnitOfWork uow = new UnitOfWork())
+            List<Guid> apps = UserHelper.GetAppsIdsForUser(username);
+            LogsSearchSettings logSearch = new LogsSearchSettings()
             {
-                
+                Applications = apps,
+                PageNumber = 1,
+                PageSize = 10
 
-                DashboardModel dm = new DashboardModel();
-                dm.ErrorCount = uow.Query<LogEntity>().Count(p => p.Level != null && p.Level.ToLower().Contains("err"));
-                dm.InfoCount = uow.Query<LogEntity>().Count(p => p.Level != null && p.Level.ToLower().Contains("info"));
-                dm.LogCount = uow.Query<LogEntity>().Count();
-                dm.WarnCount = uow.Query<LogEntity>().Count(p => p.Level != null && p.Level.ToLower().Contains("warn"));
-                dm.LastTen = ConversionHelper.ConvertLogEntityToMessage(uow, uow.Query<LogEntity>().Where(p=> apps.Contains(p.ApplictionId)).OrderByDescending(p => p.SourceDate).Take(10).ToList());
+            };
+            IPagedList<LogEntity> lastestLog = RepositoryContext.Current.Logs.SeachLog(logSearch);
+
+
+
+            DashboardModel dm = new DashboardModel();
+            dm.ErrorCount = RepositoryContext.Current.Logs.CountByLevel(StandardLogLevels.ERROR );
+            dm.InfoCount = RepositoryContext.Current.Logs.CountByLevel(StandardLogLevels.ERROR);
+            dm.LogCount = RepositoryContext.Current.Logs.CountByLevel(StandardLogLevels.ALL_LEVELS);
+            dm.WarnCount = RepositoryContext.Current.Logs.CountByLevel(StandardLogLevels.WARNING);
+
+
+
+            dm.LastTen = ConversionHelper.ConvertLogEntityToMessage(lastestLog.ToList());
                 dm.QueueLoad = LogQueue.Current.QueueLoad;
                 dm.AppLastTen = new List<MessagesListModel>();
 
+            IPagedList<LogEntity> logOfCurrentApp;
                 foreach (ApplicationEntity app in UserHelper.GetAppsForUser(username))
                 {
+
+                        logSearch = new LogsSearchSettings()
+                        {
+                            PageNumber = 1,
+                            PageSize = 10
+                           
+                        };
+                     logSearch.Applications.Add(app.IdApplication);
+                     logOfCurrentApp = RepositoryContext.Current.Logs.SeachLog(logSearch);
                     MessagesListModel list = new MessagesListModel();
                     list.ApplicationName = app.ApplicationName;
                     list.IdApplication = app.IdApplication;
-                    list.Messages= ConversionHelper.ConvertLogEntityToMessage(uow,uow.Query<LogEntity>().Where(p => p.ApplictionId==app.IdApplication).OrderByDescending(p => p.SourceDate).Take(10).ToList());
+
+                    list.Messages= ConversionHelper.ConvertLogEntityToMessage(logOfCurrentApp.ToList());
                     dm.AppLastTen.Add(list);
 
                 }
 
                 return View(dm);
-            }
+            
         }
 
 
-        public ActionResult Logs(int? applicationId,string level,string sortOrder,string serchMessage,int? page, int? pageSize)
+        public ActionResult Logs(Guid? applicationId,string level,string sortOrder,string serchMessage,int? page, int? pageSize)
         {
 
             LogListModel mm = new LogListModel()
@@ -91,7 +116,7 @@ namespace Wlog.Web.Controllers
 
         //Get Private/EditUser/1
         [HttpGet]
-        public ActionResult EditUser(int Id)
+        public ActionResult EditUser(Guid Id)
         {
             UserEntity user = UserHelper.GetById(Id);
             ViewBag.Title = user.Username;
@@ -112,31 +137,21 @@ namespace Wlog.Web.Controllers
                 try
                 {
                     UserHelper.UpdateUser(model.DataUser);
-                    using (UnitOfWork uow = new UnitOfWork())
+
+                 
+                    List<AppUserRoleEntity> newRoleList = new List<AppUserRoleEntity>();
+                    foreach (UserApps app in model.Apps)
                     {
-                        uow.BeginTransaction();
-                        foreach (UserApps app in model.Apps)
+                           
+                        if (app.RoleId != Guid.Empty)
                         {
-                            AppUserRoleEntity e = uow.Query<AppUserRoleEntity>().Where(x => x.User.Id == model.DataUser.Id && x.Application.IdApplication == app.IdApplication).FirstOrDefault();
-                            if (app.RoleId == 0)
-                            {
-                                if (e != null)
-                                    uow.Delete(e);
-                            }
-                            else
-                            {
-                                if (e != null)
-                                {
-                                    uow.SaveOrUpdate(e);
-                                }
-                                else
-                                {
-                                    uow.SaveOrUpdate(new AppUserRoleEntity { User = model.DataUser, Application = new ApplicationEntity { IdApplication = app.IdApplication }, Role = new RolesEntity { Id = app.RoleId } });
-                                }
-                            }
+                                newRoleList.Add(new AppUserRoleEntity { UserId = model.DataUser.Id, ApplicationId = app.IdApplication, RoleId = app.RoleId });
                         }
-                        uow.Commit();
                     }
+
+                    RepositoryContext.Current.Applications.ResetUserRoles(model.DataUser,newRoleList);
+                       
+
                     return RedirectToAction("ListUsers");
                 }
                 catch (Exception e)
@@ -192,7 +207,7 @@ namespace Wlog.Web.Controllers
 
         //Get Private/DeleteUser/1
         [HttpGet]
-        public ActionResult DeleteUser(int Id)
+        public ActionResult DeleteUser(Guid Id)
         {
 
             UserEntity User = UserHelper.GetById(Id);
@@ -252,18 +267,16 @@ namespace Wlog.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                using (UnitOfWork uow = new UnitOfWork())
-                {
-                    uow.BeginTransaction();
+                
+                  
                     ApplicationEntity entity = new ApplicationEntity();
                     entity.ApplicationName = model.ApplicationName;
                     entity.IsActive = true;
                     entity.StartDate = model.StartDate;
                     entity.PublicKey = model.PublicKey;
                     entity.PublicKey = Guid.NewGuid();
-                    uow.SaveOrUpdate(entity);
-                    uow.Commit();
-                }
+                RepositoryContext.Current.Applications.Save(entity);
+
                 return RedirectToAction("ListApps");
             }
             else
@@ -277,7 +290,7 @@ namespace Wlog.Web.Controllers
 
         //Get Private/EditApp/1
         [HttpGet]
-        public ActionResult EditApp(int Id)
+        public ActionResult EditApp(Guid Id)
         {
             return View(ApplicationHelper.GetById(Id));
         }
@@ -290,19 +303,16 @@ namespace Wlog.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                using(UnitOfWork uow=new UnitOfWork())
-                {
-                    uow.BeginTransaction();
-                    ApplicationEntity entity=uow.Query<ApplicationEntity>().Where(x=>x.IdApplication==model.IdApplication).First();
+
+
+
+                ApplicationEntity entity = RepositoryContext.Current.Applications.GetById(model.IdApplication);
                     entity.ApplicationName=model.ApplicationName;
                     entity.IsActive=model.IsActive;
                     entity.StartDate=model.StartDate;
                     entity.EndDate=model.EndDate;
-                    //entity.PublicKey=model.PublicKey; Do not change this is not editable
-                    uow.SaveOrUpdate(entity);
-                    uow.Commit();
-
-                }
+                //entity.PublicKey=model.PublicKey; Do not change this is not editable
+                RepositoryContext.Current.Applications.Save(entity);
                 return RedirectToAction("ListApps");
             }
             else
@@ -314,7 +324,7 @@ namespace Wlog.Web.Controllers
 
         //Get Private/DeleteApp/1
         [HttpGet]
-        public ActionResult DeleteApp(int Id)
+        public ActionResult DeleteApp(Guid Id)
         {
             return View(ApplicationHelper.GetById(Id));
         }

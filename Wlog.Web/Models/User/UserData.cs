@@ -8,7 +8,7 @@ namespace Wlog.Web.Models.User
 {
     public class UserData
     {
-        public virtual int Id { get; set; }
+        public virtual Guid Id { get; set; }
         [Display(Name = "User name")]
         public virtual string Username { get; set; }
         public virtual string Email { get; set; }

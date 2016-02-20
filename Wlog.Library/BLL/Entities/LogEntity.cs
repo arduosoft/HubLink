@@ -4,8 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using MongoDB.Bson.Serialization.Attributes;
 
-namespace Wlog.Web.Code.Classes
+namespace Wlog.BLL.Entities
 {
     public class LogEntity
     {
@@ -16,29 +17,16 @@ namespace Wlog.Web.Code.Classes
         -StackTrace
         -potentially every ${param} defined in NLog; in practise we can take a look to https://github.com/nlog/nlog/wiki/Layout-Renderers and include what it's useful
         */
+        public virtual DateTime CreateDate { get; set; }
         public virtual DateTime UpdateDate { get; set; }
         public virtual DateTime SourceDate { get; set; }
         public  virtual string Message { get; set; }
         public virtual string Level { get; set; }
+        [BsonId]
         public  virtual Guid Uid {get;set;}
-        public virtual int ApplictionId { get; set; }
+        public virtual Guid ApplictionId { get; set; }
 
     }
 
-    public class LogEntityMap:ClassMapping<LogEntity>
-    {
-       
-    
-        public LogEntityMap()
-        {
-            Table("WL_LogEntity");
-            Schema("dbo");
-            Id(x => x.Uid);
-            Property(x => x.Message);
-            Property(x => x.Level);
-            Property(x => x.SourceDate);
-            Property(x => x.ApplictionId);
-            Property(x => x.UpdateDate);
-        }
-    }
+   
 }

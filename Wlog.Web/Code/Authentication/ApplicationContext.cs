@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Web;
-using Wlog.Web.Code.Classes;
+using Wlog.BLL.Entities;
+using Wlog.Library.BLL.Reporitories;
 
 namespace Wlog.Web.Code.Authentication
 {
@@ -15,16 +16,13 @@ namespace Wlog.Web.Code.Authentication
         public List<RolesEntity> Roles;
 
 
-        public ApplicationContext(int IdApplication)
+        public ApplicationContext(Guid IdApplication)
         {
-            using (UnitOfWork uof = new UnitOfWork())
-            {
-                this.ApplicationEntity = uof.Session.Query<ApplicationEntity>().Where(x => x.IdApplication == IdApplication).FirstOrDefault();
-                if (this.ApplicationEntity != null)
-                {
-                    this.Roles = uof.Session.Query<ApplicationRoleEntity>().Where(x => x.Application.IdApplication == IdApplication).Select(x => x.Role).ToList();
-                }
-            }
+
+            this.ApplicationEntity = RepositoryContext.Current.Applications.GetById(IdApplication);
+            this.Roles = RepositoryContext.Current.Roles.GetAllApplicationRoles(this.ApplicationEntity);
+
+            
            
         }
 
@@ -37,8 +35,8 @@ namespace Wlog.Web.Code.Authentication
                 if (_current != null)
                     return _current;
 
-                int idSessionApp;
-                if (int.TryParse(HttpContext.Current.Cache["AppId_" + HttpContext.Current.Session.SessionID] as string, out idSessionApp))
+                Guid idSessionApp;
+                if (Guid.TryParse(HttpContext.Current.Cache["AppId_" + HttpContext.Current.Session.SessionID] as string, out idSessionApp))
                 {
                     _current = new ApplicationContext(idSessionApp);
                     HttpContext.Current.Cache["ApplicationContext" + HttpContext.Current.Session.SessionID] = _current;

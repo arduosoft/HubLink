@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Wlog.Web.Code.Classes;
-using Wlog.Web.Code.Helpers;
+using Wlog.BLL.Entities;
+using Wlog.Library.BLL.Reporitories;
 
-namespace Wlog.Web.Code.Authentication
+namespace Wlog.BLL.Classes
 {
     public class UserProfileContext
     {
@@ -16,24 +16,24 @@ namespace Wlog.Web.Code.Authentication
         public UserProfileContext()
         {
           
-            this.User = UserHelper.GetByUsername(HttpContext.Current.User.Identity.Name);
+            this.User = RepositoryContext.Current.Users.GetByUsername(HttpContext.Current.User.Identity.Name);
             if (this.User.IsAdmin)
             {
                 this.IsEditorUser = true;
             }
             else
            {
-                int count;
-                using (UnitOfWork uow = new UnitOfWork())
-                {
-                    count = uow.Query<AppUserRoleEntity>().Where(x => x.User.Id == this.User.Id && (x.Role.RoleName == Constants.Roles.Admin || x.Role.RoleName == Constants.Roles.Write)).Count();
-                    if (count > 0)
-                    {
-                        this.IsEditorUser = true;
-                    }
-                    else
-                        this.IsEditorUser = false;
-                }
+                //int count;
+                //using (UnitOfWork uow = new UnitOfWork())
+                //{
+                //    count = uow.Query<AppUserRoleEntity>().Where(x => x.User.Id == this.User.Id && (x.Role.RoleName == Constants.Roles.Admin || x.Role.RoleName == Constants.Roles.Write)).Count();
+                //    if (count > 0)
+                //    {
+                //        this.IsEditorUser = true;
+                //    }
+                //    else
+                //        this.IsEditorUser = false;
+                //}
             }
         }
 

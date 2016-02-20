@@ -1,10 +1,7 @@
 ﻿using PagedList;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-using Wlog.Web.Code.Classes;
+using Wlog.BLL.Entities;
 
 namespace Wlog.Web.Models
 {
@@ -12,7 +9,7 @@ namespace Wlog.Web.Models
     public class LogListModel
     {
 
-        public int? ApplicationId { get; set; }
+        public Guid? ApplicationId { get; set; }
         public string Level { get; set; }
         public string SortOrder { get; set; }
         public string SerchMessage { get; set; }

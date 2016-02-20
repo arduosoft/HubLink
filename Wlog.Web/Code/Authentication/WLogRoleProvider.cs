@@ -2,12 +2,13 @@
 using NHibernate.Linq;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
 using System.Web.Security;
-using Wlog.Web.Code.Classes;
 using Wlog.Web.Code.Helpers;
+using Wlog.BLL.Entities;
+using Wlog.Library.BLL.Reporitories;
+
 namespace Wlog.Web.Code.Authentication
 {
     public class WLogRoleProvider:RoleProvider
@@ -57,13 +58,12 @@ namespace Wlog.Web.Code.Authentication
         public override string[] GetRolesForUser(string username)
         {
             List<string> Roles = new List<string>();
-            using (UnitOfWork uow = new UnitOfWork())
-            { 
-                UserEntity u = uow.Query<UserEntity>().Where(x => x.Username == username).FirstOrDefault();
-                    if (u != null && u.IsAdmin)
-                        Roles.Add(ADMIN);
+
+            UserEntity u = RepositoryContext.Current.Users.GetByUsername(username);
+            if (u != null && u.IsAdmin)
+                Roles.Add(ADMIN);
                 
-            }
+           
             Roles.Add(USER);
             return Roles.ToArray();
         }

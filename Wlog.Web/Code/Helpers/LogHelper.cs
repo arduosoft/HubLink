@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Security;
-using Wlog.Web.Code.Classes;
-using Wlog.Web.Models;
+using Wlog.BLL.Entities;
+using Wlog.Library.BLL.Classes;
+using Wlog.Library.BLL.Reporitories;
 
 namespace Wlog.Web.Code.Helpers
 {
@@ -13,49 +14,34 @@ namespace Wlog.Web.Code.Helpers
     {
 
 
-        public static IPagedList<LogEntity> GetLogs(int? applicationId, string sortOrder, string serchMessage, int pageSize, int pageNumber)
+        public static IPagedList<LogEntity> GetLogs(Guid? applicationId, string sortOrder, string serchMessage, int pageSize, int pageNumber)
         {
            
-            List<int> alloweApps=UserHelper.GetAppsIdsForUser(Membership.GetUser().UserName);
 
-            using (UnitOfWork uow = new UnitOfWork())
+
+            List<Guid> alloweApps=UserHelper.GetAppsIdsForUser(Membership.GetUser().UserName);
+            if (applicationId.HasValue)
             {
-                IEnumerable<LogEntity> query = uow.Query<LogEntity>();
-
-              
-
-                if(!String.IsNullOrWhiteSpace(serchMessage))
+                if (alloweApps.Contains(applicationId.Value))
                 {
-                    query = query.Where(p => 
-                        (serchMessage!=null &&p.Message != null && p.Message.ToLower().Contains(serchMessage))
-                        &&
-                        (applicationId!=null && p.ApplictionId==applicationId)
-                        &&
-                        (alloweApps.Contains(p.ApplictionId))
-                        );
+                    alloweApps.Clear();
+                    alloweApps.Add(applicationId.Value);
                 }
-
-               
-                //query = query.Skip((pageNumber - 1) * pageSize);
-                //query = query.Take(pageSize);
-
-
-                PagedList<LogEntity> result = new PagedList<LogEntity>(query, pageNumber, pageSize);
-            
-                 return result;
             }
+
+            LogsSearchSettings settings = new LogsSearchSettings()
+            {
+                Applications=alloweApps,
+                SerchMessage= serchMessage,
+                PageNumber=pageNumber,
+                PageSize=pageSize
+            };
+
+            return RepositoryContext.Current.Logs.SeachLog(settings);
         }
 
-        public static void AppendLog(UnitOfWork uow,LogEntity log)
-        {
-            
-                uow.SaveOrUpdate(log);
-            
-        }
+       
 
-        internal static void AppendLog(UnitOfWork uow, LogMessage log)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Wlog.Web.Code.Helpers;
+using Wlog.DAL.NHibernate.Helpers;
+using Wlog.BLL.Entities;
+using Wlog.Library.BLL.Reporitories;
 
-namespace Wlog.Web.Code.Classes
+namespace Wlog.BLL.Classes
 {
     public class LogQueue
     {
@@ -54,6 +56,8 @@ namespace Wlog.Web.Code.Classes
             return result;
         }
 
+
+
         public void Run()
         {
 
@@ -70,9 +74,9 @@ namespace Wlog.Web.Code.Classes
 
                         LogMessage log = LogQueue.Current.Dequeue();
 
+
                         PersistLog(log);
 
-                       
                     }
                     uow.Commit();
                 }
@@ -81,20 +85,18 @@ namespace Wlog.Web.Code.Classes
         }
 
 
-        public void PersistLog( LogMessage log)
+       
+        public void PersistLog(LogMessage log)
         {
-            using (UnitOfWork uow = new UnitOfWork())
-            {
-                uow.BeginTransaction();
-                PersistLog(uow, log);
-                uow.Commit();
-            }
-            
-        }
-        public void PersistLog(UnitOfWork uow ,LogMessage log)
-        {
-            LogEntity entToSave = ConversionHelper.ConvertLog(uow, log);
-            LogHelper.AppendLog(uow, entToSave);
+
+            LogEntity ent = new LogEntity();
+            ent.ApplictionId = RepositoryContext.Current.Applications.GetByApplicationKey(log.ApplicationKey).IdApplication;
+            ent.Level = log.Level;
+            ent.Message = log.Message;
+            ent.SourceDate = log.SourceDate;
+            ent.UpdateDate = DateTime.Now;
+            ent.CreateDate = DateTime.Now;
+            RepositoryContext.Current.Logs.Save(ent);
         }
 
         private void AppendLoadValue(long count, int maxQueueSize)
@@ -125,5 +127,7 @@ namespace Wlog.Web.Code.Classes
                 return _current;
             }
         }
+
+        public object LogHelper { get; private set; }
     }
 }

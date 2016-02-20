@@ -5,9 +5,12 @@ using System.Web;
 using System.Web.Mvc;
 using Wlog.Web.Models;
 using Wlog.Web.Code.Authentication;
-using Wlog.Web.Code.Classes;
 using Wlog.Web.Code.Helpers;
 using System.Web.Security;
+using Wlog.BLL.Entities;
+using Wlog.DAL.NHibernate.Helpers;
+using Wlog.BLL.Classes;
+using Wlog.Library.BLL.Reporitories;
 
 namespace Wlog.Web.Controllers
 {
@@ -23,20 +26,11 @@ namespace Wlog.Web.Controllers
             if (UserProfileContext.Current.User != null)
             {
                 WLogRoleProvider roleProvider = new WLogRoleProvider();
-                using (UnitOfWork uof = new UnitOfWork())
-                { 
-                    List<ApplicationEntity> entity;
-                        if (roleProvider.IsUserInRole(Membership.GetUser().UserName, "ADMIN"))
-                        {
-                            entity = uof.Query<ApplicationEntity>().ToList();
-                        }
-                        else
-                        {
-                            entity = uof.Query<AppUserRoleEntity>().Where(x => x.User.Id == UserProfileContext.Current.User.Id).Select(x => x.Application).Where(x => x.IsActive == true).ToList();
-                        }
-                        result.AddRange(ConversionHelper.ConvertListEntityToListApplicationHome(entity));
-                    }
-                
+
+                UserEntity currentUser=RepositoryContext.Current.Users.GetByUsername(Membership.GetUser().UserName);
+                List<ApplicationEntity> apps = RepositoryContext.Current.Applications.GetAppplicationForUser(currentUser);
+                result.AddRange(ConversionHelper.ConvertListEntityToListApplicationHome(apps));
+
             }
             return View(result);
         }

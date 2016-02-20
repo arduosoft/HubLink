@@ -8,7 +8,7 @@ using System.Security.Principal;
 using System.Threading;
 using System.Web;
 using System.Web.Http;
-using Wlog.Web.Code.Classes;
+using Wlog.BLL.Classes;
 
 namespace Wlog.Web.Code.API
 {

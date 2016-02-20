@@ -4,10 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using NHibernate.Linq;
-using Wlog.Web.Code.Helpers;
 
 
-namespace Wlog.Web.Code.Classes
+namespace Wlog.DAL.NHibernate.Helpers
 {
     public interface IUnitOfWork
     {
@@ -15,7 +14,7 @@ namespace Wlog.Web.Code.Classes
         void Commit();
     }
 
-    public class UnitOfWork : IUnitOfWork,IDisposable
+    internal class UnitOfWork : IUnitOfWork,IDisposable
     {
         
         private ITransaction _transaction;
