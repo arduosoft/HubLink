@@ -12,7 +12,7 @@ namespace Wlog.Test.Tests
         [Fact]
         public void InitRepo()
         {
-            RepositoryContext.Current.Users.GetById(new Guid(""));
+            
         }
     }
 }
