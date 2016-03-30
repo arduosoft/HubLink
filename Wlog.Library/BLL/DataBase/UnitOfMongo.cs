@@ -41,7 +41,7 @@ namespace Wlog.Library.BLL.DataBase
         {
 
             collection = GetCollection(entity);
-            if (entity.Id == null || entity.Id==(new Guid("{00000000-0000-0000-0000-000000000000}")))
+            if (entity.Id == null || (new Guid("{00000000-0000-0000-0000-000000000000}").CompareTo(entity.Id)==0))
             {
                 collection.InsertOne(entity);
             }
