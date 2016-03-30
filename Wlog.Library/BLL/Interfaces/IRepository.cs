@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Wlog.Library.BLL.Interfaces
 {
-    public interface IRepository:IDisposable
+    public interface IRepository
     {
     }
 }

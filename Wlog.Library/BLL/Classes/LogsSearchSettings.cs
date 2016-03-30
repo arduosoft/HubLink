@@ -14,6 +14,10 @@ namespace Wlog.Library.BLL.Classes
         public LogsFields OrderBy { get; set; }
         public SortDirection SortBy { get; set; }
 
+        public LogsSearchSettings()
+        {
+            this.Applications = new List<Guid>();
+        }
 
     }
 }

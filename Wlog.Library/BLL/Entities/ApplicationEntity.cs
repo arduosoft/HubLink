@@ -5,13 +5,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using MongoDB.Bson.Serialization.Attributes;
+using Wlog.Library.BLL.Interfaces;
 
 namespace Wlog.BLL.Entities
 {
-    public class ApplicationEntity
+    public class ApplicationEntity : IEntityBase
     {
 
-        [BsonId]
+        
+        public override Guid Id { get { return this.IdApplication; } set { this.Id = value; } }
         public virtual Guid IdApplication { get; set; }
 
         public virtual string ApplicationName { get; set; }
@@ -28,12 +30,10 @@ namespace Wlog.BLL.Entities
 
         public ApplicationEntity()
         {
-            this.IdApplication = Guid.NewGuid();
             this.ApplicationName = "Default";
             this.IsActive = true;
             this.StartDate = DateTime.Now;
         }
-
 
     }
 

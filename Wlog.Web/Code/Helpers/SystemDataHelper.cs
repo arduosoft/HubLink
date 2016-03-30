@@ -41,8 +41,6 @@ namespace Wlog.Web.Code.Helpers
 
             }
 
-
-
         }
 
         public static void InsertRoleIfNotExists(string Rolename)
@@ -53,7 +51,6 @@ namespace Wlog.Web.Code.Helpers
             {
                 RepositoryContext.Current.Roles.Save(new RolesEntity()
                 {
-                    Id=Guid.NewGuid(),
                     RoleName=Rolename
                 });
             }

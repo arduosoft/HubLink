@@ -5,13 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using MongoDB.Bson.Serialization.Attributes;
+using Wlog.Library.BLL.Interfaces;
 
 namespace Wlog.BLL.Entities
 {
-    public class RolesEntity
+    public class RolesEntity : IEntityBase
     {
-        [BsonId]
-        public virtual Guid Id { get; set; }
+
+        public override Guid Id { get; set; }
         public virtual string RoleName { get; set; }
 
     }

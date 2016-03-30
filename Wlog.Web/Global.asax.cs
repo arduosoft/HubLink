@@ -41,7 +41,7 @@ namespace Wlog.Web
 
 
             //Apply schema changes
-            RepositoryContext.Current.System.ApplySchemaChanges();
+            //RepositoryContext.Current.System.ApplySchemaChanges();
 
            
             JobStorage.Current=new MemoryStorage();
@@ -54,8 +54,8 @@ namespace Wlog.Web
 
             SystemDataHelper.InsertRoles();
             SystemDataHelper.EnsureSampleData();
-           
 
+ 
 
         }
 

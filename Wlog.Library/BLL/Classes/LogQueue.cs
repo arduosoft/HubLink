@@ -6,13 +6,16 @@ using System.Web;
 using Wlog.DAL.NHibernate.Helpers;
 using Wlog.BLL.Entities;
 using Wlog.Library.BLL.Reporitories;
+using Wlog.Library.BLL.Interfaces;
+using Wlog.Library.BLL.DataBase;
 
 namespace Wlog.BLL.Classes
 {
-    public class LogQueue
+    public class LogQueue : IRepository
     {
         private Queue<LogMessage> queque = new Queue<LogMessage>();
         public List<QueueLoad> QueueLoad { get; set; }
+        private static UnitFactory _UnitFactory=new UnitFactory();
 
         public int MaxProcessedItems { get; set; }
         public int MaxQueueSize { get; set; }
@@ -65,7 +68,7 @@ namespace Wlog.BLL.Classes
 
             if (LogQueue.Current.Count > 0)
             {
-                using (UnitOfWork uow = new UnitOfWork())
+                using (IUnitOfWork uow = _UnitFactory.GetUnit(this))
                 {
                     uow.BeginTransaction();
 
@@ -99,7 +102,7 @@ namespace Wlog.BLL.Classes
             RepositoryContext.Current.Logs.Save(ent);
         }
 
-        private void AppendLoadValue(long count, int maxQueueSize)
+        public void AppendLoadValue(long count, int maxQueueSize)
         {
             if (this.QueueLoad.Count > 100)
             {

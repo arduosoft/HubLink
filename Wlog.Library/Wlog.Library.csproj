@@ -30,9 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+    <Reference Include="Iesi.Collections">
       <HintPath>..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="MongoDB.Bson, Version=2.2.3.3, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MongoDB.Bson.2.2.3\lib\net45\MongoDB.Bson.dll</HintPath>
@@ -55,6 +54,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -74,30 +74,29 @@
     <Compile Include="BLL\Classes\SearchSettingsBase.cs" />
     <Compile Include="BLL\Classes\UserProfileContext.cs" />
     <Compile Include="BLL\Classes\UserSearchSettings.cs" />
+    <Compile Include="BLL\Configuration\Repository.cs" />
+    <Compile Include="BLL\Configuration\RepositoryCollection.cs" />
+    <Compile Include="BLL\Configuration\RepositoryConfiguration.cs" />
+    <Compile Include="BLL\DataBase\DBContextFactory.cs" />
+    <Compile Include="BLL\DataBase\MongoContext.cs" />
+    <Compile Include="BLL\DataBase\UnitFactory.cs" />
+    <Compile Include="BLL\DataBase\UnitOfMongo.cs" />
+    <Compile Include="BLL\DataBase\UnitOfNhibernate.cs" />
     <Compile Include="BLL\Enums\ApplicationFields.cs" />
     <Compile Include="BLL\Enums\LogsFields.cs" />
     <Compile Include="BLL\Enums\RolesFields.cs" />
     <Compile Include="BLL\Enums\SortDirection.cs" />
     <Compile Include="BLL\Enums\StandardLogLevels.cs" />
     <Compile Include="BLL\Enums\UserFields.cs" />
+    <Compile Include="BLL\Interfaces\IEntityBase.cs" />
+    <Compile Include="BLL\Interfaces\IUnitOfWork.cs" />
     <Compile Include="BLL\Reporitories\ApplicationRepository.cs" />
-    <Compile Include="BLL\Reporitories\Implementations\MongoDB\MongoDBApplicationRepository.cs" />
-    <Compile Include="BLL\Reporitories\Implementations\MongoDB\MongoDBLogRepository.cs" />
-    <Compile Include="BLL\Reporitories\Implementations\MongoDB\MongoDBRolesRepository.cs" />
-    <Compile Include="BLL\Reporitories\Implementations\MongoDB\MongoDBSystemRepository.cs" />
-    <Compile Include="BLL\Reporitories\Implementations\MongoDB\MongoDBUserRepository.cs" />
-    <Compile Include="BLL\Reporitories\Implementations\Nhibernate\NHibernateApplicationRepository.cs" />
-    <Compile Include="BLL\Reporitories\Implementations\Nhibernate\NHibernateLogRepository.cs" />
-    <Compile Include="BLL\Reporitories\Implementations\Nhibernate\NHibernateRolesRepository.cs" />
-    <Compile Include="BLL\Reporitories\Implementations\Nhibernate\NHibernateSystemRepository.cs" />
-    <Compile Include="BLL\Reporitories\Implementations\Nhibernate\NHibernateUserRepository.cs" />
     <Compile Include="BLL\Reporitories\LogRepository.cs" />
     <Compile Include="BLL\Reporitories\RepositoryContext.cs" />
     <Compile Include="BLL\Reporitories\RolesRepository.cs" />
     <Compile Include="BLL\Reporitories\SystemRepository.cs" />
     <Compile Include="BLL\Reporitories\UserRepository.cs" />
-    <Compile Include="DAL\Nhibernate\Helpers\DBContext.cs" />
-    <Compile Include="DAL\Nhibernate\Helpers\UnitOfWork.cs" />
+    <Compile Include="BLL\DataBase\NHibernateContext.cs" />
     <Compile Include="BLL\Entities\ApplicationEntity.cs" />
     <Compile Include="BLL\Entities\ApplicationRoleEntry.cs" />
     <Compile Include="BLL\Entities\AppUserRoleEntry.cs" />

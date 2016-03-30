@@ -27,7 +27,7 @@ namespace Wlog.TestApp
                 Message="TEST MANUAL MESSAGE" + DateTime.Now,
                 SourceDate=DateTime.Now,
                 Level="Error",
-               ApplicationKey= "{8C075ED0-45A7-495A-8E09-3A98FD6E8248}"
+                ApplicationKey = "{FF99EE02-1E88-44FF-B0A4-8DF8D2F3B742}"
                 
             }));
 

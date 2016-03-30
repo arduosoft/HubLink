@@ -20,7 +20,7 @@
                 Application: 
                   @Html.DropDownListFor(m=>m.ApplicationId, new SelectList(Model.Apps, 
                                "IdApplication", "ApplicationName", 
-                               Model.ApplicationId==0 ? null: Model.ApplicationId))
+                               Model.ApplicationId))
                 Find Message: @Html.TextBox("SerchMessage", Model.SerchMessage)
                 <input type="submit" value="Search" class="btn btn-default" />
             </p>
