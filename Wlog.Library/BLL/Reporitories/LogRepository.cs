@@ -47,17 +47,13 @@ namespace Wlog.Library.BLL.Reporitories
             using (IUnitOfWork uow = _UnitFactory.GetUnit(this))
             {
                 uow.BeginTransaction();
-                IEnumerable<LogEntity> query = uow.Query<LogEntity>();
+                IEnumerable<LogEntity> query = uow.Query<LogEntity>().Where(x=>logsSearchSettings.Applications.Contains(x.ApplictionId));
 
 
 
                 if (!String.IsNullOrWhiteSpace(logsSearchSettings.SerchMessage))
                 {
-                    query = query.Where(p =>
-                        (logsSearchSettings.SerchMessage != null && p.Message != null && p.Message.ToLower().Contains(logsSearchSettings.SerchMessage))
-                        &&
-                        (logsSearchSettings.Applications.Contains(p.ApplictionId))
-                        );
+                    query = query.Where(p =>(logsSearchSettings.SerchMessage != null && p.Message != null && p.Message.ToLower().Contains(logsSearchSettings.SerchMessage)));
 
                 }
 

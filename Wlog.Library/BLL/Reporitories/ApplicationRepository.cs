@@ -27,6 +27,7 @@ namespace Wlog.Library.BLL.Reporitories
             ApplicationEntity app;
             using (IUnitOfWork uow = _UnitFactory.GetUnit(this))
             {
+                uow.BeginTransaction();
                 app = uow.Query<ApplicationEntity>().Where(x => x.IdApplication.Equals(id)).FirstOrDefault();
                 return app;
             }
@@ -34,13 +35,39 @@ namespace Wlog.Library.BLL.Reporitories
 
         public void ResetUserRoles(UserEntity entity, List<AppUserRoleEntity> role)
         {
+            try
+            {
+                Guid idapp=role.Select(x=>x.ApplicationId).Distinct().First();
+                using (IUnitOfWork uow = _UnitFactory.GetUnit(this))
+                {
+                    uow.BeginTransaction();
+                    List<AppUserRoleEntity> deleterole = uow.Query<AppUserRoleEntity>().Where(x => x.UserId.Equals(entity.Id) && x.ApplicationId.Equals(idapp)).ToList();
+                    foreach (AppUserRoleEntity del in deleterole)
+                    {
+                        uow.Delete(del);
+                    }
+
+                    foreach (AppUserRoleEntity rol in role)
+                    {
+                        uow.SaveOrUpdate(rol);
+                    }
+
+                    uow.Commit();
+
+                }
+            }
+            catch (Exception err)
+            {
+                //log here
+            }
         }
 
         public IPagedList<ApplicationEntity> Search(ApplicationSearchSettings searchSettings)
         {
+            List<ApplicationEntity> entity;
             using (IUnitOfWork uow = _UnitFactory.GetUnit(this))
             {
-                List<ApplicationEntity> entity;
+                uow.BeginTransaction();
                 if (string.IsNullOrEmpty(searchSettings.SerchFilter))
                 {
                     entity = uow.Query<ApplicationEntity>().OrderBy(x => x.ApplicationName).ToList();
@@ -58,7 +85,7 @@ namespace Wlog.Library.BLL.Reporitories
                 //}
             }
 
-            return null;
+            return new StaticPagedList<ApplicationEntity>(entity, searchSettings.PageNumber, searchSettings.PageSize, entity.Count);
         }
 
         public void Delete(ApplicationEntity app)
