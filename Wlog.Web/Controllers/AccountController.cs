@@ -4,8 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using Wlog.BLL.Classes;
+using Wlog.BLL.Entities;
+using Wlog.Library.BLL.Reporitories;
 using Wlog.Web.Code.Authentication;
-using Wlog.Web.Code.Classes;
 using Wlog.Web.Code.Helpers;
 using Wlog.Web.Models;
 using Wlog.Web.Models.User;
@@ -97,16 +99,13 @@ namespace Wlog.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                using (UnitOfWork uow = new UnitOfWork())
-                {
-                    uow.BeginTransaction();
-                    UserEntity entity = UserHelper.GetByUsername(User.Identity.Name);
+               
+                    UserEntity entity = RepositoryContext.Current.Users.GetByUsername(User.Identity.Name);
                     entity.Email = model.address;
                     entity.LastActivityDate = DateTime.Now;
-                    uow.SaveOrUpdate(entity);
-                    uow.Commit();
-                }
-                UserProfileContext.Current.Refresh();
+                RepositoryContext.Current.Users.Save(entity);
+
+              UserProfileContext.Current.Refresh();
                 return RedirectToAction("Index", "Private");
             }
             else

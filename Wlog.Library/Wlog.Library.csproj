@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E331B212-3AF2-468D-9A5E-519162B2C8D1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Wlog.Library</RootNamespace>
+    <AssemblyName>Wlog.Library</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Bson, Version=2.2.3.3, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Bson.2.2.3\lib\net45\MongoDB.Bson.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=2.2.3.3, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.2.2.3\lib\net45\MongoDB.Driver.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core, Version=2.2.3.3, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.Core.2.2.3\lib\net45\MongoDB.Driver.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BLL\Classes\ApplicationSearchSettings.cs" />
+    <Compile Include="BLL\Classes\Constants.cs" />
+    <Compile Include="BLL\Classes\LogMessage.cs" />
+    <Compile Include="BLL\Classes\LogQueue.cs" />
+    <Compile Include="BLL\Classes\LogsSearchSettings.cs" />
+    <Compile Include="BLL\Classes\QueueLoad.cs" />
+    <Compile Include="BLL\Classes\SearchSettingsBase.cs" />
+    <Compile Include="BLL\Classes\UserProfileContext.cs" />
+    <Compile Include="BLL\Classes\UserSearchSettings.cs" />
+    <Compile Include="BLL\Configuration\Repository.cs" />
+    <Compile Include="BLL\Configuration\RepositoryCollection.cs" />
+    <Compile Include="BLL\Configuration\RepositoryConfiguration.cs" />
+    <Compile Include="BLL\DataBase\DBContextFactory.cs" />
+    <Compile Include="BLL\DataBase\MongoContext.cs" />
+    <Compile Include="BLL\DataBase\UnitFactory.cs" />
+    <Compile Include="BLL\DataBase\UnitOfMongo.cs" />
+    <Compile Include="BLL\DataBase\UnitOfNhibernate.cs" />
+    <Compile Include="BLL\Enums\ApplicationFields.cs" />
+    <Compile Include="BLL\Enums\LogsFields.cs" />
+    <Compile Include="BLL\Enums\RolesFields.cs" />
+    <Compile Include="BLL\Enums\SortDirection.cs" />
+    <Compile Include="BLL\Enums\StandardLogLevels.cs" />
+    <Compile Include="BLL\Enums\UserFields.cs" />
+    <Compile Include="BLL\Interfaces\IEntityBase.cs" />
+    <Compile Include="BLL\Interfaces\IUnitOfWork.cs" />
+    <Compile Include="BLL\Reporitories\ApplicationRepository.cs" />
+    <Compile Include="BLL\Reporitories\LogRepository.cs" />
+    <Compile Include="BLL\Reporitories\RepositoryContext.cs" />
+    <Compile Include="BLL\Reporitories\RolesRepository.cs" />
+    <Compile Include="BLL\Reporitories\SystemRepository.cs" />
+    <Compile Include="BLL\Reporitories\UserRepository.cs" />
+    <Compile Include="BLL\DataBase\NHibernateContext.cs" />
+    <Compile Include="BLL\Entities\ApplicationEntity.cs" />
+    <Compile Include="BLL\Entities\ApplicationRoleEntry.cs" />
+    <Compile Include="BLL\Entities\AppUserRoleEntry.cs" />
+    <Compile Include="BLL\Entities\LogEntity.cs" />
+    <Compile Include="BLL\Entities\RolesEntry.cs" />
+    <Compile Include="BLL\Entities\UserEntry.cs" />
+    <Compile Include="BLL\Interfaces\IRepository.cs" />
+    <Compile Include="DAL\Nhibernate\Mappings\ApplicationMap.cs" />
+    <Compile Include="DAL\Nhibernate\Mappings\ApplicationRoleMap.cs" />
+    <Compile Include="DAL\Nhibernate\Mappings\AppUserRoleMap.cs" />
+    <Compile Include="DAL\Nhibernate\Mappings\LogEntityMap.cs" />
+    <Compile Include="DAL\Nhibernate\Mappings\RolesMap.cs" />
+    <Compile Include="DAL\Nhibernate\Mappings\UsersMap.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DAL\Mongo\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

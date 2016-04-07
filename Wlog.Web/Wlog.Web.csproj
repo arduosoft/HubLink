@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Wlog.Web</RootNamespace>
     <AssemblyName>Wlog.Web</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -27,6 +27,7 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
     <UseGlobalApplicationHostFile />
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,6 +47,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommonMark">
+      <HintPath>..\packages\CommonMark.NET.0.11.0\lib\net45\CommonMark.dll</HintPath>
+    </Reference>
     <Reference Include="Hangfire.Core">
       <HintPath>..\packages\Hangfire.Core.1.5.3\lib\net45\Hangfire.Core.dll</HintPath>
     </Reference>
@@ -55,6 +59,9 @@
     <Reference Include="Iesi.Collections">
       <HintPath>..\packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
     </Reference>
+    <Reference Include="InfoPage">
+      <HintPath>..\packages\InfoPage.1.0.5927.41879\lib\net45\InfoPage.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
@@ -63,6 +70,12 @@
     <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="Nancy">
+      <HintPath>..\packages\Nancy.1.4.3\lib\net40\Nancy.dll</HintPath>
+    </Reference>
+    <Reference Include="Nancy.Owin">
+      <HintPath>..\packages\Nancy.Owin.1.4.1\lib\net40\Nancy.Owin.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -87,14 +100,14 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
@@ -174,6 +187,7 @@
       <Private>True</Private>
       <HintPath>..\packages\System.Spatial.5.2.0\lib\net40\System.Spatial.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.3.0\lib\WebGrease.dll</HintPath>
@@ -202,19 +216,12 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <None Include="ChangeLog.md" />
     <Compile Include="Code\Authentication\ApplicationContext.cs" />
-    <Compile Include="Code\Authentication\UserProfileContext.cs" />
     <Compile Include="Code\Authentication\WLogMembershipProvider.cs" />
     <Compile Include="Code\Authentication\WLogRoleProvider.cs" />
-    <Compile Include="Code\Classes\Constants.cs" />
-    <Compile Include="Code\Classes\LogMessage.cs" />
-    <Compile Include="Code\Classes\QueueLoad.cs" />
-    <Compile Include="Code\Entity\LogEntity.cs" />
-    <Compile Include="Code\Classes\LogQueue.cs" />
-    <Compile Include="Code\Classes\UnitOfWork.cs" />
     <Compile Include="Code\Helpers\ApplicationHelper.cs" />
     <Compile Include="Code\Helpers\ConversionHelper.cs" />
-    <Compile Include="Code\Helpers\DBContext.cs" />
     <Compile Include="Code\Helpers\LogHelper.cs" />
     <Compile Include="Code\Helpers\SystemDataHelper.cs" />
     <Compile Include="Code\Helpers\UserHelper.cs" />
@@ -230,11 +237,6 @@
     </Compile>
     <Compile Include="Code\API\LogController.cs" />
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Code\Entity\ApplicationEntity.cs" />
-    <Compile Include="Code\Entity\ApplicationRoleEntry.cs" />
-    <Compile Include="Code\Entity\AppUserRoleEntry.cs" />
-    <Compile Include="Code\Entity\RolesEntry.cs" />
-    <Compile Include="Code\Entity\UserEntry.cs" />
     <Compile Include="Models\ApplicationHomeModel.cs" />
     <Compile Include="Models\Application\ApplicationList.cs" />
     <Compile Include="Models\Application\ApplicationModel.cs" />
@@ -297,6 +299,7 @@
     <None Include="Properties\PublishProfiles\Deploy_zip.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Images\Logo.png" />
+    <Content Include="nuget.exe" />
     <Content Include="Scripts\bootstrap-confirm.js" />
     <Content Include="Scripts\bootstrap-dtpicker.min.css" />
     <Content Include="Scripts\bootstrap-dtpicker.min.js" />
@@ -382,6 +385,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Wlog.Library\Wlog.Library.csproj">
+      <Project>{e331b212-3af2-468d-9a5e-519162b2c8d1}</Project>
+      <Name>Wlog.Library</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

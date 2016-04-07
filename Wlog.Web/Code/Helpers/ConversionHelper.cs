@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Wlog.Web.Code.Classes;
+using Wlog.BLL.Classes;
+using Wlog.BLL.Entities;
+using Wlog.Library.BLL.Reporitories;
 using Wlog.Web.Models;
 
 namespace Wlog.Web.Code.Helpers
@@ -73,7 +73,7 @@ namespace Wlog.Web.Code.Helpers
         }
         #endregion
 
-        internal static LogEntity ConvertLog(UnitOfWork uow,LogMessage log)
+        internal static LogEntity ConvertLog(LogMessage log)
         {
             LogEntity result = new LogEntity();
             result.Uid = Guid.NewGuid();
@@ -86,33 +86,30 @@ namespace Wlog.Web.Code.Helpers
             try
             {
                 Guid searchGuid = new Guid(log.ApplicationKey);
-                result.ApplictionId = uow.Query<ApplicationEntity>().Where(p => p.PublicKey == searchGuid).First().IdApplication;
+               RepositoryContext.Current.Applications.GetById(searchGuid);
             }
-            catch
-            { }
+            catch(Exception err)
+            {
+                WlogLogger.Current.Error(err);
+            }
 
             return result;
 
         }
 
-        
 
-        public static List<LogMessage> ConvertLogEntityToMessage(UnitOfWork uow, List<LogEntity> list)
+        public static List<LogMessage> ConvertLogEntityToMessage(List<LogEntity> list)
         {
             List<LogMessage> result = new List<LogMessage>();
             foreach (LogEntity le in list)
             {
-                //ApplicationEntity app = uow.Query<ApplicationEntity>().Where(p => p.IdApplication == le.ApplictionId).FirstOrDefault();//TODO: Map inside entity as referenced field
+
                 LogMessage lm = new LogMessage();
-                //if (app != null)
-                //{
-                //    lm.ApplicationKey = app.PublicKey.ToString();                    
-                //}
 
                 lm.Level = le.Level;
                 lm.Message = le.Message;
                 lm.SourceDate = le.SourceDate;
-                
+
                 result.Add(lm);
             }
             return result;

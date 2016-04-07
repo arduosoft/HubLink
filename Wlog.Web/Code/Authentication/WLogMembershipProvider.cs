@@ -6,8 +6,9 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Web.Security;
-using Wlog.Web.Code.Classes;
 using Wlog.Web.Code.Helpers;
+using Wlog.BLL.Entities;
+using Wlog.Library.BLL.Reporitories;
 
 namespace Wlog.Web.Code.Authentication
 {
@@ -38,17 +39,15 @@ namespace Wlog.Web.Code.Authentication
                     OnValidatingPassword(args);
                     if (!args.Cancel)
                     {
-                        using (UnitOfWork uow = new UnitOfWork())
-                        {
-                            uow.BeginTransaction();
-                            UserEntity usr = UserHelper.GetByUsername(username);
+
+                            UserEntity usr = RepositoryContext.Current.Users.GetByUsername(username);
                             usr.Password = EncodePassword(newPassword);
                             usr.LastActivityDate = DateTime.Now;
                             usr.LastPasswordChangedDate = DateTime.Now;
-                            uow.SaveOrUpdate(usr);
-                            uow.Commit();
-                            result = true;
-                        }
+                            RepositoryContext.Current.Users.Save(usr);
+
+                        result = true;
+                        
                     }
                 }
             }
@@ -85,9 +84,7 @@ namespace Wlog.Web.Code.Authentication
             {
                 DateTime createDate = DateTime.Now;
 
-                using (UnitOfWork uow = new UnitOfWork())
-                {
-
+            
                     UserEntity user = new UserEntity();
                     user.Username = username;
                     user.Password = EncodePassword(password);
@@ -104,24 +101,25 @@ namespace Wlog.Web.Code.Authentication
 
                     try
                     {
-                        uow.SaveOrUpdate(user);
+                        RepositoryContext.Current.Users.Save(user);
 
 
-                        if (user.Id < 1)
-                            status = MembershipCreateStatus.UserRejected;
-                        else
+                        if (Guid.Empty.CompareTo( user.Id)==0 )
                         {
-                            uow.Commit();
+                            status = MembershipCreateStatus.UserRejected;
+                        }
+                        else
+                        {                            
                             status = MembershipCreateStatus.Success;
                         }
                     }
                     catch (Exception e)
                     {
                         status = MembershipCreateStatus.ProviderError;
-                        
+                        WlogLogger.Current.Error(e);
                     }
 
-                }
+                
 
                 return GetUser(username, false);
             }

@@ -10,7 +10,7 @@ namespace Wlog.Web.Models
     {
         [Required]
         [Display(Name = "Application Id")]
-        public virtual int IdApplication { get; set; }
+        public virtual Guid IdApplication { get; set; }
         [Required]
         [Display(Name = "Application name")]
         public virtual string ApplicationName { get; set; }

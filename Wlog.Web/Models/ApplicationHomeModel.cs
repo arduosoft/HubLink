@@ -8,7 +8,7 @@ namespace Wlog.Web.Models
 {
     public class ApplicationHomeModel
     {
-        public virtual int Id { get; set; }
+        public virtual Guid Id { get; set; }
         [Required]
         [Display(Name = "Application name")]
         public virtual string ApplicationName { get; set; }

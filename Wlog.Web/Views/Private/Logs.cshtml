@@ -20,7 +20,7 @@
                 Application: 
                   @Html.DropDownListFor(m=>m.ApplicationId, new SelectList(Model.Apps, 
                                "IdApplication", "ApplicationName", 
-                               Model.ApplicationId==0 ? null: Model.ApplicationId))
+                               Model.ApplicationId))
                 Find Message: @Html.TextBox("SerchMessage", Model.SerchMessage)
                 <input type="submit" value="Search" class="btn btn-default" />
             </p>
@@ -60,7 +60,7 @@
         Page @(Model.Items.PageCount < Model.Items.PageNumber ? 0 : Model.Items.PageNumber) of @Model.Items.PageCount
 
        @Html.PagedListPager(Model.Items, page => Url.Action("Logs",
-    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+    new { Model.ApplicationId,page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
 
     </div>
 
