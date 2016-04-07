@@ -35,7 +35,7 @@ namespace Wlog.Web.Code.Jobs
                     x =>
                     {
                         x.BaseUrl = "custom-info";
-                        x.ApplicationName = "My Sample Application";
+                        x.ApplicationName = "WLOG";
                     });
         }
     }
