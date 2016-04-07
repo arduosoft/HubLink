@@ -75,7 +75,21 @@ namespace Wlog.Library.BLL.Reporitories
 
         public List<RolesEntity> GetAllRoles()
         {
-            return new List<RolesEntity>();
+            List<RolesEntity> result = new List<RolesEntity>();
+            try
+            {
+                using (IUnitOfWork uow = _UnitFactory.GetUnit(this))
+                {
+                    result.AddRange(uow.Query<RolesEntity>().ToList());
+                }
+            }
+            catch (Exception err)
+            {
+                //TODO: log here:
+
+            }
+
+            return result;
         }
     }
 }

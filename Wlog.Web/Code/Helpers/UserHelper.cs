@@ -36,11 +36,12 @@ namespace Wlog.Web.Code.Helpers
         {
          
             List<UserData> data = new List<UserData>();
-            IPagedList<UserEntity> users = RepositoryContext.Current.Users.SearchUsers(new UserSearchSettings()
+            IPagedList<UserEntity> users = RepositoryContext.Current.Users.SearchUsers(new UserSearchSettings
             {
                 OrderBy=Library.BLL.Enums.UserFields.Username,
                 PageNumber=pagenumber,
-                PageSize=pagesize
+                PageSize=pagesize,
+                Username=serchFilter
             });
 
             foreach (UserEntity e in users)
