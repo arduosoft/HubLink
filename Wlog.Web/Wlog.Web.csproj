@@ -299,7 +299,6 @@
     <None Include="Properties\PublishProfiles\Deploy_zip.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Images\Logo.png" />
-    <Content Include="nuget.exe" />
     <Content Include="Scripts\bootstrap-confirm.js" />
     <Content Include="Scripts\bootstrap-dtpicker.min.css" />
     <Content Include="Scripts\bootstrap-dtpicker.min.js" />
