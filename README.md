@@ -10,6 +10,7 @@ You just need to configure your application (desktop or web) to log into wlog se
 
 ##How it work
 
+
 ###How to install server
 
 Because wlog is a simple web site installation is easy, database independent. Please see documentation to discover how to install
