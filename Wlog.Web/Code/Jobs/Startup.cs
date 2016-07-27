@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using InfoPage.Configuration;
+//using InfoPage.Configuration;
 using Microsoft.Owin;
 using Owin;
 
@@ -31,12 +31,12 @@ namespace Wlog.Web.Code.Jobs
             app.UseHangfireDashboard("/private/hangfire", options);
             app.UseHangfireServer();
 
-            InfoPageConfigurator.Configure(app,
-                    x =>
-                    {
-                        x.BaseUrl = "custom-info";
-                        x.ApplicationName = "WLOG";
-                    });
+            //InfoPageConfigurator.Configure(app,
+            //        x =>
+            //        {
+            //            x.BaseUrl = "custom-info";
+            //            x.ApplicationName = "WLOG";
+            //        });
         }
     }
 }
