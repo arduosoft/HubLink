@@ -37,7 +37,7 @@ namespace Wlog.Web.Controllers
 
             DashboardModel dm = new DashboardModel();
             dm.ErrorCount = RepositoryContext.Current.Logs.CountByLevel(StandardLogLevels.ERROR );
-            dm.InfoCount = RepositoryContext.Current.Logs.CountByLevel(StandardLogLevels.ERROR);
+            dm.InfoCount = RepositoryContext.Current.Logs.CountByLevel(StandardLogLevels.INFO);
             dm.LogCount = RepositoryContext.Current.Logs.CountByLevel(StandardLogLevels.ALL_LEVELS);
             dm.WarnCount = RepositoryContext.Current.Logs.CountByLevel(StandardLogLevels.WARNING);
 
