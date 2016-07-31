@@ -15,6 +15,8 @@ using Wlog.Library.BLL.Reporitories;
 using Wlog.BLL.Classes;
 using Wlog.Library.BLL.Classes;
 using Wlog.Library.BLL.Enums;
+using Wlog.Library.BLL.Helpers;
+using Wlog.Library.BLL.Configuration;
 
 namespace Wlog.Web.Controllers
 {
@@ -343,6 +345,7 @@ namespace Wlog.Web.Controllers
             }
             return View(model);
         }
+
 #endregion
 
         #region HElper
@@ -382,6 +385,18 @@ namespace Wlog.Web.Controllers
                 default:
                     return "Si è verificato un errore sconosciuto. Verificare l'immissione e riprovare. Se il problema persiste, contattare l'amministratore di sistema.";
             }
+        }
+        #endregion
+
+
+        #region Info
+
+        //Get Private/info
+    
+        public ActionResult Info()
+        {
+            var model = InfoHelper.GetInfoPage(InfoPageConfigurator.Configuration);
+            return View(model);
         }
         #endregion
     }
