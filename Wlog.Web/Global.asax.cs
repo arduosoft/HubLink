@@ -19,6 +19,7 @@ using Wlog.Web.Code.Helpers;
 using Wlog.BLL.Classes;
 using Wlog.DAL.NHibernate.Helpers;
 using Wlog.Library.BLL.Reporitories;
+using Wlog.Library.BLL.Configuration;
 
 namespace Wlog.Web
 {
@@ -42,6 +43,13 @@ namespace Wlog.Web
 
             //Apply schema changes
             //RepositoryContext.Current.System.ApplySchemaChanges();
+
+            //Setup infopage configuration
+
+            InfoPageConfigurator.Configure(c => {
+                c.ApplicationName = "Wlog";
+                
+            });
 
            
             JobStorage.Current=new MemoryStorage();
