@@ -7,8 +7,6 @@ using System.Linq;
 using System.Web;
 //using InfoPage.Configuration;
 using Microsoft.Owin;
-using Owin;
-
 
 //Wlog.Web.Code.Jobs.Startup
 namespace Wlog.Web.Code.Jobs
