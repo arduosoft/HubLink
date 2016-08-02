@@ -1,3 +1,6 @@
 dist
 *.suo
 /packages
+/Wlog.Test/bin/Debug
+/Wlog.Test/obj/Debug
+/Wlog.Library/bin/Debug
