@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommonMark, Version=0.1.0.0, Culture=neutral, PublicKeyToken=001ef8810438905d, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonMark.NET.0.13.4\lib\net45\CommonMark.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Iesi.Collections">
       <HintPath>..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
     </Reference>
@@ -66,7 +70,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BLL\Classes\ApplicationSearchSettings.cs" />
+    <Compile Include="BLL\Classes\AssemblyMetadata.cs" />
     <Compile Include="BLL\Classes\Constants.cs" />
+    <Compile Include="BLL\Classes\InfoPageConfiguration.cs" />
+    <Compile Include="BLL\Configuration\InfoPageConfigurator.cs" />
+    <Compile Include="BLL\Classes\InfoPageModel.cs" />
     <Compile Include="BLL\Classes\LogMessage.cs" />
     <Compile Include="BLL\Classes\LogQueue.cs" />
     <Compile Include="BLL\Classes\LogsSearchSettings.cs" />
@@ -88,6 +96,7 @@
     <Compile Include="BLL\Enums\SortDirection.cs" />
     <Compile Include="BLL\Enums\StandardLogLevels.cs" />
     <Compile Include="BLL\Enums\UserFields.cs" />
+    <Compile Include="BLL\Helpers\InfoHelper.cs" />
     <Compile Include="BLL\Interfaces\IEntityBase.cs" />
     <Compile Include="BLL\Interfaces\IUnitOfWork.cs" />
     <Compile Include="BLL\Reporitories\ApplicationRepository.cs" />

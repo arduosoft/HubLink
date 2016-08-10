@@ -192,7 +192,7 @@ namespace Wlog.Library.BLL.Reporitories
             using (IUnitOfWork uow = _UnitFactory.GetUnit(this))
             {
                 uow.BeginTransaction();
-                return uow.Query<ApplicationEntity>().Where(x => x.IdApplication.Equals(pk)).FirstOrDefault();
+                return uow.Query<ApplicationEntity>().Where(x => x.IdApplication.Equals(pk) || x.PublicKey.Equals(pk)).FirstOrDefault();
 
             }
         }

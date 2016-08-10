@@ -1,0 +1,114 @@
+﻿@model Wlog.Library.BLL.Classes.InfoPageModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutInternal.cshtml";
+    ViewBag.Title = "Info about WLOG";
+}
+<div class="row">
+    <div class="page-header">
+        <h1>@Model.Conf.ApplicationName <small>@Model.Conf.ApplicationSubtitle</small></h1>
+    </div>
+    <div>
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#info" aria-controls="info" role="tab" data-toggle="tab">Info</a></li>
+
+            <li role="presentation"><a href="#assembly" aria-controls="assembly" role="tab" data-toggle="tab">Assembly</a></li>
+           @if (Model.Conf.ShowChangeLog)
+           {
+            <li role="presentation"><a href="#changelogs" aria-controls="changelogs" role="tab" data-toggle="tab">Change log</a></li>
+           }
+
+          
+@if (Model.Conf.ShowLicense)
+{
+            <li role="presentation"><a href="#license" aria-controls="license" role="tab" data-toggle="tab">License</a></li>
+}
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="info">
+                <div class="bs-callout bs-callout-danger">
+                    <h4>Info</h4>
+                    @Model.MainAssembly.Title
+                    <i>@Model.MainAssembly.Description</i>
+
+                    <p>
+                        <label>Fullname:</label>@Model.MainAssembly.FullName
+                    </p>
+                    <p>
+                        <label>Version:</label>@Model.MainAssembly.Version
+                    </p>
+                    <p>
+                        <label>Architecture:</label>@Model.MainAssembly.Architecture
+                    </p>
+                    <p>
+                        <label>Culture:</label>@Model.MainAssembly.Culture
+                    </p>
+                    <p>
+                        <label>Copyright:</label>@Model.MainAssembly.Copyright
+                    </p>
+
+                </div>
+                
+
+                @if(Model.Conf.ShowInfo)
+                { 
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">application info</h3>
+                    </div>
+                    <div class="panel-body">
+                        @Html.Raw(Model.Info)
+                    </div>
+                </div>
+                }
+
+
+            </div>
+            <div role="tabpanel" class="tab-pane " id="assembly">
+                <h2>Assembly info</h2>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>FullName</th>
+                            <th>Version</th>
+                            <th>Architecture</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var Current in Model.LoadedAssemblies)
+                        {
+                        <tr>
+                            <td>@Current.Title</td>
+                            <td>@Current.FullName</td>
+                            <td>@Current.Version</td>
+                            <td>@Current.Architecture</td>
+
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (Model.Conf.ShowChangeLog) { 
+            <div role="tabpanel" class="tab-pane " id="changelogs">
+                <h2>Change logs</h2>
+               @Html.Raw(Model.ChangeLogs)
+            </div>
+            }
+
+            @if (Model.Conf.ShowLicense)
+            { 
+            <div role="tabpanel" class="tab-pane" id="license">
+                <h2>License</h2>
+                @Html.Raw(Model.License)
+            </div>
+           }
+        </div>
+
+    </div>
+    </div>
