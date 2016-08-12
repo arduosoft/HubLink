@@ -75,7 +75,7 @@ namespace Wlog.Web.Controllers
         }
 
 
-        public ActionResult Logs(Guid? applicationId,string level,string sortOrder,string serchMessage,int? page, int? pageSize)
+        public ActionResult Logs(Guid? applicationId,string level, string sortOrder, string sortBy, string serchMessage, int? page, int? pageSize)
         {
 
             LogListModel mm = new LogListModel()
@@ -83,6 +83,7 @@ namespace Wlog.Web.Controllers
                 ApplicationId =applicationId,
                 Level = level,
                 SortOrder = sortOrder,
+                SortBy = sortBy,
                 SerchMessage = serchMessage,               
                 
             };
@@ -93,7 +94,7 @@ namespace Wlog.Web.Controllers
             });
 
 
-            mm.Items = LogHelper.GetLogs(mm.ApplicationId, mm.SortOrder, mm.SerchMessage, 30, page??1);
+            mm.Items = LogHelper.GetLogs(mm.ApplicationId, mm.SortOrder, mm.SortBy, mm.SerchMessage, 30, page??1);
 
             
            

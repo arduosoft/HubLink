@@ -12,6 +12,7 @@ namespace Wlog.Web.Models
         public Guid? ApplicationId { get; set; }
         public string Level { get; set; }
         public string SortOrder { get; set; }
+        public string SortBy { get; set;}
         public string SerchMessage { get; set; }
         public List<ApplicationEntity> Apps { get; set; }
 

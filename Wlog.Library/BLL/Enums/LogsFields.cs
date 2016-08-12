@@ -8,6 +8,8 @@ namespace Wlog.Library.BLL.Enums
 {
     public enum LogsFields
     {
-        SourceDate
+        SourceDate,
+        Message,
+        Level
     }
 }
