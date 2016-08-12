@@ -57,6 +57,38 @@ namespace Wlog.Library.BLL.Reporitories
 
                 }
 
+                if (logsSearchSettings.SortBy == SortDirection.ASC)
+                {
+                    switch (logsSearchSettings.OrderBy)
+                    {
+                        case LogsFields.SourceDate:
+                            query = query.OrderBy(l => l.SourceDate);
+                            break;
+                        case LogsFields.Message:
+                            query = query.OrderBy(l => l.Message);
+                            break;
+                        case LogsFields.Level:
+                            query = query.OrderBy(l => l.Level);
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (logsSearchSettings.OrderBy)
+                    {
+                        case LogsFields.SourceDate:
+                            query = query.OrderByDescending(l => l.SourceDate);
+                            break;
+                        case LogsFields.Message:
+                            query = query.OrderByDescending(l => l.Message);
+                            break;
+                        case LogsFields.Level:
+                            query = query.OrderByDescending(l => l.Level);
+                            break;
+                    }
+                }
+                
+
 
                 query = query.Skip((logsSearchSettings.PageNumber - 1) * logsSearchSettings.PageSize);
                 query = query.Take(logsSearchSettings.PageSize);
