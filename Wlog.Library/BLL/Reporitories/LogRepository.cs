@@ -90,11 +90,14 @@ namespace Wlog.Library.BLL.Reporitories
                 
 
 
+
+                int count = query.Count();
+
+
                 query = query.Skip((logsSearchSettings.PageNumber - 1) * logsSearchSettings.PageSize);
                 query = query.Take(logsSearchSettings.PageSize);
 
-
-                IPagedList<LogEntity> result = new StaticPagedList<LogEntity>(query, logsSearchSettings.PageNumber, logsSearchSettings.PageSize, 1000);
+                IPagedList<LogEntity> result = new StaticPagedList<LogEntity>(query.ToList(), logsSearchSettings.PageNumber, logsSearchSettings.PageSize, count);
 
                 return result;
             }
