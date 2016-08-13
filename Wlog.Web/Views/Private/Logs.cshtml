@@ -7,16 +7,16 @@
 @{
     Layout = "~/Views/Shared/_LayoutInternal.cshtml";
 
-    Func<string, string> getSortBy = (s) =>
+    Func<string, string> getSortOrder = (s) =>
     {
         if (string.IsNullOrEmpty(Model.SortOrder))
         {
             return "dsc";
         }
 
-        if (string.Compare(s, Model.SortOrder, true) == 0)
+        if (string.Compare(s, Model.SortBy, true) == 0)
         {
-            if (string.Compare("asc", Model.SortBy, true) == 0)
+            if (string.Compare("asc", Model.SortOrder, true) == 0)
             {
                 return "dsc";
             }
@@ -49,13 +49,13 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.ActionLink("Date", "Logs", new {ApplicationId=Model.ApplicationId, sortOrder = "Date", sortBy = getSortBy("Date"), Model.SerchMessage })
+                        @Html.ActionLink("Date", "Logs", new {ApplicationId=Model.ApplicationId, sortBy = "Date", sortOrder = getSortOrder("Date"), Model.SerchMessage })
                     </th>
                     <th>
-                        @Html.ActionLink("Level", "Logs", new {ApplicationId=Model.ApplicationId, sortOrder ="Level", sortBy = getSortBy("Level"), Model.SerchMessage })
+                        @Html.ActionLink("Level", "Logs", new {ApplicationId=Model.ApplicationId, sortBy = "Level", sortOrder = getSortOrder("Level"), Model.SerchMessage })
                     </th>
                     <th>
-                        @Html.ActionLink("Message", "Logs", new { ApplicationId = Model.ApplicationId, sortOrder = "Message", sortBy = getSortBy("Message"), Model.SerchMessage })
+                        @Html.ActionLink("Message", "Logs", new { ApplicationId = Model.ApplicationId, sortBy = "Message", sortOrder = getSortOrder("Message"), Model.SerchMessage })
                     </th>
                 </tr>
                 @foreach (var item in Model.Items)

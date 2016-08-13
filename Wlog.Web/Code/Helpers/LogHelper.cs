@@ -37,14 +37,7 @@ namespace Wlog.Web.Code.Helpers
                 PageSize=pageSize
             };
 
-            if (!string.IsNullOrEmpty(sortBy))
-            {
-                switch (sortBy.ToLower())
-                {
-                    case "asc": settings.SortBy = Library.BLL.Enums.SortDirection.ASC; break;
-                    case "dsc": settings.SortBy = Library.BLL.Enums.SortDirection.DESC; break;
-                }
-            }
+            
             if (!string.IsNullOrEmpty(sortOrder))
             {
                 switch (sortOrder.ToLower())

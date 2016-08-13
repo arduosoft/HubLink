@@ -12,7 +12,7 @@ namespace Wlog.Library.BLL.Classes
         public String SerchMessage { get; set; }
         public List<Guid> Applications { get; set; }
         public LogsFields OrderBy { get; set; }
-        public SortDirection SortBy { get; set; }
+        public SortDirection SortDirection { get; set; }
 
         public LogsSearchSettings()
         {

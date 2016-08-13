@@ -57,7 +57,7 @@ namespace Wlog.Library.BLL.Reporitories
 
                 }
 
-                if (logsSearchSettings.SortBy == SortDirection.ASC)
+                if (logsSearchSettings.SortDirection == SortDirection.ASC)
                 {
                     switch (logsSearchSettings.OrderBy)
                     {
