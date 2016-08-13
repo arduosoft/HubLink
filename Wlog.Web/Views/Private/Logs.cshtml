@@ -58,14 +58,29 @@
                         @Html.ActionLink("Message", "Logs", new { ApplicationId = Model.ApplicationId, sortOrder = "Message", sortBy = getSortBy("Message"), Model.SerchMessage })
                     </th>
                 </tr>
-                @foreach(var item in Model.Items)
+                @foreach (var item in Model.Items)
                 {
                     <tr>
                         <td>
                             @Html.DisplayFor(x => item.SourceDate)
                         </td>
                         <td>
-                            @Html.DisplayFor(x=>item.Level)
+                            @{ 
+                                var labeltype = "label-default";
+                                if(item.Level!=null)
+                                {
+                                    switch (item.Level.ToLower())
+                                    {
+                                        case "fatal":
+                                        case "error": labeltype = "label-important"; break;
+                                        case "info": labeltype = "label-info"; break;
+                                        case "warning": labeltype = "label-warning"; break;
+                                    }
+                                }
+                                }
+                            <span class="label @labeltype">
+                                @item.Level
+                            </span>
                         </td>
                         <td>
                             @Html.DisplayFor(x=>item.Message)
