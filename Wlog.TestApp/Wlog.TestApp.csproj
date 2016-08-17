@@ -81,6 +81,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="Wlog.Library.licenseheader" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WLog.Loggers\Wlog.Loggers.csproj">
