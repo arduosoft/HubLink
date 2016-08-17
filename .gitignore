@@ -4,3 +4,4 @@ dist
 /Wlog.Test/bin/Debug
 /Wlog.Test/obj/Debug
 /Wlog.Library/bin/Debug
+/StyleCop.Cache

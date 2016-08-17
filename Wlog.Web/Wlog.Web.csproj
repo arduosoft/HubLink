@@ -240,6 +240,7 @@
     <Compile Include="Models\User\UserData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Views\Private\Info.cshtml" />
+    <None Include="Wlog.Library.licenseheader" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
