@@ -1,7 +1,11 @@
 dist
 *.suo
 /packages
-/Wlog.Test/bin/Debug
-/Wlog.Test/obj/Debug
-/Wlog.Library/bin/Debug
+/Wlog.Test/bin/
+/Wlog.Test/obj/
 /StyleCop.Cache
+/Wlog.Library/bin
+/Wlog.Library/obj
+/Wlog.Web/bin
+/Wlog.Web/obj
+*.Cache
