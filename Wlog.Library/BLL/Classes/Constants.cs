@@ -18,8 +18,19 @@ namespace Wlog.BLL.Classes
         public static class Roles
         {
             public static String Admin = "ADMIN";
-            public static String Read = "READ";
-            public static String Write = "WRITE";
-}
+            public static String WriteLog = "WRITELOG";
+            public static String Login = "LOGIN";
+            public static String ReadLog = "READLOG";
+            public static String CreateApp = "CREATEAPP";
+            public static String AppWriter = "APPWRITER";
+        }
+
+        public static class Profiles
+        {
+            public static String Admin = "ADMIN";
+            public static String ApiUser = "APIUSER";
+            public static String StandardUser = "STANDARDUSER";
+            public static String Reader = "READER";
+        }
     }
 }

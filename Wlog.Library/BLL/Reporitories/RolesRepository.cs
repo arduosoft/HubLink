@@ -35,7 +35,9 @@ namespace Wlog.Library.BLL.Reporitories
                 uow.BeginTransaction();
                 if (applicationEntity != null)
                 {
-                    List<Guid> ids = uow.Query<ApplicationRoleEntity>().Where(x => x.ApplicationId.Equals( applicationEntity.IdApplication)).Select(x => x.RoleId).ToList();
+                    List<Guid> ids = uow.Query<AppUserRoleEntity>()
+                        .Where(x => x.ApplicationId.Equals(applicationEntity.IdApplication))
+                        .Select(x => x.RoleId).ToList();
                     return uow.Query<RolesEntity>().Where(x => ids.Contains(x.Id)).ToList();
                 }
             }
@@ -44,11 +46,10 @@ namespace Wlog.Library.BLL.Reporitories
 
         public List<AppUserRoleEntity> GetApplicationRolesForUser(UserEntity userEntity)
         {
-
             using (IUnitOfWork uow = unitFactory.GetUnit(this))
             {
                 uow.BeginTransaction();
-                return uow.Query<AppUserRoleEntity>().Where(c => c.UserId.Equals( userEntity.Id)).ToList();
+                return uow.Query<AppUserRoleEntity>().Where(c => c.UserId.Equals(userEntity.Id)).ToList();
             }
         }
 
@@ -71,6 +72,7 @@ namespace Wlog.Library.BLL.Reporitories
                     uow.SaveOrUpdate(rolesEntity);
                     uow.Commit();
                 }
+
                 return true;
             }
             catch (Exception err)
@@ -78,6 +80,7 @@ namespace Wlog.Library.BLL.Reporitories
                 //TODO: log here:
 
             }
+
             return false;
         }
 

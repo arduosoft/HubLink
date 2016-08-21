@@ -21,7 +21,7 @@ using Wlog.Library.BLL.DataBase;
 
 namespace Wlog.Library.BLL.Reporitories
 {
-    public class ApplicationRepository:IRepository
+    public class ApplicationRepository : IRepository
     {
         private static UnitFactory unitFactory;
 
@@ -45,11 +45,13 @@ namespace Wlog.Library.BLL.Reporitories
         {
             try
             {
-                Guid idapp=role.Select(x=>x.ApplicationId).Distinct().First();
+                Guid idapp = role.Select(x => x.ApplicationId).Distinct().First();
                 using (IUnitOfWork uow = unitFactory.GetUnit(this))
                 {
                     uow.BeginTransaction();
-                    List<AppUserRoleEntity> deleterole = uow.Query<AppUserRoleEntity>().Where(x => x.UserId.Equals(entity.Id) && x.ApplicationId.Equals(idapp)).ToList();
+                    List<AppUserRoleEntity> deleterole = uow.Query<AppUserRoleEntity>()
+                        .Where(x => x.UserId.Equals(entity.Id) && x.ApplicationId.Equals(idapp)).ToList();
+
                     foreach (AppUserRoleEntity del in deleterole)
                     {
                         uow.Delete(del);
@@ -61,12 +63,33 @@ namespace Wlog.Library.BLL.Reporitories
                     }
 
                     uow.Commit();
-
                 }
             }
             catch (Exception err)
             {
                 //log here
+            }
+        }
+
+        /// <summary>
+        /// Deletes the application from table AppUserRoleEntity
+        /// </summary>
+        /// <param name="app">the application that need to be deleted</param>
+        public void DeleteApplicationRole(ApplicationEntity app)
+        {
+            using (IUnitOfWork uow = unitFactory.GetUnit(this))
+            {
+                uow.BeginTransaction();
+
+                List<AppUserRoleEntity> deleterole = uow.Query<AppUserRoleEntity>()
+                        .Where(x =>  x.ApplicationId.Equals(app.IdApplication)).ToList();
+
+                foreach (AppUserRoleEntity del in deleterole)
+                {
+                    uow.Delete(del);
+                }
+
+                uow.Commit();
             }
         }
 
@@ -82,7 +105,9 @@ namespace Wlog.Library.BLL.Reporitories
                 }
                 else
                 {
-                    entity = uow.Query<ApplicationEntity>().Where(x => x.ApplicationName.Contains(searchSettings.SerchFilter)).OrderBy(x => x.ApplicationName).ToList();
+                    entity = uow.Query<ApplicationEntity>()
+                        .Where(x => x.ApplicationName.Contains(searchSettings.SerchFilter))
+                        .OrderBy(x => x.ApplicationName).ToList();
                 }
 
                 //foreach (ApplicationEntity e in entity)
@@ -103,11 +128,13 @@ namespace Wlog.Library.BLL.Reporitories
                 uow.BeginTransaction();
                 ApplicationEntity appToDelete = uow.Query<ApplicationEntity>().Where(x => x.IdApplication.Equals(app.IdApplication)).FirstOrDefault();
 
-                List<LogEntity> logs = uow.Query<LogEntity>().Where(x => x.ApplictionId.Equals( app.IdApplication)).ToList();
+                List<LogEntity> logs = uow.Query<LogEntity>().Where(x => x.ApplictionId.Equals(app.IdApplication)).ToList();
                 foreach (LogEntity e in logs)
                 {
                     uow.Delete(e);
                 }
+
+                DeleteApplicationRole(app);
 
                 uow.Delete(app);
 
@@ -120,8 +147,6 @@ namespace Wlog.Library.BLL.Reporitories
             UserEntity user = RepositoryContext.Current.Users.GetByUsername(userName);
             List<Guid> ids = GetAppplicationsIdsForUser(user);
             return RepositoryContext.Current.Applications.GetByIds(ids);
-
-
         }
 
         public List<ApplicationEntity> GetByIds(List<Guid> ids)
@@ -134,7 +159,7 @@ namespace Wlog.Library.BLL.Reporitories
                 {
                     result.Add(GetById(id));
                 }
-                
+
             }
             return result;
         }
@@ -155,7 +180,6 @@ namespace Wlog.Library.BLL.Reporitories
             List<Guid> ids = GetAppplicationsIdsForUser(user);
             return ids;
         }
-
 
         public List<Guid> GetAppplicationsIdsForUser(UserEntity user)
         {
@@ -190,10 +214,6 @@ namespace Wlog.Library.BLL.Reporitories
             }
         }
 
-
-
-       
- 
         public ApplicationEntity GetByApplicationKey(string applicationKey)
         {
             Guid pk = new Guid(applicationKey);
@@ -212,10 +232,11 @@ namespace Wlog.Library.BLL.Reporitories
                 using (IUnitOfWork uow = unitFactory.GetUnit(this))
                 {
                     uow.BeginTransaction();
-                    if (!uow.Query<AppUserRoleEntity>().Any(x => x.ApplicationId.Equals(application.IdApplication) && x.RoleId.Equals(role.Id) && x.UserId.Equals(user.Id)))
+                    if (!uow.Query<AppUserRoleEntity>()
+                        .Any(x => x.ApplicationId.Equals(application.IdApplication) && x.RoleId.Equals(role.Id) && x.UserId.Equals(user.Id)))
                     {
                         AppUserRoleEntity app = new AppUserRoleEntity();
-                        app.ApplicationId = app.ApplicationId;
+                        app.ApplicationId = application.IdApplication;
                         app.RoleId = role.Id;
                         app.UserId = user.Id;
                         uow.SaveOrUpdate(app);
@@ -223,7 +244,6 @@ namespace Wlog.Library.BLL.Reporitories
                         uow.Commit();
                         return true;
                     }
-
                 }
             }
             catch (Exception err)

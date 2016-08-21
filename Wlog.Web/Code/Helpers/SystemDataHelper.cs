@@ -18,9 +18,7 @@ namespace Wlog.Web.Code.Helpers
     {
         public static void EnsureSampleData()
         {
-
             List<UserEntity> userList = RepositoryContext.Current.Users.GetAll();
-
 
             if (userList == null || userList.Count == 0)
             {
@@ -46,34 +44,56 @@ namespace Wlog.Web.Code.Helpers
 
                 RolesEntity role = RepositoryContext.Current.Roles.GetRoleByName(Constants.Roles.Admin);
                 RepositoryContext.Current.Applications.AssignRoleToUser(app, user, role);
-
             }
-
         }
 
-        public static void InsertRoleIfNotExists(string rolename)
+        private static RolesEntity InsertRoleIfNotExists(string rolename)
         {
+            RolesEntity role = RepositoryContext.Current.Roles.GetRoleByName(rolename);
 
-            RolesEntity role= RepositoryContext.Current.Roles.GetRoleByName(rolename);
             if (role == null)
             {
-                RepositoryContext.Current.Roles.Save(new RolesEntity()
-                {
-                    RoleName=rolename
-                });
+                role = new RolesEntity() { RoleName = rolename };
+                RepositoryContext.Current.Roles.Save(role);
             }
+
+            return role;
         }
 
-        public static void InsertRoles()
+        private static ProfilesEntity InsertProfileIfNotExists(string profileName)
         {
-            InsertRoleIfNotExists(Constants.Roles.Admin);
-            InsertRoleIfNotExists(Constants.Roles.Read);
-            InsertRoleIfNotExists(Constants.Roles.Write);
+            ProfilesEntity profile = RepositoryContext.Current.Profiles.GetProfileByName(profileName);
+
+            if (profile == null)
+            {
+                profile = new ProfilesEntity() { ProfileName = profileName };
+                RepositoryContext.Current.Profiles.Save(profile);
+            }
+
+            return profile;
         }
 
+        public static void InsertRolesAndProfiles()
+        {
+            // create roles
+            var adminRole = InsertRoleIfNotExists(Constants.Roles.Admin);
+            var appWriter = InsertRoleIfNotExists(Constants.Roles.AppWriter);
+            var createApp = InsertRoleIfNotExists(Constants.Roles.CreateApp);
+            var login = InsertRoleIfNotExists(Constants.Roles.Login);
+            var readLog = InsertRoleIfNotExists(Constants.Roles.ReadLog);
+            var writeLog = InsertRoleIfNotExists(Constants.Roles.WriteLog);
 
+            // create profiles
+            var adminProfile = InsertProfileIfNotExists(Constants.Profiles.Admin);
+            var apiUser = InsertProfileIfNotExists(Constants.Profiles.ApiUser);
+            var reader = InsertProfileIfNotExists(Constants.Profiles.Reader);
+            var standardUser = InsertProfileIfNotExists(Constants.Profiles.StandardUser);
 
-
-
+            // assign profiles to roles
+            RepositoryContext.Current.Profiles.AssignRolesToProfile(adminProfile, new List<RolesEntity>() { adminRole });
+            RepositoryContext.Current.Profiles.AssignRolesToProfile(apiUser, new List<RolesEntity>() { writeLog });
+            RepositoryContext.Current.Profiles.AssignRolesToProfile(reader, new List<RolesEntity>() { login, readLog });
+            RepositoryContext.Current.Profiles.AssignRolesToProfile(standardUser, new List<RolesEntity>() { login, readLog, createApp, appWriter });
+        }
     }
 }

@@ -38,8 +38,7 @@ namespace Wlog.Library.DAL.Nhibernate.Mappings
             Property(x => x.IsOnLine);
             Property(x => x.IsLockedOut);
             Property(x => x.LastLockedOutDate);
-            
+            Property(x => x.ProfileId, map => { map.Column("IdProfile"); });
         }
-
     }
 }

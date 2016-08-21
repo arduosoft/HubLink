@@ -17,33 +17,41 @@ namespace Wlog.Library.BLL.Reporitories
     public class RepositoryContext
     {
         public ApplicationRepository Applications { get; private set; }
+
         public UserRepository Users { get; private set; }
+
         public LogRepository Logs { get; private set; }
+
         public RolesRepository Roles { get; private set; }
+
+        public ProfilesRepository Profiles { get; private set; }
+
         public SystemRepository System { get; private set; }
 
         private static RepositoryContext current;
+
         public static RepositoryContext Current
-         {
-             get
-             {
-                 if (current != null && current.Applications != null && current.Users != null && current.Logs != null && current.Roles != null && current.System != null)
-                 {
-                     
-                 }
-                 else
-                 {
-                     current = new RepositoryContext();
-                     current.Applications = new ApplicationRepository();
-                     current.Users = new UserRepository();
-                     current.Logs = new LogRepository();
-                     current.Roles = new RolesRepository();
-                     current.System = new SystemRepository();
-                 }
-                 return current;
-             }
-                    
-            
-           }
+        {
+            get
+            {
+                if (current != null && current.Applications != null && current.Users != null
+                    && current.Logs != null && current.Roles != null && current.System != null)
+                {
+
+                }
+                else
+                {
+                    current = new RepositoryContext();
+                    current.Applications = new ApplicationRepository();
+                    current.Users = new UserRepository();
+                    current.Logs = new LogRepository();
+                    current.Roles = new RolesRepository();
+                    current.System = new SystemRepository();
+                    current.Profiles = new ProfilesRepository();
+                }
+
+                return current;
+            }
+        }
     }
 }

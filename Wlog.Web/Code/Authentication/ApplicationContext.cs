@@ -29,9 +29,6 @@ namespace Wlog.Web.Code.Authentication
 
             this.ApplicationEntity = RepositoryContext.Current.Applications.GetById(idApplication);
             this.Roles = RepositoryContext.Current.Roles.GetAllApplicationRoles(this.ApplicationEntity);
-
-
-
         }
 
         public static ApplicationContext Current
