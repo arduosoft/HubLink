@@ -194,7 +194,8 @@ namespace Wlog.Web.Controllers
                     if (status == MembershipCreateStatus.Success)
                     {
                         UserEntity entity = UserHelper.GetByUsername(user.UserName);
-                        entity.IsAdmin = user.IsAdmin;
+                        entity.IsAdmin = UserHelper.IsUserAdmin(user.Profile);
+                        entity.ProfileId = user.Profile;
                         UserHelper.UpdateUser(entity);
                         return RedirectToAction("EditUser", "Private", new { Id = entity.Id });
                     }

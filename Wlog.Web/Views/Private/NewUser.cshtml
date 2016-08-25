@@ -47,15 +47,14 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.IsAdmin, new { @class = "col-lg-2 control-label" })
+                    @Html.LabelFor(model => model.Profile, new { @class = "col-lg-2 control-label" })
                     <div class="col-lg-10">
-                        @Html.EditorFor(model => model.IsAdmin, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.IsAdmin)
+                        @Html.DropDownListFor(model => model.Profile, Model.Profiles)
                     </div>
                 </div>
             </div>
             <p>
-                 @Html.ActionLink("Back to List", "ListUsers", null, new { @class = "btn btn-success" })
+                @Html.ActionLink("Back to List", "ListUsers", null, new { @class = "btn btn-success" })
                 <input type="submit" value="Create" class="btn btn-warning pull-right btn-list" />
             </p>
 
@@ -63,7 +62,7 @@
     }
 
     <div>
-       
+
     </div>
 
 </div>

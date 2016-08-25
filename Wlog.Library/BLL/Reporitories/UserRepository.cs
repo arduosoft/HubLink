@@ -50,12 +50,11 @@ namespace Wlog.Library.BLL.Reporitories
                 {
                     uow.BeginTransaction();
                     List<AppUserRoleEntity> entity = uow.Query<AppUserRoleEntity>().Where(x => x.UserId.Equals(user.Id)).ToList();
+
                     foreach (AppUserRoleEntity e in entity)
                     {
                         uow.Delete(e);
                     }
-
-
 
                     uow.Delete(user);
 

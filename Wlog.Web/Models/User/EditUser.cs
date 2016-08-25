@@ -31,7 +31,6 @@ namespace Wlog.Web.Models.User
 
     public class EditUser
     {
-
         public UserEntity DataUser { get; set; }
         public List<UserApps> Apps { get; set; }
         public IEnumerable<RolesEntity> RoleList

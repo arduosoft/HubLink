@@ -71,7 +71,8 @@ namespace Wlog.Web.Code.Authentication
             throw new NotImplementedException();
         }
 
-        public override MembershipUser CreateUser(string username, string password, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey, out MembershipCreateStatus status)
+        public override MembershipUser CreateUser(string username, string password, string email, string passwordQuestion, 
+            string passwordAnswer, bool isApproved, object providerUserKey, out MembershipCreateStatus status)
         {
             ValidatePasswordEventArgs args = new ValidatePasswordEventArgs(username, password, true);
 

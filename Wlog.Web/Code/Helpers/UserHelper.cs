@@ -16,6 +16,7 @@ using Wlog.Web.Models.User;
 using Wlog.BLL.Entities;
 using Wlog.Library.BLL.Reporitories;
 using Wlog.Library.BLL.Classes;
+using System.Web.Mvc;
 
 namespace Wlog.Web.Code.Helpers
 {
@@ -105,18 +106,22 @@ namespace Wlog.Web.Code.Helpers
         /// </summary>
         /// <param name="usr"></param>
         /// <returns></returns>
-        public static bool UpdateUser(UserEntity usr)
+        public static bool UpdateUser(UserEntity user)
         {
-            return RepositoryContext.Current.Users.Save(usr);
-        }
+            if (user.IsAdmin)
+            {
+                user.ProfileId = GetProfileByName("admin").Id;
+            }
 
+            return RepositoryContext.Current.Users.Save(user);
+        }
 
         public static bool DeleteById(Guid id)
         {
             UserEntity user = RepositoryContext.Current.Users.GetById(id);
             return RepositoryContext.Current.Users.Delete(user);
-
         }
+
         /// <summary>
         /// given a user return list of app with role
         /// </summary>
@@ -169,6 +174,28 @@ namespace Wlog.Web.Code.Helpers
             {
                 return Convert.ToBase64String(sha.ComputeHash(Encoding.ASCII.GetBytes(password)));
             }
+        }
+
+        public static IEnumerable<SelectListItem> GetAllUserProfiles()
+        {
+            var profiles = from a in RepositoryContext.Current.Profiles.GetAllProfiles()
+                           select new SelectListItem
+                           {
+                               Value = a.Id.ToString(),
+                               Text = a.ProfileName
+                           };
+
+            return profiles;
+        }
+
+        public static bool IsUserAdmin(Guid profileGuid)
+        {
+            return GetProfileByName("admin").Id == profileGuid;
+        }
+
+        private static ProfilesEntity GetProfileByName(string name)
+        {
+            return RepositoryContext.Current.Profiles.GetAllProfiles().SingleOrDefault(x => x.ProfileName.ToLower() == name);
         }
     }
 }
