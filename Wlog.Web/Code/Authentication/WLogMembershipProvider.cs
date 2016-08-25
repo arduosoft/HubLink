@@ -20,9 +20,9 @@ using Wlog.Library.BLL.Reporitories;
 
 namespace Wlog.Web.Code.Authentication
 {
-    public class WLogMembershipProvider:MembershipProvider
+    public class WLogMembershipProvider : MembershipProvider
     {
-     
+
 
         public override string ApplicationName
         {
@@ -48,14 +48,14 @@ namespace Wlog.Web.Code.Authentication
                     if (!args.Cancel)
                     {
 
-                            UserEntity usr = RepositoryContext.Current.Users.GetByUsername(username);
-                            usr.Password = EncodePassword(newPassword);
-                            usr.LastActivityDate = DateTime.Now;
-                            usr.LastPasswordChangedDate = DateTime.Now;
-                            RepositoryContext.Current.Users.Save(usr);
+                        UserEntity usr = RepositoryContext.Current.Users.GetByUsername(username);
+                        usr.Password = EncodePassword(newPassword);
+                        usr.LastActivityDate = DateTime.Now;
+                        usr.LastPasswordChangedDate = DateTime.Now;
+                        RepositoryContext.Current.Users.Save(usr);
 
                         result = true;
-                        
+
                     }
                 }
             }
@@ -271,18 +271,20 @@ namespace Wlog.Web.Code.Authentication
         public override bool ValidateUser(string username, string password)
         {
             bool isValid = false;
-            UserEntity usr = UserHelper.GetByUsername(username);
+            UserEntity user = UserHelper.GetByUsername(username);
 
-            if (usr == null)
+            if (user == null)
             {
                 return isValid;
             }
-            string pswEncode =  EncodePassword(password);
-            if (pswEncode == usr.Password)
+
+            string pswEncode = EncodePassword(password);
+
+            if (pswEncode == user.Password)
             {
                 isValid = true;
-                usr.LastLoginDate = DateTime.Now;
-                UserHelper.UpdateUser(usr);
+                user.LastLoginDate = DateTime.Now;
+                UserHelper.UpdateUser(user);
             }
 
             return isValid;

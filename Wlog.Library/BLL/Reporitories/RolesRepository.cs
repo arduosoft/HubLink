@@ -102,5 +102,36 @@ namespace Wlog.Library.BLL.Reporitories
 
             return result;
         }
+
+        public List<ProfilesRolesEntity> GetProfilesRolesForUser(UserEntity userEntity)
+        {
+            using (IUnitOfWork uow = unitFactory.GetUnit(this))
+            {
+                uow.BeginTransaction();
+                return uow.Query<ProfilesRolesEntity>().Where(c => c.ProfileId.Equals(userEntity.ProfileId)).ToList();
+            }
+        }
+
+        public List<RolesEntity> GetAllRolesForUser(UserEntity userEntity)
+        {
+            List<RolesEntity> result = new List<RolesEntity>();
+
+            try
+            {
+                var rolesIds = GetProfilesRolesForUser(userEntity).Select(x => x.RoleId);
+
+                using (IUnitOfWork uow = unitFactory.GetUnit(this))
+                {
+                    result.AddRange(uow.Query<RolesEntity>().Where(x => rolesIds.Contains(x.Id)).ToList());
+                }
+            }
+            catch (Exception err)
+            {
+                //TODO: log here:
+
+            }
+
+            return result;
+        }
     }
 }

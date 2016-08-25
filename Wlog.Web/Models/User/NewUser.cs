@@ -16,7 +16,7 @@ namespace Wlog.Web.Models.User
 {
     public class NewUser
     {
-         [Required]
+        [Required]
         [Display(Name = "Nome utente")]
         public string UserName { get; set; }
         [Required(ErrorMessage = "The email address is required")]

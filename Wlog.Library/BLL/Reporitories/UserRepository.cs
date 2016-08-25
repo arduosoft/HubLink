@@ -23,13 +23,13 @@ namespace Wlog.Library.BLL.Reporitories
 {
     public class UserRepository : IRepository
     {
-
         private static UnitFactory unitFactory;
 
         public UserRepository()
         {
             unitFactory = new UnitFactory();
         }
+
         public UserEntity GetById(Guid id)
         {
             UserEntity entity = null;

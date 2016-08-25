@@ -26,7 +26,6 @@ namespace Wlog.Web.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        
         // GET: /Account/Login
 
         [AllowAnonymous]

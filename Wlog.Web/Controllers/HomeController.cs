@@ -26,7 +26,7 @@ namespace Wlog.Web.Controllers
     {
 
         // GET: /Home/
-
+        [Authorize(Roles ="ADMIN")]
         public ActionResult Index()
         {
     

@@ -35,8 +35,8 @@ namespace Wlog.Web.Models.User
         public UserEntity DataUser { get; set; }
         public List<UserApps> Apps { get; set; }
         public IEnumerable<RolesEntity> RoleList
-        { 
-            get 
+        {
+            get
             {
                 List<RolesEntity> role = RepositoryContext.Current.Roles.GetAllRoles();
                 role.Add(new RolesEntity { RoleName = "No Role" });

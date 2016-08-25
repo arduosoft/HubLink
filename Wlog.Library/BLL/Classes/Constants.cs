@@ -17,12 +17,12 @@ namespace Wlog.BLL.Classes
     {
         public static class Roles
         {
-            public static String Admin = "ADMIN";
-            public static String WriteLog = "WRITELOG";
-            public static String Login = "LOGIN";
-            public static String ReadLog = "READLOG";
-            public static String CreateApp = "CREATEAPP";
-            public static String AppWriter = "APPWRITER";
+            public const string Admin = "ADMIN";
+            public const string WriteLog = "WRITELOG";
+            public const string Login = "LOGIN";
+            public const string ReadLog = "READLOG";
+            public const string CreateApp = "CREATEAPP";
+            public const string AppWriter = "APPWRITER";
         }
 
         public static class Profiles
