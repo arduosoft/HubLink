@@ -23,7 +23,13 @@ namespace Wlog.BLL.Entities
         public virtual DateTime CreateDate { get; set; }
         public virtual DateTime UpdateDate { get; set; }
         public virtual DateTime SourceDate { get; set; }
-        public  virtual string Message { get; set; }
+        public virtual string AppDomain { get; set; }
+        public virtual string AppModule { get; set; }
+        public virtual string AppSession { get; set; }
+        public virtual string AppUser { get; set; }
+        public virtual string AppVersion { get; set; }
+        public virtual string Device { get; set; }
+        public virtual string Message { get; set; }
         public virtual string Level { get; set; }
         //[BsonId]
         public virtual Guid Uid { get { return this.Id; } set { this.Id = value; } }

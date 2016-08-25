@@ -19,6 +19,12 @@ namespace Wlog.Library.DAL.Nhibernate.Mappings
             Schema("dbo");
             
             Id(x => x.Uid, map => {  map.Generator(Generators.Guid); });
+            Property(x => x.AppDomain);
+            Property(x => x.AppModule);
+            Property(x => x.AppSession);
+            Property(x => x.AppUser);
+            Property(x => x.AppVersion);
+            Property(x => x.Device);
             Property(x => x.Message);
             Property(x => x.Level);
             Property(x => x.SourceDate);

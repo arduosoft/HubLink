@@ -91,14 +91,22 @@ namespace Wlog.BLL.Classes
        
         public void PersistLog(LogMessage log)
         {
-
             LogEntity ent = new LogEntity();
             ent.ApplictionId = RepositoryContext.Current.Applications.GetByApplicationKey(log.ApplicationKey).IdApplication;
             ent.Level = log.Level;
             ent.Message = log.Message;
+
+            ent.AppDomain  = log.AppDomain;
+            ent.AppModule  = log.AppModule;
+            ent.AppSession = log.AppSession;
+            ent.AppUser    = log.AppUser;
+            ent.AppVersion = log.AppVersion;
+            ent.Device     = log.Device;
+
             ent.SourceDate = log.SourceDate;
             ent.UpdateDate = DateTime.Now;
             ent.CreateDate = DateTime.Now;
+
             RepositoryContext.Current.Logs.Save(ent);
         }
 

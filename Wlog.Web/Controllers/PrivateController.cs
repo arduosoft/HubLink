@@ -77,7 +77,6 @@ namespace Wlog.Web.Controllers
 
         public ActionResult Logs(Guid? applicationId,string level, string sortOrder, string sortBy, string serchMessage, int? page, int? pageSize)
         {
-
             LogListModel mm = new LogListModel()
             {
                 ApplicationId =applicationId,
@@ -95,11 +94,14 @@ namespace Wlog.Web.Controllers
 
 
             mm.Items = LogHelper.GetLogs(mm.ApplicationId, mm.SortOrder, mm.SortBy, mm.SerchMessage, 30, page??1);
-
-            
-           
            
             return View(mm);
+        }
+
+        public ActionResult LogDetail(Guid id)
+        {
+            var log = LogHelper.GetById(id);
+            return View(log);
         }
 
         // Get  /Private/ListUsers
