@@ -1,0 +1,90 @@
+﻿@model Wlog.BLL.Entities.LogEntity
+
+@{
+    Layout = "~/Views/Shared/_LayoutInternal.cshtml";
+    ViewBag.Title = "Log detail";
+}
+<div class="row">
+    <h2>Log detail</h2>
+
+    @using (Html.BeginForm("EditApp", "Private", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            <legend>Log</legend>
+            @Html.HiddenFor(model => model.Id)
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SourceDate, new { @class = "col-lg-2 control-label" })
+                    <div class="col-lg-10">
+                        @Html.TextBoxFor(model => model.SourceDate, new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Level, new { @class = "col-lg-2 control-label" })
+                    <div class="col-lg-10">
+                        @Html.TextBoxFor(model => model.Level, null, new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Message, new { @class = "col-lg-2 control-label" })
+                    <div class="col-lg-10">
+                        @Html.TextBoxFor(model => model.Message, null, new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AppDomain, new { @class = "col-lg-2 control-label" })
+                    <div class="col-lg-10">
+                        @Html.TextBoxFor(model => model.AppDomain, null, new { @class = "form-control"  , disabled = "disabled", @readonly = "readonly" })
+                   </div>
+                </div>
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AppModule, new { @class = "col-lg-2 control-label" })
+                    <div class="col-lg-10">
+                        @Html.TextBoxFor(model => model.AppModule, null, new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AppSession, new { @class = "col-lg-2 control-label" })
+                    <div class="col-lg-10">
+                        @Html.TextBoxFor(model => model.AppSession, null, new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AppUser, new { @class = "col-lg-2 control-label" })
+                    <div class="col-lg-10">
+                        @Html.TextBoxFor(model => model.AppUser, null, new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AppVersion, new { @class = "col-lg-2 control-label" })
+                    <div class="col-lg-10">
+                        @Html.TextBoxFor(model => model.AppVersion, null, new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Device, new { @class = "col-lg-2 control-label" })
+                    <div class="col-lg-10">
+                        @Html.TextBoxFor(model => model.Device, null, new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
+                    </div>
+                </div>
+
+
+
+
+            </div>
+
+
+
+            <p>
+                @Html.ActionLink("Back to List", "Logs", null, new { @class = "btn btn-success btn-list" })
+            </p>
+        </fieldset>
+    }
+
+</div>

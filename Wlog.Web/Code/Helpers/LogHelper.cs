@@ -47,11 +47,11 @@ namespace Wlog.Web.Code.Helpers
             }
             if (!string.IsNullOrEmpty(sortOrder))
             {
-                switch (sortOrder.ToLower())
+                switch (sortOrder)
                 {
                     case "date": settings.OrderBy = Library.BLL.Enums.LogsFields.SourceDate; break;
-                    case "level": settings.OrderBy = Library.BLL.Enums.LogsFields.Level; break;
-                    case "message": settings.OrderBy = Library.BLL.Enums.LogsFields.Message; break;
+                    case nameof(Library.BLL.Enums.LogsFields.Level): settings.OrderBy = Library.BLL.Enums.LogsFields.Level; break;
+                    case nameof(Library.BLL.Enums.LogsFields.Message): settings.OrderBy = Library.BLL.Enums.LogsFields.Message; break;
                 }
             }
 
@@ -59,8 +59,9 @@ namespace Wlog.Web.Code.Helpers
             return RepositoryContext.Current.Logs.SeachLog(settings);
         }
 
-       
-
-       
+        internal static LogEntity GetById(Guid id)
+        {
+            return RepositoryContext.Current.Logs.GetById(id);
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿@using PagedList.Mvc
+@using Wlog.Library.BLL.Enums
 
 @model Wlog.Web.Models.LogListModel
 
@@ -57,10 +58,28 @@
                     <th>
                         @Html.ActionLink("Message", "Logs", new { ApplicationId = Model.ApplicationId, sortOrder = "Message", sortBy = getSortBy("Message"), Model.SerchMessage })
                     </th>
+                    <th>
+                        @Html.ActionLink("AppDomain", "Logs", new { ApplicationId = Model.ApplicationId, sortOrder = "AppDomain", sortBy = getSortBy("AppDomain"), Model.SerchMessage })
+                    </th>
+                    <th>
+                        @Html.ActionLink("AppModule", "Logs", new { ApplicationId = Model.ApplicationId, sortOrder = "AppModule", sortBy = getSortBy("AppModule"), Model.SerchMessage })
+                    </th>
+                    <th>
+                        @Html.ActionLink("AppSession", "Logs", new { ApplicationId = Model.ApplicationId, sortOrder = "AppSession", sortBy = getSortBy("AppSession"), Model.SerchMessage })
+                    </th>
+                    <th>
+                        @Html.ActionLink("AppUser", "Logs", new { ApplicationId = Model.ApplicationId, sortOrder = "AppUser", sortBy = getSortBy("AppUser"), Model.SerchMessage })
+                    </th>
+                    <th>
+                        @Html.ActionLink("AppVersion", "Logs", new { ApplicationId = Model.ApplicationId, sortOrder = "AppVersion", sortBy = getSortBy("AppVersion"), Model.SerchMessage })
+                    </th>
+                    <th>
+                        @Html.ActionLink("Device", "Logs", new { ApplicationId = Model.ApplicationId, sortOrder = "Device", sortBy = getSortBy("Device"), Model.SerchMessage })
+                    </th>
                 </tr>
                 @foreach(var item in Model.Items)
                 {
-                    <tr>
+                    <tr class="link" data-href="/Private/LogDetail/@item.Id">
                         <td>
                             @Html.DisplayFor(x => item.SourceDate)
                         </td>
@@ -68,8 +87,27 @@
                             @Html.DisplayFor(x=>item.Level)
                         </td>
                         <td>
-                            @Html.DisplayFor(x=>item.Message)
+                            @Html.DisplayFor(x => item.Message)
                         </td>
+                        <td>
+                            @Html.DisplayFor(x => item.AppDomain)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => item.AppModule)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => item.AppSession)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => item.AppUser)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => item.AppVersion)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => item.Device)
+                        </td>
+     
                     </tr>
                 }
             </thead>
@@ -83,3 +121,10 @@
 
     </div>
 
+@section Scripts {
+    <script type="text/javascript">
+        $('tr[data-href]').on("click", function () {
+            document.location = $(this).data('href');
+        });
+    </script>
+}

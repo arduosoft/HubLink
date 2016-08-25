@@ -61,30 +61,31 @@ namespace Wlog.Library.BLL.Reporitories
                 {
                     switch (logsSearchSettings.OrderBy)
                     {
-                        case LogsFields.SourceDate:
-                            query = query.OrderBy(l => l.SourceDate);
-                            break;
-                        case LogsFields.Message:
-                            query = query.OrderBy(l => l.Message);
-                            break;
-                        case LogsFields.Level:
-                            query = query.OrderBy(l => l.Level);
-                            break;
+                        case LogsFields.SourceDate: query = query.OrderBy(l => l.SourceDate); break;
+                        case LogsFields.Level:      query = query.OrderBy(l => l.Level); break;
+                        case LogsFields.Message:    query = query.OrderBy(l => l.Message); break;
+                        case LogsFields.AppDomain:  query = query.OrderBy(l => l.AppDomain); break;
+                        case LogsFields.AppModule:  query = query.OrderBy(l => l.AppModule); break;
+                        case LogsFields.AppSession: query = query.OrderBy(l => l.AppSession); break;
+                        case LogsFields.AppUser:    query = query.OrderBy(l => l.AppUser); break;
+                        case LogsFields.AppVersion: query = query.OrderBy(l => l.AppVersion); break;
+                        case LogsFields.Device:     query = query.OrderBy(l => l.Device); break;
+
                     }
                 }
                 else
                 {
                     switch (logsSearchSettings.OrderBy)
                     {
-                        case LogsFields.SourceDate:
-                            query = query.OrderByDescending(l => l.SourceDate);
-                            break;
-                        case LogsFields.Message:
-                            query = query.OrderByDescending(l => l.Message);
-                            break;
-                        case LogsFields.Level:
-                            query = query.OrderByDescending(l => l.Level);
-                            break;
+                        case LogsFields.SourceDate: query = query.OrderByDescending(l => l.SourceDate); break;
+                        case LogsFields.Level:      query = query.OrderByDescending(l => l.Level); break;
+                        case LogsFields.Message:    query = query.OrderByDescending(l => l.Message); break;
+                        case LogsFields.AppDomain:  query = query.OrderByDescending(l => l.AppDomain); break;
+                        case LogsFields.AppModule:  query = query.OrderByDescending(l => l.AppModule); break;
+                        case LogsFields.AppSession: query = query.OrderByDescending(l => l.AppSession); break;
+                        case LogsFields.AppUser:    query = query.OrderByDescending(l => l.AppUser); break;
+                        case LogsFields.AppVersion: query = query.OrderByDescending(l => l.AppVersion); break;
+                        case LogsFields.Device:     query = query.OrderByDescending(l => l.Device); break;
                     }
                 }
                 
@@ -97,6 +98,17 @@ namespace Wlog.Library.BLL.Reporitories
                 IPagedList<LogEntity> result = new StaticPagedList<LogEntity>(query, logsSearchSettings.PageNumber, logsSearchSettings.PageSize, 1000);
 
                 return result;
+            }
+        }
+
+        public LogEntity GetById(Guid id)
+        {
+            LogEntity log;
+            using (IUnitOfWork uow = _UnitFactory.GetUnit(this))
+            {
+                uow.BeginTransaction();
+                log = uow.Query<LogEntity>().Where(x => x.Uid.Equals(id)).FirstOrDefault();
+                return log;
             }
         }
 

@@ -61,3 +61,8 @@ button.btn.btn-default.menu { background: #444444; border: #444444; color: #FFF;
     min-width: 120px;
     margin-right: 10px;
 }
+
+table tr.link
+{
+    cursor:pointer
+}
