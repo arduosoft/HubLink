@@ -19,8 +19,6 @@ namespace Wlog.BLL.Entities
 {
     public class AppUserRoleEntity : IEntityBase
     {
-        [BsonId]
-        public override Guid Id { get; set; }
         public virtual Guid ApplicationId { get; set; }
         public virtual Guid UserId { get; set; }
         public virtual Guid RoleId { get; set; }

@@ -9,8 +9,6 @@ namespace Wlog.BLL.Entities
 {
    public class ProfilesRolesEntity : IEntityBase
     {
-        public override Guid Id { get; set; }
-
         public virtual Guid ProfileId { get; set; }
 
         public virtual Guid RoleId { get; set; }

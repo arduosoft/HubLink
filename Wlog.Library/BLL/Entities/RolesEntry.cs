@@ -19,11 +19,6 @@ namespace Wlog.BLL.Entities
 {
     public class RolesEntity : IEntityBase
     {
-
-        public override Guid Id { get; set; }
         public virtual string RoleName { get; set; }
-
     }
-
-  
 }

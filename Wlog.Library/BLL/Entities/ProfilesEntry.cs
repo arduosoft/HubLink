@@ -9,8 +9,6 @@ namespace Wlog.BLL.Entities
 {
     public class ProfilesEntity : IEntityBase
     {
-        public override Guid Id { get; set; }
-
         public virtual string ProfileName { get; set; }
     }
 }

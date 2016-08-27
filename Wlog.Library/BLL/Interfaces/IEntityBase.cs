@@ -19,6 +19,6 @@ namespace Wlog.Library.BLL.Interfaces
     public abstract class IEntityBase
     {
         [BsonId]
-        public abstract Guid Id { get; set; }
+        public virtual Guid Id { get; set; }
     }
 }

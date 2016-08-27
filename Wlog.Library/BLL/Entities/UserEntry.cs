@@ -19,9 +19,6 @@ namespace Wlog.BLL.Entities
 {
     public class UserEntity : IEntityBase
     {
-       
-        public override Guid Id { get; set; }
-
         public virtual string Username { get; set; }
         public virtual string Email { get; set; }
       
