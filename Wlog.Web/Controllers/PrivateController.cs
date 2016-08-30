@@ -259,7 +259,7 @@ namespace Wlog.Web.Controllers
         [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.ReadLog)]
         public ActionResult ListApps(string serchMessage, int? page, int? pageSize)
         {
-            bool isAdmin = User.IsInRole("ADMIN");
+            bool isAdmin = User.IsInRole(Constants.Roles.Admin);
           
             ApplicationList model = new ApplicationList
             {
