@@ -31,17 +31,19 @@ namespace Wlog.Web.Controllers
 {
     public class PrivateController : Controller
     {
+        private List<Guid> applicationsForUser = new List<Guid>();
+
         [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.WriteLog, Constants.Roles.ReadLog)]
         public ActionResult Index()
         {
             string username = Membership.GetUser().UserName;
-            List<Guid> apps = UserHelper.GetAppsIdsForUser(username);
+            applicationsForUser = UserHelper.GetAppsIdsForUser(username);
+
             LogsSearchSettings logSearch = new LogsSearchSettings()
             {
-                Applications = apps,
+                Applications = applicationsForUser,
                 PageNumber = 1,
                 PageSize = 10
-
             };
 
             IPagedList<LogEntity> lastestLog = RepositoryContext.Current.Logs.SeachLog(logSearch);
@@ -57,13 +59,13 @@ namespace Wlog.Web.Controllers
             IPagedList<LogEntity> logOfCurrentApp;
             foreach (ApplicationEntity app in UserHelper.GetAppsForUser(username))
             {
-
                 logSearch = new LogsSearchSettings()
                 {
                     PageNumber = 1,
                     PageSize = 10
 
                 };
+
                 logSearch.Applications.Add(app.IdApplication);
                 logOfCurrentApp = RepositoryContext.Current.Logs.SeachLog(logSearch);
                 MessagesListModel list = new MessagesListModel();
@@ -257,11 +259,15 @@ namespace Wlog.Web.Controllers
         [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.ReadLog)]
         public ActionResult ListApps(string serchMessage, int? page, int? pageSize)
         {
+            bool isAdmin = User.IsInRole("ADMIN");
+          
             ApplicationList model = new ApplicationList
             {
                 SerchMessage = serchMessage
             };
-            model.AppList = ApplicationHelper.FilterApplicationList(serchMessage, page ?? 1, pageSize ?? 30);
+
+            model.AppList = ApplicationHelper.FilterApplicationList(serchMessage, page ?? 1, pageSize ?? 30, isAdmin, applicationsForUser);
+
             return View(model);
         }
 

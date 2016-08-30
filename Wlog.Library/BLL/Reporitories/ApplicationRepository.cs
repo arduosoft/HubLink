@@ -110,6 +110,11 @@ namespace Wlog.Library.BLL.Reporitories
                         .OrderBy(x => x.ApplicationName).ToList();
                 }
 
+                if (!searchSettings.IsAdmin)
+                {
+                    entity = entity.Where(x => searchSettings.ApplicationsForUser.Contains(x.IdApplication)).ToList();
+                }
+
                 //foreach (ApplicationEntity e in entity)
                 //{
                 //    AppUserRoleEntity r = uow.Query<AppUserRoleEntity>().Where(x => (x.Role.RoleName == Constants.Roles.Admin || x.Role.RoleName == Constants.Roles.Write) && x.Application.IdApplication == e.IdApplication && x.User.Id == UserProfileContext.Current.User.Id).FirstOrDefault();

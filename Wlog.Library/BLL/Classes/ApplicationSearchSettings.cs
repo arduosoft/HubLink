@@ -15,10 +15,11 @@ using Wlog.Library.BLL.Enums;
 
 namespace Wlog.Library.BLL.Classes
 {
-    public class ApplicationSearchSettings:SearchSettingsBase
+    public class ApplicationSearchSettings : SearchSettingsBase
     {
         public ApplicationFields Orderby { get; set; }
         public string SerchFilter { get; set; }
-
+        public bool IsAdmin { get; set; }
+        public List<Guid> ApplicationsForUser { get; set; }
     }
 }
