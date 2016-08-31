@@ -40,7 +40,7 @@ namespace Wlog.Web.Code.Helpers
         /// <param name="pagenumber"></param>
         /// <param name="pagesize"></param>
         /// <returns></returns>
-        public static IPagedList<ApplicationModel> FilterApplicationList(string serchFilter, int pagenumber, int pagesize, bool isAdmin, List<Guid> applicationsIds)
+        public static IPagedList<ApplicationModel> FilterApplicationList(string serchFilter, int pagenumber, int pagesize, string userName)
         {
             ApplicationSearchSettings settings = new ApplicationSearchSettings()
             {
@@ -48,8 +48,7 @@ namespace Wlog.Web.Code.Helpers
                 PageNumber = pagenumber,
                 PageSize = pagesize,
                 SerchFilter = serchFilter,
-                IsAdmin = isAdmin,
-                ApplicationsForUser = applicationsIds
+                UserName = userName
             };
 
             List<ApplicationModel> data = new List<ApplicationModel>();

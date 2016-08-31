@@ -110,17 +110,13 @@ namespace Wlog.Library.BLL.Reporitories
                         .OrderBy(x => x.ApplicationName).ToList();
                 }
 
-                if (!searchSettings.IsAdmin)
-                {
-                    entity = entity.Where(x => searchSettings.ApplicationsForUser.Contains(x.IdApplication)).ToList();
-                }
+                UserEntity user = RepositoryContext.Current.Users.GetByUsername(searchSettings.UserName);
 
-                //foreach (ApplicationEntity e in entity)
-                //{
-                //    AppUserRoleEntity r = uow.Query<AppUserRoleEntity>().Where(x => (x.Role.RoleName == Constants.Roles.Admin || x.Role.RoleName == Constants.Roles.Write) && x.Application.IdApplication == e.IdApplication && x.User.Id == UserProfileContext.Current.User.Id).FirstOrDefault();
-                //    if (UserProfileContext.Current.User.IsAdmin || r != null)
-                //        data.Add(EntityToModel(e));
-                //}
+                if (!user.IsAdmin)
+                {
+                    var applicationsForUser = GetAppplicationsIdsByUsername(user.Username);
+                    entity = entity.Where(x => applicationsForUser.Contains(x.IdApplication)).ToList();
+                }
             }
 
             return new StaticPagedList<ApplicationEntity>(entity, searchSettings.PageNumber, searchSettings.PageSize, entity.Count);

@@ -19,7 +19,6 @@ namespace Wlog.Library.BLL.Classes
     {
         public ApplicationFields Orderby { get; set; }
         public string SerchFilter { get; set; }
-        public bool IsAdmin { get; set; }
-        public List<Guid> ApplicationsForUser { get; set; }
+        public string UserName { get; set; }
     }
 }

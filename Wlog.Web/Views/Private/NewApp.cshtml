@@ -29,16 +29,7 @@
                     @Html.ValidationMessageFor(model => model.StartDate)
                 </div>
             </div>
-            @*<div class="form-group">
-                @Html.LabelFor(model => model.PublicKey, new { @class = "col-lg-2 control-label" })
-                <div class="col-lg-10">
-                    @Html.EditorFor(model => model.PublicKey, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.PublicKey)
-                </div>
-            </div>*@
         </div>
-
-
         <p>
             @Html.ActionLink("Back to List", "ListApps", null, new { @class = "btn btn-success" })
             <input type="submit" value="Create" class="btn btn-warning" />

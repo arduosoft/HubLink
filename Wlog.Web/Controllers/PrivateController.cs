@@ -31,13 +31,11 @@ namespace Wlog.Web.Controllers
 {
     public class PrivateController : Controller
     {
-        private List<Guid> applicationsForUser = new List<Guid>();
-
         [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.WriteLog, Constants.Roles.ReadLog)]
         public ActionResult Index()
         {
             string username = Membership.GetUser().UserName;
-            applicationsForUser = UserHelper.GetAppsIdsForUser(username);
+            var applicationsForUser = UserHelper.GetAppsIdsForUser(username);
 
             LogsSearchSettings logSearch = new LogsSearchSettings()
             {
@@ -259,14 +257,14 @@ namespace Wlog.Web.Controllers
         [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.ReadLog)]
         public ActionResult ListApps(string serchMessage, int? page, int? pageSize)
         {
-            bool isAdmin = User.IsInRole(Constants.Roles.Admin);
-          
+            string username = Membership.GetUser().UserName;
+
             ApplicationList model = new ApplicationList
             {
                 SerchMessage = serchMessage
             };
 
-            model.AppList = ApplicationHelper.FilterApplicationList(serchMessage, page ?? 1, pageSize ?? 30, isAdmin, applicationsForUser);
+            model.AppList = ApplicationHelper.FilterApplicationList(serchMessage, page ?? 1, pageSize ?? 30, username);
 
             return View(model);
         }
@@ -294,6 +292,14 @@ namespace Wlog.Web.Controllers
                 entity.PublicKey = model.PublicKey;
                 entity.PublicKey = Guid.NewGuid();
                 RepositoryContext.Current.Applications.Save(entity);
+
+                UserEntity user = UserHelper.GetByUsername(Membership.GetUser().UserName);
+
+                if (!user.IsAdmin)
+                {
+                    var role = RepositoryContext.Current.Roles.GetAllRolesForUser(user).SingleOrDefault(x => x.RoleName == Constants.Roles.CreateApp);
+                    RepositoryContext.Current.Applications.AssignRoleToUser(entity, user, role);
+                }
 
                 return RedirectToAction("ListApps");
             }
