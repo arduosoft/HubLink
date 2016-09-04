@@ -12,7 +12,7 @@
 <div class="row" style="min-height: 10px;">
     <div class="col-lg-8">
         <h2>Use a local account to log on.</h2>
-        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = Request.QueryString["ReturnUrl"] }, FormMethod.Post, new { @class = "form -horizontal" }))
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = Request.QueryString["ReturnUrl"] }, FormMethod.Post, new { @class = "form-horizontal" }))
                     {
                         @Html.AntiForgeryToken()
                         @Html.ValidationSummary(true)
