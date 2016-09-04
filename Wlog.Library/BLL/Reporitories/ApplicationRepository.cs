@@ -21,19 +21,18 @@ using Wlog.Library.BLL.DataBase;
 
 namespace Wlog.Library.BLL.Reporitories
 {
-    public class ApplicationRepository:IRepository
+    public class ApplicationRepository: EntityRepository
     {
-        private static UnitFactory unitFactory;
 
         public ApplicationRepository()
         {
-            unitFactory = new UnitFactory();
+            
         }
 
         public ApplicationEntity GetById(Guid id)
         {
             ApplicationEntity app;
-            using (IUnitOfWork uow = unitFactory.GetUnit(this))
+            using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
                 app = uow.Query<ApplicationEntity>().Where(x => x.IdApplication.Equals(id)).FirstOrDefault();
@@ -46,7 +45,7 @@ namespace Wlog.Library.BLL.Reporitories
             try
             {
                 Guid idapp=role.Select(x=>x.ApplicationId).Distinct().First();
-                using (IUnitOfWork uow = unitFactory.GetUnit(this))
+                using (IUnitOfWork uow = BeginUnitOfWork())
                 {
                     uow.BeginTransaction();
                     List<AppUserRoleEntity> deleterole = uow.Query<AppUserRoleEntity>().Where(x => x.UserId.Equals(entity.Id) && x.ApplicationId.Equals(idapp)).ToList();
@@ -73,7 +72,7 @@ namespace Wlog.Library.BLL.Reporitories
         public IPagedList<ApplicationEntity> Search(ApplicationSearchSettings searchSettings)
         {
             List<ApplicationEntity> entity;
-            using (IUnitOfWork uow = unitFactory.GetUnit(this))
+            using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
                 if (string.IsNullOrEmpty(searchSettings.SerchFilter))
@@ -98,7 +97,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public void Delete(ApplicationEntity app)
         {
-            using (IUnitOfWork uow = unitFactory.GetUnit(this))
+            using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
                 ApplicationEntity appToDelete = uow.Query<ApplicationEntity>().Where(x => x.IdApplication.Equals(app.IdApplication)).FirstOrDefault();
@@ -127,7 +126,7 @@ namespace Wlog.Library.BLL.Reporitories
         public List<ApplicationEntity> GetByIds(List<Guid> ids)
         {
             List<ApplicationEntity> result = new List<ApplicationEntity>();
-            using (IUnitOfWork uow = unitFactory.GetUnit(this))
+            using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
                 foreach (Guid id in ids)
@@ -141,7 +140,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public void Save(ApplicationEntity app)
         {
-            using (IUnitOfWork uow = unitFactory.GetUnit(this))
+            using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
                 uow.SaveOrUpdate(app);
@@ -165,7 +164,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public List<ApplicationEntity> GetAppplicationForUser(UserEntity user)
         {
-            using (IUnitOfWork uow = unitFactory.GetUnit(this))
+            using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
                 List<ApplicationEntity> applications;
@@ -197,7 +196,7 @@ namespace Wlog.Library.BLL.Reporitories
         public ApplicationEntity GetByApplicationKey(string applicationKey)
         {
             Guid pk = new Guid(applicationKey);
-            using (IUnitOfWork uow = unitFactory.GetUnit(this))
+            using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
                 return uow.Query<ApplicationEntity>().Where(x => x.IdApplication.Equals(pk) || x.PublicKey.Equals(pk)).FirstOrDefault();
@@ -209,7 +208,7 @@ namespace Wlog.Library.BLL.Reporitories
         {
             try
             {
-                using (IUnitOfWork uow = unitFactory.GetUnit(this))
+                using (IUnitOfWork uow = BeginUnitOfWork())
                 {
                     uow.BeginTransaction();
                     if (!uow.Query<AppUserRoleEntity>().Any(x => x.ApplicationId.Equals(application.IdApplication) && x.RoleId.Equals(role.Id) && x.UserId.Equals(user.Id)))

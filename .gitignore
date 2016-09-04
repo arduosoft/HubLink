@@ -9,3 +9,4 @@ dist
 /Wlog.Web/bin
 /Wlog.Web/obj
 *.Cache
+/.vs/

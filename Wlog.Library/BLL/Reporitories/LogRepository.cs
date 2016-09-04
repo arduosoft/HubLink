@@ -22,18 +22,16 @@ using Wlog.BLL.Classes;
 
 namespace Wlog.Library.BLL.Reporitories
 {
-    public class LogRepository : IRepository
+    public class LogRepository : EntityRepository
     {
-        private static UnitFactory unitFactory;
-
         public LogRepository()
         {
-            unitFactory = new UnitFactory();
+            
         }
 
         public long CountByLevel(StandardLogLevels level)
         {
-            using (IUnitOfWork uow = unitFactory.GetUnit(this))
+            using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
                 return uow.Query<LogEntity>().Count(p => level == StandardLogLevels.ALL_LEVELS || (p.Level != null && p.Level.ToLower().Contains(level.ToString())));
@@ -42,7 +40,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public void Save(LogEntity entToSave)
         {
-            using (IUnitOfWork uow = unitFactory.GetUnit(this))
+            using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
                 uow.SaveOrUpdate(entToSave);
@@ -52,7 +50,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public IPagedList<LogEntity> SeachLog(LogsSearchSettings logsSearchSettings)
         {
-            using (IUnitOfWork uow = unitFactory.GetUnit(this))
+            using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
                 IEnumerable<LogEntity> query = uow.Query<LogEntity>().Where(x=>logsSearchSettings.Applications.Contains(x.ApplictionId));
@@ -117,7 +115,7 @@ namespace Wlog.Library.BLL.Reporitories
 
             if (LogQueue.Current.Count > 0)
             {
-                using (IUnitOfWork uow = unitFactory.GetUnit(this))
+                using (IUnitOfWork uow = BeginUnitOfWork())
                 {
                     uow.BeginTransaction();
 

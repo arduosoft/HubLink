@@ -12,12 +12,12 @@
 <div class="row" style="min-height: 10px;">
     <div class="col-lg-8">
         <h2>Use a local account to log on.</h2>
-        @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "form-horizontal" }))
-        {
-            @Html.AntiForgeryToken()
-            @Html.ValidationSummary(true)
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = Request.QueryString["ReturnUrl"] }, FormMethod.Post, new { @class = "form -horizontal" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
 
-        
+
             <fieldset>
                 <legend></legend>
                 <div class="form-group">
@@ -34,7 +34,8 @@
                         @Html.ValidationMessageFor(m => m.Password)
                         <div class="checkbox">
                             <label>
-                                @Html.CheckBoxFor(m => m.RememberMe) Remember Me</label>
+                                @Html.CheckBoxFor(m => m.RememberMe) Remember Me
+                            </label>
                         </div>
                     </div>
 
@@ -42,11 +43,11 @@
                 <div class="col-lg-10 col-lg-offset-2">
                     <input type="submit" value="LogIn" class="btn btn-primary" />
                 </div>
-@*                <div class="col-lg-10 col-lg-offset-2" style="padding-top: 10px;">
-                    <p>
-                        @Html.ActionLink("Registrazione", "Register") se non si dispone di un account.
-                    </p>
-                </div>*@
+                @*                <div class="col-lg-10 col-lg-offset-2" style="padding-top: 10px;">
+                        <p>
+                            @Html.ActionLink("Registrazione", "Register") se non si dispone di un account.
+                        </p>
+                    </div>*@
             </fieldset>
 
             <div class="col-lg-4">

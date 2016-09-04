@@ -21,22 +21,20 @@ using MongoDB.Driver.Linq;
 
 namespace Wlog.Library.BLL.Reporitories
 {
-    public class UserRepository : IRepository
+    public class UserRepository : EntityRepository
     {
-
-        private static UnitFactory unitFactory;
 
         public UserRepository()
         {
-            unitFactory = new UnitFactory();
+
         }
         public UserEntity GetById(Guid id)
         {
             UserEntity entity = null;
-            using(IUnitOfWork uow=unitFactory.GetUnit(this))
+            using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
-                 entity = uow.Query<UserEntity>().Where(x => x.Id.Equals(id)).FirstOrDefault();
+                entity = uow.Query<UserEntity>().Where(x => x.Id.Equals(id)).FirstOrDefault();
             }
             return entity;
         }
@@ -46,7 +44,7 @@ namespace Wlog.Library.BLL.Reporitories
             bool result = true;
             try
             {
-                using (IUnitOfWork uow = unitFactory.GetUnit(this))
+                using (IUnitOfWork uow = BeginUnitOfWork())
                 {
                     uow.BeginTransaction();
                     List<AppUserRoleEntity> entity = uow.Query<AppUserRoleEntity>().Where(x => x.UserId.Equals(user.Id)).ToList();
@@ -64,7 +62,7 @@ namespace Wlog.Library.BLL.Reporitories
             }
             catch (Exception e)
             {
-                
+
                 result = false;
             }
 
@@ -74,7 +72,7 @@ namespace Wlog.Library.BLL.Reporitories
         public List<UserEntity> GetAll()
         {
             List<UserEntity> result = new List<UserEntity>();
-            using (IUnitOfWork uow = unitFactory.GetUnit(this))
+            using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
                 result = uow.Query<UserEntity>().ToList();
@@ -87,7 +85,7 @@ namespace Wlog.Library.BLL.Reporitories
         {
             bool result = false;
 
-            using (IUnitOfWork uow = unitFactory.GetUnit(this))
+            using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
                 try
@@ -107,7 +105,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public IPagedList<UserEntity> SearchUsers(UserSearchSettings userSearchSettings)
         {
-            using (IUnitOfWork uow = unitFactory.GetUnit(this))
+            using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
                 List<UserEntity> entity;
@@ -127,7 +125,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public UserEntity GetByUsername(string userneame)
         {
-            using (IUnitOfWork uow = unitFactory.GetUnit(this))
+            using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
                 return uow.Query<UserEntity>().Where(x => x.Username == userneame).FirstOrDefault();
@@ -136,7 +134,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public UserEntity GetByEmail(string email)
         {
-            using (IUnitOfWork uow = unitFactory.GetUnit(this))
+            using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
                 return uow.Query<UserEntity>().Where(x => x.Email == email).FirstOrDefault();

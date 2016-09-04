@@ -30,9 +30,8 @@ namespace Wlog.Web.Controllers
         // GET: /Account/Login
 
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public ActionResult Login()
         {
-            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
@@ -48,7 +47,7 @@ namespace Wlog.Web.Controllers
             if (provider.ValidateUser(model.UserName, model.Password))
             {
                 FormsAuthentication.SetAuthCookie(model.UserName, true);
-                if (returnUrl == null)
+                if (string.IsNullOrWhiteSpace(returnUrl))
                 {
                     returnUrl = "~/private";
                 }

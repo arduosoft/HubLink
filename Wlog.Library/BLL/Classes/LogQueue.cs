@@ -16,14 +16,14 @@ using Wlog.BLL.Entities;
 using Wlog.Library.BLL.Reporitories;
 using Wlog.Library.BLL.Interfaces;
 using Wlog.Library.BLL.DataBase;
+using Wlog.Library.BLL.Classes;
 
 namespace Wlog.BLL.Classes
 {
-    public class LogQueue : IRepository
+    public class LogQueue : EntityRepository
     {
         private Queue<LogMessage> queque = new Queue<LogMessage>();
         public List<QueueLoad> QueueLoad { get; set; }
-        private static UnitFactory unitFactory=new UnitFactory();
 
         public int MaxProcessedItems { get; set; }
         public int MaxQueueSize { get; set; }
@@ -76,7 +76,7 @@ namespace Wlog.BLL.Classes
 
             if (LogQueue.Current.Count > 0)
             {
-                using (IUnitOfWork uow = unitFactory.GetUnit(this))
+                using (IUnitOfWork uow = BeginUnitOfWork())
                 {
                     uow.BeginTransaction();
 
@@ -96,7 +96,7 @@ namespace Wlog.BLL.Classes
         }
 
 
-       
+
         public void PersistLog(LogMessage log)
         {
 

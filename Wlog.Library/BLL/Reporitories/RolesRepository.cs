@@ -13,24 +13,23 @@ using System.Text;
 using System.Threading.Tasks;
 using Wlog.BLL.Entities;
 using Wlog.DAL.NHibernate.Helpers;
+using Wlog.Library.BLL.Classes;
 using Wlog.Library.BLL.DataBase;
 using Wlog.Library.BLL.Interfaces;
 
 namespace Wlog.Library.BLL.Reporitories
 {
-    public class RolesRepository : IRepository
+    public class RolesRepository : EntityRepository
     {
-
-        private static UnitFactory unitFactory;
 
         public RolesRepository()
         {
-            unitFactory = new UnitFactory();
+            
         }
 
         public List<RolesEntity> GetAllApplicationRoles(ApplicationEntity applicationEntity)
         {
-            using (IUnitOfWork uow = unitFactory.GetUnit(this))
+            using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
                 if (applicationEntity != null)
@@ -45,7 +44,7 @@ namespace Wlog.Library.BLL.Reporitories
         public List<AppUserRoleEntity> GetApplicationRolesForUser(UserEntity userEntity)
         {
 
-            using (IUnitOfWork uow = unitFactory.GetUnit(this))
+            using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
                 return uow.Query<AppUserRoleEntity>().Where(c => c.UserId.Equals( userEntity.Id)).ToList();
@@ -54,7 +53,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public RolesEntity GetRoleByName(string rolename)
         {
-            using (IUnitOfWork uow = unitFactory.GetUnit(this))
+            using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
                 return uow.Query<RolesEntity>().FirstOrDefault(x => x.RoleName == rolename);
@@ -65,7 +64,7 @@ namespace Wlog.Library.BLL.Reporitories
         {
             try
             {
-                using (IUnitOfWork uow = unitFactory.GetUnit(this))
+                using (IUnitOfWork uow = BeginUnitOfWork())
                 {
                     uow.BeginTransaction();
                     uow.SaveOrUpdate(rolesEntity);
@@ -86,7 +85,7 @@ namespace Wlog.Library.BLL.Reporitories
             List<RolesEntity> result = new List<RolesEntity>();
             try
             {
-                using (IUnitOfWork uow = unitFactory.GetUnit(this))
+                using (IUnitOfWork uow = BeginUnitOfWork())
                 {
                     result.AddRange(uow.Query<RolesEntity>().ToList());
                 }
