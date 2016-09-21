@@ -47,13 +47,13 @@ namespace Wlog.Web.Code.Helpers
             }
         }
 
-        private static RolesEntity InsertRoleIfNotExists(string rolename)
+        private static RolesEntity InsertRoleIfNotExists(string rolename, bool global,bool application)
         {
             RolesEntity role = RepositoryContext.Current.Roles.GetRoleByName(rolename);
 
             if (role == null)
             {
-                role = new RolesEntity() { RoleName = rolename };
+                role = new RolesEntity() { RoleName = rolename, GlobalScope=global,ApplicationScope=application };
                 RepositoryContext.Current.Roles.Save(role);
             }
 
@@ -76,12 +76,13 @@ namespace Wlog.Web.Code.Helpers
         public static void InsertRolesAndProfiles()
         {
             // create roles
-            var adminRole = InsertRoleIfNotExists(Constants.Roles.Admin);
-            var appWriter = InsertRoleIfNotExists(Constants.Roles.AppWriter);
-            var createApp = InsertRoleIfNotExists(Constants.Roles.CreateApp);
-            var login = InsertRoleIfNotExists(Constants.Roles.Login);
-            var readLog = InsertRoleIfNotExists(Constants.Roles.ReadLog);
-            var writeLog = InsertRoleIfNotExists(Constants.Roles.WriteLog);
+            var adminRole = InsertRoleIfNotExists(Constants.Roles.Admin,true,false);
+            var appWriter = InsertRoleIfNotExists(Constants.Roles.AppWriter, true, false);
+            var createApp = InsertRoleIfNotExists(Constants.Roles.CreateApp, true, false);
+            var login = InsertRoleIfNotExists(Constants.Roles.Login, true, false);
+
+            var readLog = InsertRoleIfNotExists(Constants.Roles.ReadLog,false,true);
+            var writeLog = InsertRoleIfNotExists(Constants.Roles.WriteLog, false, true);
 
             // create profiles
             var adminProfile = InsertProfileIfNotExists(Constants.Profiles.Admin);

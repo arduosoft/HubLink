@@ -20,5 +20,7 @@ namespace Wlog.BLL.Entities
     public class RolesEntity : IEntityBase
     {
         public virtual string RoleName { get; set; }
+        public virtual bool GlobalScope { get; set; }
+        public virtual bool ApplicationScope { get; set; }
     }
 }

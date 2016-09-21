@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Wlog.BLL.Entities;
 using Wlog.DAL.NHibernate.Helpers;
 using Wlog.Library.BLL.DataBase;
+using Wlog.Library.BLL.Enums;
 using Wlog.Library.BLL.Interfaces;
 
 namespace Wlog.Library.BLL.Reporitories
@@ -86,12 +87,36 @@ namespace Wlog.Library.BLL.Reporitories
 
         public List<RolesEntity> GetAllRoles()
         {
+            return GetAllRoles(RoleScope.All);
+        }
+
+
+        public List<RolesEntity> GetAllRoles(RoleScope scope)
+        {
             List<RolesEntity> result = new List<RolesEntity>();
             try
             {
                 using (IUnitOfWork uow = unitFactory.GetUnit(this))
                 {
-                    result.AddRange(uow.Query<RolesEntity>().ToList());
+                    var query = uow.Query<RolesEntity>();
+                    if (scope == RoleScope.None)
+                    {
+                        return new List<RolesEntity>();
+                    }
+
+                    if ( scope != RoleScope.All)
+                    {
+                        if (scope == RoleScope.Application)
+                        {
+                            query = query.Where(x => x.ApplicationScope == true);
+                        }
+
+                        if (scope == RoleScope.Global)
+                        {
+                            query = query.Where(x => x.GlobalScope == true);
+                        }
+                    }
+                    result.AddRange(query.ToList());
                 }
             }
             catch (Exception err)

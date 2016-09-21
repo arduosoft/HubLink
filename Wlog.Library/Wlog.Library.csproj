@@ -94,6 +94,7 @@
     <Compile Include="BLL\Entities\ProfilesRolesEntry.cs" />
     <Compile Include="BLL\Enums\ApplicationFields.cs" />
     <Compile Include="BLL\Enums\LogsFields.cs" />
+    <Compile Include="BLL\Enums\RoleScope.cs" />
     <Compile Include="BLL\Enums\RolesFields.cs" />
     <Compile Include="BLL\Enums\SortDirection.cs" />
     <Compile Include="BLL\Enums\StandardLogLevels.cs" />
