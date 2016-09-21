@@ -23,10 +23,7 @@ namespace Wlog.Library.BLL.Reporitories
 {
     public class UserRepository : EntityRepository
     {
-<<<<<<< HEAD
-=======
-        private static UnitFactory unitFactory;
->>>>>>> feature/WebLog_security_0916
+
 
         public UserRepository()
         {

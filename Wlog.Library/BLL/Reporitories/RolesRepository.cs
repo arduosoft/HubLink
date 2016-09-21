@@ -138,7 +138,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public List<ProfilesRolesEntity> GetProfilesRolesForUser(UserEntity userEntity)
         {
-            using (IUnitOfWork uow = unitFactory.GetUnit(this))
+            using (IUnitOfWork uow =BeginUnitOfWork())
             {
                 uow.BeginTransaction();
                 return uow.Query<ProfilesRolesEntity>().Where(c => c.ProfileId.Equals(userEntity.ProfileId)).ToList();
@@ -153,7 +153,7 @@ namespace Wlog.Library.BLL.Reporitories
             {
                 var rolesIds = GetProfilesRolesForUser(userEntity).Select(x => x.RoleId);
 
-                using (IUnitOfWork uow = unitFactory.GetUnit(this))
+                using (IUnitOfWork uow = BeginUnitOfWork())
                 {
                     result.AddRange(uow.Query<RolesEntity>().Where(x => rolesIds.Contains(x.Id)).ToList());
                 }

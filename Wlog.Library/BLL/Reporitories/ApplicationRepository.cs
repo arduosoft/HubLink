@@ -76,7 +76,7 @@ namespace Wlog.Library.BLL.Reporitories
         /// <param name="app">the application that need to be deleted</param>
         public void DeleteApplicationRole(ApplicationEntity app)
         {
-            using (IUnitOfWork uow = unitFactory.GetUnit(this))
+            using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
 
@@ -113,7 +113,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         
             }
-            }
+            
 
             return new StaticPagedList<ApplicationEntity>(entity, searchSettings.PageNumber, searchSettings.PageSize, entity.Count);
         }
