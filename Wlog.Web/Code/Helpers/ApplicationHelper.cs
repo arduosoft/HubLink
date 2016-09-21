@@ -40,16 +40,17 @@ namespace Wlog.Web.Code.Helpers
         /// <param name="pagenumber"></param>
         /// <param name="pagesize"></param>
         /// <returns></returns>
-        public static IPagedList<ApplicationModel> FilterApplicationList(string serchFilter, int pagenumber, int pagesize)
+        public static IPagedList<ApplicationModel> FilterApplicationList(string serchFilter, int pagenumber, int pagesize, string userName)
         {
             ApplicationSearchSettings settings = new ApplicationSearchSettings()
             {
-                Orderby=Library.BLL.Enums.ApplicationFields.ApplicationName,
-                PageNumber=pagenumber,
-                PageSize=pagesize,
-                SerchFilter=serchFilter
+                Orderby = Library.BLL.Enums.ApplicationFields.ApplicationName,
+                PageNumber = pagenumber,
+                PageSize = pagesize,
+                SerchFilter = serchFilter,
+                UserName = userName
             };
-                
+
             List<ApplicationModel> data = new List<ApplicationModel>();
 
             IPagedList<ApplicationEntity> queryResult = RepositoryContext.Current.Applications.Search(settings);
@@ -59,7 +60,7 @@ namespace Wlog.Web.Code.Helpers
                 data.Add(EntityToModel(ae));
             }
 
-            return new StaticPagedList<ApplicationModel>(data, pagenumber, pagesize,queryResult.TotalItemCount);
+            return new StaticPagedList<ApplicationModel>(data, pagenumber, pagesize, queryResult.TotalItemCount);
         }
 
         public static bool DeleteById(Guid id)
