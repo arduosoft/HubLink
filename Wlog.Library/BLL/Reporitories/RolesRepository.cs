@@ -15,26 +15,34 @@ using Wlog.BLL.Entities;
 using Wlog.DAL.NHibernate.Helpers;
 using Wlog.Library.BLL.Classes;
 using Wlog.Library.BLL.DataBase;
+using Wlog.Library.BLL.Enums;
 using Wlog.Library.BLL.Interfaces;
 
 namespace Wlog.Library.BLL.Reporitories
 {
+
     public class RolesRepository : EntityRepository
     {
 
+       
         public RolesRepository()
         {
+            
             
         }
 
         public List<RolesEntity> GetAllApplicationRoles(ApplicationEntity applicationEntity)
         {
+          
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
                 if (applicationEntity != null)
                 {
-                    List<Guid> ids = uow.Query<ApplicationRoleEntity>().Where(x => x.ApplicationId.Equals( applicationEntity.IdApplication)).Select(x => x.RoleId).ToList();
+                   
+                    List<Guid> ids = uow.Query<AppUserRoleEntity>()
+                        .Where(x => x.ApplicationId.Equals(applicationEntity.IdApplication))
+                        .Select(x => x.RoleId).ToList();
                     return uow.Query<RolesEntity>().Where(x => ids.Contains(x.Id)).ToList();
                 }
             }
@@ -43,7 +51,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public List<AppUserRoleEntity> GetApplicationRolesForUser(UserEntity userEntity)
         {
-
+      
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
@@ -53,6 +61,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public RolesEntity GetRoleByName(string rolename)
         {
+         
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
@@ -64,12 +73,14 @@ namespace Wlog.Library.BLL.Reporitories
         {
             try
             {
+         
                 using (IUnitOfWork uow = BeginUnitOfWork())
                 {
                     uow.BeginTransaction();
                     uow.SaveOrUpdate(rolesEntity);
                     uow.Commit();
                 }
+
                 return true;
             }
             catch (Exception err)
@@ -77,17 +88,74 @@ namespace Wlog.Library.BLL.Reporitories
                 //TODO: log here:
 
             }
+
             return false;
         }
 
         public List<RolesEntity> GetAllRoles()
         {
+            return GetAllRoles(RoleScope.All);
+        }
+
+
+        public List<RolesEntity> GetAllRoles(RoleScope scope)
+        {
             List<RolesEntity> result = new List<RolesEntity>();
             try
             {
+           
                 using (IUnitOfWork uow = BeginUnitOfWork())
                 {
-                    result.AddRange(uow.Query<RolesEntity>().ToList());
+                    var query = uow.Query<RolesEntity>();
+                    if (scope == RoleScope.None)
+                    {
+                        return new List<RolesEntity>();
+                }
+
+                    if ( scope != RoleScope.All)
+                    {
+                        if (scope == RoleScope.Application)
+                        {
+                            query = query.Where(x => x.ApplicationScope == true);
+            }
+
+                        if (scope == RoleScope.Global)
+                        {
+                            query = query.Where(x => x.GlobalScope == true);
+                        }
+                    }
+                    result.AddRange(query.ToList());
+                }
+            }
+            catch (Exception err)
+            {
+                //TODO: log here:
+
+            }
+
+            return result;
+        }
+
+        public List<ProfilesRolesEntity> GetProfilesRolesForUser(UserEntity userEntity)
+        {
+            using (IUnitOfWork uow = unitFactory.GetUnit(this))
+            {
+                uow.BeginTransaction();
+                return uow.Query<ProfilesRolesEntity>().Where(c => c.ProfileId.Equals(userEntity.ProfileId)).ToList();
+    }
+}
+
+        public List<RolesEntity> GetAllRolesForUser(UserEntity userEntity)
+        {
+            List<RolesEntity> result = new List<RolesEntity>();
+
+            try
+            {
+                var rolesIds = GetProfilesRolesForUser(userEntity).Select(x => x.RoleId);
+
+                using (IUnitOfWork uow = unitFactory.GetUnit(this))
+                {
+                    result.AddRange(uow.Query<RolesEntity>().Where(x => rolesIds.Contains(x.Id)).ToList());
                 }
             }
             catch (Exception err)

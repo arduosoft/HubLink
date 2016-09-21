@@ -31,14 +31,13 @@ namespace Wlog.Web.Models.User
 
     public class EditUser
     {
-
         public UserEntity DataUser { get; set; }
         public List<UserApps> Apps { get; set; }
         public IEnumerable<RolesEntity> RoleList
-        { 
-            get 
+        {
+            get
             {
-                List<RolesEntity> role = RepositoryContext.Current.Roles.GetAllRoles();
+                List<RolesEntity> role = RepositoryContext.Current.Roles.GetAllRoles(Library.BLL.Enums.RoleScope.Application);
                 role.Add(new RolesEntity { RoleName = "No Role" });
                 return role;
             }

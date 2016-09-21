@@ -19,10 +19,10 @@ using Wlog.Library.BLL.Reporitories;
 
 namespace Wlog.Web.Code.Authentication
 {
-    public class WLogRoleProvider:RoleProvider
+    public class WLogRoleProvider : RoleProvider
     {
 
-        private const string ADMIN ="ADMIN";
+        private const string ADMIN = "ADMIN";
         private const string USER = "USER";
 
 
@@ -65,17 +65,10 @@ namespace Wlog.Web.Code.Authentication
 
         public override string[] GetRolesForUser(string username)
         {
-            List<string> roles = new List<string>();
-
             UserEntity u = RepositoryContext.Current.Users.GetByUsername(username);
-            if (u != null && u.IsAdmin)
-            {
-                roles.Add(ADMIN);
-            }
-                
-           
-            roles.Add(USER);
-            return roles.ToArray();
+            List<RolesEntity> roles = RepositoryContext.Current.Roles.GetAllRolesForUser(u);
+
+            return roles.Select(x => x.RoleName).ToArray();
         }
 
         public override string[] GetUsersInRole(string roleName)
@@ -91,7 +84,7 @@ namespace Wlog.Web.Code.Authentication
             }
             if (roleName == ADMIN)
             {
-               
+
                 UserEntity usr = UserHelper.GetByUsername(username);
                 if (usr == null || !usr.IsAdmin)
                 {

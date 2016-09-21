@@ -27,7 +27,6 @@ namespace Wlog.BLL.Entities
         -potentially every ${param} defined in NLog; in practise we can take a look to https://github.com/nlog/nlog/wiki/Layout-Renderers and include what it's useful
         */
 
-        public override Guid Id { get; set; }
         public virtual DateTime CreateDate { get; set; }
         public virtual DateTime UpdateDate { get; set; }
         public virtual DateTime SourceDate { get; set; }

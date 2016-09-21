@@ -16,6 +16,7 @@ using Wlog.Web.Models.User;
 using Wlog.BLL.Entities;
 using Wlog.Library.BLL.Reporitories;
 using Wlog.Library.BLL.Classes;
+using System.Web.Mvc;
 
 namespace Wlog.Web.Code.Helpers
 {
@@ -42,14 +43,14 @@ namespace Wlog.Web.Code.Helpers
 
         public static IPagedList<UserData> FilterUserList(string serchFilter, int pagenumber, int pagesize)
         {
-         
+
             List<UserData> data = new List<UserData>();
             IPagedList<UserEntity> users = RepositoryContext.Current.Users.SearchUsers(new UserSearchSettings
             {
-                OrderBy=Library.BLL.Enums.UserFields.Username,
-                PageNumber=pagenumber,
-                PageSize=pagesize,
-                Username=serchFilter
+                OrderBy = Library.BLL.Enums.UserFields.Username,
+                PageNumber = pagenumber,
+                PageSize = pagesize,
+                Username = serchFilter
             });
 
             foreach (UserEntity e in users)
@@ -105,18 +106,22 @@ namespace Wlog.Web.Code.Helpers
         /// </summary>
         /// <param name="usr"></param>
         /// <returns></returns>
-        public static bool UpdateUser(UserEntity usr)
+        public static bool UpdateUser(UserEntity user)
         {
-           return RepositoryContext.Current.Users.Save(usr);
-        }
+            if (user.IsAdmin)
+            {
+                user.ProfileId = GetProfileByName("admin").Id;
+            }
 
+            return RepositoryContext.Current.Users.Save(user);
+        }
 
         public static bool DeleteById(Guid id)
         {
             UserEntity user = RepositoryContext.Current.Users.GetById(id);
-          return RepositoryContext.Current.Users.Delete(user);
-          
+            return RepositoryContext.Current.Users.Delete(user);
         }
+
         /// <summary>
         /// given a user return list of app with role
         /// </summary>
@@ -126,43 +131,40 @@ namespace Wlog.Web.Code.Helpers
         {
             List<UserApps> result = new List<UserApps>();
 
-            UserEntity user= RepositoryContext.Current.Users.GetById(id);
+            UserEntity user = RepositoryContext.Current.Users.GetById(id);
             List<ApplicationEntity> apps = RepositoryContext.Current.Applications.GetAppplicationForUser(user);
             List<RolesEntity> roles = RepositoryContext.Current.Roles.GetAllRoles();
             List<AppUserRoleEntity> appForUser = RepositoryContext.Current.Roles.GetApplicationRolesForUser(user);
 
-
-
-
             AppUserRoleEntity current;
             RolesEntity r;
-                foreach (ApplicationEntity ae in apps)
-                {
+            foreach (ApplicationEntity ae in apps)
+            {
 
-                    current = appForUser.FirstOrDefault(x => x.ApplicationId == ae.IdApplication); 
-                    if (current!=null)
+                current = appForUser.FirstOrDefault(x => x.ApplicationId == ae.IdApplication);
+                if (current != null)
+                {
+                    r = roles.FirstOrDefault(x => x.Id == current.RoleId);
+                    result.Add(new UserApps
                     {
-                        r = roles.FirstOrDefault(x => x.Id == current.RoleId);
-                        result.Add(new UserApps
-                        {
-                            ApplicationName = ae.ApplicationName,
-                             IdApplication=ae.IdApplication,
-                            RoleId=r.Id,
-                           RoleName=r.RoleName
-                        });
-                    }
-                    else
-                    {
-                        result.Add(new UserApps
-                        {
-                            ApplicationName = ae.ApplicationName,
-                            IdApplication = ae.IdApplication,
-                            RoleId = Guid.Empty,
-                            RoleName = "No Role"
-                        });
-                    }
+                        ApplicationName = ae.ApplicationName,
+                        IdApplication = ae.IdApplication,
+                        RoleId = r.Id,
+                        RoleName = r.RoleName
+                    });
                 }
-            
+                else
+                {
+                    result.Add(new UserApps
+                    {
+                        ApplicationName = ae.ApplicationName,
+                        IdApplication = ae.IdApplication,
+                        RoleId = Guid.Empty,
+                        RoleName = "No Role"
+                    });
+                }
+            }
+
             return result;
         }
 
@@ -172,6 +174,28 @@ namespace Wlog.Web.Code.Helpers
             {
                 return Convert.ToBase64String(sha.ComputeHash(Encoding.ASCII.GetBytes(password)));
             }
+        }
+
+        public static IEnumerable<SelectListItem> GetAllUserProfiles()
+        {
+            var profiles = from a in RepositoryContext.Current.Profiles.GetAllProfiles()
+                           select new SelectListItem
+                           {
+                               Value = a.Id.ToString(),
+                               Text = a.ProfileName
+                           };
+
+            return profiles;
+        }
+
+        public static bool IsUserAdmin(Guid profileGuid)
+        {
+            return GetProfileByName("admin").Id == profileGuid;
+        }
+
+        private static ProfilesEntity GetProfileByName(string name)
+        {
+            return RepositoryContext.Current.Profiles.GetAllProfiles().SingleOrDefault(x => x.ProfileName.ToLower() == name);
         }
     }
 }

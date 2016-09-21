@@ -19,8 +19,6 @@ namespace Wlog.BLL.Entities
 {
     public class ApplicationEntity : IEntityBase
     {
-
-
         public override Guid Id
         {
             get
@@ -32,6 +30,7 @@ namespace Wlog.BLL.Entities
                 this.Id = value;
             }
         }
+
         public virtual Guid IdApplication { get; set; }
 
         public virtual string ApplicationName { get; set; }
@@ -41,8 +40,6 @@ namespace Wlog.BLL.Entities
         public virtual DateTime StartDate { get; set; }
 
         public virtual System.Nullable<DateTime> EndDate { get; set; }
-        //public virtual IList<ApplicationRoleEntry> AppRoles { get; set; }
-
 
         public virtual Guid PublicKey { get; set; }
 
@@ -52,8 +49,5 @@ namespace Wlog.BLL.Entities
             this.IsActive = true;
             this.StartDate = DateTime.Now;
         }
-
     }
-
-
 }

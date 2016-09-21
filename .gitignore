@@ -10,3 +10,4 @@ dist
 /Wlog.Web/obj
 *.Cache
 /.vs/
+/.vs/config/applicationhost.config

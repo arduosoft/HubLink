@@ -21,9 +21,9 @@ namespace Wlog.Library.BLL.DataBase
     {
         private static Dictionary<string, Type> factory;
 
-        public UnitFactory() 
+        public UnitFactory()
         {
-            if (factory==null || factory.Count == 0)
+            if (factory == null || factory.Count == 0)
             {
                 RepositoryConfiguration configuration = RepositoryConfiguration.GetConfig();
                 RepositoryCollection col = configuration.RepositoryCollection;

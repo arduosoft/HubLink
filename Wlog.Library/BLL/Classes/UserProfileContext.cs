@@ -23,14 +23,14 @@ namespace Wlog.BLL.Classes
 
         public UserProfileContext()
         {
-          
+
             this.User = RepositoryContext.Current.Users.GetByUsername(HttpContext.Current.User.Identity.Name);
             if (this.User.IsAdmin)
             {
                 this.IsEditorUser = true;
             }
             else
-           {
+            {
                 //int count;
                 //using (UnitOfWork uow = new UnitOfWork())
                 //{

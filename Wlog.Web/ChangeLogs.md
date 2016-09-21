@@ -1,4 +1,5 @@
 ﻿### Release 1.2 (pending)
+ * 2016-09-21 (z3le)    : security refactoring. Added role\profile support and security under controller actions
  * 2016-09-04 (andrea): fixed redirect url ignored after login; repository refactoring
  * 2016-08-17 (zeppaman): added style cop; code restyled
  * 2016-08-13 (zeppaman): added colored labels on log bading on log level

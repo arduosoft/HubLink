@@ -16,14 +16,14 @@ namespace Wlog.Library.BLL.Enums
 {
     public enum ApplicationFields
     {
- IdApplication ,
+        IdApplication,
 
-   ApplicationName ,
+        ApplicationName,
 
-     IsActive,
+        IsActive,
 
-    StartDate ,
+        StartDate,
 
-    EndDate 
-}
+        EndDate
+    }
 }

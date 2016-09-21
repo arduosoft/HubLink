@@ -23,11 +23,16 @@ namespace Wlog.Library.BLL.Reporitories
 {
     public class UserRepository : EntityRepository
     {
+<<<<<<< HEAD
+=======
+        private static UnitFactory unitFactory;
+>>>>>>> feature/WebLog_security_0916
 
         public UserRepository()
         {
 
         }
+
         public UserEntity GetById(Guid id)
         {
             UserEntity entity = null;
@@ -48,12 +53,11 @@ namespace Wlog.Library.BLL.Reporitories
                 {
                     uow.BeginTransaction();
                     List<AppUserRoleEntity> entity = uow.Query<AppUserRoleEntity>().Where(x => x.UserId.Equals(user.Id)).ToList();
+
                     foreach (AppUserRoleEntity e in entity)
                     {
                         uow.Delete(e);
                     }
-
-
 
                     uow.Delete(user);
 

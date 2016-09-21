@@ -19,9 +19,6 @@ namespace Wlog.BLL.Entities
 {
     public class UserEntity : IEntityBase
     {
-       
-        public override Guid Id { get; set; }
-       
         public virtual string Username { get; set; }
         public virtual string Email { get; set; }
       
@@ -44,6 +41,7 @@ namespace Wlog.BLL.Entities
        
         public virtual DateTime LastLockedOutDate { get; set; }
 
+        public virtual Guid ProfileId { get; set; }
 
         public UserEntity()
         {

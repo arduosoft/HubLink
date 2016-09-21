@@ -69,11 +69,8 @@ namespace Wlog.Web
 
             RecurringJob.AddOrUpdate(() => LogQueue.Current.Run(), "*/1 * * * *");
 
-            SystemDataHelper.InsertRoles();
+            SystemDataHelper.InsertRolesAndProfiles();
             SystemDataHelper.EnsureSampleData();
-
- 
-
         }
 
         protected void Application_End(object sender, EventArgs e)
