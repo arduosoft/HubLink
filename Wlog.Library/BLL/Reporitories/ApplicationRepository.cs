@@ -95,7 +95,7 @@ namespace Wlog.Library.BLL.Reporitories
         public IPagedList<ApplicationEntity> Search(ApplicationSearchSettings searchSettings)
         {
             List<ApplicationEntity> entity;
-   
+
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
@@ -105,15 +105,19 @@ namespace Wlog.Library.BLL.Reporitories
                 }
                 else
                 {
-                   
                     entity = uow.Query<ApplicationEntity>()
                         .Where(x => x.ApplicationName.Contains(searchSettings.SerchFilter))
                         .OrderBy(x => x.ApplicationName).ToList();
                 }
 
-        
+                UserEntity user = RepositoryContext.Current.Users.GetByUsername(searchSettings.UserName);
+
+                if (!user.IsAdmin)
+                {
+                    var applicationsForUser = GetAppplicationsIdsByUsername(user.Username);
+                    entity = entity.Where(x => applicationsForUser.Contains(x.IdApplication)).ToList();
+                }
             }
-            
 
             return new StaticPagedList<ApplicationEntity>(entity, searchSettings.PageNumber, searchSettings.PageSize, entity.Count);
         }
@@ -238,7 +242,7 @@ namespace Wlog.Library.BLL.Reporitories
                     if (!uow.Query<AppUserRoleEntity>().Any(x => x.ApplicationId.Equals(application.IdApplication) && x.RoleId.Equals(role.Id) && x.UserId.Equals(user.Id)))
                     {
                         AppUserRoleEntity app = new AppUserRoleEntity();
-                        app.ApplicationId = app.ApplicationId;
+                        app.ApplicationId = application.IdApplication;
                         app.RoleId = role.Id;
                         app.UserId = user.Id;
                         uow.SaveOrUpdate(app);
