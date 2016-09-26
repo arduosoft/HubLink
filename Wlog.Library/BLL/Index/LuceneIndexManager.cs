@@ -36,9 +36,10 @@ namespace Wlog.Library.BLL.Index
             get { return dirty; }
         }
 
-        public LuceneIndexManager(string name)
+        public LuceneIndexManager(string name,string path)
         {
             this.Name = name;
+            this.Path = path;
             this.CommitSize = 0;
             Init();
         }
@@ -176,7 +177,7 @@ namespace Wlog.Library.BLL.Index
                 doc=reader.Document(item.Doc);                
                 result.Add(doc);
             }
-            return new StaticPagedList<Document>(result,start/size,size,docs.TotalHits);
+            return new StaticPagedList<Document>(result,1,size,docs.TotalHits);
         }
         public void Dispose()
         {

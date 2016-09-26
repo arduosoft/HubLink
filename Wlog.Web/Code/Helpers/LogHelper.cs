@@ -40,7 +40,8 @@ namespace Wlog.Web.Code.Helpers
                 Applications=alloweApps,
                 SerchMessage= serchMessage,
                 PageNumber=pageNumber,
-                PageSize=pageSize
+                PageSize=pageSize,
+                FullTextQuery=serchMessage
             };
 
             

@@ -67,6 +67,8 @@ namespace Wlog.Web
 
             HangfireBootstrapper.Instance.Start();
 
+            IndexRepository.BasePath = HttpContext.Current.Server.MapPath("~/App_Data/Index/");
+
 
 
             SystemDataHelper.InsertRolesAndProfiles();

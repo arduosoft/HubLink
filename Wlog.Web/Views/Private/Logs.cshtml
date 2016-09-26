@@ -26,24 +26,46 @@
 
 }
 
+<style>
+    input.full-text-search {
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        padding: 10px;
+    }
+</style>
 
 
     <div class="row">
         <h1>Log Messages</h1>
-        @using (Html.BeginForm("Logs", "Private", FormMethod.Get))
-        {
+                @using (Html.BeginForm("Logs", "Private", FormMethod.Get,new { @role="form"}))
+                {
 
-          
-            <p>
-                Application: 
-                  @Html.DropDownListFor(m=>m.ApplicationId, new SelectList(Model.Apps, 
-                               "IdApplication", "ApplicationName", 
-                               Model.ApplicationId))
-                Find Message: @Html.TextBox("SerchMessage", Model.SerchMessage)
-                <input type="submit" value="Search" class="btn btn-default" />
-            </p>
-        }
-    </div>
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                @Html.DropDownListFor(m => m.ApplicationId, 
+                                    new SelectList(Model.Apps, "IdApplication", "ApplicationName", Model.ApplicationId), 
+                                    new {  @class = " pull-right form-control" })
+                                <p class="help-block">&nbsp;</p>
+                              </div>
+                         </div>
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                @Html.TextBox("SerchMessage", Model.SerchMessage, new { @style = "width:100%", @class = " pull-right form-control", placeholder = "Type search query ie Level:Info AND SourceDate:[20020101 TO 20030101]" })
+                                <p class="help-block"> More info about query syntax  <a href="https://lucene.apache.org/core/2_9_4/queryparsersyntax.html">here</a> </p>
+                                </div>
+                            </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <input type="submit" value="Search" class="btn btn-default pull-left" />
+                                <p class="help-block">&nbsp;</p>
+                            </div>
+                        </div>
+                     </div>
+                }
+            </div>
     <div class="row">
         <table class="table table-striped table-hover ">
             <thead>

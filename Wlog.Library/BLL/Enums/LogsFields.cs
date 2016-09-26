@@ -18,6 +18,11 @@ namespace Wlog.Library.BLL.Enums
     {
         SourceDate,
         Message,
-        Level
+        Level,
+        ApplicationId,
+        CreateDate,
+        UpdateDate,
+        Id,
+        Attributes
     }
 }

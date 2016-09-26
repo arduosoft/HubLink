@@ -153,7 +153,6 @@
     <Compile Include="BLL\Enums\StandardLogLevels.cs" />
     <Compile Include="BLL\Enums\UserFields.cs" />
     <Compile Include="BLL\Helpers\InfoHelper.cs" />
-    <Compile Include="BLL\Index\LuceneIndexContext.cs" />
     <Compile Include="BLL\Index\LuceneIndexManager.cs" />
     <Compile Include="BLL\Index\LuceneIndexManagerFactory.cs" />
     <Compile Include="BLL\Index\ManagedIndexManager.cs" />

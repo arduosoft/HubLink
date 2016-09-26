@@ -58,7 +58,7 @@ namespace Wlog.Library.BLL.Reporitories
             // logsSearchSettings.
 
             // Sort s = new Sort(new SortField(logsSearchSettings.OrderBy.ToString(), SortField.STRING, (logsSearchSettings.SortDirection == SortDirection.DESC)));
-            IPagedList<Document> docs = idx.Query(logsSearchSettings.FullTextQuery, logsSearchSettings.OrderBy.ToString(), SortField.STRING, (logsSearchSettings.SortDirection == SortDirection.DESC), logsSearchSettings.PageNumber * logsSearchSettings.PageSize, logsSearchSettings.PageSize);
+            IPagedList<Document> docs = idx.Query(logsSearchSettings.FullTextQuery, logsSearchSettings.OrderBy.ToString(), SortField.STRING, (logsSearchSettings.SortDirection == SortDirection.DESC), (logsSearchSettings.PageNumber -1)* logsSearchSettings.PageSize, logsSearchSettings.PageSize);
             List<LogEntity> result = new List<LogEntity>();
            foreach (Document d in docs)
            {
@@ -70,7 +70,19 @@ namespace Wlog.Library.BLL.Reporitories
 
         private LogEntity GetLogFromDoc(Document d)
         {
-            throw new NotImplementedException();
+            return new LogEntity()
+            {
+                Level = d.GetField(LogsFields.Level.ToString()).StringValue,
+                ApplictionId = new Guid(d.GetField(LogsFields.ApplicationId.ToString()).StringValue),
+                Id = new Guid(d.GetField(LogsFields.Id.ToString()).StringValue),
+                Message = d.GetField(LogsFields.Message.ToString()).StringValue,
+                CreateDate = DateTools.StringToDate(d.GetField(LogsFields.CreateDate.ToString()).StringValue),
+                SourceDate = DateTools.StringToDate(d.GetField(LogsFields.SourceDate.ToString()).StringValue),
+                UpdateDate = DateTools.StringToDate(d.GetField(LogsFields.UpdateDate.ToString()).StringValue),
+                Attributes =d.GetField(LogsFields.Attributes.ToString()).StringValue
+
+            };
+
         }
 
         /// <summary>
@@ -172,14 +184,17 @@ namespace Wlog.Library.BLL.Reporitories
         {
             Document doc = new Document();
 
-            doc.Add(new Field("Id", log.Id.ToString(), Field.Store.YES, Field.Index.ANALYZED));
-            doc.Add(new Field("Level", log.Level, Field.Store.YES, Field.Index.ANALYZED));
-            doc.Add(new Field("Message", log.Message, Field.Store.YES, Field.Index.ANALYZED)); 
+            doc.Add(new Field(LogsFields.Id.ToString(), log.Id.ToString(), Field.Store.YES, Field.Index.ANALYZED));
+            doc.Add(new Field(LogsFields.Level.ToString(), log.Level, Field.Store.YES, Field.Index.ANALYZED));
+            doc.Add(new Field(LogsFields.Message.ToString(), log.Message, Field.Store.YES, Field.Index.ANALYZED)); 
           
 
-            doc.Add(new Field("SourceDate", DateTools.DateToString(log.SourceDate, DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.ANALYZED));
-            doc.Add(new Field("UpdateDate", DateTools.DateToString(log.UpdateDate, DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.ANALYZED));
-            doc.Add(new Field("CreateDate", DateTools.DateToString(log.CreateDate, DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.ANALYZED));
+            doc.Add(new Field(LogsFields.SourceDate.ToString(), DateTools.DateToString(log.SourceDate, DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.ANALYZED));
+            doc.Add(new Field(LogsFields.UpdateDate.ToString(), DateTools.DateToString(log.UpdateDate, DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.ANALYZED));
+            doc.Add(new Field(LogsFields.CreateDate.ToString(), DateTools.DateToString(log.CreateDate, DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.ANALYZED));
+
+            doc.Add(new Field(LogsFields.ApplicationId.ToString(), log.ApplictionId.ToString(), Field.Store.YES, Field.Index.ANALYZED));
+            doc.Add(new Field(LogsFields.Attributes.ToString(), log.Attributes?? "", Field.Store.YES, Field.Index.NO));
             //doc.Add(new Field("Message", log.Attributes, Field.Store.YES, Field.Index.ANALYZED));
 
             if (!string.IsNullOrWhiteSpace(log.Attributes))

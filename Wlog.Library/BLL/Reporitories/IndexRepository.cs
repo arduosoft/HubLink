@@ -12,6 +12,7 @@ namespace Wlog.Library.BLL.Reporitories
 {
     public class IndexRepository: IRepository
     {
+        public static string BasePath { get; set; }
         private static Dictionary<string, LuceneIndexManager> indexList = new Dictionary<string, LuceneIndexManager>();
 
         public LuceneIndexManager GetByName(string entity,string segment)
@@ -30,8 +31,8 @@ namespace Wlog.Library.BLL.Reporitories
 
         private void CreateIndex(string name)
         {
-            var idx = new LuceneIndexManager(name);
-            idx.Path = HttpContext.Current.Server.MapPath("~/App_Data/Index/");
+            var path = Path.Combine(BasePath, name);
+            var idx = new LuceneIndexManager(name, path);
             if (!Directory.Exists(idx.Path))
             {
                 Directory.CreateDirectory(idx.Path);

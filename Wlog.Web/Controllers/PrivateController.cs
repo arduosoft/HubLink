@@ -91,13 +91,14 @@ namespace Wlog.Web.Controllers
                 SortOrder = sortOrder,
                 SortBy = sortBy,
                 SerchMessage = serchMessage,
+                
 
             };
             MembershipUser current = Membership.GetUser();
             mm.Apps = UserHelper.GetAppsForUser(current.UserName);
             
 
-            mm.Items = LogHelper.GetLogs(mm.ApplicationId, mm.SortOrder, mm.SortBy, mm.SerchMessage, 30, page ?? 1);
+            mm.Items = LogHelper.GetLogs(mm.ApplicationId, mm.SortOrder, mm.SortBy, mm.SerchMessage??"", 30, page ?? 1);
 
             return View(mm);
         }

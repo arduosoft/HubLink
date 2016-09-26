@@ -29,7 +29,7 @@ namespace NLog.WebLog
                 public string Message { get; set; }
                 public string Level { get; set; }
                 public string ApplicationKey { get; set; }
-            }
+        }
 
              
             public WebTarget()
@@ -60,7 +60,9 @@ namespace NLog.WebLog
                 entry.ApplicationKey = ApplicationKey;
                 entry.Level = logEvent.Level.ToString();
 
-                DoRequest(Destination, JsonConvert.SerializeObject(entry));
+               LogMessage[] lm = new LogMessage[] { entry };
+
+                DoRequest(Destination, JsonConvert.SerializeObject(lm));
              
             }
 
