@@ -11,3 +11,4 @@ dist
 *.Cache
 /.vs/
 /.vs/config/applicationhost.config
+Wlog.Web/App_Data/Index/
