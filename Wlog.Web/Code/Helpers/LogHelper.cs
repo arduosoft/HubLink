@@ -22,20 +22,18 @@ namespace Wlog.Web.Code.Helpers
     {
 
 
-        public static IPagedList<LogEntity> GetLogs(Guid? applicationId, string sortOrder, string sortBy, string serchMessage, int pageSize, int pageNumber)
+        public static IPagedList<LogEntity> GetLogs(Guid applicationId, string sortOrder, string sortBy, string serchMessage, int pageSize, int pageNumber)
         {
            
 
 
             List<Guid> alloweApps=UserHelper.GetAppsIdsForUser(Membership.GetUser().UserName);
-            if (applicationId.HasValue)
+           
+            if (!alloweApps.Contains(applicationId))
             {
-                if (alloweApps.Contains(applicationId.Value))
-                {
-                    alloweApps.Clear();
-                    alloweApps.Add(applicationId.Value);
-                }
+                return new StaticPagedList<LogEntity>(new LogEntity[] { }, 0, 0, 0);
             }
+            
 
             LogsSearchSettings settings = new LogsSearchSettings()
             {
@@ -57,7 +55,7 @@ namespace Wlog.Web.Code.Helpers
             }
 
 
-            return RepositoryContext.Current.Logs.SeachLog(settings);
+            return RepositoryContext.Current.Logs.SearchLogindex(applicationId,settings);
         }
 
        

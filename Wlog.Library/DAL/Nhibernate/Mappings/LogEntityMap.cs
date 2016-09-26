@@ -32,6 +32,7 @@ namespace Wlog.Library.DAL.Nhibernate.Mappings
             Property(x => x.SourceDate);
             Property(x => x.ApplictionId);
             Property(x => x.UpdateDate);
+            Property(x => x.Attributes);
         }
     }
 }

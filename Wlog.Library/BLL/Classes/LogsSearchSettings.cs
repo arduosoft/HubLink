@@ -21,6 +21,7 @@ namespace Wlog.Library.BLL.Classes
         public List<Guid> Applications { get; set; }
         public LogsFields OrderBy { get; set; }
         public SortDirection SortDirection { get; set; }
+        public string FullTextQuery { get; set; }
 
         public LogsSearchSettings()
         {

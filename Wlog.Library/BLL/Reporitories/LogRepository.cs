@@ -19,11 +19,19 @@ using Wlog.Library.BLL.Interfaces;
 using Wlog.DAL.NHibernate.Helpers;
 using Wlog.Library.BLL.DataBase;
 using Wlog.BLL.Classes;
+using Wlog.Library.BLL.Index;
+using Lucene.Net.Documents;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Lucene.Net.Search;
 
 namespace Wlog.Library.BLL.Reporitories
 {
     public class LogRepository : EntityRepository
     {
+
+        
+
         public LogRepository()
         {
             
@@ -40,15 +48,37 @@ namespace Wlog.Library.BLL.Reporitories
 
         public void Save(LogEntity entToSave)
         {
-            using (IUnitOfWork uow = BeginUnitOfWork())
-            {
-                uow.BeginTransaction();
-                uow.SaveOrUpdate(entToSave);
-                uow.Commit();
-            }
+            Save(new List<LogEntity>(new LogEntity[] { entToSave }));
+
         }
 
-        public IPagedList<LogEntity> SeachLog(LogsSearchSettings logsSearchSettings)
+        public IPagedList<LogEntity> SearchLogindex(Guid applicationId, LogsSearchSettings logsSearchSettings)
+        {
+            var idx = RepositoryContext.Current.Index.GetByName("Logs", applicationId.ToString());
+            // logsSearchSettings.
+
+            // Sort s = new Sort(new SortField(logsSearchSettings.OrderBy.ToString(), SortField.STRING, (logsSearchSettings.SortDirection == SortDirection.DESC)));
+            IPagedList<Document> docs = idx.Query(logsSearchSettings.FullTextQuery, logsSearchSettings.OrderBy.ToString(), SortField.STRING, (logsSearchSettings.SortDirection == SortDirection.DESC), logsSearchSettings.PageNumber * logsSearchSettings.PageSize, logsSearchSettings.PageSize);
+            List<LogEntity> result = new List<LogEntity>();
+           foreach (Document d in docs)
+           {
+                result.Add(GetLogFromDoc(d));
+           }
+            return new StaticPagedList<LogEntity>(result, logsSearchSettings.PageNumber, logsSearchSettings.PageSize, docs.TotalItemCount);
+
+        }
+
+        private LogEntity GetLogFromDoc(Document d)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Search procedure on db data
+        /// </summary>
+        /// <param name="logsSearchSettings"></param>
+        /// <returns></returns>
+        public IPagedList<LogEntity> SearchLog(LogsSearchSettings logsSearchSettings)
         {
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
@@ -111,20 +141,61 @@ namespace Wlog.Library.BLL.Reporitories
 
         internal void Save(List<LogEntity> logs)
         {
+            Dictionary<string, LuceneIndexManager> indexList = new Dictionary<string, LuceneIndexManager>();
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
 
+                LogEntity log;
                 for(int i=0;i<logs.Count;i++)
                 {
-                    uow.SaveOrUpdate(logs[i]);
+                    log = logs[i];
+               
+
+                    var idx=RepositoryContext.Current.Index.GetByName("Logs", log.ApplictionId.ToString());
+                    idx.AddDocument(LogToDictionary(log));
+
+                    uow.SaveOrUpdate(log);
 
 
                 }
+
                 uow.Commit();
+                foreach (var idx in RepositoryContext.Current.Index.GetAll())
+                {
+                    if (idx.IsDirty) idx.SaveUncommittedChanges();
+                }
             }
         }
 
-        
+        private Document LogToDictionary(LogEntity log)
+        {
+            Document doc = new Document();
+
+            doc.Add(new Field("Id", log.Id.ToString(), Field.Store.YES, Field.Index.ANALYZED));
+            doc.Add(new Field("Level", log.Level, Field.Store.YES, Field.Index.ANALYZED));
+            doc.Add(new Field("Message", log.Message, Field.Store.YES, Field.Index.ANALYZED)); 
+          
+
+            doc.Add(new Field("SourceDate", DateTools.DateToString(log.SourceDate, DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.ANALYZED));
+            doc.Add(new Field("UpdateDate", DateTools.DateToString(log.UpdateDate, DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.ANALYZED));
+            doc.Add(new Field("CreateDate", DateTools.DateToString(log.CreateDate, DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.ANALYZED));
+            //doc.Add(new Field("Message", log.Attributes, Field.Store.YES, Field.Index.ANALYZED));
+
+            if (!string.IsNullOrWhiteSpace(log.Attributes))
+            {
+               JObject attrs = JObject.Parse(log.Attributes);
+                foreach (var attr in attrs)
+                {
+                    if (doc.GetField(attr.Key) == null)
+                    {
+                        //TODO: analize basing on attribute definition
+                        doc.Add(new Field(attr.Key, attr.Value.ToString(), Field.Store.YES, Field.Index.ANALYZED));
+                    }
+
+                }
+            }
+            return doc;
+        }
     }
 }

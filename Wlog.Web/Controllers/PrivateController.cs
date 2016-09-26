@@ -44,7 +44,7 @@ namespace Wlog.Web.Controllers
                 PageSize = 10
             };
 
-            IPagedList<LogEntity> lastestLog = RepositoryContext.Current.Logs.SeachLog(logSearch);
+            IPagedList<LogEntity> lastestLog = RepositoryContext.Current.Logs.SearchLog(logSearch);
             DashboardModel dm = new DashboardModel();
             dm.ErrorCount = RepositoryContext.Current.Logs.CountByLevel(StandardLogLevels.ERROR);
             dm.InfoCount = RepositoryContext.Current.Logs.CountByLevel(StandardLogLevels.INFO);
@@ -65,7 +65,7 @@ namespace Wlog.Web.Controllers
                 };
 
                 logSearch.Applications.Add(app.IdApplication);
-                logOfCurrentApp = RepositoryContext.Current.Logs.SeachLog(logSearch);
+                logOfCurrentApp = RepositoryContext.Current.Logs.SearchLog(logSearch);
                 MessagesListModel list = new MessagesListModel();
                 list.ApplicationName = app.ApplicationName;
                 list.IdApplication = app.IdApplication;
@@ -82,9 +82,11 @@ namespace Wlog.Web.Controllers
         [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.WriteLog, Constants.Roles.ReadLog)]
         public ActionResult Logs(Guid? applicationId, string level, string sortOrder, string sortBy, string serchMessage, int? page, int? pageSize)
         {
+            List<Guid> alloweApps = UserHelper.GetAppsIdsForUser(Membership.GetUser().UserName);
+
             LogListModel mm = new LogListModel()
             {
-                ApplicationId = applicationId,
+                ApplicationId = applicationId ?? alloweApps.FirstOrDefault(),
                 Level = level,
                 SortOrder = sortOrder,
                 SortBy = sortBy,
@@ -93,10 +95,7 @@ namespace Wlog.Web.Controllers
             };
             MembershipUser current = Membership.GetUser();
             mm.Apps = UserHelper.GetAppsForUser(current.UserName);
-            mm.Apps.Insert(0, new ApplicationEntity()
-            {
-                ApplicationName = "All application"
-            });
+            
 
             mm.Items = LogHelper.GetLogs(mm.ApplicationId, mm.SortOrder, mm.SortBy, mm.SerchMessage, 30, page ?? 1);
 
