@@ -95,6 +95,7 @@
     <Compile Include="BLL\DataBase\UnitFactory.cs" />
     <Compile Include="BLL\DataBase\UnitOfMongo.cs" />
     <Compile Include="BLL\DataBase\UnitOfNhibernate.cs" />
+    <Compile Include="BLL\Entities\DeletedLogEntity.cs" />
     <Compile Include="BLL\Entities\ProfilesEntry.cs" />
     <Compile Include="BLL\Entities\ProfilesRolesEntry.cs" />
     <Compile Include="BLL\Enums\ApplicationFields.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="BLL\Interfaces\IRepository.cs" />
     <Compile Include="DAL\Nhibernate\Mappings\ApplicationMap.cs" />
     <Compile Include="DAL\Nhibernate\Mappings\AppUserRoleMap.cs" />
+    <Compile Include="DAL\Nhibernate\Mappings\DeletedLogMap.cs" />
     <Compile Include="DAL\Nhibernate\Mappings\LogEntityMap.cs" />
     <Compile Include="DAL\Nhibernate\Mappings\ProfilesMap.cs" />
     <Compile Include="DAL\Nhibernate\Mappings\ProfilesRolesMap.cs" />

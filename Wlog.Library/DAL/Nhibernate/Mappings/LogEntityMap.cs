@@ -19,8 +19,6 @@ namespace Wlog.Library.DAL.Nhibernate.Mappings
 {
     public class LogEntityMap : ClassMapping<LogEntity>
     {
-
-
         public LogEntityMap()
         {
             Table("WL_LogEntity");
