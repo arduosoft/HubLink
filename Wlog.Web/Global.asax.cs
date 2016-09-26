@@ -28,6 +28,7 @@ using Wlog.BLL.Classes;
 using Wlog.DAL.NHibernate.Helpers;
 using Wlog.Library.BLL.Reporitories;
 using Wlog.Library.BLL.Configuration;
+using Wlog.Library.Scheduler;
 
 namespace Wlog.Web
 {
@@ -38,7 +39,7 @@ namespace Wlog.Web
     {
         //Todo: Move nhibernate init stuff in a dedicated class. Implement a DataContext or Operation manager pattern to wrap data access
       
-        private BackgroundJobServer backgroundJobServer;
+       
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -60,14 +61,13 @@ namespace Wlog.Web
                 
             });
 
-           
-            JobStorage.Current=new MemoryStorage();
-            //Hangfire.GlobalConfiguration.Configuration.UseNLogLogProvider();
-            backgroundJobServer = new BackgroundJobServer();
 
 
 
-            RecurringJob.AddOrUpdate(() => LogQueue.Current.Run(), "*/1 * * * *");
+
+            HangfireBootstrapper.Instance.Start();
+
+
 
             SystemDataHelper.InsertRolesAndProfiles();
             SystemDataHelper.EnsureSampleData();
@@ -75,7 +75,7 @@ namespace Wlog.Web
 
         protected void Application_End(object sender, EventArgs e)
         {
-            backgroundJobServer.Dispose();
+            HangfireBootstrapper.Instance.Stop();
         }
     }
 }

@@ -10,8 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Wlog.Library.Scheduler;
 
-namespace Wlog.Web.Code.Jobs
+namespace Wlog.Library.Scheduler
 {
     /// <summary>
     /// This classes is required to allow "Always run" IIS configuration see http://docs.hangfire.io/en/latest/deployment-to-production/making-aspnet-app-always-running.html
@@ -20,7 +21,7 @@ namespace Wlog.Web.Code.Jobs
     {
         public void Preload(string[] parameters)
         {
-          //  HangfireBootstrapper.Instance.Start();
+            HangfireBootstrapper.Instance.Start();
         }
     }
 }

@@ -109,29 +109,22 @@ namespace Wlog.Library.BLL.Reporitories
             }
         }
 
-        public void Run()
+        internal void Save(List<LogEntity> logs)
         {
-            LogQueue.Current.AppendLoadValue(LogQueue.Current.Count, LogQueue.Current.MaxQueueSize);
-
-            if (LogQueue.Current.Count > 0)
+            using (IUnitOfWork uow = BeginUnitOfWork())
             {
-                using (IUnitOfWork uow = BeginUnitOfWork())
+                uow.BeginTransaction();
+
+                for(int i=0;i<logs.Count;i++)
                 {
-                    uow.BeginTransaction();
-
-                    for (int i = 0; i < Math.Min(LogQueue.Current.Count, LogQueue.Current.MaxProcessedItems); i++)
-                    {
-
-                        LogMessage log = LogQueue.Current.Dequeue();
+                    uow.SaveOrUpdate(logs[i]);
 
 
-                        //PersistLog(log);
-
-                    }
-                    uow.Commit();
                 }
-                LogQueue.Current.AppendLoadValue(LogQueue.Current.Count, LogQueue.Current.MaxQueueSize);
+                uow.Commit();
             }
         }
+
+        
     }
 }

@@ -28,6 +28,8 @@ namespace Wlog.BLL.Classes
         public int MaxProcessedItems { get; set; }
         public int MaxQueueSize { get; set; }
 
+        private static string lockObj="";
+
         public long Count
         {
             get { return queque.Count; }
@@ -68,38 +70,45 @@ namespace Wlog.BLL.Classes
         }
 
 
-
+        /// <summary>
+        /// Process queue and update stats.
+        /// It removes LogQueue.Current.MaxProcessedItems elements and save in a single transaction
+        /// </summary>
         public void Run()
         {
-
-            LogQueue.Current.AppendLoadValue(LogQueue.Current.Count, LogQueue.Current.MaxQueueSize);
-
-            if (LogQueue.Current.Count > 0)
+            lock(lockObj)
             {
-                using (IUnitOfWork uow = BeginUnitOfWork())
-                {
-                    uow.BeginTransaction();
-
-                    for (int i = 0; i < Math.Min(LogQueue.Current.Count, LogQueue.Current.MaxProcessedItems); i++)
-                    {
-
-                        LogMessage log = LogQueue.Current.Dequeue();
-
-
-                        PersistLog(log);
-
-                    }
-                    uow.Commit();
-                }
+                //Update stats
                 LogQueue.Current.AppendLoadValue(LogQueue.Current.Count, LogQueue.Current.MaxQueueSize);
+
+                if (LogQueue.Current.Count > 0)
+                {
+                    List<LogEntity> logs = GetLastLogs();
+                    RepositoryContext.Current.Logs.Save(logs);
+                        LogQueue.Current.AppendLoadValue(LogQueue.Current.Count, LogQueue.Current.MaxQueueSize);
+                }
             }
         }
 
-
-
-        public void PersistLog(LogMessage log)
+        private List<LogEntity> GetLastLogs()
         {
+            List<LogEntity> result = new List<LogEntity>();
+            LogMessage log;
+            LogEntity logE;
+            for (int i = 0; i < Math.Min(LogQueue.Current.Count, LogQueue.Current.MaxProcessedItems); i++)
+            {
 
+                 log = LogQueue.Current.Dequeue();
+                 logE = ConvertToLoEntities(log);
+                result.Add(logE);
+
+            }
+            return result;
+              
+        }
+
+        public static LogEntity ConvertToLoEntities(LogMessage log)
+        {
             LogEntity ent = new LogEntity();
             ent.ApplictionId = RepositoryContext.Current.Applications.GetByApplicationKey(log.ApplicationKey).IdApplication;
             ent.Level = log.Level;
@@ -107,7 +116,7 @@ namespace Wlog.BLL.Classes
             ent.SourceDate = log.SourceDate;
             ent.UpdateDate = DateTime.Now;
             ent.CreateDate = DateTime.Now;
-            RepositoryContext.Current.Logs.Save(ent);
+            return ent;
         }
 
         public void AppendLoadValue(long count, int maxQueueSize)

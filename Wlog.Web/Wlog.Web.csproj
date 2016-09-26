@@ -222,9 +222,6 @@
     <Compile Include="Code\Helpers\SystemDataHelper.cs" />
     <Compile Include="Code\Helpers\UserHelper.cs" />
     <Compile Include="Code\Helpers\WlogLogger.cs" />
-    <Compile Include="Code\Jobs\ApplicationPreload.cs" />
-    <Compile Include="Code\Jobs\HangFireAuthorizationFilter.cs" />
-    <Compile Include="Code\Jobs\Startup.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PrivateController.cs" />
@@ -379,6 +376,7 @@
   <ItemGroup>
     <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
+    <Folder Include="Code\Jobs\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
