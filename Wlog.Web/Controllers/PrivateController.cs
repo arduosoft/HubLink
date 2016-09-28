@@ -82,6 +82,8 @@ namespace Wlog.Web.Controllers
         [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.WriteLog, Constants.Roles.ReadLog)]
         public ActionResult Logs(Guid? applicationId, string level, string sortOrder, string sortBy, string serchMessage, int? page, int? pageSize)
         {
+
+            //TDOD: CHECK USER
             List<Guid> alloweApps = UserHelper.GetAppsIdsForUser(Membership.GetUser().UserName);
 
             LogListModel mm = new LogListModel()
@@ -98,9 +100,29 @@ namespace Wlog.Web.Controllers
             mm.Apps = UserHelper.GetAppsForUser(current.UserName);
             
 
-            mm.Items = LogHelper.GetLogs(mm.ApplicationId, mm.SortOrder, mm.SortBy, mm.SerchMessage??"", 30, page ?? 1);
+           // mm.Items = LogHelper.GetLogs(mm.ApplicationId, mm.SortOrder, mm.SortBy, mm.SerchMessage??"", 30, page ?? 1);
 
             return View(mm);
+        }
+
+
+        public JsonResult Search(Guid? applicationId,  string sortOrder, string sortBy, string serchMessage, int page, int pageSize)
+        {
+            //TDOD: CHECK USER
+            var result = new JsonResult();
+
+            IPagedList list = LogHelper.GetLogs(applicationId.Value, sortOrder, sortBy, serchMessage ?? "", pageSize, page);
+           
+        result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            
+            result.Data = new  
+            {
+                draw= Request["draw"],
+                recordsTotal=list.TotalItemCount,
+                recordsFiltered= list.TotalItemCount,
+                data =list
+            };
+            return result;
         }
 
         // Get  /Private/ListUsers
