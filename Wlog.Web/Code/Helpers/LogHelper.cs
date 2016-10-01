@@ -33,27 +33,21 @@ namespace Wlog.Web.Code.Helpers
             {
                 return new StaticPagedList<LogEntity>(new LogEntity[] { }, 0, 0, 0);
             }
-            
+
 
             LogsSearchSettings settings = new LogsSearchSettings()
             {
-                Applications=alloweApps,
-                SerchMessage= serchMessage,
-                PageNumber=pageNumber,
-                PageSize=pageSize,
-                FullTextQuery=serchMessage
+                Applications = alloweApps,
+                SerchMessage = serchMessage,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                FullTextQuery = serchMessage,
+                SortDirection = (Library.BLL.Enums.SortDirection)Enum.Parse(typeof(Library.BLL.Enums.SortDirection), sortOrder.ToUpper()),
+                OrderBy=sortBy
             };
 
             
-            if (!string.IsNullOrEmpty(sortOrder))
-            {
-                switch (sortOrder.ToLower())
-                {
-                    case "date": settings.OrderBy = Library.BLL.Enums.LogsFields.SourceDate; break;
-                    case "level": settings.OrderBy = Library.BLL.Enums.LogsFields.Level; break;
-                    case "message": settings.OrderBy = Library.BLL.Enums.LogsFields.Message; break;
-                }
-            }
+         
 
 
             return RepositoryContext.Current.Logs.SearchLogindex(applicationId,settings);

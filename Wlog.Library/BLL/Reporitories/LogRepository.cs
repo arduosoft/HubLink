@@ -95,47 +95,19 @@ namespace Wlog.Library.BLL.Reporitories
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
-                IEnumerable<LogEntity> query = uow.Query<LogEntity>().Where(x=>logsSearchSettings.Applications.Contains(x.ApplictionId));
+                IEnumerable<LogEntity> query = uow.Query<LogEntity>().Where(x => logsSearchSettings.Applications.Contains(x.ApplictionId));
 
 
 
                 if (!String.IsNullOrWhiteSpace(logsSearchSettings.SerchMessage))
                 {
-                    query = query.Where(p =>(logsSearchSettings.SerchMessage != null && p.Message != null && p.Message.ToLower().Contains(logsSearchSettings.SerchMessage)));
+                    query = query.Where(p => (logsSearchSettings.SerchMessage != null && p.Message != null && p.Message.ToLower().Contains(logsSearchSettings.SerchMessage)));
 
                 }
 
-                if (logsSearchSettings.SortDirection == SortDirection.ASC)
-                {
-                    switch (logsSearchSettings.OrderBy)
-                    {
-                        case LogsFields.SourceDate:
-                            query = query.OrderBy(l => l.SourceDate);
-                            break;
-                        case LogsFields.Message:
-                            query = query.OrderBy(l => l.Message);
-                            break;
-                        case LogsFields.Level:
-                            query = query.OrderBy(l => l.Level);
-                            break;
-                    }
-                }
-                else
-                {
-                    switch (logsSearchSettings.OrderBy)
-                    {
-                        case LogsFields.SourceDate:
-                            query = query.OrderByDescending(l => l.SourceDate);
-                            break;
-                        case LogsFields.Message:
-                            query = query.OrderByDescending(l => l.Message);
-                            break;
-                        case LogsFields.Level:
-                            query = query.OrderByDescending(l => l.Level);
-                            break;
-                    }
-                }
-                
+             
+             query = query.OrderByDescending(l => l.SourceDate);
+
 
 
 

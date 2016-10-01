@@ -17,6 +17,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Wlog.TestApp.Test;
+using System.IO;
 
 namespace Wlog.TestApp
 {
@@ -27,6 +28,8 @@ namespace Wlog.TestApp
         {
             try
             {
+
+                //Single insert
 
                 Console.WriteLine("Making a single call to service to check availability...");
                 //Manual call to log service to test plain performance
@@ -42,6 +45,28 @@ namespace Wlog.TestApp
 
                 double ms = DateTime.Now.Subtract(d1).TotalMilliseconds;
                 Console.WriteLine("Service call done in ms:" + ms);
+
+
+                string[] lines = File.ReadAllLines(".\\input.txt");
+
+                NLog.WebLog.WebTarget.LogMessage[] logs = new NLog.WebLog.WebTarget.LogMessage[lines.Length];
+
+                for(int i = 0;i < lines.Length;i++)
+                {
+                    logs[i] = new NLog.WebLog.WebTarget.LogMessage()
+                    {
+                        Message = lines[i],
+                        SourceDate = DateTime.Now.AddDays(-2).AddSeconds(i * 10),
+                        Level = "Error",
+                        ApplicationKey = "{8C075ED0-45A7-495A-8E09-3A98FD6E8248}"
+
+                    };
+
+                }
+
+                WebTarget.DoRequest("Http://localhost:55044/api/log", JsonConvert.SerializeObject(logs));
+
+                //Benchmark 
 
                 TestIterator it = new TestIterator();
                 it.Instances.Add(new WlogTest());
@@ -59,6 +84,10 @@ namespace Wlog.TestApp
 
                     Console.WriteLine("{0};{1};{2};{3}", it.RepeatCount, it.Instances[0].Avg, it.Instances[1].Avg, it.Instances[2].Avg);
                 }
+
+
+
+
             }
             catch (Exception er)
             {
