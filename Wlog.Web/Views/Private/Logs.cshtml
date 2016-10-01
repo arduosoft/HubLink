@@ -33,10 +33,56 @@
         line-height: 30px;
         padding: 10px;
     }
+
+
+    
+    li.textcomplete-item.active > a, li.textcomplete-item.active > a:hover, li.textcomplete-item.active > a:focus {
+        background-color:#feb !important;
+    }
+
+    li.textcomplete-item  .dropdown-menu  {
+    border-bottom: 1px dashed #888 ;
+     color: #666 !important;
+ }
+
+
+    li.textcomplete-item    h5 {
+    color: #666 !important;
+    font-weight: bold;
+   margin-bottom:0px;
+   margin-top:1px;
+   }
+
+    li.textcomplete-item sub {
+         color: #666 !important;
+         line-height: 15px;
+    }
+     li.textcomplete-item    .stop-words 
+    {
+
+    color: orange !important;
+   }
+
+
+    li.textcomplete-item    .field-names {
+    color: #666 !important;
+   }
+
+
+    .search-group input, .search-group select,  .search-group button
+    {
+        height:40px
+
+    }
+
+
+
 </style>
 
 <script>
     var logTable;
+
+    /* Table configuration*/
     $(document).ready(function() {
        logTable=  $('#example').DataTable( 
             {
@@ -103,23 +149,94 @@
                 { "title": "Message", name: "Message", data: "Message", visible: true },
                 
                         ]
-            } );
-} );
+            });
+
+
+
+
+
+    });
+
+
+    $(document).ready(function() {
+        $('#SerchMessage').textcomplete([
+        { // emoji strategy
+            id: 'field-names',
+            match: /\b(\w{2,})$/,
+            words: ['Level', 'Message','SourceDate'],
+            search: function (term, callback) {
+                callback($.map(this.words, function (word) {
+                    return word.indexOf(term) === 0 ? word : null;
+                }));
+            },
+            template: function (value) {
+                return '<h5 class="field-names">' + value + "</h5><sub>Field from log table</sub>";
+            },
+            replace: function (value) {
+                return '' + value + ': ';
+            },
+            index: 1
+        },
+        { // tech companies
+            id: 'stop-words',
+            words: ['AND', 'OR'],
+            match: /\b(\w{1,})$/,
+            search: function (term, callback) {
+                callback($.map(this.words, function (word) {
+                    return word.indexOf(term) === 0 ? word : null;
+                }));
+            },
+            index: 1,
+            template: function (value) {
+                return '<h5 class="stop-words">' + value + "</h5><sub>Lucene query stopwords</sub>";
+            },
+            replace: function (word) {
+                return word + ' ';
+            }
+        }
+    ], {
+        onKeydown: function (e, commands) {
+            if (e.ctrlKey && e.keyCode === 74) { // CTRL-J
+                return commands.KEY_ENTER;
+            }
+        }
+    });
+    });
+
+
+    $(document).ready(function () {
+        $(".searchButton").click(function ()
+        {
+            search();
+        });
+
+        $("#SerchMessage").bind('keypress keydown keyup', function (e) {
+            if (e.keyCode == 13) { search(); }
+        });
+
+
+        $(".ApplicationSelect").change( function (e) {
+            if (e.keyCode == 13) { search(); }
+        });
+    });
+    function search()
+    {
+        logTable.ajax.reload();
+    }
 </script>
 
 
 
     <div class="row">
         <h1>Log Messages</h1>
-        @using (Html.BeginForm("Logs", "Private", FormMethod.Get, new { @role = "form" }))
-        {
+     
 
 
             <div class="row">
                 
                 <div class="col-md-12">
 
-                        <div class="input-append">
+                        <div class="input-append search-group">
                            
 
                         
@@ -129,13 +246,13 @@
                                     <div class="input-group-btn">
                                         @Html.DropDownListFor(m => m.ApplicationId,
      new SelectList(Model.Apps, "IdApplication", "ApplicationName", Model.ApplicationId),
-     new { @class = " form-control ", @style = "width:200px;background-color: #eee;" })
+     new { @class = " form-control ApplicationSelect", @style = "width:200px;background-color: #eee;" })
                                     </div>
 
-                                    <input type="text" name="SerchMessage" id="SerchMessage" class="form-control" placeholder="Type search query ie Level:Info AND SourceDate:[20020101 TO 20030101]">
+                                    <input type="text" name="SerchMessage" id="SerchMessage" class="form-control" placeholder="Type search query ie Level:Info AND SourceDate:[20020101 TO 20030101]" autocomplete="off">
                                     
                                      <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button" style="background-color: #eee;"><i class="glyphicon glyphicon-search" style="font-size: 20px;"></i></button>
+                                        <button class="btn btn-default searchButton" type="button" style="background-color: #eee;"><i class="glyphicon glyphicon-search" style="font-size: 20px;"></i></button>
                                     </span>
                                 </div><!-- /input-group -->
 
@@ -148,7 +265,7 @@
                 </div>
                 
             </div>
-        }
+        
     </div>
     <div class="row">
 

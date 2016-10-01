@@ -461,6 +461,9 @@
     <Content Include="Scripts\DataTables\responsive.jqueryui.min.js" />
     <Content Include="Scripts\DataTables\responsive.semanticui.js" />
     <Content Include="Scripts\DataTables\responsive.semanticui.min.js" />
+    <Content Include="Scripts\jquery.textcomplete.js" />
+    <Content Include="Scripts\jquery.textcomplete.min.js" />
+    <None Include="Scripts\jquery.textcomplete.min.map" />
     <Content Include="Views\Private\Info.cshtml" />
     <Content Include="Content\DataTables\css\semanticui.scss" />
     <Content Include="Content\DataTables\css\mixins.scss" />
