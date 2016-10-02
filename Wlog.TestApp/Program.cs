@@ -47,11 +47,17 @@ namespace Wlog.TestApp
 
                 TestIterator it = new TestIterator();
                 it.Instances.Add(new WlogTest());
-                //it.Instances.Add(new WLogBulkTest());
+                it.Instances.Add(new WLogBulkTest());
                 it.Instances.Add(new FileTest());
 
                 int[] iterationSize = new int[] { 1, 10, 100, 1000, 10000 };
-                Console.WriteLine("#         Wlog           File");
+                Console.WriteLine(
+                    string.Concat(
+                        "#".PadRight(10, ' '),
+                        "Wlog".PadRight(15, ' '),
+                        "Wlog (bulk)".PadRight(15, ' '),
+                        "File".PadRight(15, ' ')
+                        ));
                 for (int i = 0; i < iterationSize.Length; i++)
                 {
                     it.RepeatCount = iterationSize[i];
@@ -59,11 +65,11 @@ namespace Wlog.TestApp
 
                     it.DoTest();
 
-                    Console.WriteLine("{0}{1}{2}", 
+                    Console.WriteLine("{0}{1}{2}{3}", 
                         it.RepeatCount.ToString().PadRight(10,' '), 
                         it.Instances[0].Avg.ToString().PadRight(15,' '), 
-                        it.Instances[1].Avg.ToString().PadRight(15, ' ')
-                        /*, it.Instances[2].Avg*/);
+                        it.Instances[1].Avg.ToString().PadRight(15, ' '),
+                        it.Instances[2].Avg.ToString().PadRight(15, ' '));
                 }
             }
             catch (Exception er)
