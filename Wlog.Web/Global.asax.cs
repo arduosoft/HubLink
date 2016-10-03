@@ -28,6 +28,7 @@ using Wlog.BLL.Classes;
 using Wlog.DAL.NHibernate.Helpers;
 using Wlog.Library.BLL.Reporitories;
 using Wlog.Library.BLL.Configuration;
+using Wlog.Web.Code.Jobs;
 
 namespace Wlog.Web
 {
@@ -66,8 +67,9 @@ namespace Wlog.Web
             backgroundJobServer = new BackgroundJobServer();
 
 
-
             RecurringJob.AddOrUpdate(() => LogQueue.Current.Run(), "*/1 * * * *");
+
+           // RecurringJob.AddOrUpdate(() => new MoveToBinJob().Execute(), "*/1 * * * *");
 
             SystemDataHelper.InsertRolesAndProfiles();
             SystemDataHelper.EnsureSampleData();

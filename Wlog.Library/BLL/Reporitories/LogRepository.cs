@@ -26,7 +26,7 @@ namespace Wlog.Library.BLL.Reporitories
     {
         public LogRepository()
         {
-            
+
         }
 
         public long CountByLevel(StandardLogLevels level)
@@ -53,13 +53,13 @@ namespace Wlog.Library.BLL.Reporitories
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
-                IEnumerable<LogEntity> query = uow.Query<LogEntity>().Where(x=>logsSearchSettings.Applications.Contains(x.ApplictionId));
+                IEnumerable<LogEntity> query = uow.Query<LogEntity>().Where(x => logsSearchSettings.Applications.Contains(x.ApplictionId));
 
 
 
                 if (!String.IsNullOrWhiteSpace(logsSearchSettings.SerchMessage))
                 {
-                    query = query.Where(p =>(logsSearchSettings.SerchMessage != null && p.Message != null && p.Message.ToLower().Contains(logsSearchSettings.SerchMessage)));
+                    query = query.Where(p => (logsSearchSettings.SerchMessage != null && p.Message != null && p.Message.ToLower().Contains(logsSearchSettings.SerchMessage)));
 
                 }
 
@@ -93,9 +93,6 @@ namespace Wlog.Library.BLL.Reporitories
                             break;
                     }
                 }
-                
-
-
 
                 int count = query.Count();
 
@@ -106,6 +103,55 @@ namespace Wlog.Library.BLL.Reporitories
                 IPagedList<LogEntity> result = new StaticPagedList<LogEntity>(query.ToList(), logsSearchSettings.PageNumber, logsSearchSettings.PageSize, count);
 
                 return result;
+            }
+        }
+
+        public IEnumerable<LogEntity> GetLogsForBinJob(int daysToKeep, int rowsToKeep)
+        {
+            using (IUnitOfWork uow = BeginUnitOfWork())
+            {
+                uow.BeginTransaction();
+                var entitiesToKeep = uow.Query<LogEntity>().Where(x => x.SourceDate > (DateTime.UtcNow.AddDays(-daysToKeep)))
+                    .OrderByDescending(x => x.SourceDate).Take(rowsToKeep);
+                return uow.Query<LogEntity>().Except(entitiesToKeep);
+            }
+        }
+
+        public bool MoveLogsToBin(IEnumerable<LogEntity> logs)
+        {
+            try
+            {
+                using (IUnitOfWork uow = BeginUnitOfWork())
+                {
+                    uow.BeginTransaction();
+
+                    foreach (LogEntity log in logs)
+                    {
+                        uow.Delete(log);
+
+                        DeletedLogEntity deletedLog = new DeletedLogEntity()
+                        {
+                            ApplictionId = log.ApplictionId,
+                            DeletedOn = DateTime.UtcNow,
+                            CreateDate = log.CreateDate,
+                            Level = log.Level,
+                            Message = log.Message,
+                            SourceDate = log.SourceDate,
+                            Uid = log.Uid,
+                            UpdateDate = log.UpdateDate
+                        };
+
+                        uow.SaveOrUpdate(deletedLog);
+                    }
+
+                    uow.Commit();
+                }
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
@@ -123,13 +169,11 @@ namespace Wlog.Library.BLL.Reporitories
                     {
 
                         LogMessage log = LogQueue.Current.Dequeue();
-
-
-                        //PersistLog(log);
-
                     }
+
                     uow.Commit();
                 }
+            
                 LogQueue.Current.AppendLoadValue(LogQueue.Current.Count, LogQueue.Current.MaxQueueSize);
             }
         }
