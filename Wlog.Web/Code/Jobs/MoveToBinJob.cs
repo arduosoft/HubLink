@@ -17,10 +17,10 @@ namespace Wlog.Web.Code.Jobs
 
         private int _daysToKeep { get; set; }
 
-        public MoveToBinJob()
+        public MoveToBinJob(int rowsToKeep, int daysToKeep)
         {
-            _rowsToKeep = 100000;
-            _daysToKeep = 30;
+            _rowsToKeep = rowsToKeep;
+            _daysToKeep = daysToKeep;
         }
 
         public override bool Execute()
