@@ -7,22 +7,7 @@
 @{
     Layout = "~/Views/Shared/_LayoutInternal.cshtml";
 
-    Func<string, string> getSortOrder = (s) =>
-    {
-        if (string.IsNullOrEmpty(Model.SortOrder))
-        {
-            return "dsc";
-        }
-
-        if (string.Compare(s, Model.SortBy, true) == 0)
-        {
-            if (string.Compare("asc", Model.SortOrder, true) == 0)
-            {
-                return "dsc";
-            }
-        }
-        return "asc";
-    };
+   
 
 }
 
@@ -81,6 +66,14 @@
 
 <script>
     var logTable;
+    function setMessageError()
+    {
+        $('#SerchMessage').parent("div").addClass("has-error");
+    }
+
+    function resetMessageError() {
+        $('#SerchMessage').parent("div").removeClass("has-error");
+    }
 
     /* Table configuration*/
     $(document).ready(function() {
@@ -92,7 +85,12 @@
                 "ajax": {
                     "url": "/private/Search",
                     "type": "GET",
-                  
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        if (xhr.statusText == "Unable to parse Query")
+                        {
+                            setMessageError();
+                        }
+                    },
                     "data": function (d) {
                         
 
@@ -203,25 +201,47 @@
     });
     });
 
-
+    var timer = null;
+    
     $(document).ready(function () {
         $(".searchButton").click(function ()
         {
             search();
         });
 
-        $("#SerchMessage").bind('keypress keydown keyup', function (e) {
+        $("#SerchMessage").bind('keypress keydown keyup', function (e)
+        {
+            resetMessageError();
+            if (timer != null) clearTimeout(timer);
+            if (e.keyCode == 13) {
+
+                search();
+            }
+            else
+            {
+                timer = setTimeout(search, 2000);
+            }
+        });
+
+
+        $(".ContinuousRead").change(function (e) {
             if (e.keyCode == 13) { search(); }
         });
 
 
-        $(".ApplicationSelect").change( function (e) {
-            if (e.keyCode == 13) { search(); }
+        $("#ContinuousRead").change(function (e) {
+            
+           search();
         });
     });
     function search()
     {
         logTable.ajax.reload();
+        var continuous=$("#ContinuousRead").is(":checked");
+        if (continuous)
+        {
+            timer = setTimeout(search, 2000);
+        }
     }
 </script>
 
@@ -259,8 +279,7 @@
 
 
                             </div>
-
-                        <p class="help-block"> More info about query syntax  <a href="https://lucene.apache.org/core/2_9_4/queryparsersyntax.html">here</a> </p>
+                    <p class="help-block"><input type="checkbox" id="ContinuousRead"> Continuous  | More info about query syntax  <a href="https://lucene.apache.org/core/2_9_4/queryparsersyntax.html">here</a> </p>
                  
                 </div>
                 

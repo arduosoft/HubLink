@@ -24,6 +24,7 @@ using Lucene.Net.Documents;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Lucene.Net.Search;
+using System.Web;
 
 namespace Wlog.Library.BLL.Reporitories
 {
@@ -58,14 +59,34 @@ namespace Wlog.Library.BLL.Reporitories
             // logsSearchSettings.
 
             // Sort s = new Sort(new SortField(logsSearchSettings.OrderBy.ToString(), SortField.STRING, (logsSearchSettings.SortDirection == SortDirection.DESC)));
-            IPagedList<Document> docs = idx.Query(logsSearchSettings.FullTextQuery, logsSearchSettings.OrderBy.ToString(), SortField.STRING, (logsSearchSettings.SortDirection == SortDirection.DESC), (logsSearchSettings.PageNumber -1)* logsSearchSettings.PageSize, logsSearchSettings.PageSize);
-            List<LogEntity> result = new List<LogEntity>();
-           foreach (Document d in docs)
-           {
-                result.Add(GetLogFromDoc(d));
-           }
-            return new StaticPagedList<LogEntity>(result, logsSearchSettings.PageNumber, logsSearchSettings.PageSize, docs.TotalItemCount);
+            try
+            {
+                IPagedList<Document> docs = idx.Query(logsSearchSettings.FullTextQuery, 
+                    logsSearchSettings.OrderBy.ToString(), 
+                    SortField.STRING, 
+                    (logsSearchSettings.SortDirection == SortDirection.DESC), 
+                    (logsSearchSettings.PageNumber - 1) * logsSearchSettings.PageSize, 
+                    logsSearchSettings.PageSize,
+                    LogsFields.Message.ToString());
 
+                List<LogEntity> result = new List<LogEntity>();
+                foreach (Document d in docs)
+                {
+                    result.Add(GetLogFromDoc(d));
+                }
+                return new StaticPagedList<LogEntity>(result, logsSearchSettings.PageNumber, logsSearchSettings.PageSize, docs.TotalItemCount);
+
+            }
+            catch (UnableToParseQuery err)
+            {
+                //TODO: incapsulate response in wrapper with error
+                HttpContext.Current.Response.StatusCode = 500;
+                HttpContext.Current.Response.StatusDescription = "Unable to parse Query";
+                HttpContext.Current.Response.Write("Unable to parse Query");
+                HttpContext.Current.Response.End();
+                
+            }
+            return null;
         }
 
         private LogEntity GetLogFromDoc(Document d)

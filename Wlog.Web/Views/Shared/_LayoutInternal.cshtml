@@ -103,9 +103,7 @@
                         <li>
                             <a href="#"><i class="fa fa-list-alt fa-fw"></i>Logs<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="/private/Logs">All Logs</a>
-                                </li>
+                                
                                 @if (Membership.GetUser() != null)
                                 {
                                     foreach (var app in UserHelper.GetAppsForUser(Membership.GetUser().UserName))

@@ -8,10 +8,13 @@ using System;
 using System.Collections.Generic;
 using Lucene.Net.Analysis.Standard;
 using PagedList;
+using System.Web;
 
 namespace Wlog.Library.BLL.Index
 {
-   
+    class UnableToParseQuery : Exception
+    { }
+
     public class LuceneIndexManager: IDisposable
     {
         public int CommitSize { get; set; }
@@ -122,16 +125,26 @@ namespace Wlog.Library.BLL.Index
         public IPagedList<Document> Query(string queryTxt, int start, int size)
         {
 
-         return   Query(queryTxt, null, 0, false, start, size);
+         return   Query(queryTxt, null, 0, false, start, size,"");
         }
 
 
-        public IPagedList<Document> Query(string queryTxt,string sortname,int sortType,bool desc, int start, int size)
+        public IPagedList<Document> Query(string queryTxt,string sortname,int sortType,bool desc, int start, int size,string defaultField)
         {
             Query query = new MatchAllDocsQuery();
             if (!string.IsNullOrEmpty(queryTxt))
             {
-                query = parser.Parse(queryTxt);
+                try
+                {
+                    var localanalyzer = new StandardAnalyzer(global::Lucene.Net.Util.Version.LUCENE_30);
+                    var localparser = new QueryParser(global::Lucene.Net.Util.Version.LUCENE_30, defaultField, localanalyzer);
+                    query = parser.Parse(queryTxt);
+                }
+                catch(Exception err)
+                {
+                    throw new UnableToParseQuery();
+                    
+                }
             }
             Sort s =null;
             if (sortname != null)
