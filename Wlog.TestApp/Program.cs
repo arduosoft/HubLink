@@ -68,22 +68,22 @@ namespace Wlog.TestApp
 
                 //Benchmark 
 
-                TestIterator it = new TestIterator();
-                it.Instances.Add(new WlogTest());
-                it.Instances.Add(new WLogBulkTest());
-                it.Instances.Add(new FileTest());
+                //TestIterator it = new TestIterator();
+                //it.Instances.Add(new WlogTest());
+                //it.Instances.Add(new WLogBulkTest());
+                //it.Instances.Add(new FileTest());
 
-                int[] iterationSize = new int[] { 1, 10, 100, 1000, 10000 };
-                Console.WriteLine("#;Wlog;Wlog (bulk);File;");
-                for (int i = 0; i < iterationSize.Length; i++)
-                {
-                    it.RepeatCount = iterationSize[i];
-                    //Console.WriteLine("=> Starting benchmark with iterationSize " + it.RepeatCount);
+                //int[] iterationSize = new int[] { 1, 10, 100, 1000, 10000 };
+                //Console.WriteLine("#;Wlog;Wlog (bulk);File;");
+                //for (int i = 0; i < iterationSize.Length; i++)
+                //{
+                //    it.RepeatCount = iterationSize[i];
+                //    //Console.WriteLine("=> Starting benchmark with iterationSize " + it.RepeatCount);
 
-                    it.DoTest();
+                //    it.DoTest();
 
-                    Console.WriteLine("{0};{1};{2};{3}", it.RepeatCount, it.Instances[0].Avg, it.Instances[1].Avg, it.Instances[2].Avg);
-                }
+                //    Console.WriteLine("{0};{1};{2};{3}", it.RepeatCount, it.Instances[0].Avg, it.Instances[1].Avg, it.Instances[2].Avg);
+                //}
 
 
 
