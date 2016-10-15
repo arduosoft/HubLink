@@ -42,7 +42,7 @@ namespace Wlog.BLL.Classes
 
         public LogQueue()
         {
-            MaxProcessedItems = 10000;
+            MaxProcessedItems = 700;
             MaxQueueSize = 100000;
             QueueLoad = new List<Classes.QueueLoad>();
             AppendLoadValue(0, MaxQueueSize);
@@ -76,7 +76,7 @@ namespace Wlog.BLL.Classes
         /// </summary>
         public void Run()
         {
-            lock(lockObj)
+           lock(lockObj)
             {
                 //Update stats
                 LogQueue.Current.AppendLoadValue(LogQueue.Current.Count, LogQueue.Current.MaxQueueSize);
@@ -95,11 +95,29 @@ namespace Wlog.BLL.Classes
             List<LogEntity> result = new List<LogEntity>();
             LogMessage log;
             LogEntity logE;
+            Dictionary<string,Guid> ApplicationMap = new Dictionary<string, Guid>();
+            Guid currentAppId;
             for (int i = 0; i < Math.Min(LogQueue.Current.Count, LogQueue.Current.MaxProcessedItems); i++)
             {
 
                  log = LogQueue.Current.Dequeue();
-                 logE = ConvertToLoEntities(log);
+                if (log == null) continue;
+                if (log.ApplicationKey == null) continue;
+
+                if (!ApplicationMap.ContainsKey(log.ApplicationKey))
+                {
+                    var app = RepositoryContext.Current.Applications.GetByApplicationKey(log.ApplicationKey);
+                    if (app == null) continue;
+                    currentAppId = app.IdApplication;
+                    ApplicationMap[log.ApplicationKey] = currentAppId;
+                }
+                else
+                {
+                    currentAppId = ApplicationMap[log.ApplicationKey];
+                }
+
+                
+                logE = ConvertToLoEntities(log, currentAppId);
                 result.Add(logE);
 
             }
@@ -107,10 +125,17 @@ namespace Wlog.BLL.Classes
               
         }
 
-        public static LogEntity ConvertToLoEntities(LogMessage log)
+        /// <summary>
+        /// For performance issues is applicationId is passed, no query are done.
+        /// </summary>
+        /// <param name="log"></param>
+        /// <param name="ApplicationId"></param>
+        /// <returns></returns>
+        public static LogEntity ConvertToLoEntities(LogMessage log, Guid? ApplicationId)
         {
             LogEntity ent = new LogEntity();
-            ent.ApplictionId = RepositoryContext.Current.Applications.GetByApplicationKey(log.ApplicationKey).IdApplication;
+            
+            ent.ApplictionId = ApplicationId ?? RepositoryContext.Current.Applications.GetByApplicationKey(log.ApplicationKey).IdApplication;
             ent.Level = log.Level;
             ent.Message = log.Message;
             ent.SourceDate = log.SourceDate;

@@ -49,22 +49,38 @@ namespace Wlog.TestApp
 
                 string[] lines = File.ReadAllLines(".\\input.txt");
 
-                NLog.WebLog.WebTarget.LogMessage[] logs = new NLog.WebLog.WebTarget.LogMessage[lines.Length];
-
-                for(int i = 0;i < lines.Length;i++)
+                for (int k = 0; k < 30; k++)
                 {
-                    logs[i] = new NLog.WebLog.WebTarget.LogMessage()
+                    NLog.WebLog.WebTarget.LogMessage[] logs = new NLog.WebLog.WebTarget.LogMessage[1000];
+
+                    for (int i = 0; i < lines.Length; i++)
                     {
-                        Message = lines[i],
-                        SourceDate = DateTime.Now.AddDays(-2).AddSeconds(i * 10),
-                        Level = "Error",
-                        ApplicationKey = "{8C075ED0-45A7-495A-8E09-3A98FD6E8248}"
 
-                    };
+                        logs[i % 1000] = new NLog.WebLog.WebTarget.LogMessage()
+                        {
+                            Message = lines[i],
+                            SourceDate = DateTime.Now.AddDays(-2).AddSeconds(i * 10),
+                            Level = "Error",
+                            ApplicationKey = "{8C075ED0-45A7-495A-8E09-3A98FD6E8248}"
 
+                        };
+
+                        if (i == 1000)
+                        {
+                            WebTarget.DoRequest("Http://localhost:55044/api/log", JsonConvert.SerializeObject(logs));
+                            logs = new NLog.WebLog.WebTarget.LogMessage[1000];
+                        }
+
+
+                    }
+
+                    WebTarget.DoRequest("Http://localhost:55044/api/log", JsonConvert.SerializeObject(logs));
+
+
+                    Console.WriteLine("Waiting.."+k);
+                    Thread.Sleep(30000);
                 }
-
-                WebTarget.DoRequest("Http://localhost:55044/api/log", JsonConvert.SerializeObject(logs));
+            
 
                 //Benchmark 
 

@@ -27,7 +27,7 @@ namespace Wlog.Library.DAL.Nhibernate.Mappings
             Schema("dbo");
             
             Id(x => x.Uid, map => {  map.Generator(Generators.Guid); });
-            Property(x => x.Message);
+            Property(x => x.Message,map=> { map.Length(5000); });
             Property(x => x.Level);
             Property(x => x.SourceDate);
             Property(x => x.ApplictionId);

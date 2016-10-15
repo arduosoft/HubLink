@@ -248,7 +248,7 @@
                     var ql = Model.QueueLoad[i];
                                        <text>
                            
-                       {time: '@ql.Time.ToString("yyyy-MM-dd HH:mm:ss")',
+                       {time: '@ql.Time.ToString("s").Replace("T"," ")',
                            load:  @ql.QueueSize}
                        //max: @ql.MaxSize}
                   </text>

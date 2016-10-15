@@ -71,7 +71,7 @@ namespace Wlog.Web.Code.API
             }
             else
             {
-                RepositoryContext.Current.Logs.Save(LogQueue.ConvertToLoEntities(value));
+                RepositoryContext.Current.Logs.Save(LogQueue.ConvertToLoEntities(value,null));
             }
 
         }
