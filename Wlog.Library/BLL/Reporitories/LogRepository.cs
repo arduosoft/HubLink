@@ -34,17 +34,27 @@ namespace Wlog.Library.BLL.Reporitories
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
-                return uow.Query<LogEntity>().Count(p => level == StandardLogLevels.ALL_LEVELS || (p.Level != null && p.Level.ToLower().Contains(level.ToString())));
+                return uow.Query<LogEntity>()
+                    .Count(p => level == StandardLogLevels.ALL_LEVELS || (p.Level != null && p.Level.ToLower().Contains(level.ToString())));
             }
         }
 
-        public void Save(LogEntity entToSave)
+        public bool Save(LogEntity entToSave)
         {
-            using (IUnitOfWork uow = BeginUnitOfWork())
+            try
             {
-                uow.BeginTransaction();
-                uow.SaveOrUpdate(entToSave);
-                uow.Commit();
+                using (IUnitOfWork uow = BeginUnitOfWork())
+                {
+                    uow.BeginTransaction();
+                    uow.SaveOrUpdate(entToSave);
+                    uow.Commit();
+                }
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
@@ -106,14 +116,14 @@ namespace Wlog.Library.BLL.Reporitories
             }
         }
 
-        public IEnumerable<LogEntity> GetLogsForBinJob(int daysToKeep, int rowsToKeep)
+        public List<LogEntity> GetLogsForBinJob(int daysToKeep, int rowsToKeep)
         {
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
                 var entitiesToKeep = uow.Query<LogEntity>().Where(x => x.SourceDate > (DateTime.UtcNow.AddDays(-daysToKeep)))
-                    .OrderByDescending(x => x.SourceDate).Take(rowsToKeep);
-                return uow.Query<LogEntity>().Except(entitiesToKeep);
+                    .OrderByDescending(x => x.SourceDate).Take(rowsToKeep).ToList();
+                return uow.Query<LogEntity>().Where(x => !entitiesToKeep.Contains(x)).ToList();
             }
         }
 
@@ -137,8 +147,8 @@ namespace Wlog.Library.BLL.Reporitories
                             Level = log.Level,
                             Message = log.Message,
                             SourceDate = log.SourceDate,
-                            Uid = log.Uid,
-                            UpdateDate = log.UpdateDate
+                            UpdateDate = log.UpdateDate,
+                            LogId = log.Uid
                         };
 
                         uow.SaveOrUpdate(deletedLog);
@@ -153,6 +163,50 @@ namespace Wlog.Library.BLL.Reporitories
             {
                 return false;
             }
+        }
+
+        public void RemoveDeletedLogEntity(DeletedLogEntity deletedLog)
+        {
+            using (IUnitOfWork uow = BeginUnitOfWork())
+            {
+                uow.BeginTransaction();
+                uow.Delete(deletedLog);
+                uow.Commit();
+            }
+        }
+
+        public void RemoveLogEntity(LogEntity log)
+        {
+            using (IUnitOfWork uow = BeginUnitOfWork())
+            {
+                uow.BeginTransaction();
+                uow.Delete(log);
+                uow.Commit();
+            }
+        }
+
+        public List<LogEntity> GetAllLogEntities()
+        {
+            List<LogEntity> result = new List<LogEntity>();
+            using (IUnitOfWork uow = BeginUnitOfWork())
+            {
+                uow.BeginTransaction();
+                result = uow.Query<LogEntity>().ToList();
+            }
+
+            return result;
+        }
+
+        public List<DeletedLogEntity> GetAllDeletedLogEntities()
+        {
+            List<DeletedLogEntity> result = new List<DeletedLogEntity>();
+            using (IUnitOfWork uow = BeginUnitOfWork())
+            {
+                uow.BeginTransaction();
+                result = uow.Query<DeletedLogEntity>().ToList();
+            }
+
+            return result;
         }
 
         public void Run()
@@ -173,7 +227,7 @@ namespace Wlog.Library.BLL.Reporitories
 
                     uow.Commit();
                 }
-            
+
                 LogQueue.Current.AppendLoadValue(LogQueue.Current.Count, LogQueue.Current.MaxQueueSize);
             }
         }

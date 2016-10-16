@@ -15,9 +15,6 @@ namespace Wlog.BLL.Entities
 
         public virtual DateTime DeletedOn { get; set; }
 
-        public DeletedLogEntity()
-        {
-            Id = Guid.NewGuid();
-        }
+        public virtual Guid LogId { get; set; }
     }
 }
