@@ -176,6 +176,17 @@ namespace Wlog.Library.BLL.Reporitories
             return result;
         }
 
+        public List<LogEntity> GetLogsForBinJob(int daysToKeep, int rowsToKeep)
+        {
+            using (IUnitOfWork uow = BeginUnitOfWork())
+            {
+                uow.BeginTransaction();
+                var entitiesToKeep = uow.Query<LogEntity>().Where(x => x.SourceDate > (DateTime.UtcNow.AddDays(-daysToKeep)))
+                    .OrderByDescending(x => x.SourceDate).Take(rowsToKeep).ToList();
+                return uow.Query<LogEntity>().Where(x => !entitiesToKeep.Contains(x)).ToList();
+            }
+        }
+
         public void Run()
         {
             LogQueue.Current.AppendLoadValue(LogQueue.Current.Count, LogQueue.Current.MaxQueueSize);
