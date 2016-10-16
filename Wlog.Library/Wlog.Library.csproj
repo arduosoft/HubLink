@@ -109,6 +109,7 @@
     <Compile Include="BLL\Interfaces\IEntityBase.cs" />
     <Compile Include="BLL\Interfaces\IUnitOfWork.cs" />
     <Compile Include="BLL\Reporitories\ApplicationRepository.cs" />
+    <Compile Include="BLL\Reporitories\DeletedLogRepository.cs" />
     <Compile Include="BLL\Reporitories\LogRepository.cs" />
     <Compile Include="BLL\Reporitories\ProfilesRepository.cs" />
     <Compile Include="BLL\Reporitories\RepositoryContext.cs" />

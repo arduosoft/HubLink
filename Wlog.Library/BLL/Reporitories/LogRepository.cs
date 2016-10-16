@@ -116,17 +116,6 @@ namespace Wlog.Library.BLL.Reporitories
             }
         }
 
-        public List<LogEntity> GetLogsForBinJob(int daysToKeep, int rowsToKeep)
-        {
-            using (IUnitOfWork uow = BeginUnitOfWork())
-            {
-                uow.BeginTransaction();
-                var entitiesToKeep = uow.Query<LogEntity>().Where(x => x.SourceDate > (DateTime.UtcNow.AddDays(-daysToKeep)))
-                    .OrderByDescending(x => x.SourceDate).Take(rowsToKeep).ToList();
-                return uow.Query<LogEntity>().Where(x => !entitiesToKeep.Contains(x)).ToList();
-            }
-        }
-
         public bool MoveLogsToBin(IEnumerable<LogEntity> logs)
         {
             try
@@ -165,16 +154,6 @@ namespace Wlog.Library.BLL.Reporitories
             }
         }
 
-        public void RemoveDeletedLogEntity(DeletedLogEntity deletedLog)
-        {
-            using (IUnitOfWork uow = BeginUnitOfWork())
-            {
-                uow.BeginTransaction();
-                uow.Delete(deletedLog);
-                uow.Commit();
-            }
-        }
-
         public void RemoveLogEntity(LogEntity log)
         {
             using (IUnitOfWork uow = BeginUnitOfWork())
@@ -192,18 +171,6 @@ namespace Wlog.Library.BLL.Reporitories
             {
                 uow.BeginTransaction();
                 result = uow.Query<LogEntity>().ToList();
-            }
-
-            return result;
-        }
-
-        public List<DeletedLogEntity> GetAllDeletedLogEntities()
-        {
-            List<DeletedLogEntity> result = new List<DeletedLogEntity>();
-            using (IUnitOfWork uow = BeginUnitOfWork())
-            {
-                uow.BeginTransaction();
-                result = uow.Query<DeletedLogEntity>().ToList();
             }
 
             return result;
