@@ -26,8 +26,14 @@ namespace Wlog.Test.Tests
 
 
 
-        [Fact, Trait("Excluded From CI", "ExcludedFromCI")]
+        [Fact, Trait("LoadTest","LoadTest")]
         public void AlwaysFailButSkipped()
+        {
+            Assert.True(1 != 1);
+        }
+
+        [Fact, Trait("ExcludedFromCI", "ExcludedFromCI")]
+        public void AlwaysFailButSkipped2()
         {
             Assert.True(1 != 1);
         }
