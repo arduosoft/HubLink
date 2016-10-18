@@ -17,6 +17,8 @@ using Wlog.Library.BLL.Reporitories;
 using Wlog.Library.BLL.Interfaces;
 using Wlog.Library.BLL.DataBase;
 using Wlog.Library.BLL.Classes;
+using Wlog.Library.Scheduler;
+using Hangfire;
 
 namespace Wlog.BLL.Classes
 {
@@ -27,6 +29,7 @@ namespace Wlog.BLL.Classes
 
         public int MaxProcessedItems { get; set; }
         public int MaxQueueSize { get; set; }
+        public int RescheduleThereshold { get; set; }
 
         private static string lockObj="";
 
@@ -42,10 +45,11 @@ namespace Wlog.BLL.Classes
 
         public LogQueue()
         {
-            MaxProcessedItems = 700;
+            MaxProcessedItems = 10000;
             MaxQueueSize = 100000;
             QueueLoad = new List<Classes.QueueLoad>();
             AppendLoadValue(0, MaxQueueSize);
+            RescheduleThereshold = 1000;
         }
 
         public List<LogMessage> Dequeue(int count)
@@ -74,11 +78,13 @@ namespace Wlog.BLL.Classes
         /// Process queue and update stats.
         /// It removes LogQueue.Current.MaxProcessedItems elements and save in a single transaction
         /// </summary>
+       [DisableConcurrentExecution(300)]
         public void Run()
         {
            lock(lockObj)
             {
                 //Update stats
+
                 LogQueue.Current.AppendLoadValue(LogQueue.Current.Count, LogQueue.Current.MaxQueueSize);
 
                 if (LogQueue.Current.Count > 0)
@@ -86,6 +92,13 @@ namespace Wlog.BLL.Classes
                     List<LogEntity> logs = GetLastLogs();
                     RepositoryContext.Current.Logs.Save(logs);
                         LogQueue.Current.AppendLoadValue(LogQueue.Current.Count, LogQueue.Current.MaxQueueSize);
+                }
+
+                
+                if (LogQueue.Current.RescheduleThereshold < LogQueue.Current.Count)
+                {
+                    //Move this with job managment
+                    BackgroundJob.Enqueue(() => Run());
                 }
             }
         }

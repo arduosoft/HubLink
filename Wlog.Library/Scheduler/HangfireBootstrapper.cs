@@ -23,6 +23,7 @@ namespace Wlog.Library.Scheduler
         {
         }
 
+     
         public void Start()
         {
             lock (_lockObject)
@@ -36,6 +37,7 @@ namespace Wlog.Library.Scheduler
                 JobStorage.Current = new MemoryStorage();
                 RecurringJob.AddOrUpdate(() => LogQueue.Current.Run(), "*/1 * * * *");
 
+                
                 _backgroundJobServer = new BackgroundJobServer();
             }
         }
@@ -52,6 +54,9 @@ namespace Wlog.Library.Scheduler
                 HostingEnvironment.UnregisterObject(this);
             }
         }
+
+
+        
 
         void IRegisteredObject.Stop(bool immediate)
         {

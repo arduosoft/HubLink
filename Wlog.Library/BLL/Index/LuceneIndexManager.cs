@@ -103,13 +103,13 @@ namespace Wlog.Library.BLL.Index
             // writer.Optimize();
             //writer.Commit();
             uncommittedFiles++;
-            if(uncommittedFiles > this.CommitSize)
-            {
-                if (commit)
-                {
-                    SaveUncommittedChanges();
-                }
-            }
+            //if(uncommittedFiles > this.CommitSize)
+            //{
+            //    if (commit)
+            //    {
+            //        SaveUncommittedChanges();
+            //    }
+            //}
             
             dirty = true;
         }
