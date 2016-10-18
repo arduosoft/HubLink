@@ -58,7 +58,7 @@ namespace Wlog.Library.BLL.Index
         {
 
             //           luceneIndexDirectory = FSDirectory.Open(Path);
-            luceneIndexDirectory = MMapDirectory.Open(Path);
+            luceneIndexDirectory = FSDirectory.Open(Path);
             writer = new IndexWriter(luceneIndexDirectory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED);
             
             reader = IndexReader.Open(luceneIndexDirectory, true);
@@ -203,10 +203,26 @@ namespace Wlog.Library.BLL.Index
         }
         public void DisposeIndex()
         {
-            writer.Commit();
-            writer.Dispose();
-            reader.Dispose();
-            searcher.Dispose();
+            if (writer != null)
+            {
+                try
+                {
+                    writer.Commit();
+                    writer.Dispose();
+                }
+                catch (Exception err)
+                {
+                    //TODO: Add log here
+                }
+            }
+            if (reader != null)
+            {
+                reader.Dispose();
+            }
+            if (searcher != null)
+            {
+                searcher.Dispose();
+            }
         }
     }
 }

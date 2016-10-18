@@ -129,21 +129,23 @@
                     }
                 },
                 "columns": [
-                { "title": "Source Date",name:"SourceDate", data:"SourceDate", visible: true, 
+                {
+                    "title": "Source Date", name: "SourceDate", data: "SourceDate", visible: true,
+                    "width": "180px",
                 render: function (data, type, full, meta) {
 
                     var a;
                     if (typeof data === 'string') {
                         a = /\/Date\((\d*)\)\//.exec(data);
                         if (a) {
-                            return new Date(+a[1]);
+                            data= new Date(+a[1]);
                         }
                     }
-                    return data;
+                    return moment( data).format("YYYY-MM-DD HH:mm:ss.SSS");
 
                       
                 } },
-                { "title": "Level", name: "Level", data: "Level", visible: true },
+                { "title": "Level", name: "Level", data: "Level", visible: true, "width": "80px", },
                 { "title": "Message", name: "Message", data: "Message", visible: true },
                 
                         ]

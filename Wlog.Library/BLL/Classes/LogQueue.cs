@@ -110,7 +110,8 @@ namespace Wlog.BLL.Classes
             LogEntity logE;
             Dictionary<string,Guid> ApplicationMap = new Dictionary<string, Guid>();
             Guid currentAppId;
-            for (int i = 0; i < Math.Min(LogQueue.Current.Count, LogQueue.Current.MaxProcessedItems); i++)
+            long logToFetch = Math.Min(LogQueue.Current.Count, LogQueue.Current.MaxProcessedItems);
+            for (int i = 0; i < logToFetch && LogQueue.Current.Count>0; i++)
             {
 
                  log = LogQueue.Current.Dequeue();

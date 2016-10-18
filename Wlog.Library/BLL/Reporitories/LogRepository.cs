@@ -61,7 +61,7 @@ namespace Wlog.Library.BLL.Reporitories
             // Sort s = new Sort(new SortField(logsSearchSettings.OrderBy.ToString(), SortField.STRING, (logsSearchSettings.SortDirection == SortDirection.DESC)));
             try
             {
-                IPagedList<Document> docs = idx.Query(logsSearchSettings.FullTextQuery, 
+                IPagedList<Document> docs = idx.Query(logsSearchSettings.FullTextQuery.Trim(), 
                     logsSearchSettings.OrderBy.ToString(), 
                     SortField.STRING, 
                     (logsSearchSettings.SortDirection == SortDirection.DESC), 
@@ -116,25 +116,29 @@ namespace Wlog.Library.BLL.Reporitories
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
-                IEnumerable<LogEntity> query = uow.Query<LogEntity>().Where(x => logsSearchSettings.Applications.Contains(x.ApplictionId));
+                IQueryable<LogEntity> query = null;
 
 
-
+            
                 if (!String.IsNullOrWhiteSpace(logsSearchSettings.SerchMessage))
                 {
-                    query = query.Where(p => (logsSearchSettings.SerchMessage != null && p.Message != null && p.Message.ToLower().Contains(logsSearchSettings.SerchMessage)));
+                    query = uow.Query<LogEntity>().Where(p => logsSearchSettings.Applications.Contains(p.ApplictionId) &&
+                            (logsSearchSettings.SerchMessage != null && p.Message != null && p.Message.ToLower().Contains(logsSearchSettings.SerchMessage)));
 
                 }
+                else
+                {
+                    query = uow.Query<LogEntity>().Where(x => logsSearchSettings.Applications.Contains(x.ApplictionId));
+                }
 
-             
-             query = query.OrderByDescending(l => l.SourceDate);
+
 
 
 
 
                 int count = query.Count();
 
-
+                query = query.OrderByDescending(l => l.SourceDate);
                 query = query.Skip((logsSearchSettings.PageNumber - 1) * logsSearchSettings.PageSize);
                 query = query.Take(logsSearchSettings.PageSize);
 
