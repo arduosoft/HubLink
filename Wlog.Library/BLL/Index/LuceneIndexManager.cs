@@ -15,35 +15,66 @@ namespace Wlog.Library.BLL.Index
     class UnableToParseQuery : Exception
     { }
 
+
+    /// <summary>
+    /// Manage a lucene indxe
+    /// </summary>
     public class LuceneIndexManager: IDisposable
     {
-        public int CommitSize { get; set; }
-        
+
+        #region private
         private static IndexWriter writer;
         private static IndexSearcher searcher;
         private static IndexReader reader;
-        QueryParser parser;
+        private QueryParser parser;
         private Analyzer analyzer ;
 
         protected static bool inited = false;
         private static Directory luceneIndexDirectory;
+        private bool dirty = false;
+        private int uncommittedFiles = 0;
+        #endregion
 
+        /// <summary>
+        /// Tell how many rows to collect before automatically commit.
+        /// This is used only if "Autocommit" is on
+        /// </summary>
+        public int CommitSize { get; set; }
+
+        /// <summary>
+        /// Name of the index
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Path of the directory index
+        /// </summary>
         public string Path { get; set; }
 
-        private bool dirty = false;
-        int uncommittedFiles = 0;
+        /// <summary>
+        /// if on reopen index when you are quering index to use uncommited row. This forces commit so may affect performance
+        /// </summary>
+        public bool ReopenIfDirty { get; set; }
+
+        /// <summary>
+        /// if true automatically commit periodically. otherwise commit is delegated to caller
+        /// </summary>
+        public bool Autocommit { get; set; }
+
+      
 
         public bool IsDirty
         {
             get { return dirty; }
         }
 
+
         public LuceneIndexManager(string name,string path)
         {
             this.Name = name;
             this.Path = path;
             this.CommitSize = 0;
+            ReopenIfDirty = false;
             Init();
         }
 
@@ -99,19 +130,18 @@ namespace Wlog.Library.BLL.Index
         }
         public void AddDocument(Document doc,bool commit)
         {
-            writer.AddDocument(doc);
-            // writer.Optimize();
-            //writer.Commit();
-            uncommittedFiles++;
-            //if(uncommittedFiles > this.CommitSize)
-            //{
-            //    if (commit)
-            //    {
-            //        SaveUncommittedChanges();
-            //    }
-            //}
-            
             dirty = true;
+            writer.AddDocument(doc);
+            uncommittedFiles++;
+            if (this.Autocommit && uncommittedFiles > this.CommitSize)
+            {
+                if (commit)
+                {
+                    SaveUncommittedChanges();
+                }
+            }
+
+          
         }
 
         internal void SaveUncommittedChanges()
@@ -122,6 +152,7 @@ namespace Wlog.Library.BLL.Index
             uncommittedFiles = 0;
         }
 
+        
         public IPagedList<Document> Query(string queryTxt, int start, int size)
         {
 
@@ -129,10 +160,21 @@ namespace Wlog.Library.BLL.Index
         }
 
 
+        /// <summary>
+        /// Query index
+        /// </summary>
+        /// <param name="queryTxt">full text query </param>
+        /// <param name="sortname">name of field for sort</param>
+        /// <param name="sortType">lucene sort type</param>
+        /// <param name="desc">sort desc if true</param>
+        /// <param name="start">number of first row to take</param>
+        /// <param name="size">numer of row to take</param>
+        /// <param name="defaultField">default field for searc. Empty string to searcg by complex query</param>
+        /// <returns></returns>
         public IPagedList<Document> Query(string queryTxt,string sortname,int sortType,bool desc, int start, int size,string defaultField)
         {
             Query query = new MatchAllDocsQuery();
-            if (!string.IsNullOrEmpty(queryTxt))
+            if (!string.IsNullOrWhiteSpace(queryTxt))
             {
                 try
                 {
@@ -164,7 +206,7 @@ namespace Wlog.Library.BLL.Index
 
         public IPagedList<Document> Query(Query query, Sort field, int start, int size)
         {
-            if (dirty)
+            if (dirty  && ReopenIfDirty)
             {
                   DisposeIndex();
                   InitIndex(); 
