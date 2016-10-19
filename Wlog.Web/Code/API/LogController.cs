@@ -17,23 +17,61 @@ using System.Threading;
 using System.Web;
 using System.Web.Http;
 using Wlog.BLL.Classes;
+using Wlog.Library.BLL.Reporitories;
+using Wlog.Library.Scheduler;
 
 namespace Wlog.Web.Code.API
 {
     [AllowAnonymous]
     public class LogController : ApiController
     {
-        
-        // POST api/<controller>
-        public void Post([FromBody]LogMessage value)
+
+        /// <summary>
+        /// This add a log entry to the queue to be processed async.
+        /// In case queue is full, this will be managed sync 
+        /// </summary>
+        /// <param name="value">a single log to add to the queue</param>
+        //[HttpPost]
+        //public void PostOne([FromBody]LogMessage value)
+        //{
+        //    //Force init in case we are not in  IIS "always running mode", or it have not been configured properly
+        //    HangfireBootstrapper.Instance.Start();
+
+
+        //    SaveSingle(value);
+
+        //}
+
+        /// <summary>
+        /// This add a list of  log entry to the queue to be processed async.
+        /// In case queue is full, this will be managed sync 
+        /// </summary>
+        /// <param name="values">list of logs</param>
+        public void Post([FromBody]LogMessage[] values)
         {
+            //Force init in case we are not in  IIS "always running mode", or it have not been configured properly
+            HangfireBootstrapper.Instance.Start();
+
+            for (int i = 0; i < values.Length; i++)
+            {
+                SaveSingle(values[i]);
+            }
+
+        }
+
+
+
+        private void SaveSingle(LogMessage value)
+        {
+           
+
             if (LogQueue.Current.MaxQueueSize > LogQueue.Current.Count)
             {
                 LogQueue.Current.Enqueue(value);
             }
             else
             {
-                LogQueue.Current.PersistLog(value);
+                RepositoryContext.Current.Logs.Save(LogQueue.ConvertToLoEntities(value,null));
             }
 
         }

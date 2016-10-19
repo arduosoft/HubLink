@@ -17,7 +17,7 @@ namespace Wlog.Web.Models
     public class LogListModel
     {
 
-        public Guid? ApplicationId { get; set; }
+        public Guid ApplicationId { get; set; }
         public string Level { get; set; }
         public string SortOrder { get; set; }
         public string SortBy { get; set;}

@@ -17,6 +17,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Wlog.TestApp.Test;
+using System.IO;
 
 namespace Wlog.TestApp
 {
@@ -28,37 +29,81 @@ namespace Wlog.TestApp
             try
             {
 
+                //Single insert
+
                 Console.WriteLine("Making a single call to service to check availability...");
                 //Manual call to log service to test plain performance
                 DateTime d1 = DateTime.Now;
-                WebTarget.DoRequest("Http://localhost:55044/api/log", JsonConvert.SerializeObject(new NLog.WebLog.WebTarget.LogMessage()
+                WebTarget.DoRequest("Http://localhost:55044/api/log", JsonConvert.SerializeObject(new NLog.WebLog.WebTarget.LogMessage[] { new NLog.WebLog.WebTarget.LogMessage()
                 {
                     Message = "TEST MANUAL MESSAGE" + DateTime.Now,
                     SourceDate = DateTime.Now,
                     Level = "Error",
-                    ApplicationKey = "{FF99EE02-1E88-44FF-B0A4-8DF8D2F3B742}"
+                    ApplicationKey = "{8C075ED0-45A7-495A-8E09-3A98FD6E8248}"
 
-                }));
+                } }));
 
                 double ms = DateTime.Now.Subtract(d1).TotalMilliseconds;
                 Console.WriteLine("Service call done in ms:" + ms);
 
-                TestIterator it = new TestIterator();
-                it.Instances.Add(new WlogTest());
-                it.Instances.Add(new WLogBulkTest());
-                it.Instances.Add(new FileTest());
 
-                int[] iterationSize = new int[] { 1, 10, 100, 1000, 10000 };
-                Console.WriteLine("#;Wlog;Wlog (bulk);File;");
-                for (int i = 0; i < iterationSize.Length; i++)
+                string[] lines = File.ReadAllLines(".\\input.txt");
+
+                for (int k = 0; k < 30; k++)
                 {
-                    it.RepeatCount = iterationSize[i];
-                    //Console.WriteLine("=> Starting benchmark with iterationSize " + it.RepeatCount);
+                    NLog.WebLog.WebTarget.LogMessage[] logs = new NLog.WebLog.WebTarget.LogMessage[1000];
 
-                    it.DoTest();
+                    for (int i = 0; i < lines.Length; i++)
+                    {
 
-                    Console.WriteLine("{0};{1};{2};{3}", it.RepeatCount, it.Instances[0].Avg, it.Instances[1].Avg, it.Instances[2].Avg);
+                        logs[i % 1000] = new NLog.WebLog.WebTarget.LogMessage()
+                        {
+                            Message = lines[i],
+                            SourceDate = DateTime.Now.AddDays(-2).AddSeconds(i * 10),
+                            Level = "Error",
+                            ApplicationKey = "{8C075ED0-45A7-495A-8E09-3A98FD6E8248}"
+
+                        };
+
+                        if (i == 1000)
+                        {
+                            WebTarget.DoRequest("Http://localhost:55044/api/log", JsonConvert.SerializeObject(logs));
+                            logs = new NLog.WebLog.WebTarget.LogMessage[1000];
+                        }
+
+
+                    }
+
+                    WebTarget.DoRequest("Http://localhost:55044/api/log", JsonConvert.SerializeObject(logs));
+
+
+                    Console.WriteLine("Waiting.."+k);
+                    Thread.Sleep(30000);
                 }
+            
+
+                //Benchmark 
+
+                //TestIterator it = new TestIterator();
+                //it.Instances.Add(new WlogTest());
+                //it.Instances.Add(new WLogBulkTest());
+                //it.Instances.Add(new FileTest());
+
+                //int[] iterationSize = new int[] { 1, 10, 100, 1000, 10000 };
+                //Console.WriteLine("#;Wlog;Wlog (bulk);File;");
+                //for (int i = 0; i < iterationSize.Length; i++)
+                //{
+                //    it.RepeatCount = iterationSize[i];
+                //    //Console.WriteLine("=> Starting benchmark with iterationSize " + it.RepeatCount);
+
+                //    it.DoTest();
+
+                //    Console.WriteLine("{0};{1};{2};{3}", it.RepeatCount, it.Instances[0].Avg, it.Instances[1].Avg, it.Instances[2].Avg);
+                //}
+
+
+
+
             }
             catch (Exception er)
             {

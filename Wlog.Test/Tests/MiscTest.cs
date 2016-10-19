@@ -15,13 +15,27 @@ using Xunit;
 
 namespace Wlog.Test.Tests
 {
-    
+  
     public class MiscTest
     {
         [Fact]
         public void TestMethod()
         {
             Assert.True(1 == 1);
+        }
+
+
+
+        [Fact, Trait("Category", "LoadTest")]
+        public void AlwaysFailButSkipped()
+        {
+            Assert.True(1 != 1);
+        }
+
+        [Fact, Trait("Category", "ExcludedFromCI")]
+        public void AlwaysFailButSkipped2()
+        {
+            Assert.True(1 != 1);
         }
     }
 }

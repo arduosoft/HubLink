@@ -28,6 +28,8 @@ namespace Wlog.Library.BLL.Reporitories
 
         public SystemRepository System { get; private set; }
 
+        public IndexRepository Index { get; private set; }
+
         private static RepositoryContext current;
 
         public static RepositoryContext Current
@@ -48,6 +50,8 @@ namespace Wlog.Library.BLL.Reporitories
                     current.Roles = new RolesRepository();
                     current.System = new SystemRepository();
                     current.Profiles = new ProfilesRepository();
+                    current.Index = new IndexRepository();
+                    
                 }
 
                 return current;

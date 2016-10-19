@@ -17,6 +17,8 @@ using Wlog.Library.BLL.Reporitories;
 using Wlog.Library.BLL.Interfaces;
 using Wlog.Library.BLL.DataBase;
 using Wlog.Library.BLL.Classes;
+using Wlog.Library.Scheduler;
+using Hangfire;
 
 namespace Wlog.BLL.Classes
 {
@@ -27,6 +29,9 @@ namespace Wlog.BLL.Classes
 
         public int MaxProcessedItems { get; set; }
         public int MaxQueueSize { get; set; }
+        public int RescheduleThereshold { get; set; }
+
+        private static string lockObj="";
 
         public long Count
         {
@@ -44,6 +49,7 @@ namespace Wlog.BLL.Classes
             MaxQueueSize = 100000;
             QueueLoad = new List<Classes.QueueLoad>();
             AppendLoadValue(0, MaxQueueSize);
+            RescheduleThereshold = 1000;
         }
 
         public List<LogMessage> Dequeue(int count)
@@ -68,46 +74,88 @@ namespace Wlog.BLL.Classes
         }
 
 
-
+        /// <summary>
+        /// Process queue and update stats.
+        /// It removes LogQueue.Current.MaxProcessedItems elements and save in a single transaction
+        /// </summary>
+       [DisableConcurrentExecution(300)]
         public void Run()
         {
-
-            LogQueue.Current.AppendLoadValue(LogQueue.Current.Count, LogQueue.Current.MaxQueueSize);
-
-            if (LogQueue.Current.Count > 0)
+           lock(lockObj)
             {
-                using (IUnitOfWork uow = BeginUnitOfWork())
-                {
-                    uow.BeginTransaction();
+                //Update stats
 
-                    for (int i = 0; i < Math.Min(LogQueue.Current.Count, LogQueue.Current.MaxProcessedItems); i++)
-                    {
-
-                        LogMessage log = LogQueue.Current.Dequeue();
-
-
-                        PersistLog(log);
-
-                    }
-                    uow.Commit();
-                }
                 LogQueue.Current.AppendLoadValue(LogQueue.Current.Count, LogQueue.Current.MaxQueueSize);
+
+                if (LogQueue.Current.Count > 0)
+                {
+                    List<LogEntity> logs = GetLastLogs();
+                    RepositoryContext.Current.Logs.Save(logs);
+                        LogQueue.Current.AppendLoadValue(LogQueue.Current.Count, LogQueue.Current.MaxQueueSize);
+                }
+
+                
+                if (LogQueue.Current.RescheduleThereshold < LogQueue.Current.Count)
+                {
+                    //Move this with job managment
+                    BackgroundJob.Enqueue(() => Run());
+                }
             }
         }
 
-
-
-        public void PersistLog(LogMessage log)
+        private List<LogEntity> GetLastLogs()
         {
+            List<LogEntity> result = new List<LogEntity>();
+            LogMessage log;
+            LogEntity logE;
+            Dictionary<string,Guid> ApplicationMap = new Dictionary<string, Guid>();
+            Guid currentAppId;
+            long logToFetch = Math.Min(LogQueue.Current.Count, LogQueue.Current.MaxProcessedItems);
+            for (int i = 0; i < logToFetch && LogQueue.Current.Count>0; i++)
+            {
 
+                 log = LogQueue.Current.Dequeue();
+                if (log == null) continue;
+                if (log.ApplicationKey == null) continue;
+
+                if (!ApplicationMap.ContainsKey(log.ApplicationKey))
+                {
+                    var app = RepositoryContext.Current.Applications.GetByApplicationKey(log.ApplicationKey);
+                    if (app == null) continue;
+                    currentAppId = app.IdApplication;
+                    ApplicationMap[log.ApplicationKey] = currentAppId;
+                }
+                else
+                {
+                    currentAppId = ApplicationMap[log.ApplicationKey];
+                }
+
+                
+                logE = ConvertToLoEntities(log, currentAppId);
+                result.Add(logE);
+
+            }
+            return result;
+              
+        }
+
+        /// <summary>
+        /// For performance issues is applicationId is passed, no query are done.
+        /// </summary>
+        /// <param name="log"></param>
+        /// <param name="ApplicationId"></param>
+        /// <returns></returns>
+        public static LogEntity ConvertToLoEntities(LogMessage log, Guid? ApplicationId)
+        {
             LogEntity ent = new LogEntity();
-            ent.ApplictionId = RepositoryContext.Current.Applications.GetByApplicationKey(log.ApplicationKey).IdApplication;
+            
+            ent.ApplictionId = ApplicationId ?? RepositoryContext.Current.Applications.GetByApplicationKey(log.ApplicationKey).IdApplication;
             ent.Level = log.Level;
             ent.Message = log.Message;
             ent.SourceDate = log.SourceDate;
             ent.UpdateDate = DateTime.Now;
             ent.CreateDate = DateTime.Now;
-            RepositoryContext.Current.Logs.Save(ent);
+            return ent;
         }
 
         public void AppendLoadValue(long count, int maxQueueSize)

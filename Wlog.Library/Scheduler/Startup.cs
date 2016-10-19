@@ -16,8 +16,8 @@ using System.Web;
 //using InfoPage.Configuration;
 using Microsoft.Owin;
 
-//Wlog.Web.Code.Jobs.Startup
-namespace Wlog.Web.Code.Jobs
+// Wlog.Library.Scheduler.Startup
+namespace Wlog.Library.Scheduler
 {
    
     public class Startup

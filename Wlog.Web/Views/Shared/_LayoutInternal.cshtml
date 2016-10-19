@@ -7,16 +7,23 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+
+
     @Styles.Render("~/Content/bootstrap.css")
     @Styles.Render("~/Content/metisMenu.css")
     @Styles.Render("~/Content/timeline.css")
     @Styles.Render("~/Content/sb-admin-2.css")
     @Styles.Render("~/Content/morris.css")
     @Styles.Render("~/Content/font-awesome.css")
-    @Styles.Render("~/Content/Site.css")
+    @*@Styles.Render("~/Content/Site.css")*@
+    @Styles.Render("~/bundles/datatables/css")
+
 
     @Scripts.Render("~/Scripts/jquery-1.8.2.min.js")
     @Scripts.Render("~/Scripts/metisMenu.min.js")
+    @Scripts.Render("~/Scripts/jquery.textcomplete.min.js")
+    @Scripts.Render("~/Scripts/moment.min.js")
+    @Scripts.Render("~/bundles/datatables")
 
 
 
@@ -97,9 +104,7 @@
                         <li>
                             <a href="#"><i class="fa fa-list-alt fa-fw"></i>Logs<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="/private/Logs">All Logs</a>
-                                </li>
+                                
                                 @if (Membership.GetUser() != null)
                                 {
                                     foreach (var app in UserHelper.GetAppsForUser(Membership.GetUser().UserName))

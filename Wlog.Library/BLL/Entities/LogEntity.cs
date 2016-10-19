@@ -46,6 +46,8 @@ namespace Wlog.BLL.Entities
         }
         public virtual Guid ApplictionId { get; set; }
 
+        public virtual string Attributes { get; set; }
+
     }
 
    

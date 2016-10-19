@@ -19,11 +19,20 @@ using Wlog.Library.BLL.Interfaces;
 using Wlog.DAL.NHibernate.Helpers;
 using Wlog.Library.BLL.DataBase;
 using Wlog.BLL.Classes;
+using Wlog.Library.BLL.Index;
+using Lucene.Net.Documents;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Lucene.Net.Search;
+using System.Web;
 
 namespace Wlog.Library.BLL.Reporitories
 {
     public class LogRepository : EntityRepository
     {
+
+        
+
         public LogRepository()
         {
             
@@ -40,66 +49,96 @@ namespace Wlog.Library.BLL.Reporitories
 
         public void Save(LogEntity entToSave)
         {
-            using (IUnitOfWork uow = BeginUnitOfWork())
-            {
-                uow.BeginTransaction();
-                uow.SaveOrUpdate(entToSave);
-                uow.Commit();
-            }
+            Save(new List<LogEntity>(new LogEntity[] { entToSave }));
+
         }
 
-        public IPagedList<LogEntity> SeachLog(LogsSearchSettings logsSearchSettings)
+        public IPagedList<LogEntity> SearchLogindex(Guid applicationId, LogsSearchSettings logsSearchSettings)
+        {
+            var idx = RepositoryContext.Current.Index.GetByName("Logs", applicationId.ToString());
+            // logsSearchSettings.
+
+            // Sort s = new Sort(new SortField(logsSearchSettings.OrderBy.ToString(), SortField.STRING, (logsSearchSettings.SortDirection == SortDirection.DESC)));
+            try
+            {
+                IPagedList<Document> docs = idx.Query(logsSearchSettings.FullTextQuery.Trim(), 
+                    logsSearchSettings.OrderBy.ToString(), 
+                    SortField.STRING, 
+                    (logsSearchSettings.SortDirection == SortDirection.DESC), 
+                    (logsSearchSettings.PageNumber - 1) * logsSearchSettings.PageSize, 
+                    logsSearchSettings.PageSize,
+                    LogsFields.Message.ToString());
+
+                List<LogEntity> result = new List<LogEntity>();
+                foreach (Document d in docs)
+                {
+                    result.Add(GetLogFromDoc(d));
+                }
+                return new StaticPagedList<LogEntity>(result, logsSearchSettings.PageNumber, logsSearchSettings.PageSize, docs.TotalItemCount);
+
+            }
+            catch (UnableToParseQuery err)
+            {
+                //TODO: incapsulate response in wrapper with error
+                HttpContext.Current.Response.StatusCode = 500;
+                HttpContext.Current.Response.StatusDescription = "Unable to parse Query";
+                HttpContext.Current.Response.Write("Unable to parse Query");
+                HttpContext.Current.Response.End();
+                
+            }
+            return null;
+        }
+
+        private LogEntity GetLogFromDoc(Document d)
+        {
+            return new LogEntity()
+            {
+                Level = d.GetField(LogsFields.Level.ToString()).StringValue,
+                ApplictionId = new Guid(d.GetField(LogsFields.ApplicationId.ToString()).StringValue),
+                Id = new Guid(d.GetField(LogsFields.Id.ToString()).StringValue),
+                Message = d.GetField(LogsFields.Message.ToString()).StringValue,
+                CreateDate = DateTools.StringToDate(d.GetField(LogsFields.CreateDate.ToString()).StringValue),
+                SourceDate = DateTools.StringToDate(d.GetField(LogsFields.SourceDate.ToString()).StringValue),
+                UpdateDate = DateTools.StringToDate(d.GetField(LogsFields.UpdateDate.ToString()).StringValue),
+                Attributes =d.GetField(LogsFields.Attributes.ToString()).StringValue
+
+            };
+
+        }
+
+        /// <summary>
+        /// Search procedure on db data
+        /// </summary>
+        /// <param name="logsSearchSettings"></param>
+        /// <returns></returns>
+        public IPagedList<LogEntity> SearchLog(LogsSearchSettings logsSearchSettings)
         {
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
-                IEnumerable<LogEntity> query = uow.Query<LogEntity>().Where(x=>logsSearchSettings.Applications.Contains(x.ApplictionId));
+                IQueryable<LogEntity> query = null;
 
 
-
+            
                 if (!String.IsNullOrWhiteSpace(logsSearchSettings.SerchMessage))
                 {
-                    query = query.Where(p =>(logsSearchSettings.SerchMessage != null && p.Message != null && p.Message.ToLower().Contains(logsSearchSettings.SerchMessage)));
+                    query = uow.Query<LogEntity>().Where(p => logsSearchSettings.Applications.Contains(p.ApplictionId) &&
+                            (logsSearchSettings.SerchMessage != null && p.Message != null && p.Message.ToLower().Contains(logsSearchSettings.SerchMessage)));
 
-                }
-
-                if (logsSearchSettings.SortDirection == SortDirection.ASC)
-                {
-                    switch (logsSearchSettings.OrderBy)
-                    {
-                        case LogsFields.SourceDate:
-                            query = query.OrderBy(l => l.SourceDate);
-                            break;
-                        case LogsFields.Message:
-                            query = query.OrderBy(l => l.Message);
-                            break;
-                        case LogsFields.Level:
-                            query = query.OrderBy(l => l.Level);
-                            break;
-                    }
                 }
                 else
                 {
-                    switch (logsSearchSettings.OrderBy)
-                    {
-                        case LogsFields.SourceDate:
-                            query = query.OrderByDescending(l => l.SourceDate);
-                            break;
-                        case LogsFields.Message:
-                            query = query.OrderByDescending(l => l.Message);
-                            break;
-                        case LogsFields.Level:
-                            query = query.OrderByDescending(l => l.Level);
-                            break;
-                    }
+                    query = uow.Query<LogEntity>().Where(x => logsSearchSettings.Applications.Contains(x.ApplictionId));
                 }
-                
+
+
+
 
 
 
                 int count = query.Count();
 
-
+                query = query.OrderByDescending(l => l.SourceDate);
                 query = query.Skip((logsSearchSettings.PageNumber - 1) * logsSearchSettings.PageSize);
                 query = query.Take(logsSearchSettings.PageSize);
 
@@ -109,29 +148,66 @@ namespace Wlog.Library.BLL.Reporitories
             }
         }
 
-        public void Run()
+        internal void Save(List<LogEntity> logs)
         {
-            LogQueue.Current.AppendLoadValue(LogQueue.Current.Count, LogQueue.Current.MaxQueueSize);
-
-            if (LogQueue.Current.Count > 0)
+            Dictionary<string, LuceneIndexManager> indexList = new Dictionary<string, LuceneIndexManager>();
+            using (IUnitOfWork uow = BeginUnitOfWork())
             {
-                using (IUnitOfWork uow = BeginUnitOfWork())
+                uow.BeginTransaction();
+
+                LogEntity log;
+                for(int i=0;i<logs.Count;i++)
                 {
-                    uow.BeginTransaction();
+                    log = logs[i];
+               
 
-                    for (int i = 0; i < Math.Min(LogQueue.Current.Count, LogQueue.Current.MaxProcessedItems); i++)
-                    {
+                    var idx=RepositoryContext.Current.Index.GetByName("Logs", log.ApplictionId.ToString());
+                    idx.AddDocument(LogToDictionary(log));
 
-                        LogMessage log = LogQueue.Current.Dequeue();
+                    uow.SaveOrUpdate(log);
 
 
-                        //PersistLog(log);
-
-                    }
-                    uow.Commit();
                 }
-                LogQueue.Current.AppendLoadValue(LogQueue.Current.Count, LogQueue.Current.MaxQueueSize);
+
+                uow.Commit();
+                foreach (var idx in RepositoryContext.Current.Index.GetAll())
+                {
+                    if (idx.IsDirty) idx.SaveUncommittedChanges();
+                }
             }
+        }
+
+        private Document LogToDictionary(LogEntity log)
+        {
+            Document doc = new Document();
+
+            doc.Add(new Field(LogsFields.Id.ToString(), log.Id.ToString(), Field.Store.YES, Field.Index.ANALYZED));
+            doc.Add(new Field(LogsFields.Level.ToString(), log.Level, Field.Store.YES, Field.Index.ANALYZED));
+            doc.Add(new Field(LogsFields.Message.ToString(), log.Message, Field.Store.YES, Field.Index.ANALYZED)); 
+          
+
+            doc.Add(new Field(LogsFields.SourceDate.ToString(), DateTools.DateToString(log.SourceDate, DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.ANALYZED));
+            doc.Add(new Field(LogsFields.UpdateDate.ToString(), DateTools.DateToString(log.UpdateDate, DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.ANALYZED));
+            doc.Add(new Field(LogsFields.CreateDate.ToString(), DateTools.DateToString(log.CreateDate, DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.ANALYZED));
+
+            doc.Add(new Field(LogsFields.ApplicationId.ToString(), log.ApplictionId.ToString(), Field.Store.YES, Field.Index.ANALYZED));
+            doc.Add(new Field(LogsFields.Attributes.ToString(), log.Attributes?? "", Field.Store.YES, Field.Index.NO));
+            //doc.Add(new Field("Message", log.Attributes, Field.Store.YES, Field.Index.ANALYZED));
+
+            if (!string.IsNullOrWhiteSpace(log.Attributes))
+            {
+               JObject attrs = JObject.Parse(log.Attributes);
+                foreach (var attr in attrs)
+                {
+                    if (doc.GetField(attr.Key) == null)
+                    {
+                        //TODO: analize basing on attribute definition
+                        doc.Add(new Field(attr.Key, attr.Value.ToString(), Field.Store.YES, Field.Index.ANALYZED));
+                    }
+
+                }
+            }
+            return doc;
         }
     }
 }

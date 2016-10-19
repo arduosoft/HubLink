@@ -20,8 +20,9 @@ namespace Wlog.Web
             bundles.IgnoreList.Clear();
  
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
- 
+                        "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/DataTables/jquery.dataTables.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/bootstrapjs").Include(
                         "~/Scripts/bootstrap.min.js"));
  
@@ -36,6 +37,22 @@ namespace Wlog.Web
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.unobtrusive*",
                         "~/Scripts/jquery.validate*"));
+
+
+            bundles.Add(new ScriptBundle("~/bundles/datatables").Include(
+                       new string[] {
+                       "~/Scripts/DataTables/jquery.dataTables.min.js",
+                       "~/Scripts/DataTables/dataTables.bootstrap.min.js",
+
+                       "~/Scripts/DataTables/dataTables.buttons.min.js",
+                          "~/Scripts/DataTables/buttons.bootstrap.min.js",
+                      
+                       "~/Scripts/DataTables/buttons.colVis.min.js"
+                       }
+                       ));
+
+            bundles.Add(new StyleBundle("~/bundles/datatables/css").Include(
+                        "~/Content/DataTables/css/dataTables.bootstrap.min.css"));
 
             // Utilizzare la versione di sviluppo di Modernizr per eseguire attività di sviluppo e formazione. Successivamente, quando si è
             // pronti per passare alla produzione, utilizzare lo strumento di compilazione disponibile all'indirizzo http://modernizr.com per selezionare solo i test necessari.
