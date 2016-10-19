@@ -146,10 +146,12 @@ namespace Wlog.Library.BLL.Index
 
         internal void SaveUncommittedChanges()
         {
-           
+            writer.Optimize();
             writer.Commit();
 
             uncommittedFiles = 0;
+
+            ReopenIndex();
         }
 
         
@@ -208,8 +210,7 @@ namespace Wlog.Library.BLL.Index
         {
             if (dirty  && ReopenIfDirty)
             {
-                  DisposeIndex();
-                  InitIndex(); 
+                ReopenIndex();
 
             }
 
@@ -234,6 +235,13 @@ namespace Wlog.Library.BLL.Index
             }
             return new StaticPagedList<Document>(result,1,size,docs.TotalHits);
         }
+
+        private void ReopenIndex()
+        {
+            DisposeIndex();
+            InitIndex();
+        }
+
         public void Dispose()
         {
             writer.Optimize();

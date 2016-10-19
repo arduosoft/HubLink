@@ -155,7 +155,6 @@
     <Compile Include="BLL\Helpers\InfoHelper.cs" />
     <Compile Include="BLL\Index\LuceneIndexManager.cs" />
     <Compile Include="BLL\Index\LuceneIndexManagerFactory.cs" />
-    <Compile Include="BLL\Index\ManagedIndexManager.cs" />
     <Compile Include="BLL\Interfaces\IEntityBase.cs" />
     <Compile Include="BLL\Interfaces\IUnitOfWork.cs" />
     <Compile Include="BLL\Reporitories\ApplicationRepository.cs" />
