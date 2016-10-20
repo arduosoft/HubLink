@@ -20,26 +20,37 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wlog.Library", "Wlog.Librar
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		AppHarbor|Any CPU = AppHarbor|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{915395A4-2E47-470C-B91C-12964CE0C644}.AppHarbor|Any CPU.ActiveCfg = AppHarbor|Any CPU
+		{915395A4-2E47-470C-B91C-12964CE0C644}.AppHarbor|Any CPU.Build.0 = AppHarbor|Any CPU
 		{915395A4-2E47-470C-B91C-12964CE0C644}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{915395A4-2E47-470C-B91C-12964CE0C644}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{915395A4-2E47-470C-B91C-12964CE0C644}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{915395A4-2E47-470C-B91C-12964CE0C644}.Release|Any CPU.Build.0 = Release|Any CPU
+		{176B4309-6EDF-4D6B-9296-A853181EB923}.AppHarbor|Any CPU.ActiveCfg = AppHarbor|Any CPU
+		{176B4309-6EDF-4D6B-9296-A853181EB923}.AppHarbor|Any CPU.Build.0 = AppHarbor|Any CPU
 		{176B4309-6EDF-4D6B-9296-A853181EB923}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{176B4309-6EDF-4D6B-9296-A853181EB923}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{176B4309-6EDF-4D6B-9296-A853181EB923}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{176B4309-6EDF-4D6B-9296-A853181EB923}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96B4C016-6835-4C7B-A9D0-C5BBECE53AE7}.AppHarbor|Any CPU.ActiveCfg = AppHarbor|Any CPU
+		{96B4C016-6835-4C7B-A9D0-C5BBECE53AE7}.AppHarbor|Any CPU.Build.0 = AppHarbor|Any CPU
 		{96B4C016-6835-4C7B-A9D0-C5BBECE53AE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{96B4C016-6835-4C7B-A9D0-C5BBECE53AE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96B4C016-6835-4C7B-A9D0-C5BBECE53AE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96B4C016-6835-4C7B-A9D0-C5BBECE53AE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E0840A0-4D2C-4351-ABCE-5D11E95EF5B5}.AppHarbor|Any CPU.ActiveCfg = AppHarbor|Any CPU
+		{4E0840A0-4D2C-4351-ABCE-5D11E95EF5B5}.AppHarbor|Any CPU.Build.0 = AppHarbor|Any CPU
 		{4E0840A0-4D2C-4351-ABCE-5D11E95EF5B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4E0840A0-4D2C-4351-ABCE-5D11E95EF5B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E0840A0-4D2C-4351-ABCE-5D11E95EF5B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E0840A0-4D2C-4351-ABCE-5D11E95EF5B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E331B212-3AF2-468D-9A5E-519162B2C8D1}.AppHarbor|Any CPU.ActiveCfg = AppHarbor|Any CPU
+		{E331B212-3AF2-468D-9A5E-519162B2C8D1}.AppHarbor|Any CPU.Build.0 = AppHarbor|Any CPU
 		{E331B212-3AF2-468D-9A5E-519162B2C8D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E331B212-3AF2-468D-9A5E-519162B2C8D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E331B212-3AF2-468D-9A5E-519162B2C8D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
