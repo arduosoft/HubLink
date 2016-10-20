@@ -472,9 +472,9 @@
     <Content Include="Content\DataTables\css\semanticui.scss" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
-    <None Include="Web.AppHarbor.config">
+    <Content Include="Web.AppHarbor.config">
       <DependentUpon>Web.config</DependentUpon>
-    </None>
+    </Content>
     <None Include="Wlog.Library.licenseheader" />
   </ItemGroup>
   <ItemGroup>
