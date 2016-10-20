@@ -27,3 +27,4 @@ You do not use a log framework? Easy, start to use it; even if you won't to empl
 Your project are not written in .net? No problems, our client library integrate throug a simple api call, so you just need to make a REST call to store log or extend your current log library. See Integrate wlog in your application with custom access
 
 #
+#
