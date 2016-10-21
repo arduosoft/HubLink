@@ -10,6 +10,10 @@
 
     public class EmptyBinJobTests : IDisposable
     {
+        public EmptyBinJobTests()
+        {
+        }
+
         public void Dispose()
         {
             throw new NotImplementedException();
