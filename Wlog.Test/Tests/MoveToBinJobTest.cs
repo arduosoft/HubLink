@@ -10,7 +10,7 @@
 
     public class MoveToBinJobTest : IDisposable
     {
-        private List<LogEntity> _logs;
+        private readonly List<LogEntity> _logs;
 
         public MoveToBinJobTest()
         {
@@ -42,7 +42,7 @@
         }
 
 
-        [Fact, Trait("Category", "ExcludedFromCI")]
+      
         public void MoveToBinJob_CheckLogsTable_Success()
         {
             var allLogs = RepositoryContext.Current.Logs.GetAllLogEntities();
@@ -52,7 +52,7 @@
             Assert.False(allLogs.Any(x => x.Uid == _logs[2].Uid));
         }
 
-        [Fact, Trait("Category", "ExcludedFromCI")]
+
         public void MoveToBinJob_CheckDeletedLogsTable_Success()
         {
             var allDeletedLogs = RepositoryContext.Current.DeletedLogs.GetAllDeletedLogEntities();
