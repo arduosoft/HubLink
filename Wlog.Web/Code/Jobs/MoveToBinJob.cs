@@ -27,14 +27,7 @@ namespace Wlog.Web.Code.Jobs
         {
             try
             {
-                var logsForBin = RepositoryContext.Current.Logs.GetLogsForBinJob(_daysToKeep, _rowsToKeep);
-
-                if (logsForBin.Any())
-                {
-                    RepositoryContext.Current.Logs.MoveLogsToBin(logsForBin);
-                }
-
-                return true;
+                return RepositoryContext.Current.Logs.ExecuteMoveToBinJob(_daysToKeep, _rowsToKeep);
             }
             catch (Exception)
             {

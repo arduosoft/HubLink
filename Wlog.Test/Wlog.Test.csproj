@@ -96,7 +96,7 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tests\JobsTests.cs" />
+    <Compile Include="Tests\MoveToBinJobTest.cs" />
     <Compile Include="Tests\MiscTest.cs" />
     <Compile Include="Tests\Repository.cs" />
   </ItemGroup>

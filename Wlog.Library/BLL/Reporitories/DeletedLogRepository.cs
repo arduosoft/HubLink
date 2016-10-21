@@ -3,23 +3,15 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using PagedList;
     using Wlog.BLL.Entities;
-    using Wlog.Library.BLL.Classes;
-    using Wlog.Library.BLL.Enums;
-    using Wlog.Library.BLL.Interfaces;
-    using Wlog.DAL.NHibernate.Helpers;
-    using Wlog.Library.BLL.DataBase;
-    using Wlog.BLL.Classes;
+    using Classes;
+    using Interfaces;
 
     public class DeletedLogRepository : EntityRepository
     {
-
         public List<DeletedLogEntity> GetAllDeletedLogEntities()
         {
-            List<DeletedLogEntity> result = new List<DeletedLogEntity>();
+            var result = new List<DeletedLogEntity>();
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
@@ -39,18 +31,28 @@
             }
         }
 
-        /// </summary>
-        /// <param name="daysToKeep"></param>
-        /// <param name="rowsToKeep"></param>
-        /// <returns></returns>
-        public List<DeletedLogEntity> GetLogsForEmptyBinJob(int daysToKeep, int rowsToKeep)
+        public bool ExecuteMoveToBinJob(int daysToKeep, int rowsToKeep)
         {
-            using (IUnitOfWork uow = BeginUnitOfWork())
+            try
             {
-                uow.BeginTransaction();
-                var entitiesToKeep = uow.Query<DeletedLogEntity>().Where(x => x.SourceDate > (DateTime.UtcNow.AddDays(-daysToKeep)))
-                    .OrderByDescending(x => x.SourceDate).Take(rowsToKeep).ToList();
-                return uow.Query<DeletedLogEntity>().Where(x => !entitiesToKeep.Contains(x)).ToList();
+                using (IUnitOfWork uow = BeginUnitOfWork())
+                {
+                    uow.BeginTransaction();
+                    var entitiesToKeep = uow.Query<DeletedLogEntity>().Where(x => x.SourceDate > (DateTime.UtcNow.AddDays(-daysToKeep)))
+                        .OrderByDescending(x => x.SourceDate).Take(rowsToKeep).ToList();
+                    var entitiesToDelete= uow.Query<DeletedLogEntity>().Where(x => !entitiesToKeep.Contains(x)).ToList();
+
+                    foreach (var entity in entitiesToDelete)
+                    {
+                        RemoveDeletedLogEntity(entity);
+                    }
+
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
     }

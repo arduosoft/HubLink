@@ -176,14 +176,28 @@ namespace Wlog.Library.BLL.Reporitories
             return result;
         }
 
-        public List<LogEntity> GetLogsForBinJob(int daysToKeep, int rowsToKeep)
+        public bool ExecuteMoveToBinJob(int daysToKeep, int rowsToKeep)
         {
-            using (IUnitOfWork uow = BeginUnitOfWork())
+            try
             {
-                uow.BeginTransaction();
-                var entitiesToKeep = uow.Query<LogEntity>().Where(x => x.SourceDate > (DateTime.UtcNow.AddDays(-daysToKeep)))
-                    .OrderByDescending(x => x.SourceDate).Take(rowsToKeep).ToList();
-                return uow.Query<LogEntity>().Where(x => !entitiesToKeep.Contains(x)).ToList();
+                using (IUnitOfWork uow = BeginUnitOfWork())
+                {
+                    uow.BeginTransaction();
+                    var entitiesToKeep = uow.Query<LogEntity>().Where(x => x.SourceDate > (DateTime.UtcNow.AddDays(-daysToKeep)))
+                        .OrderByDescending(x => x.SourceDate).Take(rowsToKeep).ToList();
+                    var logsForBin= uow.Query<LogEntity>().Where(x => !entitiesToKeep.Contains(x)).ToList();
+
+                    if (logsForBin.Any())
+                    {
+                        MoveLogsToBin(logsForBin);
+                    }
+
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
