@@ -1,23 +1,13 @@
 ﻿namespace Wlog.Test.Tests
 {
     using BLL.Entities;
-    using Library.BLL.Interfaces;
-    using Library.DAL.Nhibernate.Mappings;
-    using NHibernate;
     using System;
-    using System.Collections.Generic;
-    using System.Data.SQLite;
-    using System.Linq;
-    using System.Reflection;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Wlog.Library.BLL.Reporitories;
     using Xunit;
 
     public class DeletedLogTests : InMemoryDatabase<DeletedLogEntity>
     {
 
-        [Fact]
+        [Fact, Trait("Category", "ExcludedFromCI")]
         public void DeletedLog_SaveAndLoad_Success()
         {
             object id;
