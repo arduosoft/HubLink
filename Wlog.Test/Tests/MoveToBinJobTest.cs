@@ -10,12 +10,10 @@
 
     public class MoveToBinJobTest : IDisposable
     {
-        private readonly List<LogEntity> _logs;
+        private readonly List<LogEntity> _logs = new List<LogEntity>();
 
         public MoveToBinJobTest()
         {
-            _logs = new List<LogEntity>();
-
             // insert test logs in DB
             InsertTestLogsInDB();
 
@@ -25,9 +23,27 @@
 
         private void InsertTestLogsInDB()
         {
-            _logs.Add(new LogEntity { CreateDate = DateTime.Now.AddDays(-40), SourceDate = DateTime.UtcNow, UpdateDate = DateTime.Now, Message = "Message 1" });
-            _logs.Add(new LogEntity { CreateDate = DateTime.Now.AddDays(-40), SourceDate = DateTime.UtcNow.AddDays(-48), UpdateDate = DateTime.Now, Message = "Message 2" });
-            _logs.Add(new LogEntity { CreateDate = DateTime.Now.AddDays(-40), SourceDate = DateTime.UtcNow.AddDays(-60), UpdateDate = DateTime.Now, Message = "Message 3" });
+            _logs.Add(new LogEntity
+            {
+                CreateDate = DateTime.Now.AddDays(-40),
+                SourceDate = DateTime.UtcNow,
+                UpdateDate = DateTime.Now,
+                Message = "Message 1"
+            });
+            _logs.Add(new LogEntity
+            {
+                CreateDate = DateTime.Now.AddDays(-40),
+                SourceDate = DateTime.UtcNow.AddDays(-48),
+                UpdateDate = DateTime.Now,
+                Message = "Message 2"
+            });
+            _logs.Add(new LogEntity
+            {
+                CreateDate = DateTime.Now.AddDays(-40),
+                SourceDate = DateTime.UtcNow.AddDays(-60),
+                UpdateDate = DateTime.Now,
+                Message = "Message 3"
+            });
 
             foreach (var log in _logs)
             {

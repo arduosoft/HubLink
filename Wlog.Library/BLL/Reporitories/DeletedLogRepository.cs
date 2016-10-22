@@ -31,6 +31,16 @@
             }
         }
 
+        public void Save(DeletedLogEntity deletedLog)
+        {
+            using (IUnitOfWork uow = BeginUnitOfWork())
+            {
+                uow.BeginTransaction();
+                uow.SaveOrUpdate(deletedLog);
+                uow.Commit();
+            }
+        }
+
         public bool ExecuteMoveToBinJob(int daysToKeep, int rowsToKeep)
         {
             try
