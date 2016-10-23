@@ -41,6 +41,7 @@
             }
         }
 
+        //TODO:it that the correct name? for what I understood from implementation this delete rows from bin
         public bool ExecuteMoveToBinJob(int daysToKeep, int rowsToKeep)
         {
             try
@@ -54,6 +55,7 @@
 
                     foreach (var entity in entitiesToDelete)
                     {
+                        //TODO:this means you have a commit on each operation. When you have thousand deletion to do, what we need is to commit each x operation, to have better perfomance. X could be harcoded to 1000 atm.
                         RemoveDeletedLogEntity(entity);
                     }
 
@@ -62,6 +64,7 @@
             }
             catch (Exception)
             {
+                //TODO: please log something here.
                 return false;
             }
         }

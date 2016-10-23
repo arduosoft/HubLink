@@ -143,6 +143,7 @@ namespace Wlog.Library.BLL.Reporitories
                         uow.SaveOrUpdate(deletedLog);
                     }
 
+                    //TODO: here we have the problem that when we have to much log to save transaction could be hard to commit. So to achieve better performance we can commit after X operation. This is the opposite case of committing on each save.
                     uow.Commit();
                 }
 
