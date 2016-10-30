@@ -17,17 +17,17 @@
 		<authors>$author$</authors>
 		<copyright></copyright>
 
-		<!--
-		<iconUrl></iconUrl>
-		<projectUrl></projectUrl>
-		<licenseUrl></licenseUrl>
-		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		-->
 
-		<!--
-		<summary></summary>
+
+    <!--<iconUrl></iconUrl>-->
+    <projectUrl>https://github.com/arduosoft/wlog</projectUrl>
+    <licenseUrl>https://github.com/arduosoft/wlog/blob/master/license.md</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+
+		
+		<summary>This release contains core features that connects your app to wlog server.</summary>
 		<releaseNotes></releaseNotes>
-		-->
+		
 
 		<!--
 		For the '$description$' replacement token to work, the 'AssemblyDescription'

@@ -17,17 +17,15 @@
 		<authors>$author$</authors>
 		<copyright></copyright>
 
-		<!--
-		<iconUrl></iconUrl>
-		<projectUrl></projectUrl>
-		<licenseUrl></licenseUrl>
-		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		-->
 
-		<!--
-		<summary></summary>
-		<releaseNotes></releaseNotes>
-		-->
+
+    <!--<iconUrl></iconUrl>-->
+    <projectUrl>https://github.com/arduosoft/wlog</projectUrl>
+    <licenseUrl>https://github.com/arduosoft/wlog/blob/master/license.md</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+
+    <summary>This library allow you to send logs to wlog server using NLOG framework. See log4net version for Nlog logger.</summary>
+    <releaseNotes></releaseNotes>
 
 		<!--
 		For the '$description$' replacement token to work, the 'AssemblyDescription'
