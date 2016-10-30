@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set di attributi. Modificare i valori di questi attributi per modificare le informazioni
 // associate a un assembly.
 [assembly: AssemblyTitle("WLog.Clients.Log4Net")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Log4net implementation of WLOG logger")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Arduosoft - https://github.com/arduosoft/wlog")]
 [assembly: AssemblyProduct("WLog.Clients.Log4Net")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]

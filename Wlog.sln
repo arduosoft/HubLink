@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Items", "Items", "{50FF6233-1042-4AC2-92F8-2F5043693E82}"
 	ProjectSection(SolutionItems) = preProject
@@ -13,6 +13,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wlog.TestApp", "Wlog.TestApp\Wlog.TestApp.csproj", "{176B4309-6EDF-4D6B-9296-A853181EB923}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wlog.Clients.NLog", "Wlog.Loggers\Wlog.Clients.NLog.csproj", "{96B4C016-6835-4C7B-A9D0-C5BBECE53AE7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C3F67DFE-914A-4852-9EAE-82B401AB70CB} = {C3F67DFE-914A-4852-9EAE-82B401AB70CB}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wlog.Test", "Wlog.Test\Wlog.Test.csproj", "{4E0840A0-4D2C-4351-ABCE-5D11E95EF5B5}"
 EndProject
@@ -64,6 +67,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{96B4C016-6835-4C7B-A9D0-C5BBECE53AE7} = {940141B3-9970-46CE-A15E-A9CAA83906CA}
+		{C3F67DFE-914A-4852-9EAE-82B401AB70CB} = {940141B3-9970-46CE-A15E-A9CAA83906CA}
 		{3F2B62ED-A3B2-4137-9033-266BE27D8D1D} = {940141B3-9970-46CE-A15E-A9CAA83906CA}
 	EndGlobalSection
 EndGlobal
