@@ -7,8 +7,8 @@
     <ProjectGuid>{96B4C016-6835-4C7B-A9D0-C5BBECE53AE7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NLog.WebLog</RootNamespace>
-    <AssemblyName>NLog.WebLog</AssemblyName>
+    <RootNamespace>NLog.Wlog.Clients</RootNamespace>
+    <AssemblyName>NLog.Wlog.Clients</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -31,10 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -54,16 +50,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BufferedWebAppender.cs" />
-    <Compile Include="Classes\LogMessage.cs" />
-    <Compile Include="Helpers\LogHelper.cs" />
-    <Compile Include="WebAppender.cs" />
     <Compile Include="WebTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Wlog.Library.licenseheader" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Wlog.Core\Wlog.Clients.csproj">
+      <Project>{c3f67dfe-914a-4852-9eae-82b401ab70cb}</Project>
+      <Name>Wlog.Clients</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

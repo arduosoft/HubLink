@@ -8,16 +8,9 @@
 //******************************************************************************
 using Newtonsoft.Json;
 using NLog;
-using NLog.Config;
-using NLog.WebLog;
-using NLog.WebLog.Classes;
-using NLog.WebLog.Helpers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using Wlog.Clients.Classes;
+using Wlog.Clients.Helpers;
 using Wlog.TestApp.Test;
 
 namespace Wlog.TestApp

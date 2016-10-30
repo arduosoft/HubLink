@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NLog.WebLog.Classes
+namespace Wlog.Clients.Classes
 {
     public class LogMessage
     {

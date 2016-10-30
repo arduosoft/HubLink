@@ -1,15 +1,15 @@
 ﻿using log4net.Appender;
+using log4net.Core;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using log4net.Core;
-using NLog.WebLog.Helpers;
-using NLog.WebLog.Classes;
-using Newtonsoft.Json;
+using Wlog.Clients.Classes;
+using Wlog.Clients.Helpers;
 
-namespace Log4Net.WebLog
+namespace Wlog.Clients.Log4Net
 {
     public class BufferedWebAppender : BufferingAppenderSkeleton
     {
@@ -28,7 +28,7 @@ namespace Log4Net.WebLog
                 Message = p.RenderedMessage,
                 SourceDate = p.TimeStamp
             }).ToList();
-                
+
             LogHelper.DoRequest(Destination, JsonConvert.SerializeObject(entry));
         }
     }

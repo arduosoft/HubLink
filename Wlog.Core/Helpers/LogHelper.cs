@@ -6,7 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NLog.WebLog.Helpers
+namespace Wlog.Clients.Helpers
 {
     public static class LogHelper
     {
@@ -47,4 +47,6 @@ namespace NLog.WebLog.Helpers
             response.Close();
         }
     }
+
+
 }

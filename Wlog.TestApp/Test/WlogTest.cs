@@ -18,7 +18,7 @@ namespace Wlog.TestApp.Test
 {
     public class WlogTest : TestInstance
     {
-        //static Logger logger = LogManager.GetLogger("wlog.logger");
+        //static Logger logger = NLog.LogManager.GetLogger("wlog.logger");
         static ILog logger = log4net.LogManager.GetLogger("WebAppenderLogger");
 
         public override void Execute()
