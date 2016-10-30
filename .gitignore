@@ -12,3 +12,7 @@ dist
 /.vs/
 /.vs/config/applicationhost.config
 Wlog.Web/App_Data/Index/
+/Wlog.Core/bin/Debug
+/Wlog.Core/obj/Debug
+/WLog.Clients.Log4Net/bin/Debug
+/WLog.Clients.Log4Net/obj/Debug

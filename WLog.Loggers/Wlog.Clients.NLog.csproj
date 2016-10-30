@@ -4,32 +4,18 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{176B4309-6EDF-4D6B-9296-A853181EB923}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{96B4C016-6835-4C7B-A9D0-C5BBECE53AE7}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Wlog.TestApp</RootNamespace>
-    <AssemblyName>Wlog.TestApp</AssemblyName>
+    <RootNamespace>NLog.Wlog.Clients</RootNamespace>
+    <AssemblyName>NLog.Wlog.Clients</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -39,7 +25,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -51,12 +36,7 @@
     <OutputPath>bin\AppHarbor\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog">
@@ -75,53 +55,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="WebTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Test\WLogBulkTest.cs" />
-    <Compile Include="Test\WlogTest.cs" />
-    <Compile Include="Test\FileTest.cs" />
-    <Compile Include="Test\TestInstance.cs" />
-    <Compile Include="Test\TestIterator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
+    <None Include="OvermanGroup.NuGet.Packager.props" />
+    <None Include="packages.config" />
+    <None Include="Wlog.Clients.NLog.nuspec">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
     <None Include="Wlog.Library.licenseheader" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WLog.Clients.Log4Net\Wlog.Clients.Log4Net.csproj">
-      <Project>{3f2b62ed-a3b2-4137-9033-266be27d8d1d}</Project>
-      <Name>Wlog.Clients.Log4Net</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Wlog.Core\Wlog.Clients.csproj">
       <Project>{c3f67dfe-914a-4852-9eae-82b401ab70cb}</Project>
       <Name>Wlog.Clients</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Wlog.Loggers\Wlog.Clients.NLog.csproj">
-      <Project>{96b4c016-6835-4c7b-a9d0-c5bbece53ae7}</Project>
-      <Name>Wlog.Clients.NLog</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 e x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="input.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\OvermanGroup.NuGet.Packager.1.2.0\build\OvermanGroup.NuGet.Packager.targets" Condition="Exists('..\packages\OvermanGroup.NuGet.Packager.1.2.0\build\OvermanGroup.NuGet.Packager.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Questo progetto fa riferimento a uno o più pacchetti NuGet che non sono presenti in questo computer. Usare lo strumento di ripristino dei pacchetti NuGet per scaricarli. Per altre informazioni, vedere http://go.microsoft.com/fwlink/?LinkID=322105. Il file mancante è {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\OvermanGroup.NuGet.Packager.1.2.0\build\OvermanGroup.NuGet.Packager.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\OvermanGroup.NuGet.Packager.1.2.0\build\OvermanGroup.NuGet.Packager.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

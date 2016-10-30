@@ -15,9 +15,9 @@ using System.Runtime.InteropServices;
 // set di attributi. Per modificare le informazioni associate a un assembly
 // occorre quindi modificare i valori di questi attributi.
 [assembly: AssemblyTitle("NLog.WebLog")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("NLog implementation of NLOG logger")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Arduosoft - https://github.com/arduosoft/wlog")]
 [assembly: AssemblyProduct("NLog.WebLog")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
