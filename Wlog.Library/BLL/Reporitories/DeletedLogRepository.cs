@@ -6,9 +6,12 @@
     using Wlog.BLL.Entities;
     using Classes;
     using Interfaces;
+    using NLog;
 
     public class DeletedLogRepository : EntityRepository
     {
+        private Logger _logger => LogManager.GetCurrentClassLogger();
+
         public List<DeletedLogEntity> GetAllDeletedLogEntities()
         {
             var result = new List<DeletedLogEntity>();
@@ -23,26 +26,70 @@
 
         public void RemoveDeletedLogEntity(DeletedLogEntity deletedLog)
         {
-            using (IUnitOfWork uow = BeginUnitOfWork())
+            try
             {
-                uow.BeginTransaction();
-                uow.Delete(deletedLog);
-                uow.Commit();
+                using (IUnitOfWork uow = BeginUnitOfWork())
+                {
+                    uow.BeginTransaction();
+                    uow.Delete(deletedLog);
+                    uow.Commit();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+            }
+        }
+
+        public void BatchRemoveDeletedLogEntities(List<DeletedLogEntity> deletedLog)
+        {
+            try
+            {
+                using (IUnitOfWork uow = BeginUnitOfWork())
+                {
+                    uow.BeginTransaction();
+                    var logsCount = deletedLog.Count();
+
+                    for (int i = 0; i < logsCount; i++)
+                    {
+                        uow.Delete(deletedLog[i]);
+
+                        if (i == logsCount - 1)
+                        {
+                            uow.Commit();
+                        }
+                        else if (i % 100 == 0)
+                        {
+                            uow.Commit();
+                            uow.BeginTransaction();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
             }
         }
 
         public void Save(DeletedLogEntity deletedLog)
         {
-            using (IUnitOfWork uow = BeginUnitOfWork())
+            try
             {
-                uow.BeginTransaction();
-                uow.SaveOrUpdate(deletedLog);
-                uow.Commit();
+                using (IUnitOfWork uow = BeginUnitOfWork())
+                {
+                    uow.BeginTransaction();
+                    uow.SaveOrUpdate(deletedLog);
+                    uow.Commit();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
             }
         }
 
-        //TODO:it that the correct name? for what I understood from implementation this delete rows from bin
-        public bool ExecuteMoveToBinJob(int daysToKeep, int rowsToKeep)
+        public bool ExecuteEmptyBinJob(int daysToKeep, int rowsToKeep)
         {
             try
             {
@@ -51,20 +98,17 @@
                     uow.BeginTransaction();
                     var entitiesToKeep = uow.Query<DeletedLogEntity>().Where(x => x.SourceDate > (DateTime.UtcNow.AddDays(-daysToKeep)))
                         .OrderByDescending(x => x.SourceDate).Take(rowsToKeep).ToList();
-                    var entitiesToDelete= uow.Query<DeletedLogEntity>().Where(x => !entitiesToKeep.Contains(x)).ToList();
+                    var entitiesToDelete = uow.Query<DeletedLogEntity>().Where(x => !entitiesToKeep.Contains(x)).ToList();
 
-                    foreach (var entity in entitiesToDelete)
-                    {
-                        //TODO:this means you have a commit on each operation. When you have thousand deletion to do, what we need is to commit each x operation, to have better perfomance. X could be harcoded to 1000 atm.
-                        RemoveDeletedLogEntity(entity);
-                    }
+                    BatchRemoveDeletedLogEntities(entitiesToDelete);
 
                     return true;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //TODO: please log something here.
+                _logger.Error(ex);
+
                 return false;
             }
         }

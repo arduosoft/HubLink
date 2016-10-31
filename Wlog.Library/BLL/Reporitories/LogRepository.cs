@@ -19,11 +19,14 @@ using Wlog.Library.BLL.Interfaces;
 using Wlog.DAL.NHibernate.Helpers;
 using Wlog.Library.BLL.DataBase;
 using Wlog.BLL.Classes;
+using NLog;
 
 namespace Wlog.Library.BLL.Reporitories
 {
     public class LogRepository : EntityRepository
     {
+        private Logger _logger => LogManager.GetCurrentClassLogger();
+
         public LogRepository()
         {
 
@@ -116,7 +119,7 @@ namespace Wlog.Library.BLL.Reporitories
             }
         }
 
-        public bool MoveLogsToBin(IEnumerable<LogEntity> logs)
+        public bool MoveLogsToBin(List<LogEntity> logs)
         {
             try
             {
@@ -124,8 +127,9 @@ namespace Wlog.Library.BLL.Reporitories
                 {
                     uow.BeginTransaction();
 
-                    foreach (LogEntity log in logs)
+                    for (int i = 0; i < logs.Count(); i++)
                     {
+                        var log = logs[i];
                         uow.Delete(log);
 
                         DeletedLogEntity deletedLog = new DeletedLogEntity()
@@ -141,27 +145,42 @@ namespace Wlog.Library.BLL.Reporitories
                         };
 
                         uow.SaveOrUpdate(deletedLog);
-                    }
 
-                    //TODO: here we have the problem that when we have to much log to save transaction could be hard to commit. So to achieve better performance we can commit after X operation. This is the opposite case of committing on each save.
-                    uow.Commit();
+                        if (i == logs.Count() - 1)
+                        {
+                            uow.Commit();
+                        }
+                        else if (i % 100 == 0 )
+                        {
+                            uow.Commit();
+                            uow.BeginTransaction();
+                        }
+                    }
                 }
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.Error(ex);
                 return false;
             }
         }
 
         public void RemoveLogEntity(LogEntity log)
         {
-            using (IUnitOfWork uow = BeginUnitOfWork())
+            try
             {
-                uow.BeginTransaction();
-                uow.Delete(log);
-                uow.Commit();
+                using (IUnitOfWork uow = BeginUnitOfWork())
+                {
+                    uow.BeginTransaction();
+                    uow.Delete(log);
+                    uow.Commit();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
             }
         }
 
@@ -186,7 +205,7 @@ namespace Wlog.Library.BLL.Reporitories
                     uow.BeginTransaction();
                     var entitiesToKeep = uow.Query<LogEntity>().Where(x => x.SourceDate > (DateTime.UtcNow.AddDays(-daysToKeep)))
                         .OrderByDescending(x => x.SourceDate).Take(rowsToKeep).ToList();
-                    var logsForBin= uow.Query<LogEntity>().Where(x => !entitiesToKeep.Contains(x)).ToList();
+                    var logsForBin = uow.Query<LogEntity>().Where(x => !entitiesToKeep.Contains(x)).ToList();
 
                     if (logsForBin.Any())
                     {
@@ -196,8 +215,9 @@ namespace Wlog.Library.BLL.Reporitories
                     return true;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.Error(ex);
                 return false;
             }
         }

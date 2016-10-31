@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,8 @@ namespace Wlog.Library.BLL.Reporitories
 {
     public class ProfilesRepository : IRepository
     {
+        private Logger _logger => LogManager.GetCurrentClassLogger();
+
         private static UnitFactory unitFactory;
 
         public ProfilesRepository()
@@ -51,7 +54,7 @@ namespace Wlog.Library.BLL.Reporitories
             }
             catch (Exception e)
             {
-
+                _logger.Error(e);
                 result = false;
             }
 
@@ -70,8 +73,7 @@ namespace Wlog.Library.BLL.Reporitories
             }
             catch (Exception err)
             {
-                //TODO: log here:
-
+                _logger.Error(err);
             }
 
             return result;
@@ -92,8 +94,7 @@ namespace Wlog.Library.BLL.Reporitories
             }
             catch (Exception err)
             {
-                //TODO: log here:
-
+                _logger.Error(err);
             }
 
             return false;
@@ -123,10 +124,9 @@ namespace Wlog.Library.BLL.Reporitories
                     return true;
                 }
             }
-            catch (Exception)
+            catch (Exception err)
             {
-                //TODO: log here:
-
+                _logger.Error(err);
             }
 
             return false;

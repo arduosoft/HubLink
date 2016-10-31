@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,6 +14,8 @@ namespace Wlog.Web.Code.Jobs
     /// </summary>
     public class MoveToBinJob : Job
     {
+        private Logger _logger => LogManager.GetCurrentClassLogger();
+
         private int _rowsToKeep { get; set; }
 
         private int _daysToKeep { get; set; }
@@ -29,8 +32,10 @@ namespace Wlog.Web.Code.Jobs
             {
                 return RepositoryContext.Current.Logs.ExecuteMoveToBinJob(_daysToKeep, _rowsToKeep);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.Error(ex);
+
                 return false;
             }
         }

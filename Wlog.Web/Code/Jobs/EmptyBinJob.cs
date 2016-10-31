@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,6 +13,8 @@ namespace Wlog.Web.Code.Jobs
     /// </summary>
     public class EmptyBinJob : Job
     {
+        private Logger _logger => LogManager.GetCurrentClassLogger();
+
         private int _rowsToKeep { get; set; }
 
         private int _daysToKeep { get; set; }
@@ -26,10 +29,12 @@ namespace Wlog.Web.Code.Jobs
         {
             try
             {
-                return RepositoryContext.Current.DeletedLogs.ExecuteMoveToBinJob(_daysToKeep, _rowsToKeep);
+                return RepositoryContext.Current.DeletedLogs.ExecuteEmptyBinJob(_daysToKeep, _rowsToKeep);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.Error(ex);
+
                 return false;
             }
         }
