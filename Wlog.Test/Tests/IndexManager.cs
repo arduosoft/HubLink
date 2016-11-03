@@ -28,7 +28,7 @@ namespace Wlog.Test.Tests
             index = new LuceneIndexManager("Test", foldername);
         }
 
-        [Fact, TestPriority(0) Trait("Category", "ExcludedFromCI")]
+        [Fact, TestPriority(0), Trait("Category", "ExcludedFromCI")]
         public void AddDocumentAndCommit()
         {
             string key = "test";

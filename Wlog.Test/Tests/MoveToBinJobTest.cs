@@ -2,10 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using BLL.Entities;
     using Library.BLL.Reporitories;
     using Library.Scheduler.Jobs;
+    using Attributes;
     using Xunit;
 
     public class MoveToBinJobTest : IDisposable
@@ -14,11 +16,18 @@
 
         public MoveToBinJobTest()
         {
+            //Create directory for index and tell to use it
+            string foldername = ".\\MoveToBinJobTest\\" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
+            Directory.CreateDirectory(foldername);
+            IndexRepository.BasePath = foldername;
+
             // insert test logs in DB
             InsertTestLogsInDB();
 
             // run MoveToBinJob
             ExecuteMoveToBin();
+
+           
         }
 
         private void InsertTestLogsInDB()
@@ -28,6 +37,7 @@
                 CreateDate = DateTime.Now.AddDays(-40),
                 SourceDate = DateTime.UtcNow,
                 UpdateDate = DateTime.Now,
+                Level="ERROR",
                 Message = "Message 1"
             });
             _logs.Add(new LogEntity
@@ -35,13 +45,16 @@
                 CreateDate = DateTime.Now.AddDays(-40),
                 SourceDate = DateTime.UtcNow.AddDays(-48),
                 UpdateDate = DateTime.Now,
+                Level = "INFO",
                 Message = "Message 2"
+
             });
             _logs.Add(new LogEntity
             {
                 CreateDate = DateTime.Now.AddDays(-40),
                 SourceDate = DateTime.UtcNow.AddDays(-60),
                 UpdateDate = DateTime.Now,
+                Level = "INFO",
                 Message = "Message 3"
             });
 
@@ -57,7 +70,7 @@
             moveToBin.Execute();
         }
 
-        [Fact, Trait("Category", "ExcludedFromCI")]
+        [Fact, TestPriority(0), Trait("Category", "ExcludedFromCI")]
         public void MoveToBinJob_CheckLogsTable_Success()
         {
             var allLogs = RepositoryContext.Current.Logs.GetAllLogEntities();
@@ -67,7 +80,7 @@
             Assert.False(allLogs.Any(x => x.Uid == _logs[2].Uid));
         }
 
-        [Fact, Trait("Category", "ExcludedFromCI")]
+        [Fact, TestPriority(1), Trait("Category", "ExcludedFromCI")]
         public void MoveToBinJob_CheckDeletedLogsTable_Success()
         {
             var allDeletedLogs = RepositoryContext.Current.DeletedLogs.GetAllDeletedLogEntities();

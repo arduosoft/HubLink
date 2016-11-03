@@ -13,6 +13,8 @@ namespace Wlog.Library.BLL.Reporitories
     public class IndexRepository: IRepository
     {
         public static string BasePath { get; set; }
+
+       
         private static Dictionary<string, LuceneIndexManager> indexList = new Dictionary<string, LuceneIndexManager>();
 
         public LuceneIndexManager GetByName(string entity,string segment)
