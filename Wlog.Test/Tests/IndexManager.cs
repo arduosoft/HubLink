@@ -23,7 +23,7 @@ namespace Wlog.Test.Tests
 
         private void InitTest()
         {
-            string foldername = ".\\TestIndexRemove\\" + DateTime.Now.ToString("yyyy-MM-dd");
+            string foldername = ".\\TestIndexRemove\\" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
             Directory.CreateDirectory(foldername);
             index = new LuceneIndexManager("Test", foldername);
         }
