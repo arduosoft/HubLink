@@ -142,6 +142,14 @@
     <None Include="Wlog.Library.licenseheader" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WLog.Clients.Log4Net\Wlog.Clients.Log4Net.csproj">
+      <Project>{3f2b62ed-a3b2-4137-9033-266be27d8d1d}</Project>
+      <Name>Wlog.Clients.Log4Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wlog.Core\Wlog.Clients.csproj">
+      <Project>{c3f67dfe-914a-4852-9eae-82b401ab70cb}</Project>
+      <Name>Wlog.Clients</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Wlog.Library\Wlog.Library.csproj">
       <Project>{e331b212-3af2-468d-9a5e-519162b2c8d1}</Project>
       <Name>Wlog.Library</Name>

@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("Wlog.Clients")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("LGPL")]
-[assembly: AssemblyCulture("en-US")]
+[assembly: AssemblyCulture("")]
 
 
 
