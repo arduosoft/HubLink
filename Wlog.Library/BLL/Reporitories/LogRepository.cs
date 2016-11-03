@@ -171,12 +171,12 @@ namespace Wlog.Library.BLL.Reporitories
                 }
 
                 uow.Commit();
-                foreach (var idx in RepositoryContext.Current.Index.GetAll())
-                {
-                    if (idx.IsDirty) idx.SaveUncommittedChanges();
-                }
+                
+                RepositoryContext.Current.Index.CommitAllIndexChanges();
             }
         }
+
+        
 
         private Document LogToDictionary(LogEntity log)
         {
@@ -220,12 +220,17 @@ namespace Wlog.Library.BLL.Reporitories
                 {
                     uow.BeginTransaction();
 
+                    LogEntity log;// declare var ouside loop for better performance.
+                    DeletedLogEntity deletedLog;
+                    LuceneIndexManager idx;
                     for (int i = 0; i < logs.Count(); i++)
                     {
-                        var log = logs[i];
+                        log = logs[i];
                         uow.Delete(log);
 
-                        DeletedLogEntity deletedLog = new DeletedLogEntity()
+                       
+
+                        deletedLog = new DeletedLogEntity()
                         {
                             ApplictionId = log.ApplictionId,
                             DeletedOn = DateTime.UtcNow,
@@ -239,14 +244,22 @@ namespace Wlog.Library.BLL.Reporitories
 
                         uow.SaveOrUpdate(deletedLog);
 
+                        // get index for Application
+                        idx = RepositoryContext.Current.Index.GetByName("Logs", log.ApplictionId.ToString());
+                        idx.RemoveDocument(LogsFields.Id.ToString() ,log.Id);
+
                         if (i == logs.Count() - 1)
-                        {
+                        {                            
                             uow.Commit();
+                            // I cant know how many index are affected by cleaning, I have to commit all                                                        
+                            RepositoryContext.Current.Index.CommitAllIndexChanges();
                         }
                         else if (i % 100 == 0)
                         {
                             uow.Commit();
                             uow.BeginTransaction();
+                            // I cant know how many index are affected by cleaning, I have to commit all                                                        
+                            RepositoryContext.Current.Index.CommitAllIndexChanges();
                         }
                     }
                 }
@@ -298,7 +311,9 @@ namespace Wlog.Library.BLL.Reporitories
                     uow.BeginTransaction();
                     var entitiesToKeep = uow.Query<LogEntity>().Where(x => x.SourceDate > (DateTime.UtcNow.AddDays(-daysToKeep)))
                         .OrderByDescending(x => x.SourceDate).Take(rowsToKeep).ToList();
+
                     var logsForBin = uow.Query<LogEntity>().Where(x => !entitiesToKeep.Contains(x)).ToList();
+
 
                     if (logsForBin.Any())
                     {

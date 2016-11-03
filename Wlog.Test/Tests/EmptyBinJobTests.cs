@@ -5,7 +5,7 @@
     using System.Linq;
     using BLL.Entities;
     using Library.BLL.Reporitories;
-    using Web.Code.Jobs;
+    using Library.Scheduler.Jobs;
     using Xunit;
 
     public class EmptyBinJobTests 

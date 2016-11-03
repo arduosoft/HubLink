@@ -189,6 +189,9 @@
     <Compile Include="Scheduler\ApplicationPreload.cs" />
     <Compile Include="Scheduler\HangFireAuthorizationFilter.cs" />
     <Compile Include="Scheduler\HangfireBootstrapper.cs" />
+    <Compile Include="Scheduler\Job.cs" />
+    <Compile Include="Scheduler\Jobs\EmptyBinJob.cs" />
+    <Compile Include="Scheduler\Jobs\MoveToBinJob.cs" />
     <Compile Include="Scheduler\Startup.cs" />
   </ItemGroup>
   <ItemGroup>

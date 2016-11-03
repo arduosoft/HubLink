@@ -208,9 +208,6 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Code\Jobs\EmptyBinJob.cs" />
-    <Compile Include="Code\Jobs\Job.cs" />
-    <Compile Include="Code\Jobs\MoveToBinJob.cs" />
     <Compile Include="Resources\Private.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -612,6 +609,7 @@
   <ItemGroup>
     <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
+    <Folder Include="Code\Jobs\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using Wlog.Library.BLL.Reporitories;
 
-namespace Wlog.Web.Code.Jobs
+namespace Wlog.Library.Scheduler.Jobs
 {
     /// <summary>
     /// This job physically delete entries, it will take as input: #dtk=number of days to keep.

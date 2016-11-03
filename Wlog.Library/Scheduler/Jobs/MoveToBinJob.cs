@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using Wlog.Library.BLL.Reporitories;
 
-namespace Wlog.Web.Code.Jobs
+namespace Wlog.Library.Scheduler.Jobs
 {
     /// <summary>
     /// This job will take as input: #rtk=number of rows to keep, #dtk=number of days to keep.

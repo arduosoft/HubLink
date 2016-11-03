@@ -35,6 +35,8 @@ namespace Wlog.Library.BLL.Index
         private int uncommittedFiles = 0;
         #endregion
 
+        public int UncommittedFiles { get { return uncommittedFiles; } }
+
         /// <summary>
         /// Tell how many rows to collect before automatically commit.
         /// This is used only if "Autocommit" is on
@@ -144,7 +146,7 @@ namespace Wlog.Library.BLL.Index
           
         }
 
-        internal void SaveUncommittedChanges()
+        public void SaveUncommittedChanges()
         {
             writer.Optimize();
             writer.Commit();
@@ -273,6 +275,14 @@ namespace Wlog.Library.BLL.Index
             {
                 searcher.Dispose();
             }
+        }
+
+        public void RemoveDocument(string IdField,object value)
+        {
+            var localparser = new QueryParser(global::Lucene.Net.Util.Version.LUCENE_30, IdField, analyzer);
+
+           Query q = localparser.Parse(value.ToString());
+            writer.DeleteDocuments(q);
         }
     }
 }

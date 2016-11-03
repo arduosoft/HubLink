@@ -7,6 +7,7 @@ using System.Web.Hosting;
 using Hangfire;
 using Hangfire.MemoryStorage;
 using Wlog.BLL.Classes;
+using Wlog.Library.Scheduler.Jobs;
 
 namespace Wlog.Library.Scheduler
 {
@@ -36,8 +37,9 @@ namespace Wlog.Library.Scheduler
 
                 JobStorage.Current = new MemoryStorage();
                 RecurringJob.AddOrUpdate(() => LogQueue.Current.Run(), "*/1 * * * *");
+                RecurringJob.AddOrUpdate(() => new MoveToBinJob(100,100).Execute(), "0 */1 * * *");
 
-                
+
                 _backgroundJobServer = new BackgroundJobServer();
             }
         }

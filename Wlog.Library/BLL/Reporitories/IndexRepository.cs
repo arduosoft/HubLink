@@ -45,5 +45,26 @@ namespace Wlog.Library.BLL.Reporitories
         {
             return indexList.Values.ToList();
         }
+
+
+        /// <summary>
+        /// Commit all changes for all indexs
+        /// </summary>
+        public void CommitAllIndexChanges()
+        {
+            CommitAllIndexChanges(0);
+        }
+
+        /// <summary>
+        /// for all index, if index has enough row to commit, it flus it
+        /// </summary>
+        /// <param name="minRowCount"></param>
+        public void CommitAllIndexChanges(int minRowCount)
+        {
+            foreach (var idx in RepositoryContext.Current.Index.GetAll())
+            {
+                if (idx.IsDirty && idx.UncommittedFiles > minRowCount) idx.SaveUncommittedChanges();
+            }
+        }
     }
 }
