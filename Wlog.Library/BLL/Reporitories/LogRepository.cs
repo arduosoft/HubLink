@@ -25,17 +25,18 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Lucene.Net.Search;
 using System.Web;
+using NLog;
 
 namespace Wlog.Library.BLL.Reporitories
 {
     public class LogRepository : EntityRepository
     {
 
-        
+        private Logger _logger => LogManager.GetCurrentClassLogger();
 
         public LogRepository()
         {
-            
+
         }
 
         public long CountByLevel(StandardLogLevels level)
@@ -61,11 +62,11 @@ namespace Wlog.Library.BLL.Reporitories
             // Sort s = new Sort(new SortField(logsSearchSettings.OrderBy.ToString(), SortField.STRING, (logsSearchSettings.SortDirection == SortDirection.DESC)));
             try
             {
-                IPagedList<Document> docs = idx.Query(logsSearchSettings.FullTextQuery.Trim(), 
-                    logsSearchSettings.OrderBy.ToString(), 
-                    SortField.STRING, 
-                    (logsSearchSettings.SortDirection == SortDirection.DESC), 
-                    (logsSearchSettings.PageNumber - 1) * logsSearchSettings.PageSize, 
+                IPagedList<Document> docs = idx.Query(logsSearchSettings.FullTextQuery.Trim(),
+                    logsSearchSettings.OrderBy.ToString(),
+                    SortField.STRING,
+                    (logsSearchSettings.SortDirection == SortDirection.DESC),
+                    (logsSearchSettings.PageNumber - 1) * logsSearchSettings.PageSize,
                     logsSearchSettings.PageSize,
                     LogsFields.Message.ToString());
 
@@ -84,7 +85,7 @@ namespace Wlog.Library.BLL.Reporitories
                 HttpContext.Current.Response.StatusDescription = "Unable to parse Query";
                 HttpContext.Current.Response.Write("Unable to parse Query");
                 HttpContext.Current.Response.End();
-                
+
             }
             return null;
         }
@@ -100,7 +101,7 @@ namespace Wlog.Library.BLL.Reporitories
                 CreateDate = DateTools.StringToDate(d.GetField(LogsFields.CreateDate.ToString()).StringValue),
                 SourceDate = DateTools.StringToDate(d.GetField(LogsFields.SourceDate.ToString()).StringValue),
                 UpdateDate = DateTools.StringToDate(d.GetField(LogsFields.UpdateDate.ToString()).StringValue),
-                Attributes =d.GetField(LogsFields.Attributes.ToString()).StringValue
+                Attributes = d.GetField(LogsFields.Attributes.ToString()).StringValue
 
             };
 
@@ -119,7 +120,7 @@ namespace Wlog.Library.BLL.Reporitories
                 IQueryable<LogEntity> query = null;
 
 
-            
+
                 if (!String.IsNullOrWhiteSpace(logsSearchSettings.SerchMessage))
                 {
                     query = uow.Query<LogEntity>().Where(p => logsSearchSettings.Applications.Contains(p.ApplictionId) &&
@@ -156,12 +157,12 @@ namespace Wlog.Library.BLL.Reporitories
                 uow.BeginTransaction();
 
                 LogEntity log;
-                for(int i=0;i<logs.Count;i++)
+                for (int i = 0; i < logs.Count; i++)
                 {
                     log = logs[i];
-               
 
-                    var idx=RepositoryContext.Current.Index.GetByName("Logs", log.ApplictionId.ToString());
+
+                    var idx = RepositoryContext.Current.Index.GetByName("Logs", log.ApplictionId.ToString());
                     idx.AddDocument(LogToDictionary(log));
 
                     uow.SaveOrUpdate(log);
@@ -183,20 +184,20 @@ namespace Wlog.Library.BLL.Reporitories
 
             doc.Add(new Field(LogsFields.Id.ToString(), log.Id.ToString(), Field.Store.YES, Field.Index.ANALYZED));
             doc.Add(new Field(LogsFields.Level.ToString(), log.Level, Field.Store.YES, Field.Index.ANALYZED));
-            doc.Add(new Field(LogsFields.Message.ToString(), log.Message, Field.Store.YES, Field.Index.ANALYZED)); 
-          
+            doc.Add(new Field(LogsFields.Message.ToString(), log.Message, Field.Store.YES, Field.Index.ANALYZED));
+
 
             doc.Add(new Field(LogsFields.SourceDate.ToString(), DateTools.DateToString(log.SourceDate, DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.ANALYZED));
             doc.Add(new Field(LogsFields.UpdateDate.ToString(), DateTools.DateToString(log.UpdateDate, DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.ANALYZED));
             doc.Add(new Field(LogsFields.CreateDate.ToString(), DateTools.DateToString(log.CreateDate, DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.ANALYZED));
 
             doc.Add(new Field(LogsFields.ApplicationId.ToString(), log.ApplictionId.ToString(), Field.Store.YES, Field.Index.ANALYZED));
-            doc.Add(new Field(LogsFields.Attributes.ToString(), log.Attributes?? "", Field.Store.YES, Field.Index.NO));
+            doc.Add(new Field(LogsFields.Attributes.ToString(), log.Attributes ?? "", Field.Store.YES, Field.Index.NO));
             //doc.Add(new Field("Message", log.Attributes, Field.Store.YES, Field.Index.ANALYZED));
 
             if (!string.IsNullOrWhiteSpace(log.Attributes))
             {
-               JObject attrs = JObject.Parse(log.Attributes);
+                JObject attrs = JObject.Parse(log.Attributes);
                 foreach (var attr in attrs)
                 {
                     if (doc.GetField(attr.Key) == null)
@@ -209,5 +210,110 @@ namespace Wlog.Library.BLL.Reporitories
             }
             return doc;
         }
+
+
+        public bool MoveLogsToBin(List<LogEntity> logs)
+        {
+            try
+            {
+                using (IUnitOfWork uow = BeginUnitOfWork())
+                {
+                    uow.BeginTransaction();
+
+                    for (int i = 0; i < logs.Count(); i++)
+                    {
+                        var log = logs[i];
+                        uow.Delete(log);
+
+                        DeletedLogEntity deletedLog = new DeletedLogEntity()
+                        {
+                            ApplictionId = log.ApplictionId,
+                            DeletedOn = DateTime.UtcNow,
+                            CreateDate = log.CreateDate,
+                            Level = log.Level,
+                            Message = log.Message,
+                            SourceDate = log.SourceDate,
+                            UpdateDate = log.UpdateDate,
+                            LogId = log.Uid
+                        };
+
+                        uow.SaveOrUpdate(deletedLog);
+
+                        if (i == logs.Count() - 1)
+                        {
+                            uow.Commit();
+                        }
+                        else if (i % 100 == 0)
+                        {
+                            uow.Commit();
+                            uow.BeginTransaction();
+                        }
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+                return false;
+            }
+        }
+
+        public void RemoveLogEntity(LogEntity log)
+        {
+            try
+            {
+                using (IUnitOfWork uow = BeginUnitOfWork())
+                {
+                    uow.BeginTransaction();
+                    uow.Delete(log);
+                    uow.Commit();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+            }
+        }
+
+        public List<LogEntity> GetAllLogEntities()
+        {
+            List<LogEntity> result = new List<LogEntity>();
+            using (IUnitOfWork uow = BeginUnitOfWork())
+            {
+                uow.BeginTransaction();
+                result = uow.Query<LogEntity>().ToList();
+            }
+
+            return result;
+        }
+
+        public bool ExecuteMoveToBinJob(int daysToKeep, int rowsToKeep)
+        {
+            try
+            {
+                using (IUnitOfWork uow = BeginUnitOfWork())
+                {
+                    uow.BeginTransaction();
+                    var entitiesToKeep = uow.Query<LogEntity>().Where(x => x.SourceDate > (DateTime.UtcNow.AddDays(-daysToKeep)))
+                        .OrderByDescending(x => x.SourceDate).Take(rowsToKeep).ToList();
+                    var logsForBin = uow.Query<LogEntity>().Where(x => !entitiesToKeep.Contains(x)).ToList();
+
+                    if (logsForBin.Any())
+                    {
+                        MoveLogsToBin(logsForBin);
+                    }
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+                return false;
+            }
+        }
+
     }
 }

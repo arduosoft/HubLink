@@ -39,6 +39,7 @@ namespace Wlog.Web
     {
         //Todo: Move nhibernate init stuff in a dedicated class. Implement a DataContext or Operation manager pattern to wrap data access
       
+      //  private BackgroundJobServer backgroundJobServer;
        
         protected void Application_Start()
         {
@@ -51,7 +52,7 @@ namespace Wlog.Web
 
 
             //Apply schema changes
-            //RepositoryContext.Current.System.ApplySchemaChanges();
+            RepositoryContext.Current.System.ApplySchemaChanges();
 
             //Setup infopage configuration
 
@@ -60,16 +61,13 @@ namespace Wlog.Web
                 c.ApplicationName = "Wlog";
                 
             });
-
-
-
-
-
+            
+           
             HangfireBootstrapper.Instance.Start();
 
             IndexRepository.BasePath = HttpContext.Current.Server.MapPath("~/App_Data/Index/");
 
-
+         
 
             SystemDataHelper.InsertRolesAndProfiles();
             SystemDataHelper.EnsureSampleData();
@@ -77,6 +75,7 @@ namespace Wlog.Web
 
         protected void Application_End(object sender, EventArgs e)
         {
+           // backgroundJobServer.Dispose();
             HangfireBootstrapper.Instance.Stop();
         }
     }

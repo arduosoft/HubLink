@@ -88,8 +88,8 @@
       <HintPath>..\packages\MongoDB.Driver.Core.2.2.3\lib\net45\MongoDB.Driver.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.5.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
@@ -146,6 +146,7 @@
     <Compile Include="BLL\DataBase\UnitFactory.cs" />
     <Compile Include="BLL\DataBase\UnitOfMongo.cs" />
     <Compile Include="BLL\DataBase\UnitOfNhibernate.cs" />
+    <Compile Include="BLL\Entities\DeletedLogEntity.cs" />
     <Compile Include="BLL\Entities\ProfilesEntry.cs" />
     <Compile Include="BLL\Entities\ProfilesRolesEntry.cs" />
     <Compile Include="BLL\Enums\ApplicationFields.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="BLL\Interfaces\IUnitOfWork.cs" />
     <Compile Include="BLL\Reporitories\ApplicationRepository.cs" />
     <Compile Include="BLL\Reporitories\IndexRepository.cs" />
+    <Compile Include="BLL\Reporitories\DeletedLogRepository.cs" />
     <Compile Include="BLL\Reporitories\LogRepository.cs" />
     <Compile Include="BLL\Reporitories\ProfilesRepository.cs" />
     <Compile Include="BLL\Reporitories\RepositoryContext.cs" />
@@ -177,6 +179,7 @@
     <Compile Include="BLL\Interfaces\IRepository.cs" />
     <Compile Include="DAL\Nhibernate\Mappings\ApplicationMap.cs" />
     <Compile Include="DAL\Nhibernate\Mappings\AppUserRoleMap.cs" />
+    <Compile Include="DAL\Nhibernate\Mappings\DeletedLogMap.cs" />
     <Compile Include="DAL\Nhibernate\Mappings\LogEntityMap.cs" />
     <Compile Include="DAL\Nhibernate\Mappings\ProfilesMap.cs" />
     <Compile Include="DAL\Nhibernate\Mappings\ProfilesRolesMap.cs" />
@@ -192,6 +195,7 @@
     <Folder Include="DAL\Mongo\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Wlog.Library.licenseheader" />
   </ItemGroup>

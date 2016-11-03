@@ -29,6 +29,7 @@ namespace Wlog.Library.BLL.Reporitories
         public SystemRepository System { get; private set; }
 
         public IndexRepository Index { get; private set; }
+        public DeletedLogRepository DeletedLogs { get; private set; }
 
         private static RepositoryContext current;
 
@@ -52,6 +53,7 @@ namespace Wlog.Library.BLL.Reporitories
                     current.Profiles = new ProfilesRepository();
                     current.Index = new IndexRepository();
                     
+                    current.DeletedLogs = new DeletedLogRepository();
                 }
 
                 return current;
