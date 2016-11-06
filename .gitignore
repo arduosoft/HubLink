@@ -16,3 +16,5 @@ Wlog.Web/App_Data/Index/
 /Wlog.Core/obj/Debug
 /WLog.Clients.Log4Net/bin/Debug
 /WLog.Clients.Log4Net/obj/Debug
+Wlog.Clients/bin/
+Wlog.Clients/obj/
