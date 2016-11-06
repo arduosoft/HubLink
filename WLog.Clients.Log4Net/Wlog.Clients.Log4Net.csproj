@@ -60,8 +60,8 @@
     <None Include="Wlog.Clients.Log4Net.nuspec" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Wlog.Core\Wlog.Clients.csproj">
-      <Project>{C3F67DFE-914A-4852-9EAE-82B401AB70CB}</Project>
+    <ProjectReference Include="..\Wlog.Clients\Wlog.Clients.csproj">
+      <Project>{c3f67dfe-914a-4852-9eae-82b401ab70cb}</Project>
       <Name>Wlog.Clients</Name>
     </ProjectReference>
   </ItemGroup>

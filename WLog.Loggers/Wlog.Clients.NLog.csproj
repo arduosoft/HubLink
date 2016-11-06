@@ -69,7 +69,7 @@
     <None Include="Wlog.Library.licenseheader" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Wlog.Core\Wlog.Clients.csproj">
+    <ProjectReference Include="..\Wlog.Clients\Wlog.Clients.csproj">
       <Project>{c3f67dfe-914a-4852-9eae-82b401ab70cb}</Project>
       <Name>Wlog.Clients</Name>
     </ProjectReference>

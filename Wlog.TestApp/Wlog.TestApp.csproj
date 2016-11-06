@@ -97,7 +97,7 @@
       <Project>{3f2b62ed-a3b2-4137-9033-266be27d8d1d}</Project>
       <Name>Wlog.Clients.Log4Net</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Wlog.Core\Wlog.Clients.csproj">
+    <ProjectReference Include="..\Wlog.Clients\Wlog.Clients.csproj">
       <Project>{c3f67dfe-914a-4852-9eae-82b401ab70cb}</Project>
       <Name>Wlog.Clients</Name>
     </ProjectReference>
