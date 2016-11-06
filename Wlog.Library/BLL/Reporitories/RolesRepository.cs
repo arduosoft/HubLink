@@ -24,7 +24,7 @@ namespace Wlog.Library.BLL.Reporitories
 
     public class RolesRepository : EntityRepository
     {
-        private Logger _logger => LogManager.GetCurrentClassLogger();
+        
 
         public RolesRepository()
         {
@@ -32,6 +32,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public List<RolesEntity> GetAllApplicationRoles(ApplicationEntity applicationEntity)
         {
+            logger.Debug("[repo] entering GetAllApplicationRoles");
 
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
@@ -50,7 +51,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public List<AppUserRoleEntity> GetApplicationRolesForUser(UserEntity userEntity)
         {
-
+            logger.Debug("[repo] entering GetApplicationRolesForUser");
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
@@ -60,7 +61,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public RolesEntity GetRoleByName(string rolename)
         {
-
+            logger.Debug("[repo] entering GetRoleByName");
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
@@ -70,6 +71,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public bool Save(RolesEntity rolesEntity)
         {
+            logger.Debug("[repo] entering Save");
             try
             {
 
@@ -84,7 +86,7 @@ namespace Wlog.Library.BLL.Reporitories
             }
             catch (Exception err)
             {
-                _logger.Error(err);
+                logger.Error(err);
             }
 
             return false;
@@ -92,12 +94,14 @@ namespace Wlog.Library.BLL.Reporitories
 
         public List<RolesEntity> GetAllRoles()
         {
+            logger.Debug("[repo] entering GetAllRoles");
             return GetAllRoles(RoleScope.All);
         }
 
 
         public List<RolesEntity> GetAllRoles(RoleScope scope)
         {
+            logger.Debug("[repo] entering GetAllRoles({0})",scope);
             List<RolesEntity> result = new List<RolesEntity>();
             try
             {
@@ -127,7 +131,7 @@ namespace Wlog.Library.BLL.Reporitories
             }
             catch (Exception err)
             {
-                _logger.Error(err);
+                logger.Error(err);
             }
 
             return result;
@@ -135,6 +139,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public List<ProfilesRolesEntity> GetProfilesRolesForUser(UserEntity userEntity)
         {
+            logger.Debug("[repo] entering GetProfilesRolesForUser");
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
@@ -144,6 +149,8 @@ namespace Wlog.Library.BLL.Reporitories
 
         public List<RolesEntity> GetAllRolesForUser(UserEntity userEntity)
         {
+
+            logger.Debug("[repo] entering GetAllRolesForUser");
             List<RolesEntity> result = new List<RolesEntity>();
 
             try
@@ -157,7 +164,7 @@ namespace Wlog.Library.BLL.Reporitories
             }
             catch (Exception err)
             {
-                _logger.Error(err);
+                logger.Error(err);
             }
 
             return result;

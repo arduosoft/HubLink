@@ -29,6 +29,7 @@ using Wlog.DAL.NHibernate.Helpers;
 using Wlog.Library.BLL.Reporitories;
 using Wlog.Library.BLL.Configuration;
 using Wlog.Library.Scheduler;
+using NLog;
 
 namespace Wlog.Web
 {
@@ -37,12 +38,13 @@ namespace Wlog.Web
 
     public class WebApiApplication : System.Web.HttpApplication
     {
-        //Todo: Move nhibernate init stuff in a dedicated class. Implement a DataContext or Operation manager pattern to wrap data access
-      
-      //  private BackgroundJobServer backgroundJobServer;
-       
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         protected void Application_Start()
         {
+            logger.Info("Application starts");
+
+            logger.Info("Registering configuration");
             AreaRegistration.RegisterAllAreas();
 
             WebApiConfig.Register(System.Web.Http.GlobalConfiguration.Configuration);
@@ -51,32 +53,40 @@ namespace Wlog.Web
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
 
-            //Apply schema changes
+            logger.Info("Apply schema changes");
             RepositoryContext.Current.System.ApplySchemaChanges();
 
-            //Setup infopage configuration
+            logger.Info("Setup info config");
 
             InfoPageConfigurator.Configure(c => 
             {
                 c.ApplicationName = "Wlog";
                 
             });
-            
-           
+
+            logger.Info("Start background jobs");
+
             HangfireBootstrapper.Instance.Start();
 
+            logger.Info("Setup index configuration");
             IndexRepository.BasePath = HttpContext.Current.Server.MapPath("~/App_Data/Index/");
 
-         
 
+            logger.Info("install missing data");
             SystemDataHelper.InsertRolesAndProfiles();
             SystemDataHelper.EnsureSampleData();
+
+            logger.Info("application started");
         }
 
         protected void Application_End(object sender, EventArgs e)
         {
-           // backgroundJobServer.Dispose();
+            logger.Info("application end");
+
+            logger.Info("stopping HangfireBootstrapper");
             HangfireBootstrapper.Instance.Stop();
+
+
         }
     }
 }

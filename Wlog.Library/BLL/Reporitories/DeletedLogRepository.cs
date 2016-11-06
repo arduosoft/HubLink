@@ -10,10 +10,11 @@
 
     public class DeletedLogRepository : EntityRepository
     {
-        private Logger _logger => LogManager.GetCurrentClassLogger();
+       
 
         public List<DeletedLogEntity> GetAllDeletedLogEntities()
         {
+            logger.Debug("[repo] entering GetAllDeletedLogEntities");
             var result = new List<DeletedLogEntity>();
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
@@ -26,6 +27,7 @@
 
         public void RemoveDeletedLogEntity(DeletedLogEntity deletedLog)
         {
+            logger.Debug("[repo] entering RemoveDeletedLogEntity");
             try
             {
                 using (IUnitOfWork uow = BeginUnitOfWork())
@@ -37,12 +39,13 @@
             }
             catch (Exception ex)
             {
-                _logger.Error(ex);
+                logger.Error(ex);
             }
         }
 
         public void BatchRemoveDeletedLogEntities(List<DeletedLogEntity> deletedLog)
         {
+            logger.Debug("[repo] entering BatchRemoveDeletedLogEntities");
             try
             {
                 using (IUnitOfWork uow = BeginUnitOfWork())
@@ -68,12 +71,13 @@
             }
             catch (Exception ex)
             {
-                _logger.Error(ex);
+                logger.Error(ex);
             }
         }
 
         public void Save(DeletedLogEntity deletedLog)
         {
+            logger.Debug("[repo] entering Save");
             try
             {
                 using (IUnitOfWork uow = BeginUnitOfWork())
@@ -85,12 +89,13 @@
             }
             catch (Exception ex)
             {
-                _logger.Error(ex);
+                logger.Error(ex);
             }
         }
 
         public bool ExecuteEmptyBinJob(int daysToKeep, int rowsToKeep)
         {
+            logger.Debug("[repo] entering ExecuteEmptyBinJob");
             try
             {
                 using (IUnitOfWork uow = BeginUnitOfWork())
@@ -107,7 +112,7 @@
             }
             catch (Exception ex)
             {
-                _logger.Error(ex);
+                logger.Error(ex);
 
                 return false;
             }

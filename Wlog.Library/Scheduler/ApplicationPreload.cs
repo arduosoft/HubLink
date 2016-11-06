@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using NLog;
 using Wlog.Library.Scheduler;
 
 namespace Wlog.Library.Scheduler
@@ -19,8 +20,12 @@ namespace Wlog.Library.Scheduler
     /// </summary>
     public class ApplicationPreload : System.Web.Hosting.IProcessHostPreloadClient
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public void Preload(string[] parameters)
         {
+            logger.Info("Application Preload");
+            logger.Info("[AP]: Starting angfire");
             HangfireBootstrapper.Instance.Start();
         }
     }

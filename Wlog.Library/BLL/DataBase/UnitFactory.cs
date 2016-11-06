@@ -12,6 +12,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NLog;
 using Wlog.Library.BLL.Configuration;
 using Wlog.Library.BLL.Interfaces;
 
@@ -20,6 +21,7 @@ namespace Wlog.Library.BLL.DataBase
     public class UnitFactory
     {
         private static Dictionary<string, Type> factory;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public UnitFactory()
         {
@@ -39,8 +41,16 @@ namespace Wlog.Library.BLL.DataBase
 
         public IUnitOfWork GetUnit(IRepository repo)
         {
-            Type tipo = factory[repo.GetType().Name];
-            return (IUnitOfWork)Activator.CreateInstance(tipo);
+            try
+            {
+                Type tipo = factory[repo.GetType().Name];
+                return (IUnitOfWork)Activator.CreateInstance(tipo);
+            }
+            catch (Exception err)
+            {
+                logger.Error(err);
+                throw err;
+            }
         }
     }
 }

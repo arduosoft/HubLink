@@ -16,11 +16,14 @@ using System.Web.Security;
 using Wlog.Web.Code.Helpers;
 using Wlog.BLL.Entities;
 using Wlog.Library.BLL.Reporitories;
+using NLog;
 
 namespace Wlog.Web.Code.Authentication
 {
     public class WLogRoleProvider : RoleProvider
     {
+
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private const string ADMIN = "ADMIN";
         private const string USER = "USER";
@@ -65,6 +68,7 @@ namespace Wlog.Web.Code.Authentication
 
         public override string[] GetRolesForUser(string username)
         {
+            logger.Debug("[WLogRoleProvider]:GetRolesForUser");
             UserEntity u = RepositoryContext.Current.Users.GetByUsername(username);
             List<RolesEntity> roles = RepositoryContext.Current.Roles.GetAllRolesForUser(u);
 
@@ -78,6 +82,7 @@ namespace Wlog.Web.Code.Authentication
 
         public override bool IsUserInRole(string username, string roleName)
         {
+            logger.Debug("[WLogRoleProvider]:IsUserInRole");
             if (roleName == USER)
             {
                 return true;
@@ -97,6 +102,7 @@ namespace Wlog.Web.Code.Authentication
 
         public override void RemoveUsersFromRoles(string[] usernames, string[] roleNames)
         {
+            logger.Debug("[WLogRoleProvider]:RemoveUsersFromRoles");
             throw new NotImplementedException();
         }
 

@@ -11,13 +11,18 @@ using System.Collections.Generic;
 using Wlog.BLL.Entities;
 using Wlog.BLL.Classes;
 using Wlog.Library.BLL.Reporitories;
+using NLog;
 
 namespace Wlog.Web.Code.Helpers
 {
     public static class SystemDataHelper
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public static void EnsureSampleData()
         {
+            logger.Debug("[SystemDataHelper]: EnsureSampleData");
+
             List<UserEntity> userList = RepositoryContext.Current.Users.GetAll();
 
             if (userList == null || userList.Count == 0)
@@ -49,6 +54,8 @@ namespace Wlog.Web.Code.Helpers
 
         private static RolesEntity InsertRoleIfNotExists(string rolename, bool global,bool application)
         {
+            logger.Debug("[SystemDataHelper]: InsertRoleIfNotExists");
+
             RolesEntity role = RepositoryContext.Current.Roles.GetRoleByName(rolename);
 
             if (role == null)
@@ -62,6 +69,8 @@ namespace Wlog.Web.Code.Helpers
 
         private static ProfilesEntity InsertProfileIfNotExists(string profileName)
         {
+            logger.Debug("[SystemDataHelper]: InsertProfileIfNotExists");
+
             ProfilesEntity profile = RepositoryContext.Current.Profiles.GetProfileByName(profileName);
 
             if (profile == null)
@@ -75,6 +84,8 @@ namespace Wlog.Web.Code.Helpers
 
         public static void InsertRolesAndProfiles()
         {
+            logger.Debug("[SystemDataHelper]: InsertRolesAndProfiles");
+
             // create roles
             var adminRole = InsertRoleIfNotExists(Constants.Roles.Admin,true,false);
             var appWriter = InsertRoleIfNotExists(Constants.Roles.AppWriter, true, false);

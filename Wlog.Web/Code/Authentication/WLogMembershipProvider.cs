@@ -17,12 +17,13 @@ using System.Web.Security;
 using Wlog.Web.Code.Helpers;
 using Wlog.BLL.Entities;
 using Wlog.Library.BLL.Reporitories;
+using NLog;
 
 namespace Wlog.Web.Code.Authentication
 {
     public class WLogMembershipProvider : MembershipProvider
     {
-
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public override string ApplicationName
         {
@@ -38,6 +39,7 @@ namespace Wlog.Web.Code.Authentication
 
         public override bool ChangePassword(string username, string oldPassword, string newPassword)
         {
+            logger.Debug("[WLogMembershipProvider] Change password");
             bool result = false;
             try
             {
@@ -59,8 +61,9 @@ namespace Wlog.Web.Code.Authentication
                     }
                 }
             }
-            catch
+            catch(Exception err)
             {
+                logger.Error(err);
             }
 
             return result;
@@ -68,12 +71,15 @@ namespace Wlog.Web.Code.Authentication
 
         public override bool ChangePasswordQuestionAndAnswer(string username, string password, string newPasswordQuestion, string newPasswordAnswer)
         {
+            logger.Debug("[WLogMembershipProvider] ChangePasswordQuestionAndAnswer (not implemented)");
             throw new NotImplementedException();
         }
 
         public override MembershipUser CreateUser(string username, string password, string email, string passwordQuestion, 
             string passwordAnswer, bool isApproved, object providerUserKey, out MembershipCreateStatus status)
         {
+
+            logger.Debug("[WLogMembershipProvider] CreateUser ");
             ValidatePasswordEventArgs args = new ValidatePasswordEventArgs(username, password, true);
 
             OnValidatingPassword(args);
@@ -127,10 +133,9 @@ namespace Wlog.Web.Code.Authentication
                 catch (Exception e)
                 {
                     status = MembershipCreateStatus.ProviderError;
-                    WlogLogger.Current.Error(e);
+                    logger.Error(e);
                 }
-
-
+                
 
                 return GetUser(username, false);
             }
@@ -143,46 +148,54 @@ namespace Wlog.Web.Code.Authentication
 
         public override bool DeleteUser(string username, bool deleteAllRelatedData)
         {
+            logger.Debug("[WLogMembershipProvider] DeleteUser (not implemented) ");
             throw new NotImplementedException();
         }
 
         public override bool EnablePasswordReset
         {
-            get { throw new NotImplementedException(); }
+           
+            get { logger.Debug("[WLogMembershipProvider] EnablePasswordReset (not implemented) "); throw new NotImplementedException(); }
         }
 
         public override bool EnablePasswordRetrieval
         {
-            get { throw new NotImplementedException(); }
+            get { logger.Debug("[WLogMembershipProvider] EnablePasswordRetrieval (not implemented) "); throw new NotImplementedException(); }
         }
 
         public override MembershipUserCollection FindUsersByEmail(string emailToMatch, int pageIndex, int pageSize, out int totalRecords)
         {
+            logger.Debug("[WLogMembershipProvider] FindUsersByEmail (not implemented) ");
             throw new NotImplementedException();
         }
 
         public override MembershipUserCollection FindUsersByName(string usernameToMatch, int pageIndex, int pageSize, out int totalRecords)
         {
+            logger.Debug("[WLogMembershipProvider] MembershipUserCollection (not implemented) ");
             throw new NotImplementedException();
         }
 
         public override MembershipUserCollection GetAllUsers(int pageIndex, int pageSize, out int totalRecords)
         {
+            logger.Debug("[WLogMembershipProvider] MembershipUserCollection (not implemented) ");
             throw new NotImplementedException();
         }
 
         public override int GetNumberOfUsersOnline()
         {
+            logger.Debug("[WLogMembershipProvider] GetNumberOfUsersOnline (not implemented) ");
             throw new NotImplementedException();
         }
 
         public override string GetPassword(string username, string answer)
         {
+            logger.Debug("[WLogMembershipProvider] GetPassword (not implemented) ");
             throw new NotImplementedException();
         }
 
         public override MembershipUser GetUser(string username, bool userIsOnline)
         {
+            logger.Debug("[WLogMembershipProvider] GetUser({0},{1})  ",username,userIsOnline);
             UserEntity usr = UserHelper.GetByUsername(username);
             if (usr == null)
             {
@@ -193,12 +206,14 @@ namespace Wlog.Web.Code.Authentication
 
         public override MembershipUser GetUser(object providerUserKey, bool userIsOnline)
         {
+            logger.Debug("[WLogMembershipProvider] GetUser({0},{1})  ", providerUserKey, userIsOnline);
             UserEntity usr = UserHelper.GetByUsername(providerUserKey as string);
             return GetMembershipUserFromUser(usr);
         }
 
         public override string GetUserNameByEmail(string email)
         {
+            logger.Debug("[WLogMembershipProvider] GetUser({0})  ", email);
             string result = String.Empty;
             UserEntity usr = UserHelper.GetByEmail(email);
             if (usr != null)
@@ -260,6 +275,8 @@ namespace Wlog.Web.Code.Authentication
 
         public override void UpdateUser(MembershipUser user)
         {
+
+            logger.Debug("[WLogMembershipProvider] UpdateUser  ");
             UserEntity usr = UserHelper.GetByUsername(user.UserName);
             if (usr != null)
             {
@@ -271,6 +288,7 @@ namespace Wlog.Web.Code.Authentication
 
         public override bool ValidateUser(string username, string password)
         {
+            logger.Debug("[WLogMembershipProvider] ValidateUser  ");
             bool isValid = false;
             UserEntity user = UserHelper.GetByUsername(username);
 
@@ -305,6 +323,9 @@ namespace Wlog.Web.Code.Authentication
         /// <returns></returns>
         private MembershipUser GetMembershipUserFromUser(UserEntity usr)
         {
+
+            logger.Debug("[WLogMembershipProvider] GetMembershipUserFromUser  ");
+
             MembershipUser u = new MembershipUser("WLogMembershipProvider",
                                                   usr.Username,
                                                   usr.Id,

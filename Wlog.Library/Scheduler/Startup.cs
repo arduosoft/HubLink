@@ -20,6 +20,9 @@ using Microsoft.Owin;
 namespace Wlog.Library.Scheduler
 {
    
+    /// <summary>
+    /// Hangfire startup configuration
+    /// </summary>
     public class Startup
     {
         public void Configuration(IAppBuilder app)
@@ -28,21 +31,16 @@ namespace Wlog.Library.Scheduler
             {
                 AppPath = VirtualPathUtility.ToAbsolute("~"),
                 AuthorizationFilters = new[]
-            {
+                {
                 
-                new HangFireAuthorizationFilter()
-            }
+                    new HangFireAuthorizationFilter()
+                }
             };
 
             app.UseHangfireDashboard("/private/hangfire", options);
             app.UseHangfireServer();
 
-            //InfoPageConfigurator.Configure(app,
-            //        x =>
-            //        {
-            //            x.BaseUrl = "custom-info";
-            //            x.ApplicationName = "WLOG";
-            //        });
+            
         }
     }
 }

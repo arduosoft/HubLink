@@ -14,6 +14,7 @@ using NLog;
 
 namespace Wlog.Web.Code.Helpers
 {
+    [Obsolete("Please do not use this. it produces log without source class reference")]
     public static class WlogLogger
     {
         private static Logger logger;

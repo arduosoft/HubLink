@@ -31,7 +31,7 @@ namespace Wlog.Library.BLL.DataBase
         public UnitOfNhibernate()
         {
 
-            Session = NHIbernateContext.Current.SessionFactory.OpenSession();
+            Session = NHibernateContext.Current.SessionFactory.OpenSession();
             BeginTransaction();
         }
 

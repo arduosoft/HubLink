@@ -7,24 +7,20 @@ using System.Threading.Tasks;
 using Wlog.BLL.Entities;
 using Wlog.Library.BLL.DataBase;
 using Wlog.Library.BLL.Interfaces;
+using Wlog.Library.BLL.Classes;
 
 namespace Wlog.Library.BLL.Reporitories
 {
-    public class ProfilesRepository : IRepository
+    public class ProfilesRepository : EntityRepository
     {
-        private Logger _logger => LogManager.GetCurrentClassLogger();
+       
 
-        private static UnitFactory unitFactory;
-
-        public ProfilesRepository()
-        {
-            unitFactory = new UnitFactory();
-        }
-
+        
 
         public ProfilesEntity GetProfileByName(string profileName)
         {
-            using (IUnitOfWork uow = unitFactory.GetUnit(this))
+            logger.Debug("[repo] entering GetProfileByName");
+            using (IUnitOfWork uow = this.BeginUnitOfWork())
             {
                 uow.BeginTransaction();
                 return uow.Query<ProfilesEntity>().FirstOrDefault(x => x.ProfileName == profileName);
@@ -33,10 +29,11 @@ namespace Wlog.Library.BLL.Reporitories
 
         public bool Delete(ProfilesEntity profile)
         {
+            logger.Debug("[repo] entering Delete");
             bool result = true;
             try
             {
-                using (IUnitOfWork uow = unitFactory.GetUnit(this))
+                using (IUnitOfWork uow =this.BeginUnitOfWork())
                 {
                     uow.BeginTransaction();
                     List<ProfilesRolesEntity> entity = uow.Query<ProfilesRolesEntity>()
@@ -54,7 +51,7 @@ namespace Wlog.Library.BLL.Reporitories
             }
             catch (Exception e)
             {
-                _logger.Error(e);
+                logger.Error(e);
                 result = false;
             }
 
@@ -63,17 +60,18 @@ namespace Wlog.Library.BLL.Reporitories
 
         public List<ProfilesEntity> GetAllProfiles()
         {
+            logger.Debug("[repo] entering GetAllProfiles");
             List<ProfilesEntity> result = new List<ProfilesEntity>();
             try
             {
-                using (IUnitOfWork uow = unitFactory.GetUnit(this))
+                using (IUnitOfWork uow = this.BeginUnitOfWork())
                 {
                     result.AddRange(uow.Query<ProfilesEntity>().ToList());
                 }
             }
             catch (Exception err)
             {
-                _logger.Error(err);
+                logger.Error(err);
             }
 
             return result;
@@ -81,9 +79,10 @@ namespace Wlog.Library.BLL.Reporitories
 
         public bool Save(ProfilesEntity profilesEntity)
         {
+            logger.Debug("[repo] entering Save");
             try
             {
-                using (IUnitOfWork uow = unitFactory.GetUnit(this))
+                using (IUnitOfWork uow = this.BeginUnitOfWork())
                 {
                     uow.BeginTransaction();
                     uow.SaveOrUpdate(profilesEntity);
@@ -94,7 +93,7 @@ namespace Wlog.Library.BLL.Reporitories
             }
             catch (Exception err)
             {
-                _logger.Error(err);
+                logger.Error(err);
             }
 
             return false;
@@ -102,9 +101,10 @@ namespace Wlog.Library.BLL.Reporitories
 
         public bool AssignRolesToProfile(ProfilesEntity profile, List<RolesEntity> roles)
         {
+            logger.Debug("[repo] entering AssignRolesToProfile");
             try
             {
-                using (IUnitOfWork uow = unitFactory.GetUnit(this))
+                using (IUnitOfWork uow = this.BeginUnitOfWork())
                 {
                     uow.BeginTransaction();
 
@@ -126,7 +126,7 @@ namespace Wlog.Library.BLL.Reporitories
             }
             catch (Exception err)
             {
-                _logger.Error(err);
+                logger.Error(err);
             }
 
             return false;

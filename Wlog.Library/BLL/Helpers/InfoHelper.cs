@@ -14,15 +14,18 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using NLog;
 using Wlog.Library.BLL.Classes;
 
 namespace Wlog.Library.BLL.Helpers
 {
     public static class InfoHelper
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         public static string GetAssemblyAttribute<T>(Func<T, string> value, Assembly a)
      where T : Attribute
         {
+            logger.Debug("[ih] entering GetAssemblyAttribute");
             T attribute = (T)Attribute.GetCustomAttribute(a, typeof(T));
             return value.Invoke(attribute);
         }
@@ -30,6 +33,7 @@ namespace Wlog.Library.BLL.Helpers
 
         public static AssemblyMetadata GetAssemblyMetadata(Assembly assembly)
         {
+            logger.Debug("[ih] entering GetAssemblyMetadata");
             AssemblyMetadata aa = new AssemblyMetadata();
             aa.Title = GetAssemblyAttribute<AssemblyTitleAttribute>(a => (a != null) ? a.Title : String.Empty, assembly);
             aa.Copyright = GetAssemblyAttribute<AssemblyCopyrightAttribute>(a => (a != null) ? a.Copyright : String.Empty, assembly);
@@ -47,7 +51,7 @@ namespace Wlog.Library.BLL.Helpers
 
         public static List<AssemblyMetadata> GetLoadedAssemblies()
         {
-
+            logger.Debug("[ih] entering GetLoadedAssemblies");
             List<AssemblyMetadata> result = new List<AssemblyMetadata>();
             foreach (System.Reflection.AssemblyName an in System.Reflection.Assembly.GetExecutingAssembly().GetReferencedAssemblies())
             {
@@ -61,6 +65,9 @@ namespace Wlog.Library.BLL.Helpers
 
         public static string GetMarkdownContent(string path)
         {
+
+            logger.Debug("[ih] entering GetMarkdownContent");
+
             string content = File.ReadAllText(path);
 
             var settings = CommonMark.CommonMarkSettings.Default.Clone();
@@ -71,6 +78,8 @@ namespace Wlog.Library.BLL.Helpers
 
         public static InfoPageModel GetInfoPage(InfoPageConfiguration conf)
         {
+            logger.Debug("[ih] entering GetInfoPage");
+
             InfoPageModel ip = new InfoPageModel();
             ip.MainAssembly = GetAssemblyMetadata(conf.MainAssembly);
             ip.LoadedAssemblies = GetLoadedAssemblies();
@@ -95,6 +104,7 @@ namespace Wlog.Library.BLL.Helpers
 
         public static string ResolveUrl(string path)
         {
+            logger.Debug("[ih] entering ResolveUrl({0})",path);
             return HttpContext.Current.Server.MapPath(path);
         }
     }

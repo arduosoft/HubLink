@@ -19,6 +19,7 @@ using System.Web.Http;
 using Wlog.BLL.Classes;
 using Wlog.Library.BLL.Reporitories;
 using Wlog.Library.Scheduler;
+using NLog;
 
 namespace Wlog.Web.Code.API
 {
@@ -26,21 +27,7 @@ namespace Wlog.Web.Code.API
     public class LogController : ApiController
     {
 
-        /// <summary>
-        /// This add a log entry to the queue to be processed async.
-        /// In case queue is full, this will be managed sync 
-        /// </summary>
-        /// <param name="value">a single log to add to the queue</param>
-        //[HttpPost]
-        //public void PostOne([FromBody]LogMessage value)
-        //{
-        //    //Force init in case we are not in  IIS "always running mode", or it have not been configured properly
-        //    HangfireBootstrapper.Instance.Start();
-
-
-        //    SaveSingle(value);
-
-        //}
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// This add a list of  log entry to the queue to be processed async.
@@ -49,6 +36,9 @@ namespace Wlog.Web.Code.API
         /// <param name="values">list of logs</param>
         public void Post([FromBody]LogMessage[] values)
         {
+            logger.Debug("[ApiLog] Post");
+            if (values == null) throw new Exception("Log messages could not be null.");
+
             //Force init in case we are not in  IIS "always running mode", or it have not been configured properly
             HangfireBootstrapper.Instance.Start();
 
@@ -63,7 +53,7 @@ namespace Wlog.Web.Code.API
 
         private void SaveSingle(LogMessage value)
         {
-           
+            if (value == null) throw new Exception("Log message could not be null.");
 
             if (LogQueue.Current.MaxQueueSize > LogQueue.Current.Count)
             {

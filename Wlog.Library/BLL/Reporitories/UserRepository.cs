@@ -32,6 +32,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public UserEntity GetById(Guid id)
         {
+            logger.Debug("[repo] entering GetById");
             UserEntity entity = null;
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
@@ -43,6 +44,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public bool Delete(UserEntity user)
         {
+            logger.Debug("[repo] entering Delete");
             bool result = true;
             try
             {
@@ -63,7 +65,7 @@ namespace Wlog.Library.BLL.Reporitories
             }
             catch (Exception e)
             {
-
+                logger.Error(e);
                 result = false;
             }
 
@@ -72,6 +74,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public List<UserEntity> GetAll()
         {
+            logger.Debug("[repo] entering GetAll");
             List<UserEntity> result = new List<UserEntity>();
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
@@ -84,6 +87,8 @@ namespace Wlog.Library.BLL.Reporitories
 
         public bool Save(UserEntity usr)
         {
+            logger.Debug("[repo] entering Save");
+
             bool result = false;
 
             using (IUnitOfWork uow = BeginUnitOfWork())
@@ -96,7 +101,7 @@ namespace Wlog.Library.BLL.Reporitories
                 }
                 catch (Exception ee)
                 {
-
+                    logger.Error(ee);
                     result = false;
                 }
             }
@@ -106,6 +111,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public IPagedList<UserEntity> SearchUsers(UserSearchSettings userSearchSettings)
         {
+            logger.Debug("[repo] entering SearchUsers");
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
@@ -126,6 +132,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public UserEntity GetByUsername(string userneame)
         {
+            logger.Debug("[repo] entering GetByUsername");
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
@@ -135,6 +142,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public UserEntity GetByEmail(string email)
         {
+            logger.Debug("[repo] entering GetByEmail");
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();

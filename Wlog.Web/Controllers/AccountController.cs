@@ -12,6 +12,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using NLog;
 using Wlog.BLL.Classes;
 using Wlog.BLL.Entities;
 using Wlog.Library.BLL.Reporitories;
@@ -26,6 +27,9 @@ namespace Wlog.Web.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         // GET: /Account/Login
 
         [AllowAnonymous]
@@ -42,6 +46,7 @@ namespace Wlog.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
+            logger.Debug("[Account]: login");
             WLogMembershipProvider provider = new WLogMembershipProvider();
             if (provider.ValidateUser(model.UserName, model.Password))
             {
@@ -65,6 +70,7 @@ namespace Wlog.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            logger.Debug("[Account]: LogOff");
             FormsAuthentication.SignOut();
 
             return RedirectToAction("Login", "Account");
@@ -76,6 +82,7 @@ namespace Wlog.Web.Controllers
         [HttpGet]
         public ActionResult Manage()
         {
+            logger.Debug("[Account]: Manage");
             LocalPasswordModel model = new LocalPasswordModel();
             model.Email.Address = UserProfileContext.Current.User.Email;
             return View(model);
@@ -87,6 +94,8 @@ namespace Wlog.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(Password model)
         {
+            logger.Debug("[Account]: ChangePassword");
+
             WLogMembershipProvider provider = new WLogMembershipProvider();
             if (!provider.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword))
             {
@@ -106,6 +115,7 @@ namespace Wlog.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ChangeEmail(Email model)
         {
+            logger.Debug("[Account]: ChangeEmail");
             if (ModelState.IsValid)
             {
                
@@ -129,6 +139,7 @@ namespace Wlog.Web.Controllers
         [HttpGet]
         public ActionResult Info()
         {
+            logger.Debug("[Account]: Info");
             ViewBag.Title = UserProfileContext.Current.User.Username;
             EditUser model = new EditUser();
             model.DataUser = UserProfileContext.Current.User;
@@ -136,58 +147,13 @@ namespace Wlog.Web.Controllers
             return View(model);
         }
 
-
-        // GET: /Account/Register
-
-        //[AllowAnonymous]
-        //public ActionResult Register()
-        //{
-        //    return View();
-        //}
-
-
-        // POST: /Account/Register
-
-        //[HttpPost]
-        //[AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Register(RegisterModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        // Tentare di registrare l'utente
-        //        try
-        //        {
-        //            MembershipCreateStatus status;
-        //            WLogMembershipProvider provider = new WLogMembershipProvider();
-        //            provider.CreateUser(model.UserName, model.Password,null, null, null, true, null, out status);
-        //            if (status == MembershipCreateStatus.Success)
-        //            {
-        //                return RedirectToAction("Index", "Private");
-        //            }
-        //            else
-        //            {
-        //                ModelState.AddModelError(String.Empty, ErrorCodeToString(status));
-        //            }
-        //           // WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
-        //           // WebSecurity.Login(model.UserName, model.Password);
-         
-        //        }
-        //        catch (MembershipCreateUserException e)
-        //        {
-        //            ModelState.AddModelError(String.Empty, ErrorCodeToString(e.StatusCode));
-        //        }
-        //    }
-
-        //    // Se si arriva a questo punto, significa che si è verificato un errore, rivisualizzare il form
-        //    return View(model);
-        //}
-
+        
         
 
         #region Helper
         private ActionResult RedirectToLocal(string returnUrl)
         {
+            logger.Debug("[Account]: RedirectToLocal");
             if (Url.IsLocalUrl(returnUrl))
             {
                 return Redirect(returnUrl);
@@ -205,44 +171,7 @@ namespace Wlog.Web.Controllers
             RemoveLoginSuccess,
         }
 
-
-        //private static string ErrorCodeToString(MembershipCreateStatus createStatus)
-        //{
-        //    // Vedere http://go.microsoft.com/fwlink/?LinkID=177550 per
-        //    // un elenco completo di codici di stato.
-        //    switch (createStatus)
-        //    {
-        //        case MembershipCreateStatus.DuplicateUserName:
-        //            return "Il nome utente esiste già. Immettere un nome utente differente.";
-
-        //        case MembershipCreateStatus.DuplicateEmail:
-        //            return "Un nome utente per l'indirizzo di posta elettronica esiste già. Immettere un nome utente differente.";
-
-        //        case MembershipCreateStatus.InvalidPassword:
-        //            return "La password fornita non è valida. Immettere un valore valido per la password.";
-
-        //        case MembershipCreateStatus.InvalidEmail:
-        //            return "L'indirizzo di posta elettronica fornito non è valido. Controllare il valore e riprovare.";
-
-        //        case MembershipCreateStatus.InvalidAnswer:
-        //            return "La risposa fornita per il recupero della password non è valida. Controllare il valore e riprovare.";
-
-        //        case MembershipCreateStatus.InvalidQuestion:
-        //            return "La domanda fornita per il recupero della password non è valida. Controllare il valore e riprovare.";
-
-        //        case MembershipCreateStatus.InvalidUserName:
-        //            return "Il nome utente fornito non è valido. Controllare il valore e riprovare.";
-
-        //        case MembershipCreateStatus.ProviderError:
-        //            return "Il provider di autenticazione ha restituito un errore. Verificare l'immissione e riprovare. Se il problema persiste, contattare l'amministratore di sistema.";
-
-        //        case MembershipCreateStatus.UserRejected:
-        //            return "La richiesta di creazione dell'utente è stata annullata. Verificare l'immissione e riprovare. Se il problema persiste, contattare l'amministratore di sistema.";
-
-        //        default:
-        //            return "Si è verificato un errore sconosciuto. Verificare l'immissione e riprovare. Se il problema persiste, contattare l'amministratore di sistema.";
-        //    }
-        //}
+        
         #endregion
     }
 }

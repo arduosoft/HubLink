@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Wlog.DAL.NHibernate.Helpers;
 using Wlog.Library.BLL.Classes;
 using Wlog.Library.BLL.DataBase;
 using Wlog.Library.BLL.Interfaces;
@@ -26,12 +27,13 @@ namespace Wlog.Library.BLL.Reporitories
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            
         }
 
         public void ApplySchemaChanges()
         {
-            throw new NotImplementedException();
+            logger.Debug("[repo] entering ApplySchemaChanges");
+            NHibernateContext.ApplySchemaChanges();
         }
     }
 }

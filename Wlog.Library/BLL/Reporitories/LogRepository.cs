@@ -32,7 +32,7 @@ namespace Wlog.Library.BLL.Reporitories
     public class LogRepository : EntityRepository
     {
 
-        private Logger _logger => LogManager.GetCurrentClassLogger();
+       
 
         public LogRepository()
         {
@@ -41,6 +41,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public long CountByLevel(StandardLogLevels level)
         {
+            logger.Debug("[repo] entering CountByLevel");
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
@@ -50,12 +51,15 @@ namespace Wlog.Library.BLL.Reporitories
 
         public void Save(LogEntity entToSave)
         {
+            logger.Debug("[repo] entering Save");
             Save(new List<LogEntity>(new LogEntity[] { entToSave }));
 
         }
 
         public IPagedList<LogEntity> SearchLogindex(Guid applicationId, LogsSearchSettings logsSearchSettings)
         {
+            logger.Debug("[repo] entering SearchLogindex");
+
             var idx = RepositoryContext.Current.Index.GetByName("Logs", applicationId.ToString());
             // logsSearchSettings.
 
@@ -92,6 +96,8 @@ namespace Wlog.Library.BLL.Reporitories
 
         private LogEntity GetLogFromDoc(Document d)
         {
+            logger.Debug("[repo] entering GetLogFromDoc");
+
             return new LogEntity()
             {
                 Level = d.GetField(LogsFields.Level.ToString()).StringValue,
@@ -114,6 +120,7 @@ namespace Wlog.Library.BLL.Reporitories
         /// <returns></returns>
         public IPagedList<LogEntity> SearchLog(LogsSearchSettings logsSearchSettings)
         {
+            logger.Debug("[repo] entering SearchLog");
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
@@ -151,6 +158,8 @@ namespace Wlog.Library.BLL.Reporitories
 
         internal void Save(List<LogEntity> logs)
         {
+            logger.Debug("[repo] entering Save");
+
             Dictionary<string, LuceneIndexManager> indexList = new Dictionary<string, LuceneIndexManager>();
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
@@ -180,6 +189,8 @@ namespace Wlog.Library.BLL.Reporitories
 
         private Document LogToDictionary(LogEntity log)
         {
+            logger.Debug("[repo] entering LogToDictionary");
+
             Document doc = new Document();
 
             doc.Add(new Field(LogsFields.Id.ToString(), log.Id.ToString(), Field.Store.YES, Field.Index.ANALYZED));
@@ -214,6 +225,8 @@ namespace Wlog.Library.BLL.Reporitories
 
         public bool MoveLogsToBin(List<LogEntity> logs)
         {
+
+            logger.Debug("[repo] entering MoveLogsToBin");
             try
             {
                 using (IUnitOfWork uow = BeginUnitOfWork())
@@ -268,13 +281,14 @@ namespace Wlog.Library.BLL.Reporitories
             }
             catch (Exception ex)
             {
-                _logger.Error(ex);
+                logger.Error(ex);
                 return false;
             }
         }
 
         public void RemoveLogEntity(LogEntity log)
         {
+            logger.Debug("[repo] entering RemoveLogEntity");
             try
             {
                 using (IUnitOfWork uow = BeginUnitOfWork())
@@ -286,12 +300,13 @@ namespace Wlog.Library.BLL.Reporitories
             }
             catch (Exception ex)
             {
-                _logger.Error(ex);
+                logger.Error(ex);
             }
         }
 
         public List<LogEntity> GetAllLogEntities()
         {
+            logger.Debug("[repo] entering GetAllLogEntities");
             List<LogEntity> result = new List<LogEntity>();
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
@@ -304,6 +319,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public bool ExecuteMoveToBinJob(int daysToKeep, int rowsToKeep)
         {
+            logger.Debug("[repo] entering ExecuteMoveToBinJob");
             try
             {
                 using (IUnitOfWork uow = BeginUnitOfWork())
@@ -325,7 +341,7 @@ namespace Wlog.Library.BLL.Reporitories
             }
             catch (Exception ex)
             {
-                _logger.Error(ex);
+                logger.Error(ex);
                 return false;
             }
         }

@@ -15,16 +15,17 @@ using System.Web.Security;
 using Wlog.BLL.Entities;
 using Wlog.Library.BLL.Classes;
 using Wlog.Library.BLL.Reporitories;
+using NLog;
 
 namespace Wlog.Web.Code.Helpers
 {
     public class LogHelper
     {
-
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public static IPagedList<LogEntity> GetLogs(Guid applicationId, string sortOrder, string sortBy, string serchMessage, int pageSize, int pageNumber)
         {
-           
+            logger.Debug("[ConversionHelper]: GetLogs");
 
 
             List<Guid> alloweApps=UserHelper.GetAppsIdsForUser(Membership.GetUser().UserName);

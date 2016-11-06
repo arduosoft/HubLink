@@ -13,11 +13,13 @@ using Wlog.Web.Models;
 using Wlog.Library.BLL.Reporitories;
 using Wlog.BLL.Entities;
 using Wlog.Library.BLL.Classes;
+using NLog;
 
 namespace Wlog.Web.Code.Helpers
 {
     public class ApplicationHelper
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         /// <summary>
         /// Get Application by Id
         /// </summary>
@@ -25,9 +27,12 @@ namespace Wlog.Web.Code.Helpers
         /// <returns></returns>
         public static ApplicationModel GetById(Guid id)
         {
+
+            logger.Debug("[WLogRoleProvider]:GetById({0})",id);
             ApplicationEntity app = RepositoryContext.Current.Applications.GetById(id);
             if (app == null)
             {
+                logger.Debug("[WLogRoleProvider]: no app found");
                 return null;
             }
             return EntityToModel(app);
@@ -42,6 +47,7 @@ namespace Wlog.Web.Code.Helpers
         /// <returns></returns>
         public static IPagedList<ApplicationModel> FilterApplicationList(string serchFilter, int pagenumber, int pagesize, string userName)
         {
+            logger.Debug("[WLogRoleProvider]: FilterApplicationList");
             ApplicationSearchSettings settings = new ApplicationSearchSettings()
             {
                 Orderby = Library.BLL.Enums.ApplicationFields.ApplicationName,
@@ -65,6 +71,7 @@ namespace Wlog.Web.Code.Helpers
 
         public static bool DeleteById(Guid id)
         {
+            logger.Debug("[WLogRoleProvider]: DeleteById");
             try
             {
                 ApplicationEntity app = RepositoryContext.Current.Applications.GetById(id);
@@ -79,6 +86,7 @@ namespace Wlog.Web.Code.Helpers
 
         private static ApplicationModel EntityToModel(ApplicationEntity entity)
         {
+            logger.Debug("[WLogRoleProvider]: EntityToModel");
             ApplicationModel result = new ApplicationModel();
             result.ApplicationName = entity.ApplicationName;
             result.EndDate = entity.EndDate;

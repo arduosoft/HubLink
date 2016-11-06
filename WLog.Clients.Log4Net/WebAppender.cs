@@ -30,7 +30,7 @@ namespace Wlog.Clients.Log4Net
             entry.ApplicationKey = ApplicationKey;
             entry.Level = loggingEvent.Level.ToString();
 
-            LogHelper.DoRequest(Destination, JsonConvert.SerializeObject(entry));
+            LogHelper.DoRequest(Destination, JsonConvert.SerializeObject(new LogMessage[] { entry }));
         }
     }
 }

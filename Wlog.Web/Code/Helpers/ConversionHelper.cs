@@ -8,6 +8,7 @@
 //******************************************************************************
 using System;
 using System.Collections.Generic;
+using NLog;
 using Wlog.BLL.Classes;
 using Wlog.BLL.Entities;
 using Wlog.Library.BLL.Reporitories;
@@ -17,36 +18,8 @@ namespace Wlog.Web.Code.Helpers
 {
     public class ConversionHelper
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         #region Entity To Model
-        ///// <summary>
-        ///// Convert LogEntity to LogModel
-        ///// </summary>
-        ///// <param name="entity"></param>
-        ///// <returns></returns>
-        //public static LogModel ConvertEntityToLogModel(LogEntity entity)
-        //{
-        //    LogModel result = new LogModel();
-        //    result.ApplictionId = entity.ApplictionId;
-        //    result.Level = entity.Level;
-        //    result.Message = entity.Message;
-        //    result.SourceDate = entity.SourceDate;
-        //    return result;
-        //}
-
-        ///// <summary>
-        ///// Convert List LogEntity to list LogModel
-        ///// </summary>
-        ///// <param name="entity"></param>
-        ///// <returns></returns>
-        //public static List<LogModel> ConvertListEntryToListLogModel(List<LogEntity> entity)
-        //{
-        //    List<LogModel> result = new List<LogModel>();
-        //    foreach (LogEntity item in entity)
-        //    {
-        //        result.Add(ConvertEntityToLogModel(item));
-        //    }
-        //    return result;
-        //}
 
         /// <summary>
         /// Convert ApplicationEntity to ApplicationHome
@@ -55,6 +28,7 @@ namespace Wlog.Web.Code.Helpers
         /// <returns></returns>
         public static ApplicationHomeModel ConvertEntityToApplicationHome(ApplicationEntity entity)
         {
+            logger.Debug("[ConversionHelper]: ConvertEntityToApplicationHome");
             ApplicationHomeModel result = new ApplicationHomeModel();
             result.Id = entity.IdApplication;
             result.ApplicationName = entity.ApplicationName;
@@ -72,6 +46,7 @@ namespace Wlog.Web.Code.Helpers
         /// <returns></returns>
         public static List<ApplicationHomeModel> ConvertListEntityToListApplicationHome(List<ApplicationEntity> entity)
         {
+            logger.Debug("[ConversionHelper]: ConvertListEntityToListApplicationHome");
             List<ApplicationHomeModel> result = new List<ApplicationHomeModel>();
             foreach (ApplicationEntity app in entity)
             {
@@ -83,6 +58,7 @@ namespace Wlog.Web.Code.Helpers
 
         internal static LogEntity ConvertLog(LogMessage log)
         {
+            logger.Debug("[ConversionHelper]: ConvertLog");
             LogEntity result = new LogEntity();
             result.Uid = Guid.NewGuid();
             result.Level = log.Level;
@@ -98,7 +74,7 @@ namespace Wlog.Web.Code.Helpers
             }
             catch(Exception err)
             {
-                WlogLogger.Current.Error(err);
+                logger.Error(err);
             }
 
             return result;
@@ -108,6 +84,7 @@ namespace Wlog.Web.Code.Helpers
 
         public static List<LogMessage> ConvertLogEntityToMessage(List<LogEntity> list)
         {
+            logger.Debug("[ConversionHelper]: ConvertLogEntityToMessage");
             List<LogMessage> result = new List<LogMessage>();
             foreach (LogEntity le in list)
             {

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Lucene.Net.Analysis.Standard;
 using PagedList;
 using System.Web;
+using NLog;
 
 namespace Wlog.Library.BLL.Index
 {
@@ -23,6 +24,7 @@ namespace Wlog.Library.BLL.Index
     {
 
         #region private
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         private static IndexWriter writer;
         private static IndexSearcher searcher;
         private static IndexReader reader;
@@ -73,6 +75,7 @@ namespace Wlog.Library.BLL.Index
 
         public LuceneIndexManager(string name,string path)
         {
+            logger.Debug("[IndexManager] ctor {0}, {1}",name,path);
             this.Name = name;
             this.Path = path;
             this.CommitSize = 0;
@@ -82,6 +85,7 @@ namespace Wlog.Library.BLL.Index
 
         private void Init()
         {
+            logger.Debug("[IndexManager] init");
             analyzer = new StandardAnalyzer(global::Lucene.Net.Util.Version.LUCENE_30);
             InitIndex();
             parser = new QueryParser(global::Lucene.Net.Util.Version.LUCENE_30, "", analyzer);
@@ -89,18 +93,22 @@ namespace Wlog.Library.BLL.Index
 
         private void InitIndex()
         {
+            logger.Debug("[IndexManager] InitIndex");
 
-            //           luceneIndexDirectory = FSDirectory.Open(Path);
+            logger.Debug("[IndexManager] Opening {0}", Path);
             luceneIndexDirectory = FSDirectory.Open(Path);
+            logger.Debug("[IndexManager] Creating IndexWriter");
             writer = new IndexWriter(luceneIndexDirectory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED);
-            
+            logger.Debug("[IndexManager] Creating IndexReader");
             reader = IndexReader.Open(luceneIndexDirectory, true);
+            logger.Debug("[IndexManager] Creating IndexSearcher");
             searcher = new IndexSearcher(reader);
         }
 
         public void AddDocument(Dictionary<string,object> docs)
         {
-           
+            logger.Debug("[IndexManager] AddDocument from dictionary");
+
             var doc = new Document();
             foreach (string s in docs.Keys)
             {
@@ -128,19 +136,24 @@ namespace Wlog.Library.BLL.Index
         }
         public void AddDocument(Document doc)
         {
-            AddDocument(doc, true);
+            logger.Debug("[IndexManager] AddDocument from doc (do not force commit)");
+            AddDocument(doc, false);
         }
         public void AddDocument(Document doc,bool commit)
         {
             dirty = true;
             writer.AddDocument(doc);
             uncommittedFiles++;
-            if (this.Autocommit && uncommittedFiles > this.CommitSize)
+          
+            if (commit || (this.Autocommit && uncommittedFiles > this.CommitSize))
             {
-                if (commit)
-                {
-                    SaveUncommittedChanges();
-                }
+                logger.Debug("[IndexManager] AddDocument forces commit penting changes commit={0}, autocommit={1}, commitSize={2},uncommittedFiles={3}",
+                            commit,
+                            Autocommit,
+                            CommitSize, 
+                            uncommittedFiles);
+
+                SaveUncommittedChanges();
             }
 
           
@@ -148,19 +161,22 @@ namespace Wlog.Library.BLL.Index
 
         public void SaveUncommittedChanges()
         {
+            logger.Debug("[IndexManager] Save uncommitted files");
+            logger.Debug("[IndexManager] Optimize");
             writer.Optimize();
+            logger.Debug("[IndexManager] Commit");
             writer.Commit();
-
+            logger.Debug("[IndexManager] Reset uncommitted Files");
             uncommittedFiles = 0;
-
+            logger.Debug("[IndexManager] Reopen index");
             ReopenIndex();
         }
 
         
         public IPagedList<Document> Query(string queryTxt, int start, int size)
         {
-
-         return   Query(queryTxt, null, 0, false, start, size,"");
+            logger.Debug("[IndexManager] Query ({0},{1},{2})", queryTxt,start,size);
+            return   Query(queryTxt, null, 0, false, start, size,"");
         }
 
 
@@ -177,6 +193,9 @@ namespace Wlog.Library.BLL.Index
         /// <returns></returns>
         public IPagedList<Document> Query(string queryTxt,string sortname,int sortType,bool desc, int start, int size,string defaultField)
         {
+            logger.Debug("[IndexManager] Query ({0},{1},{2},{3},{4},{5},{6})",
+                 queryTxt,  sortname,  sortType,  desc,  start,  size,  defaultField);
+
             Query query = new MatchAllDocsQuery();
             if (!string.IsNullOrWhiteSpace(queryTxt))
             {
@@ -188,6 +207,7 @@ namespace Wlog.Library.BLL.Index
                 }
                 catch(Exception err)
                 {
+                    //This is used to control flow, no log needed here
                     throw new UnableToParseQuery();
                     
                 }
@@ -210,6 +230,9 @@ namespace Wlog.Library.BLL.Index
 
         public IPagedList<Document> Query(Query query, Sort field, int start, int size)
         {
+
+            logger.Debug("[IndexManager] Query ({0},{1},{2},{3})",
+                  query,  field,  start,  size);
             if (dirty  && ReopenIfDirty)
             {
                 ReopenIndex();
@@ -240,12 +263,18 @@ namespace Wlog.Library.BLL.Index
 
         private void ReopenIndex()
         {
+
+            logger.Debug("[IndexManager] Reopen index");
+
             DisposeIndex();
             InitIndex();
         }
 
         public void Dispose()
         {
+            logger.Debug("[IndexManager] Dispose");
+
+            logger.Debug("[IndexManager] Optimize and commit before destroing index manager");
             writer.Optimize();
             SaveUncommittedChanges();
             DisposeIndex();
@@ -255,6 +284,7 @@ namespace Wlog.Library.BLL.Index
         }
         public void DisposeIndex()
         {
+            logger.Debug("[IndexManager] DisposeIndex");
             if (writer != null)
             {
                 try
@@ -264,7 +294,7 @@ namespace Wlog.Library.BLL.Index
                 }
                 catch (Exception err)
                 {
-                    //TODO: Add log here
+                    logger.Error(err);
                 }
             }
             if (reader != null)
@@ -279,6 +309,7 @@ namespace Wlog.Library.BLL.Index
 
         public void RemoveDocument(string IdField,object value)
         {
+            logger.Debug("[IndexManager] RemoveDocument");
             var localparser = new QueryParser(global::Lucene.Net.Util.Version.LUCENE_30, IdField, analyzer);
 
            Query q = localparser.Parse(value.ToString());

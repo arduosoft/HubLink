@@ -18,6 +18,7 @@ namespace Wlog.Library.BLL.DataBase
 {
     internal class MongoContext
     {
+        
         private MongoClient mongoClient;
         public IMongoDatabase DataBase
         {

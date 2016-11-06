@@ -31,6 +31,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public ApplicationEntity GetById(Guid id)
         {
+            logger.Debug("[repo] entering GetById");
             ApplicationEntity app;
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
@@ -42,6 +43,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public void ResetUserRoles(UserEntity entity, List<AppUserRoleEntity> role)
         {
+            logger.Debug("[repo] entering ResetUserRoles");
             try
             {
                 Guid idapp=role.Select(x=>x.ApplicationId).Distinct().First();
@@ -66,7 +68,7 @@ namespace Wlog.Library.BLL.Reporitories
             }
             catch (Exception err)
             {
-                //log here
+                logger.Error(err);
             }
         }
 
@@ -76,6 +78,8 @@ namespace Wlog.Library.BLL.Reporitories
         /// <param name="app">the application that need to be deleted</param>
         public void DeleteApplicationRole(ApplicationEntity app)
         {
+
+            logger.Debug("[repo] entering DeleteApplicationRole");
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
@@ -94,6 +98,8 @@ namespace Wlog.Library.BLL.Reporitories
 
         public IPagedList<ApplicationEntity> Search(ApplicationSearchSettings searchSettings)
         {
+            logger.Debug("[repo] entering Search");
+
             List<ApplicationEntity> entity;
 
             using (IUnitOfWork uow = BeginUnitOfWork())
@@ -124,7 +130,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public void Delete(ApplicationEntity app)
         {
-           
+            logger.Debug("[repo] entering Delete");
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
@@ -146,6 +152,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public List<ApplicationEntity> GetAppplicationsByUsername(string userName)
         {
+            logger.Debug("[repo] entering GetAppplicationsByUsername");
             UserEntity user = RepositoryContext.Current.Users.GetByUsername(userName);
             List<Guid> ids = GetAppplicationsIdsForUser(user);
             return RepositoryContext.Current.Applications.GetByIds(ids);
@@ -153,6 +160,8 @@ namespace Wlog.Library.BLL.Reporitories
 
         public List<ApplicationEntity> GetByIds(List<Guid> ids)
         {
+            logger.Debug("[repo] entering GetByIds");
+
             List<ApplicationEntity> result = new List<ApplicationEntity>();
      
             using (IUnitOfWork uow = BeginUnitOfWork())
@@ -169,7 +178,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public void Save(ApplicationEntity app)
         {
-       
+            logger.Debug("[repo] entering Save");
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
@@ -180,6 +189,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public List<Guid> GetAppplicationsIdsByUsername(string userName)
         {
+            logger.Debug("[repo] entering GetAppplicationsIdsByUsername");
             UserEntity user = RepositoryContext.Current.Users.GetByUsername(userName);
             List<Guid> ids = GetAppplicationsIdsForUser(user);
             return ids;
@@ -187,13 +197,14 @@ namespace Wlog.Library.BLL.Reporitories
 
         public List<Guid> GetAppplicationsIdsForUser(UserEntity user)
         {
+            logger.Debug("[repo] entering GetAppplicationsIdsForUser");
             return GetAppplicationForUser(user).Select(x => x.IdApplication).ToList();
 
         }
 
         public List<ApplicationEntity> GetAppplicationForUser(UserEntity user)
         {
-  
+            logger.Debug("[repo] entering GetAppplicationForUser");
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
@@ -221,6 +232,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public ApplicationEntity GetByApplicationKey(string applicationKey)
         {
+            logger.Debug("[repo] entering GetByApplicationKey");
             Guid pk = new Guid(applicationKey);
        
             using (IUnitOfWork uow = BeginUnitOfWork())
@@ -233,6 +245,7 @@ namespace Wlog.Library.BLL.Reporitories
 
         public bool AssignRoleToUser(ApplicationEntity application, UserEntity user, RolesEntity role)
         {
+            logger.Debug("[repo] entering AssignRoleToUser");
             try
             {
           
@@ -254,7 +267,7 @@ namespace Wlog.Library.BLL.Reporitories
             }
             catch (Exception err)
             {
-                //TODO:Add log here
+                logger.Error(err);
                 return false;
             }
             return true;

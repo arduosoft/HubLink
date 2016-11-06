@@ -14,7 +14,13 @@ namespace Wlog.Library.Scheduler.Jobs
     /// </summary>
     public class MoveToBinJob : Job
     {
-        private Logger _logger => LogManager.GetCurrentClassLogger();
+        public MoveToBinJob()
+        {
+            //TODO: Take from configuration
+            _rowsToKeep = 1000000;
+            _daysToKeep = 30;
+        }
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
 
         private int _rowsToKeep { get; set; }
 

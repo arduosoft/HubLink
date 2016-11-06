@@ -27,14 +27,14 @@ namespace Wlog.TestApp
                 Console.WriteLine("Making a single call to service to check availability...");
                 //Manual call to log service to test plain performance
                 DateTime d1 = DateTime.Now;
-                LogHelper.DoRequest("Http://localhost:55044/api/log", JsonConvert.SerializeObject(new LogMessage()
+                LogHelper.DoRequest("Http://localhost:55044/api/log", JsonConvert.SerializeObject(new  LogMessage[]{ new LogMessage()
                 {
                     Message = "TEST MANUAL MESSAGE" + DateTime.Now,
                     SourceDate = DateTime.Now,
                     Level = "Error",
-                    ApplicationKey = "{FF99EE02-1E88-44FF-B0A4-8DF8D2F3B742}"
+                    ApplicationKey = "{8C075ED0-45A7-495A-8E09-3A98FD6E8248}"
 
-                }));
+                }}));
 
                 double ms = DateTime.Now.Subtract(d1).TotalMilliseconds;
                 Console.WriteLine("Service call done in ms:" + ms);

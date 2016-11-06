@@ -46,7 +46,7 @@ namespace NLog.Wlog.Clients
             entry.Level = logEvent.Level.ToString();
 
 
-               LogMessage[] lm = new LogMessage[] { entry };
+            LogMessage[] lm = new LogMessage[] { entry };
 
 
             LogHelper.DoRequest(Destination, JsonConvert.SerializeObject(lm));

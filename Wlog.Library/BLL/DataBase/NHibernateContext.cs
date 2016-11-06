@@ -16,17 +16,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web;
+using NLog;
 
 namespace Wlog.DAL.NHibernate.Helpers
 {
-    internal class NHIbernateContext
+    public class NHibernateContext
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         /// <summary>
         /// Get a configuration using settings in web.config and map entities in this assembly
         /// </summary>
         /// <returns></returns>
         public static Configuration GetConfiguration()
         {
+            logger.Debug("[NH] getting configuration. This should happen only once.");
 
             Configuration cfg = new Configuration();
 
@@ -44,9 +47,10 @@ namespace Wlog.DAL.NHibernate.Helpers
         public Configuration Configuration { get; set; }
         public ISessionFactory SessionFactory { get; set; }
 
-        private static NHIbernateContext CreateNewContext()
+        private static NHibernateContext CreateNewContext()
         {
-            NHIbernateContext ctx = new NHIbernateContext();
+            logger.Debug("[NH] generating NHibernateContext. This should happen only once at startup.");
+            NHibernateContext ctx = new NHibernateContext();
             ctx.Configuration = GetConfiguration();
             ctx.SessionFactory = ctx.Configuration.BuildSessionFactory();
             return ctx;
@@ -54,6 +58,8 @@ namespace Wlog.DAL.NHibernate.Helpers
 
         public static void ApplySchemaChanges()
         {
+            logger.Debug("[NH] ApplySchemaChanges. This should happen only once at startup. changes should be done only at firt run or after upgrade.");
+
             Configuration cfg = GetConfiguration();
 
             SchemaMetadataUpdater.QuoteTableAndColumns(cfg);
@@ -61,18 +67,23 @@ namespace Wlog.DAL.NHibernate.Helpers
             
             //schema.Create(false, true);
             var update = new SchemaUpdate(cfg);
-            
+           
             update.Execute(true, true);
+
+            foreach (var v in update.Exceptions)
+            {
+                logger.Error(v);
+            }
 
         }
 
 
-        private static NHIbernateContext current;
-        public static NHIbernateContext Current
+        private static NHibernateContext current;
+        public static NHibernateContext Current
         {
             get
             {
-                ApplySchemaChanges();
+              
                 return current ?? (current = CreateNewContext());
             }
         }

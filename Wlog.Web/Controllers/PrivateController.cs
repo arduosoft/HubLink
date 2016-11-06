@@ -26,14 +26,20 @@ using Wlog.Library.BLL.Enums;
 using Wlog.Library.BLL.Helpers;
 using Wlog.Library.BLL.Configuration;
 using Wlog.Web.Filters;
+using NLog;
 
 namespace Wlog.Web.Controllers
 {
     public class PrivateController : Controller
     {
+
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.WriteLog, Constants.Roles.ReadLog)]
         public ActionResult Index()
         {
+
+            logger.Debug("[Private]: Index");
             string username = Membership.GetUser().UserName;
             var applicationsForUser = UserHelper.GetAppsIdsForUser(username);
 
@@ -82,7 +88,7 @@ namespace Wlog.Web.Controllers
         [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.WriteLog, Constants.Roles.ReadLog)]
         public ActionResult Logs(Guid? applicationId, string level, string sortOrder, string sortBy, string serchMessage, int? page, int? pageSize)
         {
-
+            logger.Debug("[Private]: Logs");
             //TDOD: CHECK USER
             List<Guid> alloweApps = UserHelper.GetAppsIdsForUser(Membership.GetUser().UserName);
 
@@ -108,6 +114,8 @@ namespace Wlog.Web.Controllers
 
         public JsonResult Search(Guid? applicationId,  string sortOrder, string sortBy, string serchMessage, int page, int pageSize)
         {
+
+            logger.Debug("[Private]: Search");
             //TDOD: CHECK USER
             var result = new JsonResult();
 
@@ -130,6 +138,7 @@ namespace Wlog.Web.Controllers
         [AuthorizeRolesAttribute(Constants.Roles.Admin)]
         public ActionResult ListUsers(string serchMessage, int? page, int? pageSize)
         {
+            logger.Debug("[Private]: ListUsers");
             ListUser model = new ListUser
             {
                 SerchMessage = serchMessage
@@ -146,6 +155,7 @@ namespace Wlog.Web.Controllers
         [AuthorizeRolesAttribute(Constants.Roles.Admin)]
         public ActionResult EditUser(Guid id)
         {
+            logger.Debug("[Private]: EditUser({0})",id);
             UserEntity user = UserHelper.GetById(id);
             ViewBag.Title = user.Username;
             EditUser model = new EditUser();
@@ -161,6 +171,7 @@ namespace Wlog.Web.Controllers
         [AuthorizeRolesAttribute(Constants.Roles.Admin)]
         public ActionResult EditUser(EditUser model)
         {
+            logger.Debug("[Private]: EditUser(model)");
             if (ModelState.IsValid)
             {
                 try
@@ -197,6 +208,7 @@ namespace Wlog.Web.Controllers
         [AuthorizeRolesAttribute(Constants.Roles.Admin)]
         public ActionResult NewUser()
         {
+            logger.Debug("[Private]: NewUser()");
             return View(new NewUser());
         }
 
@@ -206,6 +218,7 @@ namespace Wlog.Web.Controllers
         [AuthorizeRolesAttribute(Constants.Roles.Admin)]
         public ActionResult NewUser(NewUser user)
         {
+            logger.Debug("[Private]: NewUser(user)");
             if (ModelState.IsValid)
             {
                 try
@@ -242,6 +255,7 @@ namespace Wlog.Web.Controllers
         [AuthorizeRolesAttribute(Constants.Roles.Admin)]
         public ActionResult DeleteUser(Guid id)
         {
+            logger.Debug("[Private]: DeleteUser({0})",id);
 
             UserEntity user = UserHelper.GetById(id);
             UserData result = new UserData
@@ -262,6 +276,7 @@ namespace Wlog.Web.Controllers
         [AuthorizeRolesAttribute(Constants.Roles.Admin)]
         public ActionResult DeleteUser(UserData user)
         {
+            logger.Debug("[Private]: DeleteUser(userdata)");
             if (UserHelper.DeleteById(user.Id))
             {
                 return RedirectToAction("ListUsers");
@@ -279,6 +294,7 @@ namespace Wlog.Web.Controllers
         [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.ReadLog)]
         public ActionResult ListApps(string serchMessage, int? page, int? pageSize)
         {
+            logger.Debug("[Private]: ListApps({0},{1},{2})", serchMessage, page, pageSize);
             string username = Membership.GetUser().UserName;
 
             ApplicationList model = new ApplicationList
@@ -296,6 +312,7 @@ namespace Wlog.Web.Controllers
         [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.CreateApp)]
         public ActionResult NewApp()
         {
+            logger.Debug("[Private]: NewApp()");
             return View(new ApplicationModel());
         }
 
@@ -305,6 +322,7 @@ namespace Wlog.Web.Controllers
         [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.CreateApp)]
         public ActionResult NewApp(ApplicationModel model)
         {
+            logger.Debug("[Private]: NewApp(model)");
             if (ModelState.IsValid)
             {
                 ApplicationEntity entity = new ApplicationEntity();
@@ -339,6 +357,7 @@ namespace Wlog.Web.Controllers
         [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.CreateApp)]
         public ActionResult EditApp(Guid id)
         {
+            logger.Debug("[Private]: EditApp({0})",id);
             return View(ApplicationHelper.GetById(id));
         }
 
@@ -349,6 +368,7 @@ namespace Wlog.Web.Controllers
         [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.CreateApp)]
         public ActionResult EditApp(ApplicationModel model)
         {
+            logger.Debug("[Private]: EditApp(model)");
             if (ModelState.IsValid)
             {
                 ApplicationEntity entity = RepositoryContext.Current.Applications.GetById(model.IdApplication);
@@ -373,6 +393,7 @@ namespace Wlog.Web.Controllers
         [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.CreateApp)]
         public ActionResult DeleteApp(Guid id)
         {
+            logger.Debug("[Private]: DeleteApp({0})",id);
             return View(ApplicationHelper.GetById(id));
         }
 
@@ -381,6 +402,8 @@ namespace Wlog.Web.Controllers
         [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.CreateApp)]
         public ActionResult DeleteApp(ApplicationModel model)
         {
+            logger.Debug("[Private]: DeleteApp(model)");
+
             if (ApplicationHelper.DeleteById(model.IdApplication))
             {
                 return RedirectToAction("ListApps");
@@ -397,6 +420,7 @@ namespace Wlog.Web.Controllers
         #region Helper
         private static string ErrorCodeToString(MembershipCreateStatus createStatus)
         {
+            logger.Debug("[Private]: ErrorCodeToString({0})", createStatus);
             // Vedere http://go.microsoft.com/fwlink/?LinkID=177550 per
             // un elenco completo di codici di stato.
             switch (createStatus)

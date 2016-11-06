@@ -11,11 +11,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NLog;
 
 namespace Wlog.Library.BLL.Reporitories
 {
     public class RepositoryContext
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         public ApplicationRepository Applications { get; private set; }
 
         public UserRepository Users { get; private set; }
@@ -44,6 +46,7 @@ namespace Wlog.Library.BLL.Reporitories
                 }
                 else
                 {
+                    logger.Debug("[repo] creating repository context");
                     current = new RepositoryContext();
                     current.Applications = new ApplicationRepository();
                     current.Users = new UserRepository();

@@ -17,11 +17,15 @@ using Wlog.BLL.Entities;
 using Wlog.Library.BLL.Reporitories;
 using Wlog.Library.BLL.Classes;
 using System.Web.Mvc;
+using NLog;
 
 namespace Wlog.Web.Code.Helpers
 {
     public class UserHelper
     {
+
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// Get User by Id
         /// </summary>
@@ -29,6 +33,8 @@ namespace Wlog.Web.Code.Helpers
         /// <returns></returns>
         public static UserEntity GetById(Guid id)
         {
+            logger.Debug("[UserHelper]: GetById({0})",id);
+
             return RepositoryContext.Current.Users.GetById(id);
         }
 
@@ -38,12 +44,13 @@ namespace Wlog.Web.Code.Helpers
         /// <returns></returns>
         public static List<UserEntity> GetAll()
         {
+            logger.Debug("[UserHelper]: GetAll");
             return RepositoryContext.Current.Users.GetAll();
         }
 
         public static IPagedList<UserData> FilterUserList(string serchFilter, int pagenumber, int pagesize)
         {
-
+            logger.Debug("[UserHelper]: FilterUserList");
             List<UserData> data = new List<UserData>();
             IPagedList<UserEntity> users = RepositoryContext.Current.Users.SearchUsers(new UserSearchSettings
             {
@@ -77,17 +84,20 @@ namespace Wlog.Web.Code.Helpers
         /// <returns></returns>
         public static UserEntity GetByEmail(string email)
         {
+            logger.Debug("[UserHelper]: GetByEmail");
             return RepositoryContext.Current.Users.GetByEmail(email);
         }
 
         public static List<ApplicationEntity> GetAppsForUser(string userName)
         {
+            logger.Debug("[UserHelper]: GetAppsForUser");
             return RepositoryContext.Current.Applications.GetAppplicationsByUsername(userName);
 
         }
 
         public static List<Guid> GetAppsIdsForUser(string userName)
         {
+            logger.Debug("[UserHelper]: GetAppsIdsForUser");
             return RepositoryContext.Current.Applications.GetAppplicationsIdsByUsername(userName);
         }
 
@@ -98,6 +108,7 @@ namespace Wlog.Web.Code.Helpers
         /// <returns></returns>
         public static UserEntity GetByUsername(string username)
         {
+            logger.Debug("[UserHelper]: GetByUsername");
             return RepositoryContext.Current.Users.GetByUsername(username);
         }
 
@@ -108,8 +119,10 @@ namespace Wlog.Web.Code.Helpers
         /// <returns></returns>
         public static bool UpdateUser(UserEntity user)
         {
+            logger.Debug("[UserHelper]: UpdateUser");
             if (user.IsAdmin)
             {
+                logger.Debug("[UserHelper]: Reset profile because (admin cannot be changed?)");
                 user.ProfileId = GetProfileByName("admin").Id;
             }
 
@@ -118,6 +131,7 @@ namespace Wlog.Web.Code.Helpers
 
         public static bool DeleteById(Guid id)
         {
+            logger.Debug("[UserHelper]: DeleteById");
             UserEntity user = RepositoryContext.Current.Users.GetById(id);
             return RepositoryContext.Current.Users.Delete(user);
         }
@@ -129,6 +143,7 @@ namespace Wlog.Web.Code.Helpers
         /// <returns></returns>
         public static List<UserApps> GetApp(Guid id)
         {
+            logger.Debug("[UserHelper]: GetApp");
             List<UserApps> result = new List<UserApps>();
 
             UserEntity user = RepositoryContext.Current.Users.GetById(id);
@@ -178,6 +193,7 @@ namespace Wlog.Web.Code.Helpers
 
         public static IEnumerable<SelectListItem> GetAllUserProfiles()
         {
+            logger.Debug("[UserHelper]: GetAllUserProfiles");
             var profiles = from a in RepositoryContext.Current.Profiles.GetAllProfiles()
                            select new SelectListItem
                            {
@@ -190,11 +206,13 @@ namespace Wlog.Web.Code.Helpers
 
         public static bool IsUserAdmin(Guid profileGuid)
         {
+            logger.Debug("[UserHelper]: IsUserAdmin");
             return GetProfileByName("admin").Id == profileGuid;
         }
 
         private static ProfilesEntity GetProfileByName(string name)
         {
+            logger.Debug("[UserHelper]: GetProfileByName");
             return RepositoryContext.Current.Profiles.GetAllProfiles().SingleOrDefault(x => x.ProfileName.ToLower() == name);
         }
     }

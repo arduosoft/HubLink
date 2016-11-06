@@ -16,11 +16,13 @@ using System.Threading.Tasks;
 using Wlog.Library.BLL.Interfaces;
 using MongoDB.Bson;
 using Wlog.BLL.Entities;
+using NLog;
 
 namespace Wlog.Library.BLL.DataBase
 {
     internal class UnitOfMongo:IUnitOfWork
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         private IMongoDatabase database;
         private IMongoCollection<IEntityBase> collection;
 
@@ -47,7 +49,7 @@ namespace Wlog.Library.BLL.DataBase
 
         public void SaveOrUpdate(IEntityBase entity)
         {
-
+            logger.Debug("[NoSQL] save or update");
             collection = GetCollection(entity);
             if (entity.Id == null || (new Guid("{00000000-0000-0000-0000-000000000000}").CompareTo(entity.Id)==0))
             {
@@ -62,6 +64,8 @@ namespace Wlog.Library.BLL.DataBase
 
         public void Delete(IEntityBase entity)
         {
+
+            logger.Debug("[NoSQL] delete ID"+entity.GetType().ToString()+" "+entity.Id);
             collection = GetCollection(entity);
             collection.DeleteOne(x=>x.Id==entity.Id);
         }

@@ -18,6 +18,7 @@ namespace Wlog.Library.Scheduler
     {
         public bool Authorize(IDictionary<string, object> owinEnvironment)
         {
+            //TODO: integrate with security
             return true;
         }
     }
