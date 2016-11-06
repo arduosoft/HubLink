@@ -156,6 +156,10 @@
       <Project>{3f2b62ed-a3b2-4137-9033-266be27d8d1d}</Project>
       <Name>Wlog.Clients.Log4Net</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WLog.Clients.NLog\Wlog.Clients.NLog.csproj">
+      <Project>{96b4c016-6835-4c7b-a9d0-c5bbece53ae7}</Project>
+      <Name>Wlog.Clients.NLog</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Wlog.Clients\Wlog.Clients.csproj">
       <Project>{c3f67dfe-914a-4852-9eae-82b401ab70cb}</Project>
       <Name>Wlog.Clients</Name>
@@ -163,10 +167,6 @@
     <ProjectReference Include="..\Wlog.Library\Wlog.Library.csproj">
       <Project>{e331b212-3af2-468d-9a5e-519162b2c8d1}</Project>
       <Name>Wlog.Library</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Wlog.Loggers\Wlog.Clients.NLog.csproj">
-      <Project>{96b4c016-6835-4c7b-a9d0-c5bbece53ae7}</Project>
-      <Name>Wlog.Clients.NLog</Name>
     </ProjectReference>
     <ProjectReference Include="..\Wlog.Web\Wlog.Web.csproj">
       <Project>{915395a4-2e47-470c-b91c-12964ce0c644}</Project>
