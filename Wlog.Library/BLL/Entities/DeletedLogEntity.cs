@@ -38,6 +38,7 @@ namespace Wlog.BLL.Entities
                 this.Id = value;
             }
         }
+
         public virtual Guid ApplictionId { get; set; }
     }
 }

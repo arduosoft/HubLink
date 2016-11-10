@@ -99,20 +99,20 @@ namespace Wlog.Web.Controllers
                 SortOrder = sortOrder,
                 SortBy = sortBy,
                 SerchMessage = serchMessage,
-                
+
 
             };
             MembershipUser current = Membership.GetUser();
             mm.Apps = UserHelper.GetAppsForUser(current.UserName);
-            
 
-           // mm.Items = LogHelper.GetLogs(mm.ApplicationId, mm.SortOrder, mm.SortBy, mm.SerchMessage??"", 30, page ?? 1);
+
+            // mm.Items = LogHelper.GetLogs(mm.ApplicationId, mm.SortOrder, mm.SortBy, mm.SerchMessage??"", 30, page ?? 1);
 
             return View(mm);
         }
 
 
-        public JsonResult Search(Guid? applicationId,  string sortOrder, string sortBy, string serchMessage, int page, int pageSize)
+        public JsonResult Search(Guid? applicationId, string sortOrder, string sortBy, string serchMessage, int page, int pageSize)
         {
 
             logger.Debug("[Private]: Search");
@@ -120,15 +120,15 @@ namespace Wlog.Web.Controllers
             var result = new JsonResult();
 
             IPagedList list = LogHelper.GetLogs(applicationId.Value, sortOrder, sortBy, serchMessage ?? "", pageSize, page);
-           
-        result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
-            
-            result.Data = new  
+
+            result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+
+            result.Data = new
             {
-                draw= Request["draw"],
-                recordsTotal=list.TotalItemCount,
-                recordsFiltered= list.TotalItemCount,
-                data =list
+                draw = Request["draw"],
+                recordsTotal = list.TotalItemCount,
+                recordsFiltered = list.TotalItemCount,
+                data = list
             };
             return result;
         }
@@ -155,7 +155,7 @@ namespace Wlog.Web.Controllers
         [AuthorizeRolesAttribute(Constants.Roles.Admin)]
         public ActionResult EditUser(Guid id)
         {
-            logger.Debug("[Private]: EditUser({0})",id);
+            logger.Debug("[Private]: EditUser({0})", id);
             UserEntity user = UserHelper.GetById(id);
             ViewBag.Title = user.Username;
             EditUser model = new EditUser();
@@ -255,7 +255,7 @@ namespace Wlog.Web.Controllers
         [AuthorizeRolesAttribute(Constants.Roles.Admin)]
         public ActionResult DeleteUser(Guid id)
         {
-            logger.Debug("[Private]: DeleteUser({0})",id);
+            logger.Debug("[Private]: DeleteUser({0})", id);
 
             UserEntity user = UserHelper.GetById(id);
             UserData result = new UserData
@@ -357,7 +357,7 @@ namespace Wlog.Web.Controllers
         [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.CreateApp)]
         public ActionResult EditApp(Guid id)
         {
-            logger.Debug("[Private]: EditApp({0})",id);
+            logger.Debug("[Private]: EditApp({0})", id);
             return View(ApplicationHelper.GetById(id));
         }
 
@@ -393,7 +393,7 @@ namespace Wlog.Web.Controllers
         [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.CreateApp)]
         public ActionResult DeleteApp(Guid id)
         {
-            logger.Debug("[Private]: DeleteApp({0})",id);
+            logger.Debug("[Private]: DeleteApp({0})", id);
             return View(ApplicationHelper.GetById(id));
         }
 
@@ -458,7 +458,6 @@ namespace Wlog.Web.Controllers
         }
         #endregion
 
-
         #region Info
 
         //Get Private/info
@@ -468,6 +467,16 @@ namespace Wlog.Web.Controllers
             var model = InfoHelper.GetInfoPage(InfoPageConfigurator.Configuration);
             return View(model);
         }
+        #endregion
+
+        #region Background Jobs
+
+        public ActionResult BackgroundJobs()
+        {
+            var model = InfoHelper.GetInfoPage(InfoPageConfigurator.Configuration);
+            return View(model);
+        }
+
         #endregion
     }
 }

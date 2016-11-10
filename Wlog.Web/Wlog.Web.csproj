@@ -476,6 +476,7 @@
     <Content Include="Web.AppHarbor.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
+    <Content Include="Views\Private\BackgroundJobs.cshtml" />
     <None Include="Wlog.Library.licenseheader" />
   </ItemGroup>
   <ItemGroup>
