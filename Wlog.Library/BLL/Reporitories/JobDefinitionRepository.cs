@@ -54,5 +54,26 @@
 
             return jobDefinitions;
         }
+
+        public JobDefinitionEntity GetJobDefinitionByName(string jobName)
+        {
+            JobDefinitionEntity jobDefinition = null;
+
+            try
+            {
+                using (IUnitOfWork uow = BeginUnitOfWork())
+                {
+                    uow.BeginTransaction();
+                    jobDefinition = uow.Query<JobDefinitionEntity>().FirstOrDefault(x => x.Name == jobName);
+                    uow.Commit();
+                }
+            }
+            catch (Exception err)
+            {
+                logger.Error(err);
+            }
+
+            return jobDefinition;
+        }
     }
 }

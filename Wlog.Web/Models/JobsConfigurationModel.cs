@@ -9,6 +9,9 @@ namespace Wlog.Web.Models
     public class JobsConfigurationModel
     {
         [Required]
+        public virtual Guid JobInstanceId { get; set; }
+
+        [Required]
         public virtual string JobName { get; set; }
 
         [Required]

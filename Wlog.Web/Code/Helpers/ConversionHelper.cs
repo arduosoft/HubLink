@@ -102,12 +102,55 @@ namespace Wlog.Web.Code.Helpers
 
         public static List<JobsConfigurationModel> GetAllConfiguredJobs()
         {
-            logger.Debug("[ConversionHelper]: GetAllConfiguredJobs");
-            List<JobsConfigurationModel> result = new List<JobsConfigurationModel>();
-            var jobDefintions = RepositoryContext.Current.JobDefinition.GetAllJobs();
-            var jobInstances = RepositoryContext.Current.JobInstance.GetAllJobs();
+            try
+            {
+                logger.Debug("[ConversionHelper]: GetAllConfiguredJobs");
+                var jobDefintions = RepositoryContext.Current.JobDefinition.GetAllJobs();
+                var jobInstances = RepositoryContext.Current.JobInstance.GetAllJobs();
 
-            return result;
+                var result = (from a in jobDefintions
+                              join b in jobInstances
+                              on a.Id equals b.JobDefinitionID
+                              select new JobsConfigurationModel()
+                              {
+                                  Active = b.Active,
+                                  CronExpression = b.CronExpression,
+                                  Description = a.Description,
+                                  JobName = a.Name,
+                                  JobInstanceId = b.Id
+                              }).ToList();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex);
+                return new List<JobsConfigurationModel>();
+            }
+        }
+
+        public static bool UpdateJobInstance(JobsConfigurationModel jobModel)
+        {
+            try
+            {
+                var jobInstance = RepositoryContext.Current.JobInstance.GetJobInstanceById(jobModel.JobInstanceId);
+
+                if (jobInstance == null)
+                {
+                    return false;
+                }
+
+                jobInstance.Active = jobModel.Active;
+                jobInstance.CronExpression = jobModel.CronExpression;
+
+                RepositoryContext.Current.JobInstance.Save(jobInstance);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex);
+                return false;
+            }
         }
     }
 }

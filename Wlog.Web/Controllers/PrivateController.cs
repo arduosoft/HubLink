@@ -473,45 +473,14 @@ namespace Wlog.Web.Controllers
 
         public ActionResult BackgroundJobs()
         {
-            var models = new List<JobsConfigurationModel> {
-                new JobsConfigurationModel()
-                {
-                    Active = true,
-                    CronExpression = "0*///",
-                    Description = "Test descirption",
-                    JobName = "Move to bin job"
-                },
-                new JobsConfigurationModel()
-                {
-                    Active = true,
-                    CronExpression = "0*///5555",
-                    Description = "Test descirptionffffffffffffffffffffffffff",
-                    JobName = "Delete logs job"
-                },
-            };
-
+            var models = ConversionHelper.GetAllConfiguredJobs();
             return View(models);
         }
 
-        public ActionResult EditBackgroundJobs(JobsConfigurationModel jobs)
+        public ActionResult EditBackgroundJobs(JobsConfigurationModel job)
         {
-            var models = new List<JobsConfigurationModel> {
-                new JobsConfigurationModel()
-                {
-                    Active = true,
-                    CronExpression = "0*///",
-                    Description = "Test descirption",
-                    JobName = "Move to bin job"
-                },
-                new JobsConfigurationModel()
-                {
-                    Active = true,
-                    CronExpression = "0*///5555",
-                    Description = "Test descirptionffffffffffffffffffffffffff",
-                    JobName = "Delete logs job"
-                },
-            };
-
+            ConversionHelper.UpdateJobInstance(job);
+            var models = ConversionHelper.GetAllConfiguredJobs();
             return View(models);
         }
 

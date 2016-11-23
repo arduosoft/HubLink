@@ -52,7 +52,7 @@ namespace Wlog.Web.Code.Helpers
             }
         }
 
-        private static RolesEntity InsertRoleIfNotExists(string rolename, bool global,bool application)
+        private static RolesEntity InsertRoleIfNotExists(string rolename, bool global, bool application)
         {
             _logger.Debug("[SystemDataHelper]: InsertRoleIfNotExists");
 
@@ -60,7 +60,7 @@ namespace Wlog.Web.Code.Helpers
 
             if (role == null)
             {
-                role = new RolesEntity() { RoleName = rolename, GlobalScope=global,ApplicationScope=application };
+                role = new RolesEntity() { RoleName = rolename, GlobalScope = global, ApplicationScope = application };
                 RepositoryContext.Current.Roles.Save(role);
             }
 
@@ -88,27 +88,24 @@ namespace Wlog.Web.Code.Helpers
 
             try
             {
-                JobDefinitionEntity jobDefinition = new JobDefinitionEntity()
+                // insert empty bin job
+                var jobDefinition = InsertJobDefinition(Properties.Resources.EmptyBinJobName, Properties.Resources.EmptyBinJobDescirption,
+                   typeof(Wlog.Library.Scheduler.Jobs.EmptyBinJob).FullName);
+
+                if (jobDefinition != null)
                 {
-                    Name = "EmptyBinJob",
-                    Description = "This job physically deletes entries, it will take as input: #dtk=number of days to keep.",
-                    FullClassname = "Wlog.Library.Scheduler.Jobs.EmptyBinJob",
-                    Instantiable = false,
-                    System = true
-                };
+                    InsertJobInstance(jobDefinition, "0 0 12 * * ?");
+                }
 
-                RepositoryContext.Current.JobDefinition.Save(jobDefinition);
 
-                jobDefinition = new JobDefinitionEntity()
+                // insert move to bin job
+                jobDefinition = InsertJobDefinition(Properties.Resources.MoveToBinJobName, Properties.Resources.MoveToBinJobDescription,
+                   typeof(Wlog.Library.Scheduler.Jobs.MoveToBinJob).FullName);
+
+                if (jobDefinition != null)
                 {
-                    Name = "MoveToBinJob",
-                    Description = "This job will take as input: #rtk=number of rows to keep, #dtk=number of days to keep.Only first #rtk records with SourceDate>today-#dtk have to been left into original table. ",
-                    FullClassname = "Wlog.Library.Scheduler.Jobs.MoveToBinJob",
-                    Instantiable = false,
-                    System = true
-                };
-
-                RepositoryContext.Current.JobDefinition.Save(jobDefinition);
+                    InsertJobInstance(jobDefinition, "0 0 12 * * ?");
+                }
             }
             catch (Exception ex)
             {
@@ -116,17 +113,61 @@ namespace Wlog.Web.Code.Helpers
             }
         }
 
+        private static JobDefinitionEntity InsertJobDefinition(string name, string description, string fullClassName)
+        {
+            var job = RepositoryContext.Current.JobDefinition.GetJobDefinitionByName(name);
+
+            if (job == null)
+            {
+                JobDefinitionEntity jobDefinition = new JobDefinitionEntity()
+                {
+                    Name = name,
+                    Description = description,
+                    FullClassname = fullClassName,
+                    Instantiable = false,
+                    System = true
+                };
+                RepositoryContext.Current.JobDefinition.Save(jobDefinition);
+
+                return jobDefinition;
+            }
+
+            return null;
+        }
+
+        private static JobInstanceEntity InsertJobInstance(JobDefinitionEntity jobDefinition, string cron)
+        {
+            var job = RepositoryContext.Current.JobInstance.GetJobInstanceByDefinitionAndCron(cron, jobDefinition);
+
+            if (job == null)
+            {
+                JobInstanceEntity jobInstance = new JobInstanceEntity()
+                {
+                    Active = true,
+                    ActivationDate = DateTime.UtcNow,
+                    JobDefinitionID = jobDefinition.Id,
+                    CronExpression = cron
+                };
+
+                RepositoryContext.Current.JobInstance.Save(jobInstance);
+
+                return jobInstance;
+            }
+
+            return null;
+        }
+
         public static void InsertRolesAndProfiles()
         {
             _logger.Debug("[SystemDataHelper]: InsertRolesAndProfiles");
 
             // create roles
-            var adminRole = InsertRoleIfNotExists(Constants.Roles.Admin,true,false);
+            var adminRole = InsertRoleIfNotExists(Constants.Roles.Admin, true, false);
             var appWriter = InsertRoleIfNotExists(Constants.Roles.AppWriter, true, false);
             var createApp = InsertRoleIfNotExists(Constants.Roles.CreateApp, true, false);
             var login = InsertRoleIfNotExists(Constants.Roles.Login, true, false);
 
-            var readLog = InsertRoleIfNotExists(Constants.Roles.ReadLog,false,true);
+            var readLog = InsertRoleIfNotExists(Constants.Roles.ReadLog, false, true);
             var writeLog = InsertRoleIfNotExists(Constants.Roles.WriteLog, false, true);
 
             // create profiles

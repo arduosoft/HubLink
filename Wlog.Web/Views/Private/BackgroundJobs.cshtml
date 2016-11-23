@@ -8,8 +8,8 @@
 <form action="/Controler/ActionStockNew" method="post" id="form">
     <div class="container">
         <div class="row">
-            <div class="col-md-2">Job name</div>
-            <div class="col-md-6">Description</div>
+            <div class="col-md-2"><h3>Job name</h3></div>
+            <div class="col-md-6"><h3>Description</h3></div>
         </div>
         <br />
         @foreach (var item in Model)
@@ -35,7 +35,8 @@
                                Active = item.Active,
                                CronExpression = item.CronExpression,
                                Description = item.Description,
-                               JobName = item.JobName
+                               JobName = item.JobName,
+                               JobInstanceId = item.JobInstanceId
                            }, new { @class = "btn btn-success" })
                     </div>
                 </div>

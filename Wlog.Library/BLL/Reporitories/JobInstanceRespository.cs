@@ -53,5 +53,47 @@
 
             return jobInstances;
         }
+
+        public JobInstanceEntity GetJobInstanceById(Guid jobId)
+        {
+            JobInstanceEntity jobInstance = null;
+
+            try
+            {
+                using (IUnitOfWork uow = BeginUnitOfWork())
+                {
+                    uow.BeginTransaction();
+                    jobInstance = uow.Query<JobInstanceEntity>().FirstOrDefault(x => x.Id == jobId);
+                    uow.Commit();
+                }
+            }
+            catch (Exception err)
+            {
+                logger.Error(err);
+            }
+
+            return jobInstance;
+        }
+
+        public JobInstanceEntity GetJobInstanceByDefinitionAndCron(string cron, JobDefinitionEntity jobDefinition)
+        {
+            JobInstanceEntity job = null;
+
+            try
+            {
+                using (IUnitOfWork uow = BeginUnitOfWork())
+                {
+                    uow.BeginTransaction();
+                    job = uow.Query<JobInstanceEntity>().FirstOrDefault(x => x.JobDefinitionID == jobDefinition.Id && x.CronExpression == cron);
+                    uow.Commit();
+                }
+            }
+            catch (Exception err)
+            {
+                logger.Error(err);
+            }
+
+            return job;
+        }
     }
 }
