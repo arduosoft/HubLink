@@ -473,8 +473,46 @@ namespace Wlog.Web.Controllers
 
         public ActionResult BackgroundJobs()
         {
-            var model = InfoHelper.GetInfoPage(InfoPageConfigurator.Configuration);
-            return View(model);
+            var models = new List<JobsConfigurationModel> {
+                new JobsConfigurationModel()
+                {
+                    Active = true,
+                    CronExpression = "0*///",
+                    Description = "Test descirption",
+                    JobName = "Move to bin job"
+                },
+                new JobsConfigurationModel()
+                {
+                    Active = true,
+                    CronExpression = "0*///5555",
+                    Description = "Test descirptionffffffffffffffffffffffffff",
+                    JobName = "Delete logs job"
+                },
+            };
+
+            return View(models);
+        }
+
+        public ActionResult EditBackgroundJobs(JobsConfigurationModel jobs)
+        {
+            var models = new List<JobsConfigurationModel> {
+                new JobsConfigurationModel()
+                {
+                    Active = true,
+                    CronExpression = "0*///",
+                    Description = "Test descirption",
+                    JobName = "Move to bin job"
+                },
+                new JobsConfigurationModel()
+                {
+                    Active = true,
+                    CronExpression = "0*///5555",
+                    Description = "Test descirptionffffffffffffffffffffffffff",
+                    JobName = "Delete logs job"
+                },
+            };
+
+            return View(models);
         }
 
         #endregion

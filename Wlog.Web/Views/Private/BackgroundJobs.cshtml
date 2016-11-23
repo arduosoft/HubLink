@@ -1,6 +1,46 @@
-﻿@{
+﻿@model IEnumerable<Wlog.Web.Models.JobsConfigurationModel>
+@{
     ViewBag.Title = "BackgroundJobs";
     Layout = "~/Views/Shared/_LayoutInternal.cshtml";
 }
 
 <h2>BackgroundJobs</h2>
+<form action="/Controler/ActionStockNew" method="post" id="form">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2">Job name</div>
+            <div class="col-md-6">Description</div>
+        </div>
+        <br />
+        @foreach (var item in Model)
+        {
+            <div class="row">
+                <div class="col-md-2">@item.JobName</div>
+                <div class="col-md-4">
+                    @item.Description
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="input-group" style="width: 100%">
+                            @Html.TextBoxFor(m => item.CronExpression, new { @class = "form-control" })
+                            <span class="input-group-addon">@Html.CheckBoxFor(m => item.Active)</span>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <button type="button" class="btn btn-danger">Run job</button>
+                        @Html.ActionLink("Update", "EditBackgroundJobs",
+                           new
+                           {
+                               Active = item.Active,
+                               CronExpression = item.CronExpression,
+                               Description = item.Description,
+                               JobName = item.JobName
+                           }, new { @class = "btn btn-success" })
+                    </div>
+                </div>
+            </div>
+            <br />
+        }
+    </div>
+</form>

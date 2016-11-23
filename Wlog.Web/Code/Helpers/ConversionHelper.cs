@@ -13,6 +13,7 @@ using Wlog.BLL.Classes;
 using Wlog.BLL.Entities;
 using Wlog.Library.BLL.Reporitories;
 using Wlog.Web.Models;
+using System.Linq;
 
 namespace Wlog.Web.Code.Helpers
 {
@@ -70,15 +71,14 @@ namespace Wlog.Web.Code.Helpers
             try
             {
                 Guid searchGuid = new Guid(log.ApplicationKey);
-               RepositoryContext.Current.Applications.GetById(searchGuid);
+                RepositoryContext.Current.Applications.GetById(searchGuid);
             }
-            catch(Exception err)
+            catch (Exception err)
             {
                 logger.Error(err);
             }
 
             return result;
-
         }
 
 
@@ -97,6 +97,16 @@ namespace Wlog.Web.Code.Helpers
 
                 result.Add(lm);
             }
+            return result;
+        }
+
+        public static List<JobsConfigurationModel> GetAllConfiguredJobs()
+        {
+            logger.Debug("[ConversionHelper]: GetAllConfiguredJobs");
+            List<JobsConfigurationModel> result = new List<JobsConfigurationModel>();
+            var jobDefintions = RepositoryContext.Current.JobDefinition.GetAllJobs();
+            var jobInstances = RepositoryContext.Current.JobInstance.GetAllJobs();
+
             return result;
         }
     }

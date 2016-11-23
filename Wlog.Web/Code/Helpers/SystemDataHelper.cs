@@ -17,11 +17,11 @@ namespace Wlog.Web.Code.Helpers
 {
     public static class SystemDataHelper
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
 
         public static void EnsureSampleData()
         {
-            logger.Debug("[SystemDataHelper]: EnsureSampleData");
+            _logger.Debug("[SystemDataHelper]: EnsureSampleData");
 
             List<UserEntity> userList = RepositoryContext.Current.Users.GetAll();
 
@@ -54,7 +54,7 @@ namespace Wlog.Web.Code.Helpers
 
         private static RolesEntity InsertRoleIfNotExists(string rolename, bool global,bool application)
         {
-            logger.Debug("[SystemDataHelper]: InsertRoleIfNotExists");
+            _logger.Debug("[SystemDataHelper]: InsertRoleIfNotExists");
 
             RolesEntity role = RepositoryContext.Current.Roles.GetRoleByName(rolename);
 
@@ -69,7 +69,7 @@ namespace Wlog.Web.Code.Helpers
 
         private static ProfilesEntity InsertProfileIfNotExists(string profileName)
         {
-            logger.Debug("[SystemDataHelper]: InsertProfileIfNotExists");
+            _logger.Debug("[SystemDataHelper]: InsertProfileIfNotExists");
 
             ProfilesEntity profile = RepositoryContext.Current.Profiles.GetProfileByName(profileName);
 
@@ -82,9 +82,43 @@ namespace Wlog.Web.Code.Helpers
             return profile;
         }
 
+        public static void InsertJobsDefinitions()
+        {
+            _logger.Debug("[SystemDataHelper]: InsertJobsDefinitions");
+
+            try
+            {
+                JobDefinitionEntity jobDefinition = new JobDefinitionEntity()
+                {
+                    Name = "EmptyBinJob",
+                    Description = "This job physically deletes entries, it will take as input: #dtk=number of days to keep.",
+                    FullClassname = "Wlog.Library.Scheduler.Jobs.EmptyBinJob",
+                    Instantiable = false,
+                    System = true
+                };
+
+                RepositoryContext.Current.JobDefinition.Save(jobDefinition);
+
+                jobDefinition = new JobDefinitionEntity()
+                {
+                    Name = "MoveToBinJob",
+                    Description = "This job will take as input: #rtk=number of rows to keep, #dtk=number of days to keep.Only first #rtk records with SourceDate>today-#dtk have to been left into original table. ",
+                    FullClassname = "Wlog.Library.Scheduler.Jobs.MoveToBinJob",
+                    Instantiable = false,
+                    System = true
+                };
+
+                RepositoryContext.Current.JobDefinition.Save(jobDefinition);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+            }
+        }
+
         public static void InsertRolesAndProfiles()
         {
-            logger.Debug("[SystemDataHelper]: InsertRolesAndProfiles");
+            _logger.Debug("[SystemDataHelper]: InsertRolesAndProfiles");
 
             // create roles
             var adminRole = InsertRoleIfNotExists(Constants.Roles.Admin,true,false);

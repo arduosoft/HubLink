@@ -11,9 +11,8 @@ using Wlog.Library.BLL.Interfaces;
 
 namespace Wlog.Library.BLL.Reporitories
 {
-    public class IndexRepository: IRepository
+    public class IndexRepository : IRepository
     {
-
         public static Logger logger { get { return LogManager.GetCurrentClassLogger(); } }
 
         public static string BasePath { get; set; }

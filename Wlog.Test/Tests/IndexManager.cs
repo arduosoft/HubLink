@@ -49,6 +49,7 @@ namespace Wlog.Test.Tests
             doc.Add("content", "random" + DateTime.Now.Ticks);
             return doc;
         }
+
         [Fact, TestPriority(1) Trait("Category", "ExcludedFromCI")]
         public void TestIndexRemove()
         {

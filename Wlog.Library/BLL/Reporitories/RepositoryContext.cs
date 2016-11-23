@@ -31,7 +31,12 @@ namespace Wlog.Library.BLL.Reporitories
         public SystemRepository System { get; private set; }
 
         public IndexRepository Index { get; private set; }
+
         public DeletedLogRepository DeletedLogs { get; private set; }
+
+        public JobDefinitionRepository JobDefinition { get; private set; }
+
+        public JobInstanceRespository JobInstance { get; private set; }
 
         private static RepositoryContext current;
 
@@ -55,14 +60,13 @@ namespace Wlog.Library.BLL.Reporitories
                     current.System = new SystemRepository();
                     current.Profiles = new ProfilesRepository();
                     current.Index = new IndexRepository();
-                    
+                    current.JobDefinition = new JobDefinitionRepository();
                     current.DeletedLogs = new DeletedLogRepository();
+                    current.JobInstance = new JobInstanceRespository();
                 }
 
                 return current;
             }
         }
-
-       
     }
 }

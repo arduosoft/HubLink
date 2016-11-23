@@ -38,55 +38,61 @@ namespace Wlog.Web
 
     public class WebApiApplication : System.Web.HttpApplication
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
 
         protected void Application_Start()
         {
-            logger.Info("Application starts");
-
-            logger.Info("Registering configuration");
-            AreaRegistration.RegisterAllAreas();
-
-            WebApiConfig.Register(System.Web.Http.GlobalConfiguration.Configuration);
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
-
-
-            logger.Info("Apply schema changes");
-            RepositoryContext.Current.System.ApplySchemaChanges();
-
-            logger.Info("Setup info config");
-
-            InfoPageConfigurator.Configure(c => 
+            try
             {
-                c.ApplicationName = "Wlog";
-                
-            });
+                _logger.Info("Application starts");
 
-            logger.Info("Start background jobs");
+                _logger.Info("Registering configuration");
+                AreaRegistration.RegisterAllAreas();
 
-            HangfireBootstrapper.Instance.Start();
+                WebApiConfig.Register(System.Web.Http.GlobalConfiguration.Configuration);
+                FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+                RouteConfig.RegisterRoutes(RouteTable.Routes);
+                BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            logger.Info("Setup index configuration");
-            IndexRepository.BasePath = HttpContext.Current.Server.MapPath("~/App_Data/Index/");
+
+                _logger.Info("Apply schema changes");
+                RepositoryContext.Current.System.ApplySchemaChanges();
+
+                _logger.Info("Setup info config");
+
+                InfoPageConfigurator.Configure(c =>
+                {
+                    c.ApplicationName = "Wlog";
+
+                });
+
+                _logger.Info("Start background jobs");
+
+                HangfireBootstrapper.Instance.Start();
+
+                _logger.Info("Setup index configuration");
+                IndexRepository.BasePath = HttpContext.Current.Server.MapPath("~/App_Data/Index/");
 
 
-            logger.Info("install missing data");
-            SystemDataHelper.InsertRolesAndProfiles();
-            SystemDataHelper.EnsureSampleData();
+                _logger.Info("install missing data");
+                SystemDataHelper.InsertRolesAndProfiles();
+                SystemDataHelper.EnsureSampleData();
+                SystemDataHelper.InsertJobsDefinitions();
 
-            logger.Info("application started");
+                _logger.Info("application started");
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+            }
         }
 
         protected void Application_End(object sender, EventArgs e)
         {
-            logger.Info("application end");
+            _logger.Info("application end");
 
-            logger.Info("stopping HangfireBootstrapper");
+            _logger.Info("stopping HangfireBootstrapper");
             HangfireBootstrapper.Instance.Stop();
-
-
         }
     }
 }
