@@ -477,11 +477,12 @@ namespace Wlog.Web.Controllers
             return View(models);
         }
 
-        public ActionResult EditBackgroundJobs(JobsConfigurationModel job)
+        [HttpPost]
+        public ActionResult EditBackgroundJobs(JobsConfigurationModel item)
         {
-            ConversionHelper.UpdateJobInstance(job);
+            ConversionHelper.UpdateJobInstance(item);
             var models = ConversionHelper.GetAllConfiguredJobs();
-            return View(models);
+            return View("BackgroundJobs", models);
         }
 
         #endregion

@@ -5,15 +5,18 @@
 }
 
 <h2>BackgroundJobs</h2>
-<form action="/Controler/ActionStockNew" method="post" id="form">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-2"><h3>Job name</h3></div>
-            <div class="col-md-6"><h3>Description</h3></div>
-        </div>
-        <br />
-        @foreach (var item in Model)
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"><h3>Job name</h3></div>
+        <div class="col-md-6"><h3>Description</h3></div>
+    </div>
+    <br />
+    @using (Html.BeginForm("EditBackgroundJobs", "Private", FormMethod.Post, new { id = "EditBackgroundJobsForm" }))
+    {
+        foreach (var item in Model)
         {
+
             <div class="row">
                 <div class="col-md-2">@item.JobName</div>
                 <div class="col-md-4">
@@ -21,27 +24,21 @@
                 </div>
                 <div class="col-md-4">
                     <div class="row">
+                        @Html.HiddenFor(m => item.JobInstanceId)
                         <div class="input-group" style="width: 100%">
                             @Html.TextBoxFor(m => item.CronExpression, new { @class = "form-control" })
                             <span class="input-group-addon">@Html.CheckBoxFor(m => item.Active)</span>
+                            @*@Html.EditorFor(m => item.Active)*@
                         </div>
                     </div>
                     <br />
                     <div class="row">
                         <button type="button" class="btn btn-danger">Run job</button>
-                        @Html.ActionLink("Update", "EditBackgroundJobs",
-                           new
-                           {
-                               Active = item.Active,
-                               CronExpression = item.CronExpression,
-                               Description = item.Description,
-                               JobName = item.JobName,
-                               JobInstanceId = item.JobInstanceId
-                           }, new { @class = "btn btn-success" })
+                        <button class="btn btn-success" type="submit">Update</button>
                     </div>
                 </div>
             </div>
             <br />
         }
-    </div>
-</form>
+    }
+</div>
