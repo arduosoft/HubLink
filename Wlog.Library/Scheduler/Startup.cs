@@ -39,8 +39,6 @@ namespace Wlog.Library.Scheduler
 
             app.UseHangfireDashboard("/private/hangfire", options);
             app.UseHangfireServer();
-
-            
         }
     }
 }

@@ -473,15 +473,24 @@ namespace Wlog.Web.Controllers
 
         public ActionResult BackgroundJobs()
         {
-            var models = ConversionHelper.GetAllConfiguredJobs();
+            var models = RepositoryContext.Current.JobDefinition.GetAllDefinitionsAndInstances();
+
             return View(models);
         }
 
         [HttpPost]
-        public ActionResult EditBackgroundJobs(JobsConfigurationModel item)
+        public ActionResult EditBackgroundJobs(JobConfiguration item)
         {
-            ConversionHelper.UpdateJobInstance(item);
-            var models = ConversionHelper.GetAllConfiguredJobs();
+            try
+            {
+                ConversionHelper.UpdateJobInstance(item);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Error", ex.Message);
+            }
+
+            var models = RepositoryContext.Current.JobDefinition.GetAllDefinitionsAndInstances();
             return View("BackgroundJobs", models);
         }
 

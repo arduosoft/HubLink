@@ -113,6 +113,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -129,6 +130,7 @@
     <Compile Include="BLL\Classes\Constants.cs" />
     <Compile Include="BLL\Classes\EntityRepository.cs" />
     <Compile Include="BLL\Classes\InfoPageConfiguration.cs" />
+    <Compile Include="BLL\Classes\JobConfiguration.cs" />
     <Compile Include="BLL\Configuration\InfoPageConfigurator.cs" />
     <Compile Include="BLL\Classes\InfoPageModel.cs" />
     <Compile Include="BLL\Classes\LogMessage.cs" />
@@ -196,6 +198,7 @@
     <Compile Include="Scheduler\HangFireAuthorizationFilter.cs" />
     <Compile Include="Scheduler\HangfireBootstrapper.cs" />
     <Compile Include="Scheduler\Job.cs" />
+    <Compile Include="Scheduler\JobConfigurationHelper.cs" />
     <Compile Include="Scheduler\Jobs\EmptyBinJob.cs" />
     <Compile Include="Scheduler\Jobs\MoveToBinJob.cs" />
     <Compile Include="Scheduler\Startup.cs" />

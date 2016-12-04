@@ -55,6 +55,27 @@
             return jobDefinitions;
         }
 
+        public IEnumerable<JobConfiguration> GetAllDefinitionsAndInstances()
+        {
+            var jobDefintions = GetAllJobs();
+            var jobInstances = RepositoryContext.Current.JobInstance.GetAllJobs();
+
+            var result = (from a in jobDefintions
+                          join b in jobInstances
+                          on a.Id equals b.JobDefinitionID
+                          select new JobConfiguration
+                          {
+                              Active = b.Active,
+                              CronExpression = b.CronExpression,
+                              JobName = a.Name,
+                              JobInstanceId = b.Id,
+                              Description = a.Description,
+                              FullClassName = a.FullClassname
+                          }).ToList();
+
+            return result;
+        }
+
         public JobDefinitionEntity GetJobDefinitionByName(string jobName)
         {
             JobDefinitionEntity jobDefinition = null;

@@ -25,6 +25,12 @@ namespace Wlog.Library.Scheduler.Jobs
             _daysToKeep = daysToKeep;
         }
 
+        public EmptyBinJob()
+        {
+            _rowsToKeep = 1000000;
+            _daysToKeep = 30;
+        }
+
         public override bool Execute()
         {
             try
