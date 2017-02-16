@@ -21,6 +21,9 @@ using Wlog.Library.BLL.DataBase;
 
 namespace Wlog.Library.BLL.Reporitories
 {
+    /// <summary>
+    /// Repository to store applications
+    /// </summary>
     public class ApplicationRepository: EntityRepository
     {
 

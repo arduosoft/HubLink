@@ -17,6 +17,9 @@ using Wlog.Library.BLL.Interfaces;
 
 namespace Wlog.BLL.Entities
 {
+    /// <summary>
+    /// Entity that represent a log entity
+    /// </summary>
     public class LogEntity : IEntityBase
     {
         //TODO: Extend this entity by introducing field like:
@@ -27,7 +30,13 @@ namespace Wlog.BLL.Entities
         -potentially every ${param} defined in NLog; in practise we can take a look to https://github.com/nlog/nlog/wiki/Layout-Renderers and include what it's useful
         */
 
+        /// <summary>
+        /// Date when log is stored in system
+        /// </summary>
         public virtual DateTime CreateDate { get; set; }
+        /// <summary>
+        /// Date when log is updated 
+        /// </summary>
         public virtual DateTime UpdateDate { get; set; }
         public virtual DateTime SourceDate { get; set; }
         public  virtual string Message { get; set; }

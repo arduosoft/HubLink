@@ -10,6 +10,9 @@ using Wlog.Library.BLL.Interfaces;
 
 namespace Wlog.Library.BLL.Classes
 {
+    /// <summary>
+    /// Repository to store entities
+    /// </summary>
     public abstract class EntityRepository : IRepository
     {
         private static UnitFactory unitFactory;

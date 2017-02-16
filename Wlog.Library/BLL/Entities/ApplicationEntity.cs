@@ -17,6 +17,9 @@ using Wlog.Library.BLL.Interfaces;
 
 namespace Wlog.BLL.Entities
 {
+    /// <summary>
+    /// Entity used for store application
+    /// </summary>
     public class ApplicationEntity : IEntityBase
     {
         public override Guid Id
@@ -31,16 +34,34 @@ namespace Wlog.BLL.Entities
             }
         }
 
+        /// <summary>
+        /// Id of application
+        /// </summary>
         public virtual Guid IdApplication { get; set; }
 
+        /// <summary>
+        /// name of application
+        /// </summary>
         public virtual string ApplicationName { get; set; }
 
+        /// <summary>
+        /// Flag; true if application is active
+        /// </summary>
         public virtual bool IsActive { get; set; }
 
+        /// <summary>
+        /// Date since application is runnning
+        /// </summary>
         public virtual DateTime StartDate { get; set; }
 
+        /// <summary>
+        /// Date of application dismission
+        /// </summary>
         public virtual System.Nullable<DateTime> EndDate { get; set; }
 
+        /// <summary>
+        /// key used to trust client calls
+        /// </summary>
         public virtual Guid PublicKey { get; set; }
 
         public ApplicationEntity()

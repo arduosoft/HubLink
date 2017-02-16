@@ -14,6 +14,9 @@ using System.Threading.Tasks;
 
 namespace Wlog.Library.BLL.Interfaces
 {
+    /// <summary>
+    /// inteface for implementing UOW pattern in many storage system
+    /// </summary>
     public interface IUnitOfWork:IDisposable
     {
         void BeginTransaction();

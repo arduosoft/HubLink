@@ -4,17 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Wlog.Library.BLL.Index
+namespace Wlog.Library.BLL.Exceptions
 {
-
     /// <summary>
-    /// TODO: implement class to abstract configuration
+    /// Exception throw when index manager is not able to parse query due to a syntax error
     /// </summary>
-    class LuceneIndexManagerFactory
+    public class UnableToParseQuery
     {
-         
     }
-
-    
-
 }

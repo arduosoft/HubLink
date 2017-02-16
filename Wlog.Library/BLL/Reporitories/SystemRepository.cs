@@ -18,6 +18,9 @@ using Wlog.Library.BLL.Interfaces;
 
 namespace Wlog.Library.BLL.Reporitories
 {
+    /// <summary>
+    /// Repository used to apply schema changes.
+    /// </summary>
     public class SystemRepository : EntityRepository
     {
         public SystemRepository()

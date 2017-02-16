@@ -13,12 +13,11 @@ using NLog;
 
 namespace Wlog.Library.BLL.Index
 {
-    class UnableToParseQuery : Exception
-    { }
+    
 
 
     /// <summary>
-    /// Manage a lucene indxe
+    /// Manage a lucene index in write and read
     /// </summary>
     public class LuceneIndexManager: IDisposable
     {
@@ -85,6 +84,7 @@ namespace Wlog.Library.BLL.Index
 
         private void Init()
         {
+            //TODO: use factory or DI to  setup analyzer, query parse, and other tuning attribute. 
             logger.Debug("[IndexManager] init");
             analyzer = new StandardAnalyzer(global::Lucene.Net.Util.Version.LUCENE_30);
             InitIndex();
@@ -93,6 +93,7 @@ namespace Wlog.Library.BLL.Index
 
         private void InitIndex()
         {
+            //TODO: use factory or DI to  setup analyzer, query parse, and other tuning attribute. 
             logger.Debug("[IndexManager] InitIndex");
 
             logger.Debug("[IndexManager] Opening {0}", Path);

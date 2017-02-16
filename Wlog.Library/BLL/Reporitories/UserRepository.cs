@@ -21,6 +21,9 @@ using MongoDB.Driver.Linq;
 
 namespace Wlog.Library.BLL.Reporitories
 {
+    /// <summary>
+    /// Repo used to store user
+    /// </summary>
     public class UserRepository : EntityRepository
     {
 

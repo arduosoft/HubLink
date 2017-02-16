@@ -15,6 +15,9 @@ using NLog;
 
 namespace Wlog.Library.BLL.Reporitories
 {
+    /// <summary>
+    /// class to manage all repository instance
+    /// </summary>
     public class RepositoryContext
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();

@@ -12,6 +12,10 @@ using Wlog.Library.Scheduler.Jobs;
 
 namespace Wlog.Library.Scheduler
 {
+
+    /// <summary>
+    /// Class to manage insternal scheduler
+    /// </summary>
     public class HangfireBootstrapper : IRegisteredObject
     {
         public static readonly HangfireBootstrapper Instance = new HangfireBootstrapper();

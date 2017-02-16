@@ -19,6 +19,9 @@ using Wlog.Library.BLL.Classes;
 
 namespace Wlog.Library.BLL.Helpers
 {
+    /// <summary>
+    /// Helper class to get application info from assembli and files using naming conventions
+    /// </summary>
     public static class InfoHelper
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();

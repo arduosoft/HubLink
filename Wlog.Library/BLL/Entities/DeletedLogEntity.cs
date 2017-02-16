@@ -8,15 +8,30 @@ using Wlog.Library.BLL.Interfaces;
 
 namespace Wlog.BLL.Entities
 {
+
+    /// <summary>
+    /// This entity represent a copy of a log.
+    /// It is used to backup deleted log in a virtual BIN
+    /// </summary>
     public class DeletedLogEntity : IEntityBase
     {
         [BsonId]
         public override Guid Id { get; set; }
 
+        /// <summary>
+        /// Date when log is deleted
+        /// </summary>
         public virtual DateTime DeletedOn { get; set; }
 
+        /// <summary>
+        /// Id of the log
+        /// </summary>
         public virtual Guid LogId { get; set; }
 
+        /*
+         Following fields are a replica of standard log entity
+        */
+        
         public virtual DateTime CreateDate { get; set; }
 
         public virtual DateTime UpdateDate { get; set; }

@@ -14,6 +14,9 @@ using System.Threading.Tasks;
 
 namespace Wlog.Library.BLL.Enums
 {
+    /// <summary>
+    /// standard values for log levels
+    /// </summary>
     public enum StandardLogLevels
     {
         ERROR,

@@ -17,6 +17,9 @@ using Wlog.Library.BLL.Interfaces;
 
 namespace Wlog.BLL.Entities
 {
+    /// <summary>
+    /// Entity that represent an user
+    /// </summary>
     public class UserEntity : IEntityBase
     {
         public virtual string Username { get; set; }
@@ -59,18 +62,6 @@ namespace Wlog.BLL.Entities
             this.LastLockedOutDate = DateTime.Now;
             this.LastLoginDate = DateTime.Now;
         }
-        //public virtual void AddApplication(ApplicationEntity application,RolesEntry role)
-        //{
-
-        //    role.UsersInRole.Add(this);
-        //    Roles.Add(role);
-        //}
-
-        //public virtual void RemoveRole(Roles role)
-        //{
-        //    role.UsersInRole.Remove(this);
-        //    Roles.Remove(role);
-        //}
     }
 
    

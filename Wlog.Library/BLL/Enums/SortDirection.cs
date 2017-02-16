@@ -14,6 +14,9 @@ using System.Threading.Tasks;
 
 namespace Wlog.Library.BLL.Enums
 {
+    /// <summary>
+    /// Enum to determine sort direction
+    /// </summary>
     public enum SortDirection
     {
         ASC,

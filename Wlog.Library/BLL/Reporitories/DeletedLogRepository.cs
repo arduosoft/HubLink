@@ -8,6 +8,9 @@
     using Interfaces;
     using NLog;
 
+    /// <summary>
+    /// Repository to store deleted logs
+    /// </summary>
     public class DeletedLogRepository : EntityRepository
     {
        

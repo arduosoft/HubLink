@@ -14,6 +14,9 @@ using System.Threading.Tasks;
 
 namespace Wlog.Library.BLL.Interfaces
 {
+    /// <summary>
+    /// I repository interface
+    /// </summary>
     public interface IRepository
     {
     }

@@ -16,6 +16,9 @@ using System.Threading.Tasks;
 
 namespace Wlog.Library.BLL.Interfaces
 {
+    /// <summary>
+    /// Interface with all common fields to all entities
+    /// </summary>
     public abstract class IEntityBase
     {
         [BsonId]

@@ -17,10 +17,23 @@ using Wlog.Library.BLL.Interfaces;
 
 namespace Wlog.BLL.Entities
 {
+    /// <summary>
+    /// A role is realated with feature that user can done
+    /// </summary>
     public class RolesEntity : IEntityBase
     {
         public virtual string RoleName { get; set; }
+        /// <summary>
+        /// If scope is global; this role is valid in all application and in every context
+        /// </summary>
         public virtual bool GlobalScope { get; set; }
+        /// <summary>
+        /// if this flag is on role can be assigned at application level
+        /// </summary>
         public virtual bool ApplicationScope { get; set; }
+
+        /*
+            In most case flag are alternatives. keeping them as two different flags, allow us to be more flexible.
+        */
     }
 }

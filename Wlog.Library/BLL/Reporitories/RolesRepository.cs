@@ -21,7 +21,9 @@ using Wlog.Library.BLL.Interfaces;
 
 namespace Wlog.Library.BLL.Reporitories
 {
-
+    /// <summary>
+    /// Repo used to store roles
+    /// </summary>
     public class RolesRepository : EntityRepository
     {
         

@@ -11,6 +11,9 @@ using Wlog.Library.BLL.Interfaces;
 
 namespace Wlog.Library.BLL.Reporitories
 {
+    /// <summary>
+    /// Repository to manage indexs. "entities" managed by this repo are indexmanagers.
+    /// </summary>
     public class IndexRepository: IRepository
     {
 

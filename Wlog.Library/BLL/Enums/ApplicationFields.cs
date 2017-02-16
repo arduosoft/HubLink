@@ -14,6 +14,9 @@ using System.Threading.Tasks;
 
 namespace Wlog.Library.BLL.Enums
 {
+    /// <summary>
+    /// Enum that list all fields in application (used to automate UI task)
+    /// </summary>
     public enum ApplicationFields
     {
         IdApplication,

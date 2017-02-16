@@ -11,6 +11,9 @@ using Wlog.Library.BLL.Classes;
 
 namespace Wlog.Library.BLL.Reporitories
 {
+    /// <summary>
+    /// Repo used to store profiles
+    /// </summary>
     public class ProfilesRepository : EntityRepository
     {
        

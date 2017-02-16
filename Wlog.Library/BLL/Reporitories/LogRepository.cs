@@ -29,6 +29,9 @@ using NLog;
 
 namespace Wlog.Library.BLL.Reporitories
 {
+    /// <summary>
+    /// Repo used to store logs
+    /// </summary>
     public class LogRepository : EntityRepository
     {
 

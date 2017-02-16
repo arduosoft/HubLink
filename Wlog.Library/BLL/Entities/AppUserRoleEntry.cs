@@ -17,6 +17,10 @@ using Wlog.Library.BLL.Interfaces;
 
 namespace Wlog.BLL.Entities
 {
+    /// <summary>
+    /// Entitty that relate Application, user, Role.
+    /// One user can have different roles in different applications
+    /// </summary>
     public class AppUserRoleEntity : IEntityBase
     {
         public virtual Guid ApplicationId { get; set; }
