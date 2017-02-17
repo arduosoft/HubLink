@@ -124,7 +124,7 @@ namespace Wlog.Web.Code.Helpers
                     Name = name,
                     Description = description,
                     FullClassname = fullClassName,
-                    Instantiable = false,
+                    Instantiable = true,
                     System = true
                 };
                 RepositoryContext.Current.JobDefinition.Save(jobDefinition);
