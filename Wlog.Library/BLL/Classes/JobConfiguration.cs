@@ -22,5 +22,7 @@ namespace Wlog.Library.BLL.Classes
 
         [Required]
         public virtual string CronExpression { get; set; }
+
+        public virtual bool Instantiable { get; set; }
     }
 }

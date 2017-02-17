@@ -33,7 +33,7 @@
             return false;
         }
 
-        public List<JobInstanceEntity> GetAllJobs()
+        public List<JobInstanceEntity> GetAllJobInstances()
         {
             var jobInstances = new List<JobInstanceEntity>();
 

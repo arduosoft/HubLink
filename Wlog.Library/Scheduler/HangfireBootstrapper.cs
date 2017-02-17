@@ -48,7 +48,7 @@ namespace Wlog.Library.Scheduler
                 logger.Debug("[HangfireBootstrapper]:  Setting up Job storage (Memory sorage hardcoded)");
                 JobStorage.Current = new MemoryStorage();
                 logger.Debug("[HangfireBootstrapper]:  Registering jobs (hard coded)");
-                RecurringJob.AddOrUpdate("", () => LogQueue.Current.Run(), "*/1 * * * *");
+                RecurringJob.AddOrUpdate(() => LogQueue.Current.Run(), "*/1 * * * *");
                 JobConfigurationHelper.LoadAllJobs();
 
                 logger.Debug("[HangfireBootstrapper]: starting BackgroundJobServer");

@@ -1,6 +1,8 @@
 ﻿using Hangfire;
 using NLog;
 using System;
+using System.Diagnostics;
+using System.Reflection;
 using Wlog.Library.BLL.Classes;
 using Wlog.Library.BLL.Reporitories;
 
@@ -65,10 +67,62 @@ namespace Wlog.Library.Scheduler
 
         private static void LoadJob(JobConfiguration jobConfiguration)
         {
-            var jobType = Type.GetType(jobConfiguration.FullClassName);
-            var instance = Activator.CreateInstance(jobType);
-            var method = jobType.GetMethod("Execute");
-            RecurringJob.AddOrUpdate(jobConfiguration.JobInstanceId.ToString(), () => method.Invoke(instance, null), jobConfiguration.CronExpression);
+            try
+            {
+                //var jobType = Type.GetType(jobConfiguration.FullClassName);
+                //var instance = Activator.CreateInstance(jobType);
+                //var job = new Hangfire.Common.Job(jobType, jobType.GetMethod("Execute"));
+                //var manager = new RecurringJobManager();
+
+                //manager.AddOrUpdate(jobConfiguration.JobInstanceId.ToString(), job, jobConfiguration.CronExpression);
+
+                //var manager = new RecurringJobManager();
+                Type jobType = Type.GetType(jobConfiguration.FullClassName);
+                //MethodInfo methodInfo = jobType.GetMethod("Execute", BindingFlags.Instance | BindingFlags.Public);
+                //var job = new Hangfire.Common.Job(jobType, methodInfo);
+                //manager.AddOrUpdate(jobConfiguration.JobInstanceId.ToString(), job, jobConfiguration.CronExpression);
+                var job = new Hangfire.Common.Job(jobType, jobType.GetMethod("Execute"));
+                var manager = new RecurringJobManager();
+
+                manager.AddOrUpdate(jobConfiguration.JobInstanceId.ToString(), job, jobConfiguration.CronExpression);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public static void TriggerJob(JobConfiguration jobConfiguration)
+        {
+            try
+            {
+                //var jobType = Type.GetType(jobConfiguration.FullClassName);
+                //var instance = Activator.CreateInstance(jobType);
+                //var method = jobType.GetMethod("Execute");
+
+                //method.Invoke(instance, null);
+                //var manager = new RecurringJobManager();
+                //Type jobType = Type.GetType(jobConfiguration.FullClassName);
+                //MethodInfo methodInfo = jobType.GetMethod("Execute", BindingFlags.Instance | BindingFlags.Public);
+                //var job = new Hangfire.Common.Job(jobType, methodInfo);
+                ////manager.AddOrUpdate(jdvm.Name, job, model.CronExpression);
+
+                ////var jobType = Type.GetType(jobConfiguration.FullClassName);
+                ////var instance = Activator.CreateInstance(jobType);
+                ////var job = new Hangfire.Common.Job(jobType, jobType.GetMethod("Execute"));
+
+                //BackgroundJob.Schedule( () => job.Method.Invoke(null, null), DateTimeOffset.Now);
+             
+                RecurringJob.Trigger(jobConfiguration.JobInstanceId.ToString());
+                Debug.Write("TriggerJob");
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
     }
 }

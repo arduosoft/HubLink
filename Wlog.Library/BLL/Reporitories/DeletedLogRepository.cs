@@ -7,6 +7,7 @@
     using Classes;
     using Interfaces;
     using NLog;
+    using System.Diagnostics;
 
     public class DeletedLogRepository : EntityRepository
     {
@@ -95,9 +96,11 @@
 
         public bool ExecuteEmptyBinJob(int daysToKeep, int rowsToKeep)
         {
+            Debug.Write("ExecuteEmptyBinJob 3");
             logger.Debug("[repo] entering ExecuteEmptyBinJob");
             try
-            {
+            { 
+                Debug.Write("ExecuteEmptyBinJob 2");
                 using (IUnitOfWork uow = BeginUnitOfWork())
                 {
                     uow.BeginTransaction();
@@ -106,7 +109,7 @@
                     var entitiesToDelete = uow.Query<DeletedLogEntity>().Where(x => !entitiesToKeep.Contains(x)).ToList();
 
                     BatchRemoveDeletedLogEntities(entitiesToDelete);
-
+                    Debug.Write("ExecuteEmptyBinJob");
                     return true;
                 }
             }

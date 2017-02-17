@@ -479,11 +479,21 @@ namespace Wlog.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditBackgroundJobs(JobConfiguration item)
+        public ActionResult ManageBackgroundJobs(JobConfiguration item, ButtonCommands command)
         {
             try
             {
-                ConversionHelper.UpdateJobInstance(item);
+                switch (command)
+                {
+                    case ButtonCommands.Run:
+                        ConversionHelper.RunJobInstance(item);
+                        break;
+                    case ButtonCommands.Edit:
+                        ConversionHelper.UpdateJobInstance(item);
+                        break;
+                    default:
+                        break;
+                }
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
-﻿@model List<Wlog.Library.BLL.Classes.JobConfiguration>
+﻿@using Wlog.Web.Code.Helpers
+@model List<Wlog.Library.BLL.Classes.JobConfiguration>
 @{
     ViewBag.Title = "BackgroundJobs";
     Layout = "~/Views/Shared/_LayoutInternal.cshtml";
@@ -15,7 +16,7 @@
     @Html.ValidationMessage("Error")
     @for (int i = 0; i < Model.Count; i++)
     {
-        using (Html.BeginForm("EditBackgroundJobs", "Private", FormMethod.Post))
+        using (Html.BeginForm("ManageBackgroundJobs", "Private", FormMethod.Post))
         {
 
             <div class="row">
@@ -27,6 +28,7 @@
                     <div class="row">
                         @Html.HiddenFor(m => Model[i].JobInstanceId, new { Name = "JobInstanceId" })
                         @Html.HiddenFor(m => Model[i].FullClassName, new { Name = "FullClassName" })
+                        @Html.HiddenFor(m => Model[i].Instantiable, new { Name = "Instantiable" })
                         <div class="input-group" style="width: 100%">
                             @Html.TextBoxFor(m => Model[i].CronExpression, new { Name = "CronExpression", @class = "form-control" })
                             <span class="input-group-addon">@Html.CheckBoxFor(m => Model[i].Active, new { Name = "Active" })</span>
@@ -34,8 +36,8 @@
                     </div>
                     <br />
                     <div class="row">
-                        <button type="button" class="btn btn-danger">Run job</button>
-                        <button class="btn btn-success" type="submit">Update</button>
+                        <button type="submit" class="btn btn-danger" name="command" value="@ButtonCommands.Run">Run job</button>
+                        <button class="btn btn-success" type="submit" name="command" value="@ButtonCommands.Edit">Update</button>
                     </div>
                 </div>
             </div>

@@ -135,5 +135,24 @@ namespace Wlog.Web.Code.Helpers
                 return false;
             }
         }
+
+        public static bool RunJobInstance(JobConfiguration jobModel)
+        {
+            try
+            {
+                //bool updated = UpdateJobInstance(jobModel);
+                //if (updated)//&& jobModel.Instantiable
+                //{
+                    JobConfigurationHelper.TriggerJob(jobModel);
+               // }
+              
+                return true;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex);
+                return false;
+            }
+        }
     }
 }

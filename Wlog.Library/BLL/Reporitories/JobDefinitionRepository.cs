@@ -5,7 +5,6 @@
     using Classes;
     using Interfaces;
     using System.Collections.Generic;
-    using System;
     using System.Linq;
 
     public class JobDefinitionRepository : EntityRepository
@@ -34,7 +33,7 @@
             return false;
         }
 
-        public List<JobDefinitionEntity> GetAllJobs()
+        public List<JobDefinitionEntity> GetAllJobDefinitions()
         {
             var jobDefinitions = new List<JobDefinitionEntity>();
 
@@ -57,8 +56,8 @@
 
         public IEnumerable<JobConfiguration> GetAllDefinitionsAndInstances()
         {
-            var jobDefintions = GetAllJobs();
-            var jobInstances = RepositoryContext.Current.JobInstance.GetAllJobs();
+            var jobDefintions = GetAllJobDefinitions();
+            var jobInstances = RepositoryContext.Current.JobInstance.GetAllJobInstances();
 
             var result = (from a in jobDefintions
                           join b in jobInstances
@@ -70,7 +69,8 @@
                               JobName = a.Name,
                               JobInstanceId = b.Id,
                               Description = a.Description,
-                              FullClassName = a.FullClassname
+                              FullClassName = a.FullClassname,
+                              Instantiable = a.Instantiable
                           }).ToList();
 
             return result;
