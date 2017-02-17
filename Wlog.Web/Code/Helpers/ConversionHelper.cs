@@ -22,7 +22,7 @@ namespace Wlog.Web.Code.Helpers
 {
     public class ConversionHelper
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
         #region Entity To Model
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Wlog.Web.Code.Helpers
         /// <returns></returns>
         public static ApplicationHomeModel ConvertEntityToApplicationHome(ApplicationEntity entity)
         {
-            logger.Debug("[ConversionHelper]: ConvertEntityToApplicationHome");
+            _logger.Debug("[ConversionHelper]: ConvertEntityToApplicationHome");
             ApplicationHomeModel result = new ApplicationHomeModel();
             result.Id = entity.IdApplication;
             result.ApplicationName = entity.ApplicationName;
@@ -41,8 +41,6 @@ namespace Wlog.Web.Code.Helpers
             return result;
         }
 
-
-
         /// <summary>
         /// Convert List<ApplicationEntity> to List<ApplicationHome>
         /// </summary>
@@ -50,7 +48,7 @@ namespace Wlog.Web.Code.Helpers
         /// <returns></returns>
         public static List<ApplicationHomeModel> ConvertListEntityToListApplicationHome(List<ApplicationEntity> entity)
         {
-            logger.Debug("[ConversionHelper]: ConvertListEntityToListApplicationHome");
+            _logger.Debug("[ConversionHelper]: ConvertListEntityToListApplicationHome");
             List<ApplicationHomeModel> result = new List<ApplicationHomeModel>();
             foreach (ApplicationEntity app in entity)
             {
@@ -62,7 +60,7 @@ namespace Wlog.Web.Code.Helpers
 
         internal static LogEntity ConvertLog(LogMessage log)
         {
-            logger.Debug("[ConversionHelper]: ConvertLog");
+            _logger.Debug("[ConversionHelper]: ConvertLog");
             LogEntity result = new LogEntity();
             result.Uid = Guid.NewGuid();
             result.Level = log.Level;
@@ -78,7 +76,7 @@ namespace Wlog.Web.Code.Helpers
             }
             catch (Exception err)
             {
-                logger.Error(err);
+                _logger.Error(err);
             }
 
             return result;
@@ -87,7 +85,7 @@ namespace Wlog.Web.Code.Helpers
 
         public static List<LogMessage> ConvertLogEntityToMessage(List<LogEntity> list)
         {
-            logger.Debug("[ConversionHelper]: ConvertLogEntityToMessage");
+            _logger.Debug("[ConversionHelper]: ConvertLogEntityToMessage");
             List<LogMessage> result = new List<LogMessage>();
             foreach (LogEntity le in list)
             {
@@ -131,8 +129,8 @@ namespace Wlog.Web.Code.Helpers
             }
             catch (Exception ex)
             {
-                logger.Error(ex);
-                return false;
+                _logger.Error(ex);
+                throw;
             }
         }
 
@@ -140,18 +138,18 @@ namespace Wlog.Web.Code.Helpers
         {
             try
             {
-                //bool updated = UpdateJobInstance(jobModel);
-                //if (updated)//&& jobModel.Instantiable
-                //{
+                bool updated = UpdateJobInstance(jobModel);
+                if (updated && jobModel.Instantiable)
+                {
                     JobConfigurationHelper.TriggerJob(jobModel);
-               // }
-              
+                }
+
                 return true;
             }
             catch (Exception ex)
             {
-                logger.Error(ex);
-                return false;
+                _logger.Error(ex);
+                throw;
             }
         }
     }

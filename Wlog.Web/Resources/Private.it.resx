@@ -123,6 +123,9 @@
   <data name="DuplicateUserName" xml:space="preserve">
     <value>Il nome utente esiste già. Immettere un nome utente differente.</value>
   </data>
+  <data name="ErrorJobManagement" xml:space="preserve">
+    <value>Error in job management. See log for more details.</value>
+  </data>
   <data name="InvalidAnswer" xml:space="preserve">
     <value>La risposa fornita per il recupero della password non è valida. Controllare il valore e riprovare.</value>
   </data>

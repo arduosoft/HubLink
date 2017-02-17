@@ -79,6 +79,15 @@ namespace Wlog.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error in job management. See log for more details..
+        /// </summary>
+        internal static string ErrorJobManagement {
+            get {
+                return ResourceManager.GetString("ErrorJobManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The answer provided for password recovery is not valid . Check the value and try again ..
         /// </summary>
         internal static string InvalidAnswer {
