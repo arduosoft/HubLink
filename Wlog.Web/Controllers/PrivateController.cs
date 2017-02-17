@@ -27,6 +27,7 @@ using Wlog.Library.BLL.Helpers;
 using Wlog.Library.BLL.Configuration;
 using Wlog.Web.Filters;
 using NLog;
+using CronExpressionDescriptor;
 
 namespace Wlog.Web.Controllers
 {
@@ -483,6 +484,7 @@ namespace Wlog.Web.Controllers
         {
             try
             {
+                ExpressionDescriptor.GetDescription(item.CronExpression);
                 switch (command)
                 {
                     case ButtonCommands.Run:
@@ -494,6 +496,10 @@ namespace Wlog.Web.Controllers
                     default:
                         break;
                 }
+            }
+            catch (FormatException)
+            {
+                ModelState.AddModelError("Error", Resources.Private.InvalidCron);
             }
             catch (Exception ex)
             {

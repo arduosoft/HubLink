@@ -129,6 +129,9 @@
   <data name="InvalidAnswer" xml:space="preserve">
     <value>The answer provided for password recovery is not valid . Check the value and try again .</value>
   </data>
+  <data name="InvalidCron" xml:space="preserve">
+    <value>Invalid cron expression</value>
+  </data>
   <data name="InvalidEmail" xml:space="preserve">
     <value>The email address provided is not valid. Check the value and try again .</value>
   </data>

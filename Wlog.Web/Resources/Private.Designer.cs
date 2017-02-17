@@ -97,6 +97,15 @@ namespace Wlog.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid cron expression.
+        /// </summary>
+        internal static string InvalidCron {
+            get {
+                return ResourceManager.GetString("InvalidCron", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The email address provided is not valid. Check the value and try again ..
         /// </summary>
         internal static string InvalidEmail {
