@@ -10,10 +10,14 @@
     using Attributes;
     using Xunit;
 
+    /// <summary>
+    /// Test for moving logs into bing
+    /// </summary>
     public class MoveToBinJobTest : IDisposable
     {
         private readonly List<LogEntity> _logs = new List<LogEntity>();
 
+        #region test methods
         public MoveToBinJobTest()
         {
             //Create directory for index and tell to use it
@@ -69,6 +73,8 @@
             var moveToBin = new MoveToBinJob(1, 30);
             moveToBin.Execute();
         }
+
+        #endregion
 
         [Fact, TestPriority(0), Trait("Category", "ExcludedFromCI")]
         public void MoveToBinJob_CheckLogsTable_Success()

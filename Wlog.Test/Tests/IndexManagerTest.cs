@@ -11,12 +11,16 @@ using Xunit;
 
 namespace Wlog.Test.Tests
 {
-    public class IndexManager
+    /// <summary>
+    /// Test for LuceneIndex
+    /// </summary>
+    public class IndexManagerTest
     {
         LuceneIndexManager index;
 
+        #region test methods
 
-        public IndexManager()
+        public IndexManagerTest()
         {
             InitTest();
         }
@@ -28,6 +32,26 @@ namespace Wlog.Test.Tests
             index = new LuceneIndexManager("Test", foldername);
         }
 
+        /// <summary>
+        /// internal method helper to execute tests
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public Dictionary<string, object> GetDocument(string key, string value)
+        {
+            Dictionary<string, object> doc = new Dictionary<string, object>();
+            doc.Add("key", value);
+            doc.Add("content", "random" + DateTime.Now.Ticks);
+            return doc;
+        }
+
+
+        #endregion
+
+        /// <summary>
+        /// this test add a document to the index and save it
+        /// </summary>
         [Fact, TestPriority(0), Trait("Category", "ExcludedFromCI")]
         public void AddDocumentAndCommit()
         {
@@ -42,13 +66,11 @@ namespace Wlog.Test.Tests
 
         }
 
-        public Dictionary<string, object> GetDocument(string key, string value)
-        {
-            Dictionary<string, object> doc = new Dictionary<string, object>();
-            doc.Add("key", value);
-            doc.Add("content", "random" + DateTime.Now.Ticks);
-            return doc;
-        }
+       
+        /// <summary>
+        /// this method add many items in index, save it and remove documents.
+        /// 
+        /// </summary>
         [Fact, TestPriority(1) Trait("Category", "ExcludedFromCI")]
         public void TestIndexRemove()
         {

@@ -17,28 +17,31 @@ namespace Wlog.Test.Tests
 {
   
     /// <summary>
-    /// This class is just a sample
+    /// This fake test is used to test testing attribute are working
+    /// all test have to pass or be excluded from CI
     /// </summary>
-    public class MiscTest
+    public class FakeTest
     {
-        //[Fact]
-        //public void TestMethod()
-        //{
-        //    Assert.True(1 == 1);
-        //}
+        [Fact]
+        public void TestMethod()
+        {
+            Assert.True(1 == 1);
+        }
 
 
 
-        //[Fact, Trait("Category", "LoadTest")]
-        //public void AlwaysFailButSkipped()
-        //{
-        //    Assert.True(1 != 1);
-        //}
+        [Fact, Trait("Category", "LoadTest")]
+        public void AlwaysFailButSkipped()
+        {
+            Assert.True(1 != 1);
+        }
 
-        //[Fact, Trait("Category", "ExcludedFromCI")]
-        //public void AlwaysFailButSkipped2()
-        //{
-        //    Assert.True(1 != 1);
-        //}
+        [Fact, Trait("Category", "ExcludedFromCI")]
+        public void AlwaysFailButSkipped2()
+        {
+            Assert.True(1 != 1);
+        }
+
+
     }
 }

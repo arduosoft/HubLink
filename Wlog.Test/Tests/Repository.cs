@@ -15,6 +15,10 @@ using Wlog.Library.BLL.Reporitories;
 using Xunit;
 namespace Wlog.Test.Tests
 {
+
+    /// <summary>
+    /// This test contains repository related tests.
+    /// </summary>
     public class Repository
     {
         [Fact]
