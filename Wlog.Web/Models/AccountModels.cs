@@ -18,14 +18,14 @@ namespace Wlog.Web.Models
 {
    
 
-    public class RegisterExternalLoginModel
-    {
-        [Required]
-        [Display(Name = "User")]
-        public string UserName { get; set; }
+    //public class RegisterExternalLoginModel
+    //{
+    //    [Required]
+    //    [Display(Name = "User")]
+    //    public string UserName { get; set; }
 
-        public string ExternalLoginData { get; set; }
-    }
+    //    public string ExternalLoginData { get; set; }
+    //}
 
     public class Password
     {
@@ -35,16 +35,17 @@ namespace Wlog.Web.Models
         public string OldPassword { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "La lunghezza di {0} deve essere di almeno {2} caratteri.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessageResourceType =typeof(Resources.Private), ErrorMessageResourceName ="PasswordTooShort", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "New Password")]
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm")]
-        [Compare("NewPassword", ErrorMessage = "La nuova password e la password di conferma non corrispondono.")]
+        [Compare("NewPassword", ErrorMessageResourceType = typeof(Resources.Private), ErrorMessageResourceName = "PasswordMismatch")]
         public string ConfirmPassword { get; set; }
     }
+
     public class Email
     {
         [Required]
@@ -82,29 +83,29 @@ namespace Wlog.Web.Models
         public bool RememberMe { get; set; }
     }
 
-    public class RegisterModel
-    {
-        [Required]
-        [Display(Name = "User")]
-        public string UserName { get; set; }
+    //public class RegisterModel
+    //{
+    //    [Required]
+    //    [Display(Name = "User")]
+    //    public string UserName { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "La lunghezza di {0} deve essere di almeno {2} caratteri.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "Password")]
-        public string Password { get; set; }
+    //    [Required]
+    //    [StringLength(100, ErrorMessage = "La lunghezza di {0} deve essere di almeno {2} caratteri.", MinimumLength = 6)]
+    //    [DataType(DataType.Password)]
+    //    [Display(Name = "Password")]
+    //    public string Password { get; set; }
 
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm")]
-        [Compare("Password", ErrorMessage = "La password e la password di conferma non corrispondono.")]
-        public string ConfirmPassword { get; set; }
+    //    [DataType(DataType.Password)]
+    //    [Display(Name = "Confirm")]
+    //    [Compare("Password", ErrorMessage = "La password e la password di conferma non corrispondono.")]
+    //    public string ConfirmPassword { get; set; }
 
-    }
+    //}
 
-    public class ExternalLogin
-    {
-        public string Provider { get; set; }
-        public string ProviderDisplayName { get; set; }
-        public string ProviderUserId { get; set; }
-    }
+    //public class ExternalLogin
+    //{
+    //    public string Provider { get; set; }
+    //    public string ProviderDisplayName { get; set; }
+    //    public string ProviderUserId { get; set; }
+    //}
 }

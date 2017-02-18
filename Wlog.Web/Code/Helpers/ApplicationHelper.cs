@@ -17,6 +17,7 @@ using NLog;
 
 namespace Wlog.Web.Code.Helpers
 {
+    [Obsolete]
     public class ApplicationHelper
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
@@ -25,6 +26,7 @@ namespace Wlog.Web.Code.Helpers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [Obsolete]
         public static ApplicationModel GetById(Guid id)
         {
 
@@ -45,6 +47,8 @@ namespace Wlog.Web.Code.Helpers
         /// <param name="pagenumber"></param>
         /// <param name="pagesize"></param>
         /// <returns></returns>
+        /// 
+        [Obsolete]
         public static IPagedList<ApplicationModel> FilterApplicationList(string serchFilter, int pagenumber, int pagesize, string userName)
         {
             logger.Debug("[WLogRoleProvider]: FilterApplicationList");
@@ -68,7 +72,7 @@ namespace Wlog.Web.Code.Helpers
 
             return new StaticPagedList<ApplicationModel>(data, pagenumber, pagesize, queryResult.TotalItemCount);
         }
-
+        [Obsolete]
         public static bool DeleteById(Guid id)
         {
             logger.Debug("[WLogRoleProvider]: DeleteById");
@@ -83,7 +87,7 @@ namespace Wlog.Web.Code.Helpers
             }
             return true;
         }
-
+        [Obsolete]
         private static ApplicationModel EntityToModel(ApplicationEntity entity)
         {
             logger.Debug("[WLogRoleProvider]: EntityToModel");

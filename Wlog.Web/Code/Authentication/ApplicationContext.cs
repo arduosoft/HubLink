@@ -19,47 +19,47 @@ using NLog;
 
 namespace Wlog.Web.Code.Authentication
 {
-    public class ApplicationContext
-    {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
-        public ApplicationEntity ApplicationEntity { get; set; }
-        public List<RolesEntity> Roles { get; set; }
+    //public class ApplicationContext
+    //{
+    //    private static Logger logger = LogManager.GetCurrentClassLogger();
+    //    public ApplicationEntity ApplicationEntity { get; set; }
+    //    public List<RolesEntity> Roles { get; set; }
 
 
-        public ApplicationContext(Guid idApplication)
-        {
+    //    public ApplicationContext(Guid idApplication)
+    //    {
 
-            this.ApplicationEntity = RepositoryContext.Current.Applications.GetById(idApplication);
-            this.Roles = RepositoryContext.Current.Roles.GetAllApplicationRoles(this.ApplicationEntity);
-        }
+    //        this.ApplicationEntity = RepositoryContext.Current.Applications.GetById(idApplication);
+    //        this.Roles = RepositoryContext.Current.Roles.GetAllApplicationRoles(this.ApplicationEntity);
+    //    }
 
-        public static ApplicationContext Current
-        {
-            get
-            {
+    //    public static ApplicationContext Current
+    //    {
+    //        get
+    //        {
                 
-                ApplicationContext current = HttpContext.Current.Cache["ApplicationContext" + HttpContext.Current.Session.SessionID] as ApplicationContext;
-                if (current != null)
-                {
-                    return current;
-                }
-                logger.Debug("[ApplicationContext]:not found, create new one. This should happen once for session");
-                Guid idSessionApp;
-                if (Guid.TryParse(HttpContext.Current.Cache["AppId_" + HttpContext.Current.Session.SessionID] as string, out idSessionApp))
-                {
-                    logger.Debug("[ApplicationContext]: create new ApplicationContext for user");
-                    current = new ApplicationContext(idSessionApp);
-                    HttpContext.Current.Cache["ApplicationContext" + HttpContext.Current.Session.SessionID] = current;
-                }
-                else
-                {
-                    logger.Debug("[ApplicationContext]:missin session app");
-                    throw new Exception("Session App not Set");
-                }
-                return current;
-            }
-        }
+    //            ApplicationContext current = HttpContext.Current.Cache["ApplicationContext" + HttpContext.Current.Session.SessionID] as ApplicationContext;
+    //            if (current != null)
+    //            {
+    //                return current;
+    //            }
+    //            logger.Debug("[ApplicationContext]:not found, create new one. This should happen once for session");
+    //            Guid idSessionApp;
+    //            if (Guid.TryParse(HttpContext.Current.Cache["AppId_" + HttpContext.Current.Session.SessionID] as string, out idSessionApp))
+    //            {
+    //                logger.Debug("[ApplicationContext]: create new ApplicationContext for user");
+    //                current = new ApplicationContext(idSessionApp);
+    //                HttpContext.Current.Cache["ApplicationContext" + HttpContext.Current.Session.SessionID] = current;
+    //            }
+    //            else
+    //            {
+    //                logger.Debug("[ApplicationContext]:missin session app");
+    //                throw new Exception("Session App not Set");
+    //            }
+    //            return current;
+    //        }
+    //    }
 
 
-    }
+    //}
 }

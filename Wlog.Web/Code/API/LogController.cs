@@ -23,6 +23,9 @@ using NLog;
 
 namespace Wlog.Web.Code.API
 {
+    /// <summary>
+    /// controller that collect logs from clients
+    /// </summary>
     [AllowAnonymous]
     public class LogController : ApiController
     {
@@ -50,7 +53,10 @@ namespace Wlog.Web.Code.API
         }
 
 
-
+        /// <summary>
+        /// Private method that save one item
+        /// </summary>
+        /// <param name="value"></param>
         private void SaveSingle(LogMessage value)
         {
             if (value == null) throw new Exception("Log message could not be null.");

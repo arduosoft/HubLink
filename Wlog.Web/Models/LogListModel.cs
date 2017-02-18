@@ -13,15 +13,13 @@ using Wlog.BLL.Entities;
 
 namespace Wlog.Web.Models
 {
-    //Wlog.Web.Models.LogListModel
+    /// <summary>
+    /// model used to draw log list page. Logs are retrieved by ajax call
+    /// </summary>
     public class LogListModel
     {
         public Guid ApplicationId { get; set; }
-        public string Level { get; set; }
-        public string SortOrder { get; set; }
-        public string SortBy { get; set;}
-        public string SerchMessage { get; set; }
         public List<ApplicationEntity> Apps { get; set; }
-        public IPagedList<LogEntity> Items { get; set; }
+       
     }
 }

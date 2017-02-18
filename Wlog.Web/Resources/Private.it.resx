@@ -138,6 +138,12 @@
   <data name="InvalidUserName" xml:space="preserve">
     <value>Il nome utente fornito non è valido. Controllare il valore e riprovare.</value>
   </data>
+  <data name="PasswordMismatch" xml:space="preserve">
+    <value>La nuova password e la password di conferma non corrispondono.</value>
+  </data>
+  <data name="PasswordTooShort" xml:space="preserve">
+    <value>La lunghezza di {0} deve essere di almeno {2} caratteri.</value>
+  </data>
   <data name="ProviderError" xml:space="preserve">
     <value>Il provider di autenticazione ha restituito un errore. Verificare l'immissione e riprovare. Se il problema persiste, contattare l'amministratore di sistema.</value>
   </data>

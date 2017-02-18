@@ -15,10 +15,12 @@ using NLog;
 
 namespace Wlog.Web.Code.Helpers
 {
+    [Obsolete]
     public static class SystemDataHelper
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
+        [Obsolete]
         public static void EnsureSampleData()
         {
             logger.Debug("[SystemDataHelper]: EnsureSampleData");
@@ -51,7 +53,7 @@ namespace Wlog.Web.Code.Helpers
                 RepositoryContext.Current.Applications.AssignRoleToUser(app, user, role);
             }
         }
-
+        [Obsolete]
         private static RolesEntity InsertRoleIfNotExists(string rolename, bool global,bool application)
         {
             logger.Debug("[SystemDataHelper]: InsertRoleIfNotExists");
@@ -66,7 +68,7 @@ namespace Wlog.Web.Code.Helpers
 
             return role;
         }
-
+        [Obsolete]
         private static ProfilesEntity InsertProfileIfNotExists(string profileName)
         {
             logger.Debug("[SystemDataHelper]: InsertProfileIfNotExists");
@@ -81,7 +83,7 @@ namespace Wlog.Web.Code.Helpers
 
             return profile;
         }
-
+        [Obsolete]
         public static void InsertRolesAndProfiles()
         {
             logger.Debug("[SystemDataHelper]: InsertRolesAndProfiles");

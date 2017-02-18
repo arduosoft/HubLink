@@ -14,6 +14,9 @@ using System.Web;
 
 namespace Wlog.Web.Models.User
 {
+    /// <summary>
+    /// model to store user data
+    /// </summary>
     public class UserData
     {
         public virtual Guid Id { get; set; }

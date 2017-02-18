@@ -14,6 +14,9 @@ using Wlog.BLL.Classes;
 
 namespace Wlog.Web.Models
 {
+    /// <summary>
+    /// A simple model to show statistic into home page
+    /// </summary>
     public class DashboardModel
     {
         public long ErrorCount { get; set; }
@@ -23,8 +26,8 @@ namespace Wlog.Web.Models
 
         public List<QueueLoad> QueueLoad { get; set; }
 
-      public  List<LogMessage> LastTen { get; set; }
-      public List<MessagesListModel> AppLastTen { get; set; }
+        public  List<LogMessage> LastTen { get; set; }
+        public List<MessagesListModel> AppLastTen { get; set; }
 
 
     }

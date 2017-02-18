@@ -24,6 +24,9 @@ using Wlog.Web.Models.User;
 
 namespace Wlog.Web.Controllers
 {
+    /// <summary>
+    /// Controller to manage account features
+    /// </summary>
     [Authorize]
     public class AccountController : Controller
     {

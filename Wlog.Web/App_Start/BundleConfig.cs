@@ -13,7 +13,10 @@ namespace Wlog.Web
 {
     public class BundleConfig
     {
-        // Per ulteriori informazioni sul Bundling, visitare il sito Web all'indirizzo http://go.microsoft.com/fwlink/?LinkId=254725
+        /// <summary>
+        /// Register css and js bundles
+        /// </summary>
+        /// <param name="bundles"></param>
         public static void RegisterBundles(BundleCollection bundles)
         {
 
@@ -54,9 +57,7 @@ namespace Wlog.Web
             bundles.Add(new StyleBundle("~/bundles/datatables/css").Include(
                         "~/Content/DataTables/css/dataTables.bootstrap.min.css"));
 
-            // Utilizzare la versione di sviluppo di Modernizr per eseguire attività di sviluppo e formazione. Successivamente, quando si è
-            // pronti per passare alla produzione, utilizzare lo strumento di compilazione disponibile all'indirizzo http://modernizr.com per selezionare solo i test necessari.
-            bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
+              bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
         }

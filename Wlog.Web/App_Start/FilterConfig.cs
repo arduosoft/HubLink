@@ -11,6 +11,9 @@ using System.Web.Mvc;
 
 namespace Wlog.Web
 {
+    /// <summary>
+    /// Global filter to handle all errors
+    /// </summary>
     public class FilterConfig
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)

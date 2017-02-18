@@ -21,6 +21,10 @@ using NLog;
 
 namespace Wlog.Web.Code.Authentication
 {
+
+    /// <summary>
+    /// this classes implement membersghip provider that provide user autentication
+    /// </summary>
     public class WLogMembershipProvider : MembershipProvider
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();

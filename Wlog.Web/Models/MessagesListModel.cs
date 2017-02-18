@@ -12,6 +12,10 @@ using Wlog.BLL.Classes;
 
 namespace Wlog.Web.Models
 {
+    /// <summary>
+    /// Model that hold a set of message for a given application
+    /// i.e. to show top 10 logs for app
+    /// </summary>
     public class MessagesListModel
     {
         public string ApplicationName { get; set; }

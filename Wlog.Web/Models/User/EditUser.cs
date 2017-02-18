@@ -16,19 +16,10 @@ using Wlog.Library.BLL.Reporitories;
 
 namespace Wlog.Web.Models.User
 {
-    public class UserApps
-    {
-        //public int Id { get; set; }
-        //public ApplicationEntity Application { get; set; }
-        //public RolesEntity Role { get; set; }
-        public virtual Guid IdApplication { get; set; }
-        [Display(Name = "Application name")]
-        public virtual string ApplicationName { get; set; }
-        public virtual Guid RoleId { get; set; }
-        public virtual string RoleName { get; set; }
-
-    }
-
+    
+    /// <summary>
+    /// Class used to edit an existing user
+    /// </summary>
     public class EditUser
     {
         public UserEntity DataUser { get; set; }

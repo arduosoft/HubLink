@@ -14,6 +14,9 @@ using System.Web;
 
 namespace Wlog.Web.Models.Application
 {
+    /// <summary>
+    /// Model used to list apps filtered by a search text
+    /// </summary>
     public class ApplicationList
     {
         public IPagedList<ApplicationModel> AppList { get; set; }

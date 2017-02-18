@@ -14,6 +14,9 @@ using System.Web;
 
 namespace Wlog.Web.Models
 {
+    /// <summary>
+    /// Model used to save an application
+    /// </summary>
     public class ApplicationModel
     {
         [Required]

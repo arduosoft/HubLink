@@ -15,6 +15,9 @@ using System.Web;
 
 namespace Wlog.Web.Models.User
 {
+    /// <summary>
+    /// model used for list and search users
+    /// </summary>
     public class ListUser
     {
         public IPagedList<UserData> UserList { get; set; }

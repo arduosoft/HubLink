@@ -32,9 +32,7 @@ using Wlog.Library.Scheduler;
 using NLog;
 
 namespace Wlog.Web
-{
-    // Nota: per istruzioni su come abilitare la modalità classica di IIS6 o IIS7, 
-    // visitare il sito Web all'indirizzo http://go.microsoft.com/?LinkId=9394801
+{  
 
     public class WebApiApplication : System.Web.HttpApplication
     {

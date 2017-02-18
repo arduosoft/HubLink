@@ -14,6 +14,10 @@ using System.Web;
 
 namespace Wlog.Web.Models
 {
+
+    /// <summary>
+    /// Represent an application model used in home page to link it
+    /// </summary>
     public class ApplicationHomeModel
     {
         public virtual Guid Id { get; set; }

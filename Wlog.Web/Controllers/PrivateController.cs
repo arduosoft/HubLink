@@ -30,6 +30,9 @@ using NLog;
 
 namespace Wlog.Web.Controllers
 {
+    /// <summary>
+    /// this controller manage all features related with 
+    /// </summary>
     public class PrivateController : Controller
     {
 
@@ -94,13 +97,7 @@ namespace Wlog.Web.Controllers
 
             LogListModel mm = new LogListModel()
             {
-                ApplicationId = applicationId ?? alloweApps.FirstOrDefault(),
-                Level = level,
-                SortOrder = sortOrder,
-                SortBy = sortBy,
-                SerchMessage = serchMessage,
-                
-
+                ApplicationId = applicationId ?? alloweApps.FirstOrDefault() 
             };
             MembershipUser current = Membership.GetUser();
             mm.Apps = UserHelper.GetAppsForUser(current.UserName);
@@ -410,7 +407,7 @@ namespace Wlog.Web.Controllers
             }
             else
             {
-                ModelState.AddModelError(String.Empty, "Si è Verificato un Errore.");
+                ModelState.AddModelError(String.Empty, "Unexpected exception");
             }
             return View(model);
         }
@@ -421,8 +418,7 @@ namespace Wlog.Web.Controllers
         private static string ErrorCodeToString(MembershipCreateStatus createStatus)
         {
             logger.Debug("[Private]: ErrorCodeToString({0})", createStatus);
-            // Vedere http://go.microsoft.com/fwlink/?LinkID=177550 per
-            // un elenco completo di codici di stato.
+            // see http://go.microsoft.com/fwlink/?LinkID=177550 
             switch (createStatus)
             {
                 case MembershipCreateStatus.DuplicateUserName:

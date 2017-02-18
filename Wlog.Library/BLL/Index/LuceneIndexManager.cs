@@ -10,6 +10,7 @@ using Lucene.Net.Analysis.Standard;
 using PagedList;
 using System.Web;
 using NLog;
+using Wlog.Library.BLL.Exceptions;
 
 namespace Wlog.Library.BLL.Index
 {

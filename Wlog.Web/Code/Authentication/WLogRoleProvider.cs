@@ -20,6 +20,9 @@ using NLog;
 
 namespace Wlog.Web.Code.Authentication
 {
+    /// <summary>
+    /// this class manage roles for logged users
+    /// </summary>
     public class WLogRoleProvider : RoleProvider
     {
 

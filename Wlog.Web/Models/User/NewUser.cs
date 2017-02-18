@@ -19,6 +19,9 @@ using Wlog.Web.Code.Helpers;
 
 namespace Wlog.Web.Models.User
 {
+    /// <summary>
+    /// Model used for saving a NEW user
+    /// </summary>
     public class NewUser
     {
         [Required]

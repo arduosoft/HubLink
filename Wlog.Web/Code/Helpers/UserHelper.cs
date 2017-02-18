@@ -21,6 +21,7 @@ using NLog;
 
 namespace Wlog.Web.Code.Helpers
 {
+    [Obsolete]
     public class UserHelper
     {
 
@@ -31,6 +32,8 @@ namespace Wlog.Web.Code.Helpers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        /// 
+        [Obsolete]
         public static UserEntity GetById(Guid id)
         {
             logger.Debug("[UserHelper]: GetById({0})",id);
@@ -42,12 +45,14 @@ namespace Wlog.Web.Code.Helpers
         /// Get All User
         /// </summary>
         /// <returns></returns>
+        /// 
+        [Obsolete]
         public static List<UserEntity> GetAll()
         {
             logger.Debug("[UserHelper]: GetAll");
             return RepositoryContext.Current.Users.GetAll();
         }
-
+        [Obsolete]
         public static IPagedList<UserData> FilterUserList(string serchFilter, int pagenumber, int pagesize)
         {
             logger.Debug("[UserHelper]: FilterUserList");
@@ -82,19 +87,21 @@ namespace Wlog.Web.Code.Helpers
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
+        /// 
+        [Obsolete]
         public static UserEntity GetByEmail(string email)
         {
             logger.Debug("[UserHelper]: GetByEmail");
             return RepositoryContext.Current.Users.GetByEmail(email);
         }
-
+        [Obsolete]
         public static List<ApplicationEntity> GetAppsForUser(string userName)
         {
             logger.Debug("[UserHelper]: GetAppsForUser");
             return RepositoryContext.Current.Applications.GetAppplicationsByUsername(userName);
 
         }
-
+        [Obsolete]
         public static List<Guid> GetAppsIdsForUser(string userName)
         {
             logger.Debug("[UserHelper]: GetAppsIdsForUser");
@@ -106,6 +113,8 @@ namespace Wlog.Web.Code.Helpers
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
+        /// 
+        [Obsolete]
         public static UserEntity GetByUsername(string username)
         {
             logger.Debug("[UserHelper]: GetByUsername");
@@ -117,6 +126,8 @@ namespace Wlog.Web.Code.Helpers
         /// </summary>
         /// <param name="usr"></param>
         /// <returns></returns>
+        /// 
+        [Obsolete]
         public static bool UpdateUser(UserEntity user)
         {
             logger.Debug("[UserHelper]: UpdateUser");
@@ -128,7 +139,7 @@ namespace Wlog.Web.Code.Helpers
 
             return RepositoryContext.Current.Users.Save(user);
         }
-
+        [Obsolete]
         public static bool DeleteById(Guid id)
         {
             logger.Debug("[UserHelper]: DeleteById");
@@ -141,6 +152,8 @@ namespace Wlog.Web.Code.Helpers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        /// 
+        [Obsolete]
         public static List<UserApps> GetApp(Guid id)
         {
             logger.Debug("[UserHelper]: GetApp");
@@ -182,7 +195,7 @@ namespace Wlog.Web.Code.Helpers
 
             return result;
         }
-
+        [Obsolete]
         public static string EncodePassword(string password)
         {
             using (SHA1CryptoServiceProvider sha = new SHA1CryptoServiceProvider())
@@ -190,7 +203,7 @@ namespace Wlog.Web.Code.Helpers
                 return Convert.ToBase64String(sha.ComputeHash(Encoding.ASCII.GetBytes(password)));
             }
         }
-
+        [Obsolete]
         public static IEnumerable<SelectListItem> GetAllUserProfiles()
         {
             logger.Debug("[UserHelper]: GetAllUserProfiles");
@@ -203,13 +216,13 @@ namespace Wlog.Web.Code.Helpers
 
             return profiles;
         }
-
+        [Obsolete]
         public static bool IsUserAdmin(Guid profileGuid)
         {
             logger.Debug("[UserHelper]: IsUserAdmin");
             return GetProfileByName("admin").Id == profileGuid;
         }
-
+        [Obsolete]
         private static ProfilesEntity GetProfileByName(string name)
         {
             logger.Debug("[UserHelper]: GetProfileByName");

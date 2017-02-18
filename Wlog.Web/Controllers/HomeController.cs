@@ -23,6 +23,9 @@ using NLog;
 
 namespace Wlog.Web.Controllers
 {
+    /// <summary>
+    /// Home page controller
+    /// </summary>
     public class HomeController : Controller
     {
 

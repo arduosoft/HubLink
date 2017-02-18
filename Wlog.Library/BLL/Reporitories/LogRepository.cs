@@ -26,6 +26,7 @@ using Newtonsoft.Json.Linq;
 using Lucene.Net.Search;
 using System.Web;
 using NLog;
+using Wlog.Library.BLL.Exceptions;
 
 namespace Wlog.Library.BLL.Reporitories
 {

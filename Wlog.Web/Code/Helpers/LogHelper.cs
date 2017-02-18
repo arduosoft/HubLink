@@ -19,10 +19,12 @@ using NLog;
 
 namespace Wlog.Web.Code.Helpers
 {
+    [Obsolete]
     public class LogHelper
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
+        [Obsolete]
         public static IPagedList<LogEntity> GetLogs(Guid applicationId, string sortOrder, string sortBy, string serchMessage, int pageSize, int pageNumber)
         {
             logger.Debug("[ConversionHelper]: GetLogs");

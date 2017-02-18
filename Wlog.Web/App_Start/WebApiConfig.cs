@@ -15,6 +15,10 @@ namespace Wlog.Web
 {
     public static class WebApiConfig
     {
+        /// <summary>
+        /// API routing
+        /// </summary>
+        /// <param name="config"></param>
         public static void Register(HttpConfiguration config)
         {
             config.Routes.MapHttpRoute(
@@ -23,13 +27,7 @@ namespace Wlog.Web
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            // Per abilitare il supporto query per le azioni con tipo restituito IQueryable o IQueryable<T>, rimuovere il commento dalla seguente riga di codice.
-            // Per evitare l'elaborazione di query dannose o impreviste, utilizzare le impostazioni di convalida definite in QueryableAttribute per convalidare le query in ingresso.
-            // Per ulteriori informazioni, visitare il sito Web all'indirizzo http://go.microsoft.com/fwlink/?LinkId=279712.
-            //config.EnableQuerySupport();
-
-            // Per disabilitare la funzionalità di traccia nell'applicazione, impostare come commento o rimuovere la seguente riga di codice
-            // Per ulteriori informazioni, visitare: http://www.asp.net/web-api
+            //TODO: Drive this by using a property on config
             config.EnableSystemDiagnosticsTracing();
         }
     }

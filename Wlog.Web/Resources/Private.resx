@@ -138,6 +138,12 @@
   <data name="InvalidUserName" xml:space="preserve">
     <value>The user name supplied is invalid . Check the value and try again .</value>
   </data>
+  <data name="PasswordMismatch" xml:space="preserve">
+    <value>Password mismatch</value>
+  </data>
+  <data name="PasswordTooShort" xml:space="preserve">
+    <value>length of {0} have to be almost {2} digits.</value>
+  </data>
   <data name="ProviderError" xml:space="preserve">
     <value>The authentication provider returned an error . Check your entry and try again. If the problem persists , contact your system administrator.</value>
   </data>
