@@ -14,9 +14,14 @@
     public class DeletedLogRepository : EntityRepository
     {
        
-
+        /// <summary>
+        /// Get all deleted logs
+        /// </summary>
+        /// <returns></returns>
         public List<DeletedLogEntity> GetAllDeletedLogEntities()
         {
+            //TODO: this method seems to be used only in test.
+            //TODO: this method should have parameter to return a list of data (full list can be retrieved passing int.MaxValue)
             logger.Debug("[repo] entering GetAllDeletedLogEntities");
             var result = new List<DeletedLogEntity>();
             using (IUnitOfWork uow = BeginUnitOfWork())
@@ -28,6 +33,10 @@
             return result;
         }
 
+        /// <summary>
+        /// Remove a deleted entry
+        /// </summary>
+        /// <param name="deletedLog"></param>
         public void RemoveDeletedLogEntity(DeletedLogEntity deletedLog)
         {
             logger.Debug("[repo] entering RemoveDeletedLogEntity");
@@ -46,6 +55,11 @@
             }
         }
 
+
+        /// <summary>
+        /// Remove a list of deletd logs
+        /// </summary>
+        /// <param name="deletedLog"></param>
         public void BatchRemoveDeletedLogEntities(List<DeletedLogEntity> deletedLog)
         {
             logger.Debug("[repo] entering BatchRemoveDeletedLogEntities");
@@ -78,6 +92,10 @@
             }
         }
 
+        /// <summary>
+        /// Add or update deleted log
+        /// </summary>
+        /// <param name="deletedLog"></param>
         public void Save(DeletedLogEntity deletedLog)
         {
             logger.Debug("[repo] entering Save");
@@ -96,6 +114,12 @@
             }
         }
 
+        /// <summary>
+        /// Execute a job to clead recicle bing
+        /// </summary>
+        /// <param name="daysToKeep"></param>
+        /// <param name="rowsToKeep"></param>
+        /// <returns></returns>
         public bool ExecuteEmptyBinJob(int daysToKeep, int rowsToKeep)
         {
             logger.Debug("[repo] entering ExecuteEmptyBinJob");
@@ -103,6 +127,10 @@
             {
                 using (IUnitOfWork uow = BeginUnitOfWork())
                 {
+
+                    //TODO: this couldn't work on large amount of data. This beacause it assume to load in memory result of the "big" query returning all entity to delete,
+                    //one solution could be limit the numeber of row to take (but could avoid complete bin flush) or invoke nhibernate batch statement
+
                     uow.BeginTransaction();
                     var entitiesToKeep = uow.Query<DeletedLogEntity>().Where(x => x.SourceDate > (DateTime.UtcNow.AddDays(-daysToKeep)))
                         .OrderByDescending(x => x.SourceDate).Take(rowsToKeep).ToList();

@@ -43,6 +43,11 @@ namespace Wlog.Library.BLL.Reporitories
 
         }
 
+        /// <summary>
+        /// gived the count of logs by level
+        /// </summary>
+        /// <param name="level"></param>
+        /// <returns></returns>
         public long CountByLevel(StandardLogLevels level)
         {
             logger.Debug("[repo] entering CountByLevel");
@@ -53,6 +58,10 @@ namespace Wlog.Library.BLL.Reporitories
             }
         }
 
+        /// <summary>
+        /// Save a log into database
+        /// </summary>
+        /// <param name="entToSave"></param>
         public void Save(LogEntity entToSave)
         {
             logger.Debug("[repo] entering Save");
@@ -60,6 +69,12 @@ namespace Wlog.Library.BLL.Reporitories
 
         }
 
+        /// <summary>
+        /// search in fulltext index and return a set of log
+        /// </summary>
+        /// <param name="applicationId"></param>
+        /// <param name="logsSearchSettings"></param>
+        /// <returns></returns>
         public IPagedList<LogEntity> SearchLogindex(Guid applicationId, LogsSearchSettings logsSearchSettings)
         {
             logger.Debug("[repo] entering SearchLogindex");
@@ -98,6 +113,12 @@ namespace Wlog.Library.BLL.Reporitories
             return null;
         }
 
+
+        /// <summary>
+        /// Convert lucene document to log Entity item
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns></returns>
         private LogEntity GetLogFromDoc(Document d)
         {
             logger.Debug("[repo] entering GetLogFromDoc");
@@ -160,7 +181,11 @@ namespace Wlog.Library.BLL.Reporitories
             }
         }
 
-        internal void Save(List<LogEntity> logs)
+        /// <summary>
+        /// sava a list of logs
+        /// </summary>
+        /// <param name="logs"></param>
+        public void Save(List<LogEntity> logs)
         {
             logger.Debug("[repo] entering Save");
 
@@ -191,6 +216,11 @@ namespace Wlog.Library.BLL.Reporitories
 
         
 
+        /// <summary>
+        /// Convert a log entity to a lucene document
+        /// </summary>
+        /// <param name="log"></param>
+        /// <returns></returns>
         private Document LogToDictionary(LogEntity log)
         {
             logger.Debug("[repo] entering LogToDictionary");
@@ -227,6 +257,11 @@ namespace Wlog.Library.BLL.Reporitories
         }
 
 
+        /// <summary>
+        /// mode logs to bin
+        /// </summary>
+        /// <param name="logs"></param>
+        /// <returns></returns>
         public bool MoveLogsToBin(List<LogEntity> logs)
         {
 
@@ -290,6 +325,11 @@ namespace Wlog.Library.BLL.Reporitories
             }
         }
 
+
+        /// <summary>
+        /// Remove a log from database
+        /// </summary>
+        /// <param name="log"></param>
         public void RemoveLogEntity(LogEntity log)
         {
             logger.Debug("[repo] entering RemoveLogEntity");
@@ -308,8 +348,13 @@ namespace Wlog.Library.BLL.Reporitories
             }
         }
 
+        /// <summary>
+        /// Get all long entries
+        /// </summary>
+        /// <returns></returns>
         public List<LogEntity> GetAllLogEntities()
         {
+            //TODO: should this have paging input? all rows could be taken with a page of infinite size
             logger.Debug("[repo] entering GetAllLogEntities");
             List<LogEntity> result = new List<LogEntity>();
             using (IUnitOfWork uow = BeginUnitOfWork())
@@ -321,6 +366,13 @@ namespace Wlog.Library.BLL.Reporitories
             return result;
         }
 
+
+        /// <summary>
+        /// move logs to bin
+        /// </summary>
+        /// <param name="daysToKeep"></param>
+        /// <param name="rowsToKeep"></param>
+        /// <returns></returns>
         public bool ExecuteMoveToBinJob(int daysToKeep, int rowsToKeep)
         {
             logger.Debug("[repo] entering ExecuteMoveToBinJob");

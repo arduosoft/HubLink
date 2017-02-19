@@ -21,15 +21,30 @@ namespace Wlog.Library.BLL.Reporitories
 
         public static string BasePath { get; set; }
 
-       
+       /// <summary>
+       /// Hole the list of indexes
+       /// </summary>
         private static Dictionary<string, LuceneIndexManager> indexList = new Dictionary<string, LuceneIndexManager>();
 
+
+        /// <summary>
+        /// Get index by entity, and segment.
+        /// i.e. Logs, Application 1
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="segment"></param>
+        /// <returns></returns>
         public LuceneIndexManager GetByName(string entity,string segment)
         {
             logger.Debug("[repo] entering GetByName ({0},{1})",entity,segment);
             return GetByName(entity + "." + segment);
         }
 
+        /// <summary>
+        /// Get index by name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public  LuceneIndexManager GetByName(string name)
         {
 
@@ -42,6 +57,10 @@ namespace Wlog.Library.BLL.Reporitories
             return indexList[name];
         }
 
+        /// <summary>
+        /// create an index of a given name
+        /// </summary>
+        /// <param name="name"></param>
         private void CreateIndex(string name)
         {
             logger.Debug("[repo] entering CreateIndex ({0})", name);
@@ -56,7 +75,11 @@ namespace Wlog.Library.BLL.Reporitories
             indexList.Add(name,idx );
         }
 
-        internal List<LuceneIndexManager> GetAll()
+        /// <summary>
+        /// return all indexes
+        /// </summary>
+        /// <returns></returns>
+        public List<LuceneIndexManager> GetAll()
         {
             logger.Debug("[repo] entering GetAll ");
             return indexList.Values.ToList();
