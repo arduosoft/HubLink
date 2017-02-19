@@ -44,7 +44,12 @@ namespace Wlog.Library.BLL.Reporitories
             }
         }
 
-        public void ResetUserRoles(UserEntity entity, List<AppUserRoleEntity> role)
+        /// <summary>
+        /// Reset user roles basing on role list
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="role"></param>
+        public void ResetUserRoles(UserEntity user, List<AppUserRoleEntity> role)
         {
             logger.Debug("[repo] entering ResetUserRoles");
             try
@@ -53,8 +58,10 @@ namespace Wlog.Library.BLL.Reporitories
                 using (IUnitOfWork uow = BeginUnitOfWork())
                 {
                     uow.BeginTransaction();
+
+                    //TODO: delete only removed entry,add the new ones.
                     List<AppUserRoleEntity> deleterole = uow.Query<AppUserRoleEntity>()
-                        .Where(x => x.UserId.Equals(entity.Id) && x.ApplicationId.Equals(idapp)).ToList();
+                        .Where(x => x.UserId.Equals(user.Id) && x.ApplicationId.Equals(idapp)).ToList();
 
                     foreach (AppUserRoleEntity del in deleterole)
                     {
@@ -99,22 +106,30 @@ namespace Wlog.Library.BLL.Reporitories
             }
         }
 
+
+        /// <summary>
+        /// Search application basing on search settings.
+        /// </summary>
+        /// <param name="searchSettings"></param>
+        /// <returns></returns>
         public IPagedList<ApplicationEntity> Search(ApplicationSearchSettings searchSettings)
         {
             logger.Debug("[repo] entering Search");
 
-            List<ApplicationEntity> entity;
+            List<ApplicationEntity> applitationList;
 
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
+
                 if (string.IsNullOrEmpty(searchSettings.SerchFilter))
                 {
-                    entity = uow.Query<ApplicationEntity>().OrderBy(x => x.ApplicationName).ToList();
+                    applitationList = uow.Query<ApplicationEntity>()
+                        .OrderBy(x => x.ApplicationName).ToList();
                 }
                 else
                 {
-                    entity = uow.Query<ApplicationEntity>()
+                    applitationList = uow.Query<ApplicationEntity>()
                         .Where(x => x.ApplicationName.Contains(searchSettings.SerchFilter))
                         .OrderBy(x => x.ApplicationName).ToList();
                 }
@@ -124,13 +139,20 @@ namespace Wlog.Library.BLL.Reporitories
                 if (!user.IsAdmin)
                 {
                     var applicationsForUser = GetAppplicationsIdsByUsername(user.Username);
-                    entity = entity.Where(x => applicationsForUser.Contains(x.IdApplication)).ToList();
+                    applitationList = applitationList.Where(x => applicationsForUser.Contains(x.IdApplication)).ToList();
                 }
+
+                //TODO: why all application are retrieved from db, then search result is filtered by usename permission? could be easier to pass filters to GetAppplicationsIdsByUsername ?? 
             }
 
-            return new StaticPagedList<ApplicationEntity>(entity, searchSettings.PageNumber, searchSettings.PageSize, entity.Count);
+            return new StaticPagedList<ApplicationEntity>(applitationList, searchSettings.PageNumber, searchSettings.PageSize, applitationList.Count);
         }
 
+
+        /// <summary>
+        /// Delete one application from db, removing all relate data
+        /// </summary>
+        /// <param name="app"></param>
         public void Delete(ApplicationEntity app)
         {
             logger.Debug("[repo] entering Delete");
@@ -139,6 +161,9 @@ namespace Wlog.Library.BLL.Reporitories
                 uow.BeginTransaction();
                 ApplicationEntity appToDelete = uow.Query<ApplicationEntity>().Where(x => x.IdApplication.Equals(app.IdApplication)).FirstOrDefault();
 
+
+                //TODO: for performance issuea could be better to: 1. use a batch statment 2. use a sessionless transaction
+                //TODO: index of log on filesistem must be deleted too.
                 List<LogEntity> logs = uow.Query<LogEntity>().Where(x => x.ApplictionId.Equals( app.IdApplication)).ToList();
                 foreach (LogEntity e in logs)
                 {
@@ -153,6 +178,11 @@ namespace Wlog.Library.BLL.Reporitories
             }
         }
 
+        /// <summary>
+        /// Get the list of allowed application by username
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
         public List<ApplicationEntity> GetAppplicationsByUsername(string userName)
         {
             logger.Debug("[repo] entering GetAppplicationsByUsername");
@@ -161,6 +191,11 @@ namespace Wlog.Library.BLL.Reporitories
             return RepositoryContext.Current.Applications.GetByIds(ids);
         }
 
+        /// <summary>
+        /// Return a list of application by a list of ids
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
         public List<ApplicationEntity> GetByIds(List<Guid> ids)
         {
             logger.Debug("[repo] entering GetByIds");
@@ -190,6 +225,11 @@ namespace Wlog.Library.BLL.Reporitories
             }
         }
 
+        /// <summary>
+        /// Give alist of application ids for username
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
         public List<Guid> GetAppplicationsIdsByUsername(string userName)
         {
             logger.Debug("[repo] entering GetAppplicationsIdsByUsername");
@@ -198,13 +238,24 @@ namespace Wlog.Library.BLL.Reporitories
             return ids;
         }
 
+        /// <summary>
+        /// get a list of allowed application ids for the user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public List<Guid> GetAppplicationsIdsForUser(UserEntity user)
         {
+            //TODO: why this is not just an overload of  List<Guid> GetAppplicationsIdsByUsername(string userName) ??
             logger.Debug("[repo] entering GetAppplicationsIdsForUser");
             return GetAppplicationForUser(user).Select(x => x.IdApplication).ToList();
 
         }
 
+        /// <summary>
+        /// Return list of allowed application for a given user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public List<ApplicationEntity> GetAppplicationForUser(UserEntity user)
         {
             logger.Debug("[repo] entering GetAppplicationForUser");
@@ -233,6 +284,11 @@ namespace Wlog.Library.BLL.Reporitories
             }
         }
 
+        /// <summary>
+        /// Find application by its key
+        /// </summary>
+        /// <param name="applicationKey"></param>
+        /// <returns></returns>
         public ApplicationEntity GetByApplicationKey(string applicationKey)
         {
             logger.Debug("[repo] entering GetByApplicationKey");
@@ -246,6 +302,13 @@ namespace Wlog.Library.BLL.Reporitories
             }
         }
 
+        /// <summary>
+        /// Assign a role to the user
+        /// </summary>
+        /// <param name="application"></param>
+        /// <param name="user"></param>
+        /// <param name="role"></param>
+        /// <returns></returns>
         public bool AssignRoleToUser(ApplicationEntity application, UserEntity user, RolesEntity role)
         {
             logger.Debug("[repo] entering AssignRoleToUser");

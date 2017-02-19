@@ -33,6 +33,18 @@ namespace Wlog.DAL.NHibernate.Helpers
 
             Configuration cfg = new Configuration();
 
+            //if (System.Configuration.ConfigurationManager.AppSettings["_override_connectionstring"] != null)
+            //{
+            //    cfg.SetProperty("_override_connectionstring", System.Configuration.ConfigurationManager.AppSettings["_override_connectionstring"]);
+            //}
+
+
+            //if (System.Configuration.ConfigurationManager.AppSettings["_override_connectionstring"] != null)
+            //{
+            //    cfg.SetProperty("_override_connectionstring", System.Configuration.ConfigurationManager.AppSettings["_override_connectionstring"]);
+            //}
+
+
             ModelMapper mapper = new ModelMapper();
             mapper.AddMappings(Assembly.GetExecutingAssembly().GetExportedTypes());
 
