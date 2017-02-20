@@ -15,12 +15,22 @@ using NLog;
 
 namespace Wlog.Library.BLL.Reporitories
 {
+
+    //TODO: sould this use "using" patter to allow transaction maangment? (one UOW shared on all repo instances...)
+    //TODO:should this use DI to inject repo?
+    //TODO: should this used by using DI?
+
     /// <summary>
     /// class to manage all repository instance
     /// </summary>
     public class RepositoryContext
     {
+      
+
         private static Logger logger = LogManager.GetCurrentClassLogger();
+
+
+        //Here a list of all repositories
         public ApplicationRepository Applications { get; private set; }
 
         public UserRepository Users { get; private set; }

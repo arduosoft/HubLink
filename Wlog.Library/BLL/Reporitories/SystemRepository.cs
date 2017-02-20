@@ -33,8 +33,13 @@ namespace Wlog.Library.BLL.Reporitories
             
         }
 
+
+        /// <summary>
+        /// Apply schema changes
+        /// </summary>
         public void ApplySchemaChanges()
         {
+            //TODO: what in case of mongo? in that case we should create collection insthead of tables.
             logger.Debug("[repo] entering ApplySchemaChanges");
             NHibernateContext.ApplySchemaChanges();
         }

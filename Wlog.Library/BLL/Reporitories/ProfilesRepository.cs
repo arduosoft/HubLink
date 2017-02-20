@@ -19,7 +19,11 @@ namespace Wlog.Library.BLL.Reporitories
        
 
         
-
+        /// <summary>
+        /// Get a profile by name
+        /// </summary>
+        /// <param name="profileName"></param>
+        /// <returns></returns>
         public ProfilesEntity GetProfileByName(string profileName)
         {
             logger.Debug("[repo] entering GetProfileByName");
@@ -30,6 +34,11 @@ namespace Wlog.Library.BLL.Reporitories
             }
         }
 
+        /// <summary>
+        /// Delete one profle
+        /// </summary>
+        /// <param name="profile"></param>
+        /// <returns></returns>
         public bool Delete(ProfilesEntity profile)
         {
             logger.Debug("[repo] entering Delete");
@@ -61,8 +70,14 @@ namespace Wlog.Library.BLL.Reporitories
             return result;
         }
 
+        /// <summary>
+        /// Get all profiles
+        /// </summary>
+        /// <returns></returns>
         public List<ProfilesEntity> GetAllProfiles()
         {
+
+            //TODO: this method should take paging options
             logger.Debug("[repo] entering GetAllProfiles");
             List<ProfilesEntity> result = new List<ProfilesEntity>();
             try
@@ -80,6 +95,11 @@ namespace Wlog.Library.BLL.Reporitories
             return result;
         }
 
+        /// <summary>
+        /// Save one profile entity
+        /// </summary>
+        /// <param name="profilesEntity"></param>
+        /// <returns></returns>
         public bool Save(ProfilesEntity profilesEntity)
         {
             logger.Debug("[repo] entering Save");
@@ -102,6 +122,14 @@ namespace Wlog.Library.BLL.Reporitories
             return false;
         }
 
+
+        /// <summary>
+        /// Assign multiple roles to a profile.
+        /// Already present roles wont be tuched
+        /// </summary>
+        /// <param name="profile"></param>
+        /// <param name="roles"></param>
+        /// <returns></returns>
         public bool AssignRolesToProfile(ProfilesEntity profile, List<RolesEntity> roles)
         {
             logger.Debug("[repo] entering AssignRolesToProfile");

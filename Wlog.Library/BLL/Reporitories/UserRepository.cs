@@ -33,6 +33,11 @@ namespace Wlog.Library.BLL.Reporitories
 
         }
 
+        /// <summary>
+        /// Get user by user id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public UserEntity GetById(Guid id)
         {
             logger.Debug("[repo] entering GetById");
@@ -45,8 +50,14 @@ namespace Wlog.Library.BLL.Reporitories
             return entity;
         }
 
+        /// <summary>
+        /// Delete an user from database
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public bool Delete(UserEntity user)
         {
+            //TODO: admin user shouldn't be delete... 
             logger.Debug("[repo] entering Delete");
             bool result = true;
             try
@@ -75,8 +86,13 @@ namespace Wlog.Library.BLL.Reporitories
             return result;
         }
 
+        /// <summary>
+        /// Get all user
+        /// </summary>
+        /// <returns></returns>
         public List<UserEntity> GetAll()
         {
+            //TODO: this should contains paging inputs
             logger.Debug("[repo] entering GetAll");
             List<UserEntity> result = new List<UserEntity>();
             using (IUnitOfWork uow = BeginUnitOfWork())
@@ -88,6 +104,11 @@ namespace Wlog.Library.BLL.Reporitories
             return result;
         }
 
+        /// <summary>
+        /// Save an user
+        /// </summary>
+        /// <param name="usr"></param>
+        /// <returns></returns>
         public bool Save(UserEntity usr)
         {
             logger.Debug("[repo] entering Save");
@@ -112,6 +133,11 @@ namespace Wlog.Library.BLL.Reporitories
             return result;
         }
 
+        /// <summary>
+        /// Search for user.
+        /// </summary>
+        /// <param name="userSearchSettings"></param>
+        /// <returns></returns>
         public IPagedList<UserEntity> SearchUsers(UserSearchSettings userSearchSettings)
         {
             logger.Debug("[repo] entering SearchUsers");
@@ -133,6 +159,12 @@ namespace Wlog.Library.BLL.Reporitories
             }
         }
 
+
+        /// <summary>
+        /// get an user by username
+        /// </summary>
+        /// <param name="userneame"></param>
+        /// <returns></returns>
         public UserEntity GetByUsername(string userneame)
         {
             logger.Debug("[repo] entering GetByUsername");
@@ -143,6 +175,11 @@ namespace Wlog.Library.BLL.Reporitories
             }
         }
 
+        /// <summary>
+        /// get an user by its email
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         public UserEntity GetByEmail(string email)
         {
             logger.Debug("[repo] entering GetByEmail");
@@ -152,5 +189,7 @@ namespace Wlog.Library.BLL.Reporitories
                 return uow.Query<UserEntity>().Where(x => x.Email == email).FirstOrDefault();
             }
         }
+
+        //TODO: can all "GetByXXX" methods be overlod of an unique method that take labda for FirstOrDefault?
     }
 }

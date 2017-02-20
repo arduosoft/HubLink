@@ -32,8 +32,15 @@ namespace Wlog.Library.BLL.Reporitories
         {
         }
 
+
+        /// <summary>
+        /// Get all application Entity
+        /// </summary>
+        /// <param name="applicationEntity"></param>
+        /// <returns></returns>
         public List<RolesEntity> GetAllApplicationRoles(ApplicationEntity applicationEntity)
         {
+            //TODO: apply paging input 
             logger.Debug("[repo] entering GetAllApplicationRoles");
 
             using (IUnitOfWork uow = BeginUnitOfWork())
@@ -51,6 +58,11 @@ namespace Wlog.Library.BLL.Reporitories
             return null;
         }
 
+        /// <summary>
+        /// Get all application roe
+        /// </summary>
+        /// <param name="userEntity"></param>
+        /// <returns></returns>
         public List<AppUserRoleEntity> GetApplicationRolesForUser(UserEntity userEntity)
         {
             logger.Debug("[repo] entering GetApplicationRolesForUser");
@@ -61,6 +73,11 @@ namespace Wlog.Library.BLL.Reporitories
             }
         }
 
+        /// <summary>
+        /// Get role by name, name is case sensitive
+        /// </summary>
+        /// <param name="rolename"></param>
+        /// <returns></returns>
         public RolesEntity GetRoleByName(string rolename)
         {
             logger.Debug("[repo] entering GetRoleByName");
@@ -71,6 +88,12 @@ namespace Wlog.Library.BLL.Reporitories
             }
         }
 
+
+        /// <summary>
+        /// Save one role
+        /// </summary>
+        /// <param name="rolesEntity"></param>
+        /// <returns></returns>
         public bool Save(RolesEntity rolesEntity)
         {
             logger.Debug("[repo] entering Save");
@@ -94,15 +117,27 @@ namespace Wlog.Library.BLL.Reporitories
             return false;
         }
 
+        /// <summary>
+        /// Return list of all roles
+        /// </summary>
+        /// <returns></returns>
         public List<RolesEntity> GetAllRoles()
         {
+            //TODO: yest there is few rows, but to have coerence with other repos, should we add paging inputs?
             logger.Debug("[repo] entering GetAllRoles");
             return GetAllRoles(RoleScope.All);
         }
 
 
+
+        /// <summary>
+        /// Get all roles for a given scope
+        /// </summary>
+        /// <param name="scope"></param>
+        /// <returns></returns>
         public List<RolesEntity> GetAllRoles(RoleScope scope)
         {
+            //TODO: why GetAllRoles is not an overload of me? adding also paging parameter...
             logger.Debug("[repo] entering GetAllRoles({0})",scope);
             List<RolesEntity> result = new List<RolesEntity>();
             try
@@ -139,6 +174,12 @@ namespace Wlog.Library.BLL.Reporitories
             return result;
         }
 
+
+        /// <summary>
+        /// return all roles inherited from profile
+        /// </summary>
+        /// <param name="userEntity"></param>
+        /// <returns></returns>
         public List<ProfilesRolesEntity> GetProfilesRolesForUser(UserEntity userEntity)
         {
             logger.Debug("[repo] entering GetProfilesRolesForUser");
@@ -149,6 +190,11 @@ namespace Wlog.Library.BLL.Reporitories
             }
         }
 
+        /// <summary>
+        /// Get all roles for a user
+        /// </summary>
+        /// <param name="userEntity"></param>
+        /// <returns></returns>
         public List<RolesEntity> GetAllRolesForUser(UserEntity userEntity)
         {
 
