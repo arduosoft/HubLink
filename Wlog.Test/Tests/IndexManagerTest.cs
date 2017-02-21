@@ -71,7 +71,7 @@ namespace Wlog.Test.Tests
         /// this method add many items in index, save it and remove documents.
         /// 
         /// </summary>
-        [Fact, TestPriority(1) Trait("Category", "ExcludedFromCI")]
+        [Fact, TestPriority(1), Trait("Category", "ExcludedFromCI")]
         public void TestIndexRemove()
         {
             Dictionary<string, object>[] docs = new Dictionary<string, object>[] {
