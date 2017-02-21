@@ -13,7 +13,7 @@ namespace Wlog.Library.Scheduler.Jobs
     /// </summary>
     public class EmptyBinJob : Job
     {
-        private Logger _logger => LogManager.GetCurrentClassLogger();
+        private Logger _logger =LogManager.GetCurrentClassLogger();
 
         private int _rowsToKeep { get; set; }
 
