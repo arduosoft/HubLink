@@ -11,21 +11,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wlog.Web", "Wlog.Web\Wlog.Web.csproj", "{915395A4-2E47-470C-B91C-12964CE0C644}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wlog.TestApp", "Wlog.TestApp\Wlog.TestApp.csproj", "{176B4309-6EDF-4D6B-9296-A853181EB923}"
-	ProjectSection(ProjectDependencies) = postProject
-		{3F2B62ED-A3B2-4137-9033-266BE27D8D1D} = {3F2B62ED-A3B2-4137-9033-266BE27D8D1D}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wlog.Test", "Wlog.Test\Wlog.Test.csproj", "{4E0840A0-4D2C-4351-ABCE-5D11E95EF5B5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wlog.Library", "Wlog.Library\Wlog.Library.csproj", "{E331B212-3AF2-468D-9A5E-519162B2C8D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wlog.Clients.Log4Net", "WLog.Clients.Log4Net\Wlog.Clients.Log4Net.csproj", "{3F2B62ED-A3B2-4137-9033-266BE27D8D1D}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{940141B3-9970-46CE-A15E-A9CAA83906CA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wlog.Clients", "Wlog.Clients\Wlog.Clients.csproj", "{C3F67DFE-914A-4852-9EAE-82B401AB70CB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wlog.Clients.NLog", "WLog.Clients.NLog\Wlog.Clients.NLog.csproj", "{96B4C016-6835-4C7B-A9D0-C5BBECE53AE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,30 +49,8 @@ Global
 		{E331B212-3AF2-468D-9A5E-519162B2C8D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E331B212-3AF2-468D-9A5E-519162B2C8D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E331B212-3AF2-468D-9A5E-519162B2C8D1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3F2B62ED-A3B2-4137-9033-266BE27D8D1D}.AppHarbor|Any CPU.ActiveCfg = Release|Any CPU
-		{3F2B62ED-A3B2-4137-9033-266BE27D8D1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F2B62ED-A3B2-4137-9033-266BE27D8D1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3F2B62ED-A3B2-4137-9033-266BE27D8D1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3F2B62ED-A3B2-4137-9033-266BE27D8D1D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C3F67DFE-914A-4852-9EAE-82B401AB70CB}.AppHarbor|Any CPU.ActiveCfg = Release|Any CPU
-		{C3F67DFE-914A-4852-9EAE-82B401AB70CB}.AppHarbor|Any CPU.Build.0 = Release|Any CPU
-		{C3F67DFE-914A-4852-9EAE-82B401AB70CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C3F67DFE-914A-4852-9EAE-82B401AB70CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C3F67DFE-914A-4852-9EAE-82B401AB70CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C3F67DFE-914A-4852-9EAE-82B401AB70CB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{96B4C016-6835-4C7B-A9D0-C5BBECE53AE7}.AppHarbor|Any CPU.ActiveCfg = AppHarbor|Any CPU
-		{96B4C016-6835-4C7B-A9D0-C5BBECE53AE7}.AppHarbor|Any CPU.Build.0 = AppHarbor|Any CPU
-		{96B4C016-6835-4C7B-A9D0-C5BBECE53AE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{96B4C016-6835-4C7B-A9D0-C5BBECE53AE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{96B4C016-6835-4C7B-A9D0-C5BBECE53AE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{96B4C016-6835-4C7B-A9D0-C5BBECE53AE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{3F2B62ED-A3B2-4137-9033-266BE27D8D1D} = {940141B3-9970-46CE-A15E-A9CAA83906CA}
-		{C3F67DFE-914A-4852-9EAE-82B401AB70CB} = {940141B3-9970-46CE-A15E-A9CAA83906CA}
-		{96B4C016-6835-4C7B-A9D0-C5BBECE53AE7} = {940141B3-9970-46CE-A15E-A9CAA83906CA}
 	EndGlobalSection
 EndGlobal
