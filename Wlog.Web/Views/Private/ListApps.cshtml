@@ -86,11 +86,13 @@
             }
         </tbody>
     </table>
-    
-    <br />
-    Page @(Model.AppList.PageCount < Model.AppList.PageNumber ? 0 : Model.AppList.PageNumber) of @Model.AppList.PageCount
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <p class="form-control-static">  Page @(Model.AppList.PageCount < Model.AppList.PageNumber ? 0 : Model.AppList.PageNumber) of @Model.AppList.PageCount</p>
+        </div>
+        <div class="col-sm-9 text-right">
+            @Html.PagedListPager(Model.AppList, page => Url.Action("ListApps", new { page, serchmessage = Model.SerchMessage }))
 
-    @Html.PagedListPager(Model.AppList, page => Url.Action("ListApps",new { page, serchmessage=Model.SerchMessage }))
-
-</div>
-
+        </div>
+    </div>

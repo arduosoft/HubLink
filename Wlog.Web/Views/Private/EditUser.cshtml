@@ -5,97 +5,110 @@
 }
 
 <div class="row">
-    <h2>@Html.DisplayFor(model => model.DataUser.Username)</h2>
-    @using (Html.BeginForm("EditUser", "Private", FormMethod.Post))
+    <h1><i class="fa fa-user" aria-hidden="true"></i> &nbsp;Edit:&nbsp;@Html.DisplayFor(model => model.DataUser.Username)</h1>
+    @using (Html.BeginForm("EditUser", "Private", FormMethod.Post,new { @class="form-horizontal"}))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
 
-        <fieldset>
-            <legend></legend>
+       
             @Html.HiddenFor(model=>model.DataUser.Id)
             @Html.HiddenFor(model=>model.DataUser.Password)
             @Html.HiddenFor(model=>model.DataUser.Username)
             
 
-            <div class="form-horizontal">
+            
                 <div class="form-group">
-                    @Html.LabelFor(model => model.DataUser.Username, new { @class = "col-lg-2 control-label" })
-                    <div class="col-lg-10">
-                        @Html.DisplayFor(model => model.DataUser.Username, new { @class = "form-control" })
+                    @Html.LabelFor(model => model.DataUser.Username, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-10">
+                        @Html.DisplayFor(model => model.DataUser.Username, new { @class = "form-control-static" })
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.DataUser.Email, new { @class = "col-lg-2 control-label" })
-                    <div class="col-lg-10">
+                    @Html.LabelFor(model => model.DataUser.Email, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-10">
                         @Html.EditorFor(model => model.DataUser.Email, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.DataUser.IsAdmin, new { @class = "col-lg-2 control-label" })
-                    <div class="col-lg-10">
-                        @Html.EditorFor(model => model.DataUser.IsAdmin, new { @class = "form-control" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.DataUser.CreationDate, new { @class = "col-lg-2 control-label" })
-                    <div class="col-lg-10">
-                        @Html.DisplayFor(model => model.DataUser.CreationDate, new { @class = "form-control" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.DataUser.LastLoginDate, new { @class = "col-lg-2 control-label" })
-                    <div class="col-lg-10">
-                        @Html.DisplayFor(model => model.DataUser.LastLoginDate, new { @class = "form-control" })
-                    </div>
-                </div>
-            </div>
-            <div>
-                <table class="table">
-                    <tr>
-                        <th>Application
-                        </th>
-                        <th>Role
-                        </th>
-                    </tr>
-@*                    @foreach (var item in Model.Apps)
-                    {
-                        @Html.HiddenFor(model=>model.Apps)
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(model => item.Application.ApplicationName)
-                                @Html.HiddenFor(model=>item.Application.IdApplication)
-                            </td>
-                            <td>
-                                @Html.DropDownListFor(model => item.Role.Id, new SelectList(Model.RoleList, "Id", "RoleName", item.Role.Id))
-                            </td>
-                        </tr>
-                    }*@
-                    @for(int i=0;i<Model.Apps.Count();i++)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(model => model.Apps[i].ApplicationName)
-                                @Html.HiddenFor(model=>model.Apps[i].IdApplication)
-                                @Html.HiddenFor(model=>model.Apps[i].ApplicationName)
-                            </td>
-                            <td>
-                                @Html.DropDownListFor(model => model.Apps[i].RoleId, new SelectList(Model.RoleList, "Id", "RoleName", Model.Apps[i].RoleId))
-                            </td>
-                        </tr>
-                    }
-                </table>
-            </div>
+                    @Html.LabelFor(model => model.DataUser.IsAdmin, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-10">
+                        <div class="col-sm-1">
+                            @Html.EditorFor(model => model.DataUser.IsAdmin, new { @class = "form-control" })
+                        </div>
+                    <div class="col-sm-9">
 
-            <p>
-                @Html.ActionLink("Back to List", "ListUsers", null, new { @class = "btn btn-success btn-list" })
-               
-                <input type="submit" value="Save" class="btn btn-warning pull-right btn-list"  />&nbsp;
-                @Html.ActionLink("Delete User", "DeleteUser", new { Id = Model.DataUser.Id }, new { @class = "btn btn-danger pull-right btn-list" })
-               
-            </p>
-        </fieldset>
+                    </div>
+                        </div>
+                    </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DataUser.CreationDate, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-10">
+                        @Html.DisplayFor(model => model.DataUser.CreationDate, new { @class = "form-control-static" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DataUser.LastLoginDate, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-10">
+                        @Html.DisplayFor(model => model.DataUser.LastLoginDate, new { @class = "form-control-static" })
+                    </div>
+                </div>
+
+                <div>
+
+                    
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h3>Role list for this application:</h3>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Application
+                                        </th>
+                                        <th>
+                                            Role
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.Apps.Count(); i++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(model => model.Apps[i].ApplicationName)
+                                                @Html.HiddenFor(model => model.Apps[i].IdApplication)
+                                                @Html.HiddenFor(model => model.Apps[i].ApplicationName)
+                                            </td>
+                                            <td>
+                                                @Html.DropDownListFor(model => model.Apps[i].RoleId, new SelectList(Model.RoleList, "Id", "RoleName", Model.Apps[i].RoleId), new { @class = " control-label" })
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                        </table>
+                            </div>
+                        </div>
+                        </div>
+
+                       <hr />
+
+
+                        <div class="form-group">
+                            <div class="col-sm-2">
+                                @Html.ActionLink("Back to List", "ListUsers", null, new { @class = "btn btn-success btn-list" })
+                            </div>
+                            <div class=" col-sm-10">
+                                <p>
+
+                                    <button type="submit" value="Save" class="btn btn-warning btn-list  pull-right"><i class="fa fa-floppy-o" aria-hidden="true"></i> &nbsp; Save</button>
+                                    @Html.ActionLink("Delete User", "DeleteUser", new { Id = Model.DataUser.Id }, new { @class = "btn btn-danger pull-left btn-list" })
+                                </p>
+                            </div>
+                        </div>
+
     }
 
-</div>
+                    </div>
 

@@ -7,21 +7,36 @@
 }
 
 <div class="row">
-    <h2>Users</h2>
+    <h1><i class="fa fa-users" aria-hidden="true"></i>&nbsp; Users</h1>
 
-   
 </div>
 <div class="row">
-        @using (Html.BeginForm("ListUsers", "Private", FormMethod.Get, new { serch = Model.SerchMessage }))
-        {
-            <p>
-                Find User: @Html.TextBox("serchMessage", Model.SerchMessage)
-                <input type="submit" value="Search" class="btn btn-default" />
-            
+    <div class="col-sm-10">
+        <div class="row">
+            @using (Html.BeginForm("ListUsers", "Private", FormMethod.Get, new { serch = Model.SerchMessage, @class = "form-inline" } ))
+            {
+            <div class="form-group">
+
+                <div class="input-group">
+                    @Html.TextBox("serchMessage", Model.SerchMessage, new { @placeholder = "Find application ...", @class = "form-control" })
+                    <span class="input-group-btn"><button type="submit" class="btn btn-default"> &nbsp;<i class="fa fa-search" aria-hidden="true" onclick="javascript:this.submit();"></i> &nbsp;</button></span>
+                </div>
+
+
+
+            </div>
+            }
+        </div>
+        </div>
+
+
+            <div class="col-sm-2">
                 @Html.ActionLink("Create New", "NewUser", null, new { @class = "btn btn-success  btn-list pull-right" })
-            
-        </p>
-        <table class="table">
+            </div>
+  </div>
+<div class="row">
+    <table  class="table table-hover">
+        <thead>
             <tr>
                 <th>
                     @Html.DisplayName("UserName")
@@ -42,12 +57,16 @@
                     @Html.DisplayName("Is Online")
                 </th>
             </tr>
-
+        </thead>
+        <tbody>
             @foreach (var item in Model.UserList)
             {
                 <tr>
                     <td>
-                        @Html.ActionLink(item.Username, "EditUser", new { id = item.Id })
+                        @Html.ActionLink(item.Username, "EditUser", new
+                       {
+                           id = item.Id
+                       })
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Email)
@@ -66,18 +85,23 @@
                     </td>
 
                     @*                <td>
-                    @Html.ActionLink("Edit", "EditUser", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "DetailsUser", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "DeleteUser", new { id = item.Id })
-                </td>*@
+                        @Html.ActionLink("Edit", "EditUser", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "DetailsUser", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "DeleteUser", new { id = item.Id })
+                    </td>*@
                 </tr>
             }
+        </tbody>
+    </table>
+    
+    </div>
+<div class="row">
+    <div class="col-sm-3">
+        <p class="form-control-static">  Page @(Model.UserList.PageCount < Model.UserList.PageNumber ? 0 : Model.UserList.PageNumber) of @Model.UserList.PageCount</p>
+    </div>
+    <div class="col-sm-9 text-right">
+        @Html.PagedListPager(Model.UserList, page => Url.Action("ListUsers", new { page, serchmessage = Model.SerchMessage }))
 
-        </table>
-            }
-                <br />
-        Page @(Model.UserList.PageCount < Model.UserList.PageNumber ? 0 : Model.UserList.PageNumber) of @Model.UserList.PageCount
+    </div>
+    </div>
 
-       @Html.PagedListPager(Model.UserList, page => Url.Action("ListUsers",new { page, serchmessage=Model.SerchMessage }))
-
-</div>
