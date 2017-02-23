@@ -103,8 +103,8 @@ namespace Wlog.Web.Controllers
             if (!provider.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword))
             {
                 UserProfileContext.Current.Refresh();
-                ModelState.AddModelError(String.Empty, "Error");
-                RedirectToAction("Manage");
+                ModelState.AddModelError(String.Empty, "Unable to change password. Old password provided may be uncorrect.");
+                return View("Manage",new LocalPasswordModel() { Password=model });
             }
             else
             {

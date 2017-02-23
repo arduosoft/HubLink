@@ -4,8 +4,11 @@
     Layout = "~/Views/Shared/_LayoutInternal.cshtml";
     ViewBag.Title = "New User";
 }
+
+<div class="page-header">
+    <h1><i class="fa fa-user" aria-hidden="true"></i> &nbsp; New User</i></h1>
+</div>
 <div class="row">
-    <h1><i class="fa fa-user" aria-hidden="true"></i>&nbsp;New User</h1>
 
     @using (Html.BeginForm("NewUser", "Private", FormMethod.Post, new { @class = "form-horizontal" }))
     {
@@ -15,7 +18,7 @@
 
 
         <div class="form-group">
-            @Html.LabelFor(model => model.UserName, new { @class = "col-sm-2 control-label" , @placeholder="Username"})
+            @Html.LabelFor(model => model.UserName, new { @class = "col-sm-2 control-label", @placeholder = "Username" })
             <div class=" col-sm-10">
                 @Html.EditorFor(model => model.UserName, new { @class = "form-control" })
 
@@ -23,25 +26,25 @@
             @Html.ValidationMessageFor(model => model.UserName)
         </div>
 
-                <div class="form-group controls">
-                    @Html.LabelFor(model => model.Email, new { @class = "col-sm-2 control-label"})
+        <div class="form-group controls">
+            @Html.LabelFor(model => model.Email, new { @class = "col-sm-2 control-label" })
 
-                    <div class="col-sm-10 controls">
+            <div class="col-sm-10 controls">
 
-                        <div class="input-group">
-                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" ,placeholder="Email"} })
+                <div class="input-group">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Email" } })
 
-                            <span class="input-group-addon">
-                                <i class="fa fa-envelope-o" aria-hidden="true"></i>
-                            </span>
-                            </div>
-                        </div>
-                    @Html.ValidationMessageFor(model => model.Email)
-
+                    <span class="input-group-addon">
+                        <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                    </span>
                 </div>
+            </div>
+            @Html.ValidationMessageFor(model => model.Email)
+
+        </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Password, new {   @class = "col-sm-2 control-label" })
+                    @Html.LabelFor(model => model.Password, new { @class = "col-sm-2 control-label" })
                     <div class="col-sm-10">
                         <div class="input-group">
                             @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Password" } })
@@ -51,7 +54,7 @@
                         </div>
                     </div>
 
-                   
+
                     @Html.ValidationMessageFor(model => model.Password)
                 </div>
 
@@ -83,7 +86,7 @@
                             @Html.ActionLink("Back to List", "ListUsers", null, new { @class = "btn btn-success pull-left" })
                             <button type="submit" value="Create" class="btn btn-warning pull-right btn-list"><i class="fa fa-floppy-o" aria-hidden="true"></i> &nbsp; Save</button>
                         </p>
-                  </div>
+                    </div>
                 </div>
 
 

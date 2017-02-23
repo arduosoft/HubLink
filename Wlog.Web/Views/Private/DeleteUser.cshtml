@@ -4,11 +4,13 @@
     Layout = "~/Views/Shared/_LayoutInternal.cshtml";
 }
 
+<div class="page-header">
+    <h1><i class="fa fa-user" aria-hidden="true"></i> &nbsp; Delete User: <i>@Model.Username</i></h1>
+</div>
 <div class="row">
-    <h1><i class="fa fa-user" aria-hidden="true"></i> &nbsp;Edit:&nbsp;Delete User</h1>
 
-    <h3>Are you sure you want to delete user <i> @Html.DisplayFor(model => model.Username, new { @class = "form-control" }) </i>?</h3> 
-     <div class="panel panel-default">
+    <h3>Are you sure you want to delete user <i> @Html.DisplayFor(model => model.Username, new { @class = "form-control" }) </i>?</h3>
+    <div class="panel panel-default">
         <div class="panel-body">
             <div class="form-horizontal">
                 <div class="form-group">
@@ -17,7 +19,7 @@
                     </label>
                     <div class="col-lg-10">
                         <p class="form-control-static ">  @Html.DisplayFor(model => model.Username, new { @class = "form-control" })</p>
-</div>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -26,7 +28,7 @@
                     </label>
                     <div class="col-lg-10">
                         <p class="form-control-static ">  @Html.DisplayFor(model => model.Email, new { @class = "form-control-static" })</p>
-</div>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -35,7 +37,7 @@
                     </label>
                     <div class="col-lg-10">
                         <p class="form-control-static ">    @Html.DisplayFor(model => model.IsAdmin, new { @class = "form-control-static" })</p>
-</div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="col-lg-2 control-label">
@@ -43,7 +45,7 @@
                     </label>
                     <div class="col-lg-10">
                         <p class="form-control-static ">   @Html.DisplayFor(model => model.LastLoginDate, new { @class = "form-control-static" })</p>
-</div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="col-lg-2 control-label">
@@ -51,7 +53,7 @@
                     </label>
                     <div class="col-lg-10">
                         <p class="form-control-static ">    @Html.DisplayFor(model => model.CreationDate, new { @class = "form-control-static" })</p>
-</div>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -60,19 +62,19 @@
                     </label>
                     <div class="col-lg-10">
                         <p class="form-control-static ">   @Html.DisplayFor(model => model.IsOnLine, new { @class = "form-control" }) </p>
-</div>
+                    </div>
                 </div>
             </div>
-            </div>
-         </div>
+        </div>
+    </div>
 
-            @using (Html.BeginForm("DeleteUser", "Private", FormMethod.Post, new { Id = Model.Id }))
+    @using (Html.BeginForm("DeleteUser", "Private", FormMethod.Post, new { Id = Model.Id }))
             {
-                @Html.AntiForgeryToken()
-                @Html.ValidationSummary(false)
-                <p>
-                    @Html.ActionLink("Back to List", "ListUsers", null, new { @class = "btn btn-success  btn-list" })
-                    <input type="submit" value="Delete" class="btn btn-danger btn-list pull-right" />
-                </p>
-            }
- 
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(false)
+        <p>
+            @Html.ActionLink("Back to List", "ListUsers", null, new { @class = "btn btn-success  btn-list" })
+            <input type="submit" value="Delete" class="btn btn-danger btn-list pull-right" />
+        </p>
+    }
+

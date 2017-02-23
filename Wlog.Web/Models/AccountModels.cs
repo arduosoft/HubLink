@@ -56,8 +56,8 @@ namespace Wlog.Web.Models
 
     public class LocalPasswordModel
     {
-       
 
+        [Display(Name = "Password")]
         public Password Password { get; set; }
         public Email Email { get; set; }
 

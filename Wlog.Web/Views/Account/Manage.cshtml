@@ -4,17 +4,17 @@
     ViewBag.Title = "User Setting";
 }
 
-<div class="row">
-    <hgroup class="title">
-        <h1>@ViewBag.Title</h1>
-    </hgroup>
+<div class="page-header">
+
+    <h1><i class="fa fa-user-md" aria-hidden="true"></i> &nbsp; @ViewBag.Title</h1>
+
 </div>
 <div class="row">
-    <p>L'utente ha eseguito l'accesso come <strong>@User.Identity.Name</strong>.</p>
+    <p>User is logged in as <strong>@User.Identity.Name</strong>.</p>
     <div class="col-lg-6" style="border-right: solid 1px;">
-        @Html.Partial("_ChangePasswordPartial",Model.password)
+        @Html.Partial("_ChangePasswordPartial",Model.Password)
     </div>
     <div class="col-lg-6">
-        @Html.Partial("_ChangeEmailPartial",Model.email)
+        @Html.Partial("_ChangeEmailPartial",Model.Email)
     </div>
 </div>

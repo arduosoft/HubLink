@@ -4,62 +4,81 @@
     Layout = "~/Views/Shared/_LayoutInternal.cshtml";
 }
 
-<div class="row">
-    <h2>Info</h2>
+<div class="page-header">
+    <h1><i class="fa fa-user-md" aria-hidden="true"></i> &nbsp; Hello&nbsp;@Html.DisplayFor(model => model.DataUser.Username, new { @class = "form-control" })&nbsp;  !</h1>
+</div>
 
-    <fieldset>
-        <legend>User Info</legend>
-        <div class="form-horizontal">
-            <div class="form-group">
-                @Html.LabelFor(model => model.DataUser.Username, new { @class = "col-lg-2 control-label" })
-                <div class="col-lg-10">
-                    @Html.DisplayFor(model => model.DataUser.Username, new { @class = "form-control" })
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <legend>User Info</legend>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DataUser.Username, new { @class = "col-lg-2 control-label" })
+                    <div class="col-lg-10">
+                        @Html.DisplayFor(model => model.DataUser.Username, new { @class = "form-control-static" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DataUser.Email, new { @class = "col-lg-2 control-label" })
+                    <div class="col-lg-10">
+                        @Html.DisplayFor(model => model.DataUser.Email, new { @class = "form-control-static" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DataUser.IsAdmin, new { @class = "col-lg-2 control-label" })
+                    <div class="col-lg-10">
+                        @Html.DisplayFor(model => model.DataUser.IsAdmin, new { @class = "form-control-static" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DataUser.CreationDate, new { @class = "col-lg-2 control-label" })
+                    <div class="col-lg-10">
+                        @Html.DisplayFor(model => model.DataUser.CreationDate, new { @class = "form-control-static" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+
+                    <div class="col-lg-offset-2 col-lg-10">
+                        <a class="btn btn-primary" href="/Account/Manage/"> Change password or Email</a>
+                    </div>
                 </div>
             </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.DataUser.Email, new { @class = "col-lg-2 control-label" })
-                <div class="col-lg-10">
-                    @Html.DisplayFor(model => model.DataUser.Email, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.DataUser.IsAdmin, new { @class = "col-lg-2 control-label" })
-                <div class="col-lg-10">
-                    @Html.DisplayFor(model => model.DataUser.IsAdmin, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.DataUser.CreationDate, new { @class = "col-lg-2 control-label" })
-                <div class="col-lg-10">
-                    @Html.DisplayFor(model => model.DataUser.CreationDate, new { @class = "form-control" })
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3> List of roles provided for user in applications:</h3>
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>
+                                Application
+                            </th>
+                            <th>
+                                Role
+                            </th>
+                        </tr>
+                        @foreach (var item in Model.Apps)
+            {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ApplicationName)
+                                </td>
+                                <td>
+                                    @Html.DropDownListFor(modelItem => item.RoleId, new SelectList(Model.RoleList, "Id", "RoleName", item.RoleId), new { disabled = "disabled" })
+                                </td>
+                            </tr>
+                        }
+                    </table>
                 </div>
             </div>
         </div>
-        <table class="table">
-            <tr>
-                <th>Application
-                </th>
-                <th>Role
-                </th>
-            </tr>
-            @foreach (var item in Model.Apps)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ApplicationName)
-                    </td>
-                    <td>
-                        @Html.DropDownListFor(modelItem => item.RoleId, new SelectList(Model.RoleList, "Id", "RoleName", item.RoleId), new { disabled = "disabled" })
-                    </td>
-                </tr>
-            }
-        </table>
-    </fieldset>
+
+    </div>
 </div>
 
 
 
 
-<p>
-    @Html.ActionLink("Back", "Index", "Private",null, new { @class = "btn btn-success" })
-</p>
+        <p>
+            @Html.ActionLink("Back", "Index", "Private", null, new { @class = "btn btn-success" })
+        </p>
