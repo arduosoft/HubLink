@@ -30,12 +30,15 @@ namespace Wlog.Library.Scheduler
             HangfireBootstrapper.Instance.Start();
             var options = new DashboardOptions
             {
-                AppPath = VirtualPathUtility.ToAbsolute("~"),
+                //trick to disable "back button" in dashboard (otherwise it will refresh just iframe).
+                AppPath = "javascript:parent.document.location.href='" + VirtualPathUtility.ToAbsolute("~")+"';",
                 AuthorizationFilters = new[]
                 {
                 
                     new HangFireAuthorizationFilter()
-                }
+                },
+              
+       
             };
 
             app.UseHangfireDashboard("/private/hangfire", options);
