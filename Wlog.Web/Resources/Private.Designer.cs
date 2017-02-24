@@ -79,7 +79,16 @@ namespace Wlog.Web.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a The answer provided for password recovery is not valid . Check the value and try again ..
+        ///   Looks up a localized string similar to Error in job management. See log for more details..
+        /// </summary>
+        internal static string ErrorJobManagement {
+            get {
+                return ResourceManager.GetString("ErrorJobManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The answer provided for password recovery is not valid . Check the value and try again ..
         /// </summary>
         internal static string InvalidAnswer {
             get {
@@ -88,7 +97,16 @@ namespace Wlog.Web.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a The email address provided is not valid. Check the value and try again ..
+        ///   Looks up a localized string similar to Invalid cron expression.
+        /// </summary>
+        internal static string InvalidCron {
+            get {
+                return ResourceManager.GetString("InvalidCron", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The email address provided is not valid. Check the value and try again ..
         /// </summary>
         internal static string InvalidEmail {
             get {

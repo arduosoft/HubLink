@@ -26,11 +26,11 @@ namespace Wlog.BLL.Entities
         {
             get
             {
-                return this.IdApplication;
+                return IdApplication;
             }
             set
             {
-                this.Id = value;
+                Id = value;
             }
         }
 

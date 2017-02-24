@@ -53,7 +53,7 @@ namespace Wlog.Library.Scheduler
                 JobStorage.Current = new MemoryStorage();
                 logger.Debug("[HangfireBootstrapper]:  Registering jobs (hard coded)");
                 RecurringJob.AddOrUpdate(() => LogQueue.Current.Run(), "*/1 * * * *");
-                RecurringJob.AddOrUpdate(() => new MoveToBinJob(100,100).Execute(), "0 */1 * * *");
+                JobConfigurationHelper.LoadAllJobs();
 
                 logger.Debug("[HangfireBootstrapper]: starting BackgroundJobServer");
                 _backgroundJobServer = new BackgroundJobServer();
@@ -75,9 +75,6 @@ namespace Wlog.Library.Scheduler
                 HostingEnvironment.UnregisterObject(this);
             }
         }
-
-
-        
 
         void IRegisteredObject.Stop(bool immediate)
         {

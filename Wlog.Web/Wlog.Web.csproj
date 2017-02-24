@@ -50,8 +50,13 @@
     <Reference Include="CommonMark">
       <HintPath>..\packages\CommonMark.NET.0.11.0\lib\net45\CommonMark.dll</HintPath>
     </Reference>
-    <Reference Include="Hangfire.Core">
-      <HintPath>..\packages\Hangfire.Core.1.5.3\lib\net45\Hangfire.Core.dll</HintPath>
+    <Reference Include="CronExpressionDescriptor, Version=1.21.2.0, Culture=neutral, PublicKeyToken=a2ab0e0f73f9b037, processorArchitecture=MSIL">
+      <HintPath>..\packages\CronExpressionDescriptor.1.21.2\lib\net45\CronExpressionDescriptor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Hangfire.Core, Version=1.6.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.Core.1.6.5\lib\net45\Hangfire.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Hangfire.MemoryStorage">
       <HintPath>..\packages\Hangfire.MemoryStorage.1.1.0.0\lib\net45\Hangfire.MemoryStorage.dll</HintPath>
@@ -208,6 +213,12 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Code\Helpers\ButtonCommands.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Models\User\UserApps.cs" />
     <Compile Include="Resources\Private.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -476,6 +487,7 @@
     <Content Include="Web.AppHarbor.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
+    <Content Include="Views\Private\BackgroundJobs.cshtml" />
     <None Include="Wlog.Library.licenseheader" />
   </ItemGroup>
   <ItemGroup>
@@ -620,6 +632,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Private.it.resx" />
     <EmbeddedResource Include="Resources\Private.resx">
       <Generator>ResXFileCodeGenerator</Generator>

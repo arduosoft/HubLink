@@ -113,6 +113,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -129,6 +130,7 @@
     <Compile Include="BLL\Classes\Constants.cs" />
     <Compile Include="BLL\Classes\EntityRepository.cs" />
     <Compile Include="BLL\Classes\InfoPageConfiguration.cs" />
+    <Compile Include="BLL\Classes\JobConfiguration.cs" />
     <Compile Include="BLL\Configuration\InfoPageConfigurator.cs" />
     <Compile Include="BLL\Classes\InfoPageModel.cs" />
     <Compile Include="BLL\Classes\LogMessage.cs" />
@@ -147,6 +149,8 @@
     <Compile Include="BLL\DataBase\UnitOfMongo.cs" />
     <Compile Include="BLL\DataBase\UnitOfNhibernate.cs" />
     <Compile Include="BLL\Entities\DeletedLogEntity.cs" />
+    <Compile Include="BLL\Entities\JobDefinitionEntity.cs" />
+    <Compile Include="BLL\Entities\JobInstanceEntity.cs" />
     <Compile Include="BLL\Entities\ProfilesEntry.cs" />
     <Compile Include="BLL\Entities\ProfilesRolesEntry.cs" />
     <Compile Include="BLL\Enums\ApplicationFields.cs" />
@@ -163,6 +167,8 @@
     <Compile Include="BLL\Reporitories\ApplicationRepository.cs" />
     <Compile Include="BLL\Reporitories\IndexRepository.cs" />
     <Compile Include="BLL\Reporitories\DeletedLogRepository.cs" />
+    <Compile Include="BLL\Reporitories\JobDefinitionRepository.cs" />
+    <Compile Include="BLL\Reporitories\JobInstanceRespository.cs" />
     <Compile Include="BLL\Reporitories\LogRepository.cs" />
     <Compile Include="BLL\Reporitories\ProfilesRepository.cs" />
     <Compile Include="BLL\Reporitories\RepositoryContext.cs" />
@@ -179,6 +185,8 @@
     <Compile Include="DAL\Nhibernate\Mappings\ApplicationMap.cs" />
     <Compile Include="DAL\Nhibernate\Mappings\AppUserRoleMap.cs" />
     <Compile Include="DAL\Nhibernate\Mappings\DeletedLogMap.cs" />
+    <Compile Include="DAL\Nhibernate\Mappings\JobDefinitionMap.cs" />
+    <Compile Include="DAL\Nhibernate\Mappings\JobInstanceMap.cs" />
     <Compile Include="DAL\Nhibernate\Mappings\LogEntityMap.cs" />
     <Compile Include="DAL\Nhibernate\Mappings\ProfilesMap.cs" />
     <Compile Include="DAL\Nhibernate\Mappings\ProfilesRolesMap.cs" />
@@ -189,6 +197,7 @@
     <Compile Include="Scheduler\HangFireAuthorizationFilter.cs" />
     <Compile Include="Scheduler\HangfireBootstrapper.cs" />
     <Compile Include="Scheduler\Job.cs" />
+    <Compile Include="Scheduler\JobConfigurationHelper.cs" />
     <Compile Include="Scheduler\Jobs\EmptyBinJob.cs" />
     <Compile Include="Scheduler\Jobs\MoveToBinJob.cs" />
     <Compile Include="Scheduler\Startup.cs" />

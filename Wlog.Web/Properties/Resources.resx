@@ -117,46 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DuplicateEmail" xml:space="preserve">
-    <value>Un nome utente per l'indirizzo di posta elettronica esiste già. Immettere un nome utente differente.</value>
+  <data name="EmptyBinJobDescirption" xml:space="preserve">
+    <value>This job physically deletes entries, it will take as input: #dtk=number of days to keep.</value>
   </data>
-  <data name="DuplicateUserName" xml:space="preserve">
-    <value>Il nome utente esiste già. Immettere un nome utente differente.</value>
+  <data name="EmptyBinJobName" xml:space="preserve">
+    <value>EmptyBinJob</value>
   </data>
-  <data name="ErrorJobManagement" xml:space="preserve">
-    <value>Error in job management. See log for more details.</value>
+  <data name="MoveToBinJobDescription" xml:space="preserve">
+    <value>This job will take as input: #rtk=number of rows to keep, #dtk=number of days to keep.Only first #rtk records with SourceDate&gt;today-#dtk have to been left into original table.</value>
   </data>
-  <data name="InvalidAnswer" xml:space="preserve">
-    <value>La risposa fornita per il recupero della password non è valida. Controllare il valore e riprovare.</value>
-  </data>
-  <data name="InvalidCron" xml:space="preserve">
-    <value>Invalid cron expression</value>
-  </data>
-  <data name="InvalidEmail" xml:space="preserve">
-    <value>L'indirizzo di posta elettronica fornito non è valido. Controllare il valore e riprovare.</value>
-  </data>
-  <data name="InvalidPassword" xml:space="preserve">
-    <value>La password fornita non è valida. Immettere un valore valido per la password.</value>
-  </data>
-  <data name="InvalidQuestion" xml:space="preserve">
-    <value>La domanda fornita per il recupero della password non è valida. Controllare il valore e riprovare.</value>
-  </data>
-  <data name="InvalidUserName" xml:space="preserve">
-    <value>Il nome utente fornito non è valido. Controllare il valore e riprovare.</value>
-  </data>
-  <data name="PasswordMismatch" xml:space="preserve">
-    <value>La nuova password e la password di conferma non corrispondono.</value>
-  </data>
-  <data name="PasswordTooShort" xml:space="preserve">
-    <value>La lunghezza di {0} deve essere di almeno {2} caratteri.</value>
-  </data>
-  <data name="ProviderError" xml:space="preserve">
-    <value>Il provider di autenticazione ha restituito un errore. Verificare l'immissione e riprovare. Se il problema persiste, contattare l'amministratore di sistema.</value>
-  </data>
-  <data name="UnknownAuthorizationError" xml:space="preserve">
-    <value>Si è verificato un errore sconosciuto. Verificare l'immissione e riprovare. Se il problema persiste, contattare l'amministratore di sistema.</value>
-  </data>
-  <data name="UserRejected" xml:space="preserve">
-    <value>La richiesta di creazione dell'utente è stata annullata. Verificare l'immissione e riprovare. Se il problema persiste, contattare l'amministratore di sistema.</value>
+  <data name="MoveToBinJobName" xml:space="preserve">
+    <value>MoveToBinJob</value>
   </data>
 </root>

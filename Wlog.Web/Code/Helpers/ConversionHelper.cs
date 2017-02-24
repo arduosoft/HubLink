@@ -13,12 +13,16 @@ using Wlog.BLL.Classes;
 using Wlog.BLL.Entities;
 using Wlog.Library.BLL.Reporitories;
 using Wlog.Web.Models;
+using System.Linq;
+using Wlog.Library.BLL.Classes;
+using Hangfire.Common;
+using Wlog.Library.Scheduler;
 
 namespace Wlog.Web.Code.Helpers
 {
     public class ConversionHelper
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
         #region Entity To Model
 
         /// <summary>
@@ -28,7 +32,7 @@ namespace Wlog.Web.Code.Helpers
         /// <returns></returns>
         public static ApplicationHomeModel ConvertEntityToApplicationHome(ApplicationEntity entity)
         {
-            logger.Debug("[ConversionHelper]: ConvertEntityToApplicationHome");
+            _logger.Debug("[ConversionHelper]: ConvertEntityToApplicationHome");
             ApplicationHomeModel result = new ApplicationHomeModel();
             result.Id = entity.IdApplication;
             result.ApplicationName = entity.ApplicationName;
@@ -37,8 +41,6 @@ namespace Wlog.Web.Code.Helpers
             return result;
         }
 
-
-
         /// <summary>
         /// Convert List<ApplicationEntity> to List<ApplicationHome>
         /// </summary>
@@ -46,7 +48,7 @@ namespace Wlog.Web.Code.Helpers
         /// <returns></returns>
         public static List<ApplicationHomeModel> ConvertListEntityToListApplicationHome(List<ApplicationEntity> entity)
         {
-            logger.Debug("[ConversionHelper]: ConvertListEntityToListApplicationHome");
+            _logger.Debug("[ConversionHelper]: ConvertListEntityToListApplicationHome");
             List<ApplicationHomeModel> result = new List<ApplicationHomeModel>();
             foreach (ApplicationEntity app in entity)
             {
@@ -58,7 +60,7 @@ namespace Wlog.Web.Code.Helpers
 
         internal static LogEntity ConvertLog(LogMessage log)
         {
-            logger.Debug("[ConversionHelper]: ConvertLog");
+            _logger.Debug("[ConversionHelper]: ConvertLog");
             LogEntity result = new LogEntity();
             result.Uid = Guid.NewGuid();
             result.Level = log.Level;
@@ -70,21 +72,20 @@ namespace Wlog.Web.Code.Helpers
             try
             {
                 Guid searchGuid = new Guid(log.ApplicationKey);
-               RepositoryContext.Current.Applications.GetById(searchGuid);
+                RepositoryContext.Current.Applications.GetById(searchGuid);
             }
-            catch(Exception err)
+            catch (Exception err)
             {
-                logger.Error(err);
+                _logger.Error(err);
             }
 
             return result;
-
         }
 
 
         public static List<LogMessage> ConvertLogEntityToMessage(List<LogEntity> list)
         {
-            logger.Debug("[ConversionHelper]: ConvertLogEntityToMessage");
+            _logger.Debug("[ConversionHelper]: ConvertLogEntityToMessage");
             List<LogMessage> result = new List<LogMessage>();
             foreach (LogEntity le in list)
             {
@@ -98,6 +99,58 @@ namespace Wlog.Web.Code.Helpers
                 result.Add(lm);
             }
             return result;
+        }
+
+        public static bool UpdateJobInstance(JobConfiguration jobModel)
+        {
+            try
+            {
+                var jobInstance = RepositoryContext.Current.JobInstance.GetJobInstanceById(jobModel.JobInstanceId);
+
+                if (jobInstance == null)
+                {
+                    return false;
+                }
+
+                jobInstance.Active = jobModel.Active;
+
+                // deactivating job
+                if (!jobModel.Active)
+                {
+                    jobInstance.DeactivationDate = DateTime.UtcNow;
+                }
+
+                jobInstance.CronExpression = jobModel.CronExpression;
+
+                RepositoryContext.Current.JobInstance.Save(jobInstance);
+
+                JobConfigurationHelper.ReloadJob(jobModel);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+                throw;
+            }
+        }
+
+        public static bool RunJobInstance(JobConfiguration jobModel)
+        {
+            try
+            {
+                bool updated = UpdateJobInstance(jobModel);
+                if (updated && jobModel.Instantiable)
+                {
+                    JobConfigurationHelper.TriggerJob(jobModel);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+                throw;
+            }
         }
     }
 }

@@ -66,6 +66,8 @@ namespace Wlog.Test.Tests
 
         }
 
+     
+       
        
         /// <summary>
         /// this method add many items in index, save it and remove documents.

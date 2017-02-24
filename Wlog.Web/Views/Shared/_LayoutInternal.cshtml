@@ -134,7 +134,8 @@
                         @if (UserProfileContext.Current.IsEditorUser)
                         {
                             <li>
-                                <a href="/private/hangfire"><i class="fa fa-cogs fa-fw"></i>Backgroung jobs</a>
+                                @*<a href="/private/hangfire"><i class="fa fa-cogs fa-fw"></i>Backgroung jobs</a>*@
+                                <a href="/private/BackgroundJobs"><i class="fa fa-cogs fa-fw"></i>Backgroung jobs</a>
                             </li>
                             <li>
                                 <a href="/private/info"><i class="fa fa-wrench fa-fw"></i>App Info</a>
@@ -180,6 +181,30 @@
         $("div.form-group").has("span.field-validation-error").addClass('has-error');
         $("div.validation-summary-errors").has("li:visible").addClass("alert alert-block alert-error");
         $("form.form-horizontal input").addClass("form-control");
+
+        $(".btn-submit").click(function () {
+
+            console.log(this);
+            var parentForm = $(this).parents("form");            
+
+            if ($(parentForm).length > 0) {
+
+                $(parentForm).submit();
+            }
+        });
+
+
+        $(".btn-submit-serialized").click(function () {
+
+            console.log(this);
+            var   parentForm = $(this).parents(".role-form");
+            
+
+            if ($(parentForm).length > 0) {
+
+                $(parentForm).submit();
+            }
+        });
 
     });
 

@@ -27,6 +27,7 @@ namespace Wlog.Library.Scheduler
     {
         public void Configuration(IAppBuilder app)
         {
+            HangfireBootstrapper.Instance.Start();
             var options = new DashboardOptions
             {
                 AppPath = VirtualPathUtility.ToAbsolute("~"),
@@ -39,8 +40,6 @@ namespace Wlog.Library.Scheduler
 
             app.UseHangfireDashboard("/private/hangfire", options);
             app.UseHangfireServer();
-
-            
         }
     }
 }

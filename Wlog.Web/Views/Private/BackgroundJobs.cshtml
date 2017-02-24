@@ -1,0 +1,72 @@
+﻿@using Wlog.Web.Code.Helpers
+@model List<Wlog.Library.BLL.Classes.JobConfiguration>
+@{
+    ViewBag.Title = "Background Jobs Management";
+    Layout = "~/Views/Shared/_LayoutInternal.cshtml";
+}
+
+
+               <div class="page-header">
+                   <h1><i class="fa fa-cogs" aria-hidden="true"></i> &nbsp; Background Jobs Management </h1>
+               </div>
+    <div class="row">
+        This is the list of all scheduled jobs by the system.   <a href="/private/hangfire" class="btn btn-warning pull-right">Processes</a>    
+    </div>
+               <div class="row">
+
+                  
+
+
+                   @Html.ValidationMessage("Error", new { @class = "alert-danger" })
+                   <table class="table table-hover">
+                       <thead>
+                           <tr>
+                               <th>Job name</th>
+                               <th>Description</th>
+                               <th>Schedulation</th>
+                           </tr>
+                       </thead>
+                       <tbody>
+                           
+
+                           @for (int i = 0; i < Model.Count; i++)
+                           {
+                            
+                            <tr id="JobId-@Model[i].JobInstanceId" class="role-form">
+                              
+                                <td style="min-width:150px">
+                                     @Html.DisplayFor(m => Model[i].JobName, new { Name = "JobName" })
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m => Model[i].Description, new { Name = "Description" })
+                                </td>
+                                <td style="min-width:410px">
+                                    @using (Html.BeginForm("ManageBackgroundJobs", "Private", FormMethod.Post, new  { @class="form-inline"}))
+                                    {
+                                        @Html.HiddenFor(m => Model[i].JobInstanceId, new { Name = "JobInstanceId" })
+                                        @Html.HiddenFor(m => Model[i].Instantiable, new { Name = "Instantiable" })
+                                        @Html.HiddenFor(m => Model[i].FullClassName, new { Name = "FullClassName" })
+                                        <div class="form-group">
+                                            <div class="input-group" >
+                                                @Html.TextBoxFor(m => Model[i].CronExpression, new { Name = "CronExpression", @class = "form-control" })
+                                                <span class="input-group-addon">@Html.CheckBoxFor(m => Model[i].Active, new { Name = "Active" })</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <button class="btn btn-danger"   type="submit" name="command" value="@ButtonCommands.Run">Run job</button>
+                                            <button class="btn btn-success"  type="submit" name="command" value="@ButtonCommands.Edit">Update</button>
+                                         </div>
+
+                                    }
+                                </td>
+
+                                
+                            </tr>
+                                  
+                           }
+
+
+
+                       </tbody>
+                   </table>
+               </div>

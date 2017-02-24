@@ -35,9 +35,6 @@ namespace Wlog.Library.BLL.Reporitories
     /// </summary>
     public class LogRepository : EntityRepository
     {
-
-       
-
         public LogRepository()
         {
 
@@ -209,12 +206,12 @@ namespace Wlog.Library.BLL.Reporitories
                 }
 
                 uow.Commit();
-                
+
                 RepositoryContext.Current.Index.CommitAllIndexChanges();
             }
         }
 
-        
+
 
         /// <summary>
         /// Convert a log entity to a lucene document
@@ -280,7 +277,7 @@ namespace Wlog.Library.BLL.Reporitories
                         log = logs[i];
                         uow.Delete(log);
 
-                       
+
 
                         deletedLog = new DeletedLogEntity()
                         {
@@ -298,10 +295,10 @@ namespace Wlog.Library.BLL.Reporitories
 
                         // get index for Application
                         idx = RepositoryContext.Current.Index.GetByName("Logs", log.ApplictionId.ToString());
-                        idx.RemoveDocument(LogsFields.Id.ToString() ,log.Id);
+                        idx.RemoveDocument(LogsFields.Id.ToString(), log.Id);
 
                         if (i == logs.Count() - 1)
-                        {                            
+                        {
                             uow.Commit();
                             // I cant know how many index are affected by cleaning, I have to commit all                                                        
                             RepositoryContext.Current.Index.CommitAllIndexChanges();

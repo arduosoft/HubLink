@@ -18,12 +18,12 @@ namespace Wlog.Web.Code.Helpers
     [Obsolete]
     public static class SystemDataHelper
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
 
         [Obsolete]
         public static void EnsureSampleData()
         {
-            logger.Debug("[SystemDataHelper]: EnsureSampleData");
+            _logger.Debug("[SystemDataHelper]: EnsureSampleData");
 
             List<UserEntity> userList = RepositoryContext.Current.Users.GetAll();
 
@@ -56,13 +56,13 @@ namespace Wlog.Web.Code.Helpers
         [Obsolete]
         private static RolesEntity InsertRoleIfNotExists(string rolename, bool global,bool application)
         {
-            logger.Debug("[SystemDataHelper]: InsertRoleIfNotExists");
+            _logger.Debug("[SystemDataHelper]: InsertRoleIfNotExists");
 
             RolesEntity role = RepositoryContext.Current.Roles.GetRoleByName(rolename);
 
             if (role == null)
             {
-                role = new RolesEntity() { RoleName = rolename, GlobalScope=global,ApplicationScope=application };
+                role = new RolesEntity() { RoleName = rolename, GlobalScope = global, ApplicationScope = application };
                 RepositoryContext.Current.Roles.Save(role);
             }
 
@@ -71,7 +71,7 @@ namespace Wlog.Web.Code.Helpers
         [Obsolete]
         private static ProfilesEntity InsertProfileIfNotExists(string profileName)
         {
-            logger.Debug("[SystemDataHelper]: InsertProfileIfNotExists");
+            _logger.Debug("[SystemDataHelper]: InsertProfileIfNotExists");
 
             ProfilesEntity profile = RepositoryContext.Current.Profiles.GetProfileByName(profileName);
 
@@ -83,18 +83,95 @@ namespace Wlog.Web.Code.Helpers
 
             return profile;
         }
-        [Obsolete]
+
+[Obsolete]
+        public static void InsertJobsDefinitions()
+        {
+            _logger.Debug("[SystemDataHelper]: InsertJobsDefinitions");
+
+            try
+            {
+                // insert empty bin job
+                var jobDefinition = InsertJobDefinition(Properties.Resources.EmptyBinJobName, Properties.Resources.EmptyBinJobDescirption,
+                   typeof(Wlog.Library.Scheduler.Jobs.EmptyBinJob).FullName);
+
+                if (jobDefinition != null)
+                {
+                    InsertJobInstance(jobDefinition, "0 0 12 * * ?");
+                }
+
+
+                // insert move to bin job
+                jobDefinition = InsertJobDefinition(Properties.Resources.MoveToBinJobName, Properties.Resources.MoveToBinJobDescription,
+                   typeof(Wlog.Library.Scheduler.Jobs.MoveToBinJob).FullName);
+
+                if (jobDefinition != null)
+                {
+                    InsertJobInstance(jobDefinition, "0 0 12 * * ?");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+            }
+        }
+[Obsolete]
+        private static JobDefinitionEntity InsertJobDefinition(string name, string description, string fullClassName)
+        {
+            var job = RepositoryContext.Current.JobDefinition.GetJobDefinitionByName(name);
+
+            if (job == null)
+            {
+                JobDefinitionEntity jobDefinition = new JobDefinitionEntity()
+                {
+                    Name = name,
+                    Description = description,
+                    FullClassname = fullClassName,
+                    Instantiable = true,
+                    System = true
+                };
+                RepositoryContext.Current.JobDefinition.Save(jobDefinition);
+
+                return jobDefinition;
+            }
+
+            return null;
+        }
+[Obsolete]
+        private static JobInstanceEntity InsertJobInstance(JobDefinitionEntity jobDefinition, string cron)
+        {
+            var job = RepositoryContext.Current.JobInstance.GetJobInstanceByDefinitionAndCron(cron, jobDefinition);
+
+            if (job == null)
+            {
+                JobInstanceEntity jobInstance = new JobInstanceEntity()
+                {
+                    Active = true,
+                    ActivationDate = DateTime.UtcNow,
+                    JobDefinitionID = jobDefinition.Id,
+                    CronExpression = cron
+                };
+
+                RepositoryContext.Current.JobInstance.Save(jobInstance);
+
+                return jobInstance;
+            }
+
+            return null;
+        }
+
+[Obsolete]
         public static void InsertRolesAndProfiles()
         {
-            logger.Debug("[SystemDataHelper]: InsertRolesAndProfiles");
+            _logger.Debug("[SystemDataHelper]: InsertRolesAndProfiles");
 
             // create roles
-            var adminRole = InsertRoleIfNotExists(Constants.Roles.Admin,true,false);
+            var adminRole = InsertRoleIfNotExists(Constants.Roles.Admin, true, false);
             var appWriter = InsertRoleIfNotExists(Constants.Roles.AppWriter, true, false);
             var createApp = InsertRoleIfNotExists(Constants.Roles.CreateApp, true, false);
             var login = InsertRoleIfNotExists(Constants.Roles.Login, true, false);
 
-            var readLog = InsertRoleIfNotExists(Constants.Roles.ReadLog,false,true);
+            var readLog = InsertRoleIfNotExists(Constants.Roles.ReadLog, false, true);
             var writeLog = InsertRoleIfNotExists(Constants.Roles.WriteLog, false, true);
 
             // create profiles
