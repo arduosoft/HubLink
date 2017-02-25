@@ -18,6 +18,7 @@ using Wlog.Library.BLL.Interfaces;
 using Wlog.DAL.NHibernate.Helpers;
 using Wlog.BLL.Classes;
 using Wlog.Library.BLL.DataBase;
+using System.IO;
 
 namespace Wlog.Library.BLL.Reporitories
 {
@@ -39,7 +40,7 @@ namespace Wlog.Library.BLL.Reporitories
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
-                app = uow.Query<ApplicationEntity>().Where(x => x.IdApplication.Equals(id)).FirstOrDefault();
+                app = uow.Query<ApplicationEntity>().Where(x => x.Id.Equals(id)).FirstOrDefault();
                 return app;
             }
         }
@@ -59,7 +60,7 @@ namespace Wlog.Library.BLL.Reporitories
                 {
                     uow.BeginTransaction();
 
-                    //TODO: delete only removed entry,add the new ones.
+                    //TODO: [LOW] delete only removed entry,add the new ones.
                     List<AppUserRoleEntity> deleterole = uow.Query<AppUserRoleEntity>()
                         .Where(x => x.UserId.Equals(user.Id) && x.ApplicationId.Equals(idapp)).ToList();
 
@@ -95,7 +96,7 @@ namespace Wlog.Library.BLL.Reporitories
                 uow.BeginTransaction();
 
                 List<AppUserRoleEntity> deleterole = uow.Query<AppUserRoleEntity>()
-                        .Where(x =>  x.ApplicationId.Equals(app.IdApplication)).ToList();
+                        .Where(x =>  x.ApplicationId.Equals(app.Id)).ToList();
 
                 foreach (AppUserRoleEntity del in deleterole)
                 {
@@ -139,7 +140,7 @@ namespace Wlog.Library.BLL.Reporitories
                 if (!user.IsAdmin)
                 {
                     var applicationsForUser = GetAppplicationsIdsByUsername(user.Username);
-                    applitationList = applitationList.Where(x => applicationsForUser.Contains(x.IdApplication)).ToList();
+                    applitationList = applitationList.Where(x => applicationsForUser.Contains(x.Id)).ToList();
                 }
 
                 //TODO: why all application are retrieved from db, then search result is filtered by usename permission? could be easier to pass filters to GetAppplicationsIdsByUsername ?? 
@@ -156,19 +157,37 @@ namespace Wlog.Library.BLL.Reporitories
         public void Delete(ApplicationEntity app)
         {
             logger.Debug("[repo] entering Delete");
+
+         
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
-                ApplicationEntity appToDelete = uow.Query<ApplicationEntity>().Where(x => x.IdApplication.Equals(app.IdApplication)).FirstOrDefault();
+                ApplicationEntity appToDelete = uow.Query<ApplicationEntity>().Where(x => x.Id.Equals(app.Id)).FirstOrDefault();
 
 
                 //TODO: for performance issuea could be better to: 1. use a batch statment 2. use a sessionless transaction
-                //TODO: index of log on filesistem must be deleted too.
-                List<LogEntity> logs = uow.Query<LogEntity>().Where(x => x.ApplictionId.Equals( app.IdApplication)).ToList();
-                foreach (LogEntity e in logs)
+                
+                List<LogEntity> logs;
+                while ((logs = uow.Query<LogEntity>().Where(x => x.ApplictionId.Equals(app.Id)).ToList()) != null)
                 {
-                    uow.Delete(e);
+                    if (logs.Count > 0)
+                    {
+                        foreach (LogEntity e in logs)
+                        {
+                            uow.Delete(e);
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
+
+                //Delete file system index
+                var activeIndex= RepositoryContext.Current.Index.GetByName("Logs", app.Id.ToString());
+                activeIndex.Dispose();
+                Directory.Delete(activeIndex.Path, true);
+                    
 
                 DeleteApplicationRole(app);
 
@@ -247,7 +266,7 @@ namespace Wlog.Library.BLL.Reporitories
         {
             //TODO: why this is not just an overload of  List<Guid> GetAppplicationsIdsByUsername(string userName) ??
             logger.Debug("[repo] entering GetAppplicationsIdsForUser");
-            return GetAppplicationForUser(user).Select(x => x.IdApplication).ToList();
+            return GetAppplicationForUser(user).Select(x => x.Id).ToList();
 
         }
 
@@ -277,7 +296,7 @@ namespace Wlog.Library.BLL.Reporitories
 
                     applications = uow
                         .Query<ApplicationEntity>()
-                        .Where(x => appLinks.Contains(x.IdApplication))
+                        .Where(x => appLinks.Contains(x.Id))
                         .ToList();
                 }
                 return applications;
@@ -297,7 +316,7 @@ namespace Wlog.Library.BLL.Reporitories
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
-                return uow.Query<ApplicationEntity>().Where(x => x.IdApplication.Equals(pk) || x.PublicKey.Equals(pk)).FirstOrDefault();
+                return uow.Query<ApplicationEntity>().Where(x => x.Id.Equals(pk) || x.PublicKey.Equals(pk)).FirstOrDefault();
 
             }
         }
@@ -318,10 +337,10 @@ namespace Wlog.Library.BLL.Reporitories
                 using (IUnitOfWork uow = BeginUnitOfWork())
                 {
                     uow.BeginTransaction();
-                    if (!uow.Query<AppUserRoleEntity>().Any(x => x.ApplicationId.Equals(application.IdApplication) && x.RoleId.Equals(role.Id) && x.UserId.Equals(user.Id)))
+                    if (!uow.Query<AppUserRoleEntity>().Any(x => x.ApplicationId.Equals(application.Id) && x.RoleId.Equals(role.Id) && x.UserId.Equals(user.Id)))
                     {
                         AppUserRoleEntity app = new AppUserRoleEntity();
-                        app.ApplicationId = application.IdApplication;
+                        app.ApplicationId = application.Id;
                         app.RoleId = role.Id;
                         app.UserId = user.Id;
                         uow.SaveOrUpdate(app);

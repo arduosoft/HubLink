@@ -94,7 +94,7 @@ namespace Wlog.Web.Code.Helpers
             ApplicationModel result = new ApplicationModel();
             result.ApplicationName = entity.ApplicationName;
             result.EndDate = entity.EndDate;
-            result.IdApplication = entity.IdApplication;
+            result.IdApplication = entity.Id;
             result.IsActive = entity.IsActive;
             result.StartDate = entity.StartDate;
             result.PublicKey = entity.PublicKey;

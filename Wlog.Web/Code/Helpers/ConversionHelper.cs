@@ -34,7 +34,7 @@ namespace Wlog.Web.Code.Helpers
         {
             _logger.Debug("[ConversionHelper]: ConvertEntityToApplicationHome");
             ApplicationHomeModel result = new ApplicationHomeModel();
-            result.Id = entity.IdApplication;
+            result.Id = entity.Id;
             result.ApplicationName = entity.ApplicationName;
             result.StartDate = entity.StartDate;
             result.IsActive = entity.IsActive;
@@ -66,6 +66,8 @@ namespace Wlog.Web.Code.Helpers
             result.Level = log.Level;
             result.Message = log.Message;
             result.SourceDate = log.SourceDate;
+            result.Stacktrace = log.Stacktrace;
+            result.Attributes = log.Attributes;
 
             result.UpdateDate = DateTime.Now;
 
@@ -95,7 +97,8 @@ namespace Wlog.Web.Code.Helpers
                 lm.Level = le.Level;
                 lm.Message = le.Message;
                 lm.SourceDate = le.SourceDate;
-
+                lm.Stacktrace = le.Stacktrace;
+                lm.Attributes = le.Attributes;
                 result.Add(lm);
             }
             return result;

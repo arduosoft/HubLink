@@ -122,7 +122,7 @@ namespace Wlog.BLL.Classes
                 {
                     var app = RepositoryContext.Current.Applications.GetByApplicationKey(log.ApplicationKey);
                     if (app == null) continue;
-                    currentAppId = app.IdApplication;
+                    currentAppId = app.Id;
                     ApplicationMap[log.ApplicationKey] = currentAppId;
                 }
                 else
@@ -149,7 +149,7 @@ namespace Wlog.BLL.Classes
         {
             LogEntity ent = new LogEntity();
             
-            ent.ApplictionId = ApplicationId ?? RepositoryContext.Current.Applications.GetByApplicationKey(log.ApplicationKey).IdApplication;
+            ent.ApplictionId = ApplicationId ?? RepositoryContext.Current.Applications.GetByApplicationKey(log.ApplicationKey).Id;
             ent.Level = log.Level;
             ent.Message = log.Message;
             ent.SourceDate = log.SourceDate;

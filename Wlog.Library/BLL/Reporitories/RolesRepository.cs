@@ -50,7 +50,7 @@ namespace Wlog.Library.BLL.Reporitories
                 {
 
                     List<Guid> ids = uow.Query<AppUserRoleEntity>()
-                        .Where(x => x.ApplicationId.Equals(applicationEntity.IdApplication))
+                        .Where(x => x.ApplicationId.Equals(applicationEntity.Id))
                         .Select(x => x.RoleId).ToList();
                     return uow.Query<RolesEntity>().Where(x => ids.Contains(x.Id)).ToList();
                 }

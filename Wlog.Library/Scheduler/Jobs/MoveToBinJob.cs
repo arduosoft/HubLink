@@ -21,9 +21,8 @@ namespace Wlog.Library.Scheduler.Jobs
         public MoveToBinJob()
         {
             var value = this.GetType().Name;
-            //TODO: Take from configuration
-            _rowsToKeep = 1000000;
-            _daysToKeep = 30;
+            _rowsToKeep = Settings.Default.MoveToBinJob_RowsToKeep;
+            _daysToKeep = Settings.Default.MoveToBinJob_DaysToKeep;
         }
 
         public MoveToBinJob(int rowsToKeep, int daysToKeep)

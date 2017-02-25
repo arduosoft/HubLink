@@ -18,6 +18,16 @@ namespace Wlog.BLL.Classes
         public DateTime SourceDate { get; set; }
         public string Message { get; set; }
         public string Level { get; set; }
-        public string ApplicationKey { get; set; }
+        public string ApplicationKey { get; private set; }
+        public string Stacktrace { get; set; }
+        /// <summary>
+        /// JSON string field to store custom attributes
+        /// </summary>
+        public string Attributes { get; set; }
+
+        public void SetApplication(string applicationKey)
+        {
+            this.ApplicationKey = applicationKey;
+        }
     }
 }

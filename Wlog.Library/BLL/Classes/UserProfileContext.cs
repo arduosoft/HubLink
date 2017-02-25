@@ -19,7 +19,6 @@ namespace Wlog.BLL.Classes
     {
         public UserEntity User { get; set; }
         public bool IsEditorUser { get; set; }
-        //TODO: set property for usercontext
 
         public UserProfileContext()
         {
@@ -28,21 +27,7 @@ namespace Wlog.BLL.Classes
             if (this.User.IsAdmin)
             {
                 this.IsEditorUser = true;
-            }
-            else
-            {
-                //int count;
-                //using (UnitOfWork uow = new UnitOfWork())
-                //{
-                //    count = uow.Query<AppUserRoleEntity>().Where(x => x.User.Id == this.User.Id && (x.Role.RoleName == Constants.Roles.Admin || x.Role.RoleName == Constants.Roles.Write)).Count();
-                //    if (count > 0)
-                //    {
-                //        this.IsEditorUser = true;
-                //    }
-                //    else
-                //        this.IsEditorUser = false;
-                //}
-            }
+            }           
         }
 
 

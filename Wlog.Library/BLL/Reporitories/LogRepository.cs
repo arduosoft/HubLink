@@ -100,7 +100,7 @@ namespace Wlog.Library.BLL.Reporitories
             }
             catch (UnableToParseQuery err)
             {
-                //TODO: incapsulate response in wrapper with error
+                //TODO: [LOW] incapsulate response in wrapper with error and manage on the client side
                 HttpContext.Current.Response.StatusCode = 500;
                 HttpContext.Current.Response.StatusDescription = "Unable to parse Query";
                 HttpContext.Current.Response.Write("Unable to parse Query");
@@ -239,16 +239,25 @@ namespace Wlog.Library.BLL.Reporitories
 
             if (!string.IsNullOrWhiteSpace(log.Attributes))
             {
-                JObject attrs = JObject.Parse(log.Attributes);
-                foreach (var attr in attrs)
+                try
                 {
-                    if (doc.GetField(attr.Key) == null)
+                    JObject attrs = JObject.Parse(log.Attributes);
+                    foreach (var attr in attrs)
                     {
-                        //TODO: analize basing on attribute definition
-                        doc.Add(new Field(attr.Key, attr.Value.ToString(), Field.Store.YES, Field.Index.ANALYZED));
-                    }
+                        if (doc.GetField(attr.Key) == null)
+                        {
+                            //TODO: [FEA] analize basing on attribute definition
+                            doc.Add(new Field(attr.Key, attr.Value.ToString(), Field.Store.YES, Field.Index.ANALYZED));
+                        }
 
+                    }
                 }
+                catch
+                {
+                    //in case josn in not parsable                   
+                }
+
+                doc.Add(new Field("RawAttributess", log.Attributes, Field.Store.YES, Field.Index.ANALYZED));
             }
             return doc;
         }

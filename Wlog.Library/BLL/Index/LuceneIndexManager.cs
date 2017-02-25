@@ -11,6 +11,7 @@ using PagedList;
 using System.Web;
 using NLog;
 using Wlog.Library.BLL.Exceptions;
+using Wlog.Library.BLL.Configuration;
 
 namespace Wlog.Library.BLL.Index
 {
@@ -35,6 +36,7 @@ namespace Wlog.Library.BLL.Index
         private static Directory luceneIndexDirectory;
         private bool dirty = false;
         private int uncommittedFiles = 0;
+        private LuceneConfigurationSettings settings;
         #endregion
 
         public int UncommittedFiles { get { return uncommittedFiles; } }
@@ -71,21 +73,26 @@ namespace Wlog.Library.BLL.Index
         {
             get { return dirty; }
         }
+        public LuceneIndexManager(string name, string path):this(name,path,LuceneConfiguration.GetConfig())
+        {
 
+        }
 
-        public LuceneIndexManager(string name,string path)
+        public LuceneIndexManager(string name,string path, LuceneConfigurationSettings settings)
         {
             logger.Debug("[IndexManager] ctor {0}, {1}",name,path);
             this.Name = name;
             this.Path = path;
             this.CommitSize = 0;
+            this.settings = settings;
             ReopenIfDirty = false;
             Init();
         }
 
+
         private void Init()
         {
-            //TODO: use factory or DI to  setup analyzer, query parse, and other tuning attribute. 
+            //TODO: [LOW] use factory or DI to  setup analyzer, query parse, and other tuning attribute. 
             logger.Debug("[IndexManager] init");
             analyzer = new StandardAnalyzer(global::Lucene.Net.Util.Version.LUCENE_30);
             InitIndex();
@@ -94,11 +101,11 @@ namespace Wlog.Library.BLL.Index
 
         private void InitIndex()
         {
-            //TODO: use factory or DI to  setup analyzer, query parse, and other tuning attribute. 
+         
             logger.Debug("[IndexManager] InitIndex");
 
             logger.Debug("[IndexManager] Opening {0}", Path);
-            luceneIndexDirectory = FSDirectory.Open(Path);
+            luceneIndexDirectory = settings.GetLuceneIndexDirectory(Path);
             logger.Debug("[IndexManager] Creating IndexWriter");
             writer = new IndexWriter(luceneIndexDirectory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED);
             logger.Debug("[IndexManager] Creating IndexReader");

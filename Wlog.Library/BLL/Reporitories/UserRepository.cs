@@ -57,8 +57,13 @@ namespace Wlog.Library.BLL.Reporitories
         /// <returns></returns>
         public bool Delete(UserEntity user)
         {
-            //TODO: admin user shouldn't be delete... 
             logger.Debug("[repo] entering Delete");
+
+            if (user.Username.Equals("admin",StringComparison.InvariantCultureIgnoreCase))
+            {
+                throw new Exception("Is not possible to delete admin user.");
+            }
+   
             bool result = true;
             try
             {

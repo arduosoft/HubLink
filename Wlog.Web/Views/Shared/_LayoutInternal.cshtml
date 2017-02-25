@@ -110,7 +110,7 @@
                                     foreach (var app in UserHelper.GetAppsForUser(Membership.GetUser().UserName))
                                     {
                                     <li>
-                                        <a href = "/private/Logs?applicationId=@app.IdApplication" >@app.ApplicationName </a>
+                                        <a href = "/private/Logs?applicationId=@app.Id" >@app.ApplicationName </a>
                                     </li>
                                     }
                                 }

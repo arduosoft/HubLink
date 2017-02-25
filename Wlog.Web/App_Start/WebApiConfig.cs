@@ -27,7 +27,7 @@ namespace Wlog.Web
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            //TODO: Drive this by using a property on config
+            //if(Wlog.Library.se
             config.EnableSystemDiagnosticsTracing();
         }
     }

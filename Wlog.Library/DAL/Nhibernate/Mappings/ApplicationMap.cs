@@ -23,7 +23,7 @@ namespace Wlog.Library.DAL.Nhibernate.Mappings
         {
             Table("WL_Application");
             Schema("dbo");
-            Id(x => x.IdApplication, map => { map.Column("IdApplication"); map.Generator(Generators.Guid); });
+            Id(x => x.Id, map => { map.Column("IdApplication"); map.Generator(Generators.Guid); });
             Property(x => x.ApplicationName);
             Property(x => x.IsActive);
             Property(x => x.StartDate);

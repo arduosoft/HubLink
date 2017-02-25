@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Security;
 
 namespace Wlog.Library.Scheduler
 {
@@ -18,8 +19,10 @@ namespace Wlog.Library.Scheduler
     {
         public bool Authorize(IDictionary<string, object> owinEnvironment)
         {
-            //TODO: integrate with security
-            return true;
+            string[] roles = Roles.GetRolesForUser();
+            if (roles == null) return false;
+            return roles.Any(x => x.Equals("ADMIN", StringComparison.InvariantCultureIgnoreCase));
+            
         }
     }
 }

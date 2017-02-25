@@ -22,22 +22,8 @@ namespace Wlog.BLL.Entities
     /// </summary>
     public class ApplicationEntity : IEntityBase
     {
-        public override Guid Id
-        {
-            get
-            {
-                return IdApplication;
-            }
-            set
-            {
-                Id = value;
-            }
-        }
+        
 
-        /// <summary>
-        /// Id of application
-        /// </summary>
-        public virtual Guid IdApplication { get; set; }
 
         /// <summary>
         /// name of application

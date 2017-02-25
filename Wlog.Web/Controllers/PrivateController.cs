@@ -74,11 +74,11 @@ namespace Wlog.Web.Controllers
 
                 };
 
-                logSearch.Applications.Add(app.IdApplication);
+                logSearch.Applications.Add(app.Id);
                 logOfCurrentApp = RepositoryContext.Current.Logs.SearchLog(logSearch);
                 MessagesListModel list = new MessagesListModel();
                 list.ApplicationName = app.ApplicationName;
-                list.IdApplication = app.IdApplication;
+                list.IdApplication = app.Id;
 
                 list.Messages = ConversionHelper.ConvertLogEntityToMessage(logOfCurrentApp.ToList());
                 dm.AppLastTen.Add(list);
@@ -132,7 +132,6 @@ namespace Wlog.Web.Controllers
         }
 
         // Get  /Private/ListUsers
-        // TODO: set role [Authorize(Roles="ADMIN")]
         [AuthorizeRolesAttribute(Constants.Roles.Admin)]
         public ActionResult ListUsers(string serchMessage, int? page, int? pageSize)
         {

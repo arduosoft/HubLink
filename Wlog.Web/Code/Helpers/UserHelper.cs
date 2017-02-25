@@ -169,14 +169,14 @@ namespace Wlog.Web.Code.Helpers
             foreach (ApplicationEntity ae in apps)
             {
 
-                current = appForUser.FirstOrDefault(x => x.ApplicationId == ae.IdApplication);
+                current = appForUser.FirstOrDefault(x => x.ApplicationId == ae.Id);
                 if (current != null)
                 {
                     r = roles.FirstOrDefault(x => x.Id == current.RoleId);
                     result.Add(new UserApps
                     {
                         ApplicationName = ae.ApplicationName,
-                        IdApplication = ae.IdApplication,
+                        IdApplication = ae.Id,
                         RoleId = r.Id,
                         RoleName = r.RoleName
                     });
@@ -186,7 +186,7 @@ namespace Wlog.Web.Code.Helpers
                     result.Add(new UserApps
                     {
                         ApplicationName = ae.ApplicationName,
-                        IdApplication = ae.IdApplication,
+                        IdApplication = ae.Id,
                         RoleId = Guid.Empty,
                         RoleName = "No Role"
                     });
