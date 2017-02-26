@@ -13,9 +13,9 @@
             object id;
             var message = "Message 1";
 
-            using (var tx = session.BeginTransaction())
+            using (var tx = Session.BeginTransaction())
             {
-                id = session.Save(new DeletedLogEntity
+                id = Session.Save(new DeletedLogEntity
                 {
                     Level = "1",
                     Message = message,
@@ -25,12 +25,12 @@
                 tx.Commit();
             }
 
-            session.Clear();
+            Session.Clear();
 
 
-            using (var tx = session.BeginTransaction())
+            using (var tx = Session.BeginTransaction())
             {
-                var deletedLog = session.Get<DeletedLogEntity>(id);
+                var deletedLog = Session.Get<DeletedLogEntity>(id);
 
                 Assert.Equal(deletedLog.Level, "1");
                 Assert.Equal(deletedLog.Message, message);

@@ -15,13 +15,13 @@ using Wlog.Library.BLL.Configuration;
 
 namespace Wlog.Library.BLL.Index
 {
-    
+
 
 
     /// <summary>
     /// Manage a lucene index in write and read
     /// </summary>
-    public class LuceneIndexManager: IDisposable
+    public class LuceneIndexManager : IDisposable
     {
 
         #region private
@@ -30,16 +30,21 @@ namespace Wlog.Library.BLL.Index
         private static IndexSearcher searcher;
         private static IndexReader reader;
         private QueryParser parser;
-        private Analyzer analyzer ;
+        private Analyzer analyzer;
 
-        protected static bool inited = false;
+        private static bool inited = false;
         private static Directory luceneIndexDirectory;
         private bool dirty = false;
         private int uncommittedFiles = 0;
         private LuceneConfigurationSettings settings;
         #endregion
 
-        public int UncommittedFiles { get { return uncommittedFiles; } }
+        public int UncommittedFiles
+        { get
+            {
+                return uncommittedFiles;
+            }
+        }
 
         /// <summary>
         /// Tell how many rows to collect before automatically commit.
@@ -67,20 +72,21 @@ namespace Wlog.Library.BLL.Index
         /// </summary>
         public bool Autocommit { get; set; }
 
-      
+
 
         public bool IsDirty
         {
             get { return dirty; }
         }
-        public LuceneIndexManager(string name, string path):this(name,path,LuceneConfiguration.GetConfig())
+
+        public LuceneIndexManager(string name, string path) : this(name, path, LuceneConfiguration.GetConfig())
         {
 
         }
 
-        public LuceneIndexManager(string name,string path, LuceneConfigurationSettings settings)
+        public LuceneIndexManager(string name, string path, LuceneConfigurationSettings settings)
         {
-            logger.Debug("[IndexManager] ctor {0}, {1}",name,path);
+            logger.Debug("[IndexManager] ctor {0}, {1}", name, path);
             this.Name = name;
             this.Path = path;
             this.CommitSize = 0;
@@ -101,7 +107,7 @@ namespace Wlog.Library.BLL.Index
 
         private void InitIndex()
         {
-         
+
             logger.Debug("[IndexManager] InitIndex");
 
             logger.Debug("[IndexManager] Opening {0}", Path);
@@ -114,7 +120,7 @@ namespace Wlog.Library.BLL.Index
             searcher = new IndexSearcher(reader);
         }
 
-        public void AddDocument(Dictionary<string,object> docs)
+        public void AddDocument(Dictionary<string, object> docs)
         {
             logger.Debug("[IndexManager] AddDocument from dictionary");
 
@@ -137,7 +143,7 @@ namespace Wlog.Library.BLL.Index
                 else
                 {
                     val = val ?? "";
-                    doc.Add(new Field(s, val.ToString() , Field.Store.YES, Field.Index.ANALYZED));
+                    doc.Add(new Field(s, val.ToString(), Field.Store.YES, Field.Index.ANALYZED));
                 }
             }
             AddDocument(doc);
@@ -148,24 +154,24 @@ namespace Wlog.Library.BLL.Index
             logger.Debug("[IndexManager] AddDocument from doc (do not force commit)");
             AddDocument(doc, false);
         }
-        public void AddDocument(Document doc,bool commit)
+        public void AddDocument(Document doc, bool commit)
         {
             dirty = true;
             writer.AddDocument(doc);
             uncommittedFiles++;
-          
+
             if (commit || (this.Autocommit && uncommittedFiles > this.CommitSize))
             {
                 logger.Debug("[IndexManager] AddDocument forces commit penting changes commit={0}, autocommit={1}, commitSize={2},uncommittedFiles={3}",
                             commit,
                             Autocommit,
-                            CommitSize, 
+                            CommitSize,
                             uncommittedFiles);
 
                 SaveUncommittedChanges();
             }
 
-          
+
         }
 
         public void SaveUncommittedChanges()
@@ -181,11 +187,11 @@ namespace Wlog.Library.BLL.Index
             ReopenIndex();
         }
 
-        
+
         public IPagedList<Document> Query(string queryTxt, int start, int size)
         {
-            logger.Debug("[IndexManager] Query ({0},{1},{2})", queryTxt,start,size);
-            return   Query(queryTxt, null, 0, false, start, size,"");
+            logger.Debug("[IndexManager] Query ({0},{1},{2})", queryTxt, start, size);
+            return Query(queryTxt, null, 0, false, start, size, "");
         }
 
 
@@ -200,10 +206,10 @@ namespace Wlog.Library.BLL.Index
         /// <param name="size">numer of row to take</param>
         /// <param name="defaultField">default field for searc. Empty string to searcg by complex query</param>
         /// <returns></returns>
-        public IPagedList<Document> Query(string queryTxt,string sortname,int sortType,bool desc, int start, int size,string defaultField)
+        public IPagedList<Document> Query(string queryTxt, string sortname, int sortType, bool desc, int start, int size, string defaultField)
         {
             logger.Debug("[IndexManager] Query ({0},{1},{2},{3},{4},{5},{6})",
-                 queryTxt,  sortname,  sortType,  desc,  start,  size,  defaultField);
+                 queryTxt, sortname, sortType, desc, start, size, defaultField);
 
             Query query = new MatchAllDocsQuery();
             if (!string.IsNullOrWhiteSpace(queryTxt))
@@ -214,35 +220,35 @@ namespace Wlog.Library.BLL.Index
                     var localparser = new QueryParser(global::Lucene.Net.Util.Version.LUCENE_30, defaultField, localanalyzer);
                     query = parser.Parse(queryTxt);
                 }
-                catch(Exception err)
+                catch (Exception err)
                 {
                     //This is used to control flow, no log needed here
                     throw new UnableToParseQuery();
-                    
+
                 }
             }
-            Sort s =null;
+            Sort s = null;
             if (sortname != null)
             {
-                s = new Sort();  
+                s = new Sort();
                 s.SetSort(new SortField(sortname, sortType, desc));
             }
 
-            return Query(query, s, start,  size);
+            return Query(query, s, start, size);
         }
 
-       
 
-       
 
-        
+
+
+
 
         public IPagedList<Document> Query(Query query, Sort field, int start, int size)
         {
 
             logger.Debug("[IndexManager] Query ({0},{1},{2},{3})",
-                  query,  field,  start,  size);
-            if (dirty  && ReopenIfDirty)
+                  query, field, start, size);
+            if (dirty && ReopenIfDirty)
             {
                 ReopenIndex();
 
@@ -255,19 +261,19 @@ namespace Wlog.Library.BLL.Index
             }
             else
             {
-                docs = searcher.Search(query,null,  start + size, field);
+                docs = searcher.Search(query, null, start + size, field);
             }
 
             ScoreDoc item;
             Document doc;
             List<Document> result = new List<Document>();
-            for (int i = start; i < start + size && i<docs.TotalHits;i++)
+            for (int i = start; i < start + size && i < docs.TotalHits; i++)
             {
-                item=docs.ScoreDocs[i];
-                doc=reader.Document(item.Doc);                
+                item = docs.ScoreDocs[i];
+                doc = reader.Document(item.Doc);
                 result.Add(doc);
             }
-            return new StaticPagedList<Document>(result,1,size,docs.TotalHits);
+            return new StaticPagedList<Document>(result, 1, size, docs.TotalHits);
         }
 
         private void ReopenIndex()
@@ -287,9 +293,9 @@ namespace Wlog.Library.BLL.Index
             writer.Optimize();
             SaveUncommittedChanges();
             DisposeIndex();
-            
+
             analyzer.Dispose();
-            
+
         }
         public void DisposeIndex()
         {
@@ -316,12 +322,12 @@ namespace Wlog.Library.BLL.Index
             }
         }
 
-        public void RemoveDocument(string IdField,object value)
+        public void RemoveDocument(string idField, object value)
         {
             logger.Debug("[IndexManager] RemoveDocument");
-            var localparser = new QueryParser(global::Lucene.Net.Util.Version.LUCENE_30, IdField, analyzer);
+            var localparser = new QueryParser(global::Lucene.Net.Util.Version.LUCENE_30, idField, analyzer);
 
-           Query q = localparser.Parse(value.ToString());
+            Query q = localparser.Parse(value.ToString());
             writer.DeleteDocuments(q);
         }
     }

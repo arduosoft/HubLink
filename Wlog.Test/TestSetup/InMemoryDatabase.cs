@@ -13,7 +13,7 @@
     {
         private static Configuration _configuration;
         private static ISessionFactory _sessionFactory;
-        protected ISession session;
+        private ISession session;
 
         public InMemoryDatabase()
         {
@@ -30,9 +30,22 @@
                 _sessionFactory = _configuration.BuildSessionFactory();
             }
 
-            session = _sessionFactory.OpenSession();
+            Session = _sessionFactory.OpenSession();
 
-            new NHibernate.Tool.hbm2ddl.SchemaExport(_configuration).Execute(true, true, false, session.Connection, Console.Out);
+            new NHibernate.Tool.hbm2ddl.SchemaExport(_configuration).Execute(true, true, false, Session.Connection, Console.Out);
+        }
+
+        public ISession Session
+        {
+            get
+            {
+                return session;
+            }
+
+            private set
+            {
+                session = value;
+            }
         }
 
         private static HbmMapping GetMappings()
@@ -45,7 +58,7 @@
 
         public void Dispose()
         {
-            session.Dispose();
+            Session.Dispose();
         }
     }
 }
