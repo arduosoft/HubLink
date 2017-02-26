@@ -27,36 +27,6 @@ namespace Wlog.Web.Code.Helpers
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        [Obsolete]
-        public static IPagedList<UserData> FilterUserList(string serchFilter, int pagenumber, int pagesize)
-        {
-            logger.Debug("[UserHelper]: FilterUserList");
-            List<UserData> data = new List<UserData>();
-            IPagedList<UserEntity> users = RepositoryContext.Current.Users.SearchUsers(new UserSearchSettings
-            {
-                OrderBy = Library.BLL.Enums.UserFields.Username,
-                PageNumber = pagenumber,
-                PageSize = pagesize,
-                Username = serchFilter
-            });
-
-            foreach (UserEntity e in users)
-            {
-                data.Add(new UserData
-                {
-                    Id = e.Id,
-                    Username = e.Username,
-                    Email = e.Email,
-                    IsAdmin = e.IsAdmin,
-                    LastLoginDate = e.LastLoginDate,
-                    CreationDate = e.CreationDate,
-                    IsOnLine = e.IsOnLine
-                });
-            }
-
-            return new PagedList<UserData>(data, pagenumber, pagesize);
-        }
-
         /// <summary>
         /// given a user return list of app with role
         /// </summary>

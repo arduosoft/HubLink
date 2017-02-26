@@ -148,7 +148,6 @@ namespace Wlog.Library.BLL.Reporitories
         {
             logger.Debug("[repo] entering Delete");
 
-
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
@@ -175,14 +174,18 @@ namespace Wlog.Library.BLL.Reporitories
                 activeIndex.Dispose();
                 Directory.Delete(activeIndex.Path, true);
 
-
                 DeleteApplicationRole(app);
 
                 uow.Delete(app);
-
                 uow.Commit();
                 return true;
             }
+        }
+
+        public bool DeleteApplicationById(Guid applicationId)
+        {
+            ApplicationEntity app = RepositoryContext.Current.Applications.GetById(applicationId);
+            return Delete(app);
         }
 
         /// <summary>
