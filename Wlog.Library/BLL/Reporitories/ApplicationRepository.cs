@@ -25,15 +25,15 @@ namespace Wlog.Library.BLL.Reporitories
     /// <summary>
     /// Repository to store applications
     /// </summary>
-    public class ApplicationRepository: EntityRepository<ApplicationEntity>
+    public class ApplicationRepository : EntityRepository<ApplicationEntity>
     {
 
         public ApplicationRepository()
         {
-            
+
         }
 
-       
+
 
         /// <summary>
         /// Reset user roles basing on role list
@@ -45,7 +45,7 @@ namespace Wlog.Library.BLL.Reporitories
             logger.Debug("[repo] entering ResetUserRoles");
             try
             {
-                Guid idapp=role.Select(x=>x.ApplicationId).Distinct().First();
+                Guid idapp = role.Select(x => x.ApplicationId).Distinct().First();
                 using (IUnitOfWork uow = BeginUnitOfWork())
                 {
                     uow.BeginTransaction();
@@ -86,7 +86,7 @@ namespace Wlog.Library.BLL.Reporitories
                 uow.BeginTransaction();
 
                 List<AppUserRoleEntity> deleterole = uow.Query<AppUserRoleEntity>()
-                        .Where(x =>  x.ApplicationId.Equals(app.Id)).ToList();
+                        .Where(x => x.ApplicationId.Equals(app.Id)).ToList();
 
                 foreach (AppUserRoleEntity del in deleterole)
                 {
@@ -148,15 +148,12 @@ namespace Wlog.Library.BLL.Reporitories
         {
             logger.Debug("[repo] entering Delete");
 
-         
+
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
-                ApplicationEntity appToDelete = uow.Query<ApplicationEntity>().Where(x => x.Id.Equals(app.Id)).FirstOrDefault();
-
-
                 //TODO: for performance issuea could be better to: 1. use a batch statment 2. use a sessionless transaction
-                
+
                 List<LogEntity> logs;
                 while ((logs = uow.Query<LogEntity>().Where(x => x.ApplictionId.Equals(app.Id)).ToList()) != null)
                 {
@@ -174,10 +171,10 @@ namespace Wlog.Library.BLL.Reporitories
                 }
 
                 //Delete file system index
-                var activeIndex= RepositoryContext.Current.Index.GetByName("Logs", app.Id.ToString());
+                var activeIndex = RepositoryContext.Current.Index.GetByName("Logs", app.Id.ToString());
                 activeIndex.Dispose();
                 Directory.Delete(activeIndex.Path, true);
-                    
+
 
                 DeleteApplicationRole(app);
 
@@ -211,7 +208,7 @@ namespace Wlog.Library.BLL.Reporitories
             logger.Debug("[repo] entering GetByIds");
 
             List<ApplicationEntity> result = new List<ApplicationEntity>();
-     
+
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
@@ -219,12 +216,12 @@ namespace Wlog.Library.BLL.Reporitories
                 {
                     result.Add(GetById(id));
                 }
-                
+
             }
             return result;
         }
 
-      
+
 
         /// <summary>
         /// Give alist of application ids for username
@@ -294,7 +291,7 @@ namespace Wlog.Library.BLL.Reporitories
         {
             logger.Debug("[repo] entering GetByApplicationKey");
             Guid pk = new Guid(applicationKey);
-       
+
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
@@ -315,7 +312,7 @@ namespace Wlog.Library.BLL.Reporitories
             logger.Debug("[repo] entering AssignRoleToUser");
             try
             {
-          
+
                 using (IUnitOfWork uow = BeginUnitOfWork())
                 {
                     uow.BeginTransaction();
