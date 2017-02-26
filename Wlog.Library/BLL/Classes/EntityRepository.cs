@@ -20,7 +20,13 @@ namespace Wlog.Library.BLL.Classes
     {
         private static UnitFactory unitFactory;
 
-        public static  Logger logger { get { return LogManager.GetCurrentClassLogger(); } }
+        public static  Logger logger
+        {
+            get
+            {
+                return LogManager.GetCurrentClassLogger();
+            }
+        }
 
         public IUnitOfWork BeginUnitOfWork()
         {

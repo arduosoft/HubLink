@@ -21,7 +21,13 @@ namespace Wlog.Library.BLL.Reporitories
             return typeof(LuceneIndexManager);
         }
 
-        public static Logger logger { get { return LogManager.GetCurrentClassLogger(); } }
+        public static Logger logger
+        {
+            get
+            {
+                return LogManager.GetCurrentClassLogger();
+            }
+        }
 
         public static string BasePath { get; set; }
 
