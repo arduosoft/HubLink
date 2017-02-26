@@ -339,5 +339,46 @@ namespace Wlog.Library.BLL.Reporitories
             }
             return true;
         }
+
+        public List<UserApplication> GetUserApplications(Guid userId)
+        {
+            logger.Debug("[repo]: GetApp");
+            List<UserApplication> result = new List<UserApplication>();
+
+            UserEntity user = RepositoryContext.Current.Users.GetById(userId);
+            List<ApplicationEntity> applications = RepositoryContext.Current.Applications.GetAppplicationForUser(user);
+            List<RolesEntity> roles = RepositoryContext.Current.Roles.GetAllRoles();
+            List<AppUserRoleEntity> applicationsForUser = RepositoryContext.Current.Roles.GetApplicationRolesForUser(user);
+
+            AppUserRoleEntity current;
+            RolesEntity roleEntity;
+            foreach (ApplicationEntity application in applications)
+            {
+                current = applicationsForUser.FirstOrDefault(x => x.ApplicationId == application.Id);
+                if (current != null)
+                {
+                    roleEntity = roles.FirstOrDefault(x => x.Id == current.RoleId);
+                    result.Add(new UserApplication
+                    {
+                        ApplicationName = application.ApplicationName,
+                        IdApplication = application.Id,
+                        RoleId = roleEntity.Id,
+                        RoleName = roleEntity.RoleName
+                    });
+                }
+                else
+                {
+                    result.Add(new UserApplication
+                    {
+                        ApplicationName = application.ApplicationName,
+                        IdApplication = application.Id,
+                        RoleId = Guid.Empty,
+                        RoleName = "No Role"
+                    });
+                }
+            }
+
+            return result;
+        }
     }
 }

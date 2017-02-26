@@ -8,16 +8,13 @@
 //******************************************************************************
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Wlog.Library.BLL.Enums;
 
 namespace Wlog.Library.BLL.Classes
 {
     public class LogsSearchSettings:SearchSettingsBase
     {
-        public string SerchMessage { get; set; }
+        public string SearchMessage { get; set; }
         public List<Guid> Applications { get; set; }
         public string OrderBy { get; set; }
         public SortDirection SortDirection { get; set; }
@@ -27,6 +24,5 @@ namespace Wlog.Library.BLL.Classes
         {
             this.Applications = new List<Guid>();
         }
-
     }
 }

@@ -159,6 +159,7 @@
     <Compile Include="BLL\Classes\EntityRepository.cs" />
     <Compile Include="BLL\Classes\InfoPageConfiguration.cs" />
     <Compile Include="BLL\Classes\JobConfiguration.cs" />
+    <Compile Include="BLL\Classes\UserApplication.cs" />
     <Compile Include="BLL\Configuration\InfoPageConfigurator.cs" />
     <Compile Include="BLL\Classes\InfoPageModel.cs" />
     <Compile Include="BLL\Classes\LogMessage.cs" />

@@ -103,7 +103,7 @@ namespace Wlog.Library.BLL.Reporitories
             return null;
         }
 
-        public IPagedList<LogEntity> GetLogsForApplication(string userName, Guid applicationId, string sortOrder, string sortBy, string serchMessage, int pageSize, int pageNumber)
+        public IPagedList<LogEntity> GetLogsForApplication(string userName, Guid applicationId, string sortOrder, string sortBy, string searchMessage, int pageSize, int pageNumber)
         {
             logger.Debug("[ConversionHelper]: GetLogs");
 
@@ -117,10 +117,10 @@ namespace Wlog.Library.BLL.Reporitories
             LogsSearchSettings settings = new LogsSearchSettings()
             {
                 Applications = allowedApps,
-                SerchMessage = serchMessage,
+                SearchMessage = searchMessage,
                 PageNumber = pageNumber,
                 PageSize = pageSize,
-                FullTextQuery = serchMessage,
+                FullTextQuery = searchMessage,
                 SortDirection = (Library.BLL.Enums.SortDirection)Enum.Parse(typeof(Library.BLL.Enums.SortDirection), sortOrder.ToUpper()),
                 OrderBy = sortBy
             };
@@ -167,10 +167,10 @@ namespace Wlog.Library.BLL.Reporitories
 
 
 
-                if (!String.IsNullOrWhiteSpace(logsSearchSettings.SerchMessage))
+                if (!String.IsNullOrWhiteSpace(logsSearchSettings.SearchMessage))
                 {
                     query = uow.Query<LogEntity>().Where(p => logsSearchSettings.Applications.Contains(p.ApplictionId) &&
-                            (logsSearchSettings.SerchMessage != null && p.Message != null && p.Message.ToLower().Contains(logsSearchSettings.SerchMessage)));
+                            (logsSearchSettings.SearchMessage != null && p.Message != null && p.Message.ToLower().Contains(logsSearchSettings.SearchMessage)));
 
                 }
                 else

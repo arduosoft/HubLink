@@ -25,7 +25,6 @@ using Wlog.Library.BLL.Reporitories;
 using Wlog.Library.Scheduler;
 using Wlog.Web.Code.Authentication;
 using Wlog.Web.Code.Enums;
-using Wlog.Web.Code.Helpers;
 using Wlog.Web.Filters;
 using Wlog.Web.Models;
 using Wlog.Web.Models.Application;
@@ -90,8 +89,8 @@ namespace Wlog.Web.Controllers
             return View(dm);
         }
 
-        [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.WriteLog, Constants.Roles.ReadLog)]
-        public ActionResult Logs(Guid? applicationId, string level, string sortOrder, string sortBy, string serchMessage, int? page, int? pageSize)
+        [AuthorizeRoles(Constants.Roles.Admin, Constants.Roles.WriteLog, Constants.Roles.ReadLog)]
+        public ActionResult Logs(Guid? applicationId, string level, string sortOrder, string sortBy, string searchMessage, int? page, int? pageSize)
         {
             _logger.Debug("[Private]: Logs");
             //TDOD: CHECK USER
@@ -107,36 +106,14 @@ namespace Wlog.Web.Controllers
             return View(mm);
         }
 
-
-        public JsonResult Search(Guid? applicationId, string sortOrder, string sortBy, string serchMessage, int page, int pageSize)
-        {
-            _logger.Debug("[Private]: Search");
-            //TDOD: CHECK USER
-            IPagedList list = RepositoryContext.Current.Logs.GetLogsForApplication(Membership.GetUser().UserName, applicationId.Value,
-                sortOrder, sortBy, serchMessage ?? "", pageSize, page);
-
-            var result = new JsonResult();
-            result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
-            result.Data = new
-            {
-                draw = Request["draw"],
-                recordsTotal = list.TotalItemCount,
-                recordsFiltered = list.TotalItemCount,
-                data = list
-            };
-
-            return result;
-        }
-
-
         // Get  /Private/ListUsers
         [AuthorizeRoles(Constants.Roles.Admin)]
-        public ActionResult ListUsers(string serchMessage, int? page, int? pageSize)
+        public ActionResult ListUsers(string searchMessage, int? page, int? pageSize)
         {
             _logger.Debug("[Private]: ListUsers");
             ListUser model = new ListUser
             {
-                SerchMessage = serchMessage
+                SearchMessage = searchMessage
             };
 
             UserSearchSettings searchSettings = new UserSearchSettings
@@ -144,7 +121,7 @@ namespace Wlog.Web.Controllers
                 OrderBy = UserFields.Username,
                 PageNumber = page ?? 1,
                 PageSize = pageSize ?? 30,
-                Username = serchMessage
+                Username = searchMessage
             };
 
             IPagedList<UserEntity> users = RepositoryContext.Current.Users.SearchUsers(searchSettings);
@@ -156,7 +133,7 @@ namespace Wlog.Web.Controllers
 
         //Get Private/EditUser/1
         [HttpGet]
-        [AuthorizeRolesAttribute(Constants.Roles.Admin)]
+        [AuthorizeRoles(Constants.Roles.Admin)]
         public ActionResult EditUser(Guid id)
         {
             _logger.Debug("[Private]: EditUser({0})", id);
@@ -164,10 +141,9 @@ namespace Wlog.Web.Controllers
             ViewBag.Title = user.Username;
             EditUser model = new EditUser();
             model.DataUser = user;
-            model.Apps = UserHelper.GetApp(id);
+            model.Apps = RepositoryContext.Current.Applications.GetUserApplications(id);
             return View(model);
         }
-
 
         //Post Private/EditUser/
         [HttpPost]
@@ -184,17 +160,15 @@ namespace Wlog.Web.Controllers
 
                     List<AppUserRoleEntity> newRoleList = new List<AppUserRoleEntity>();
 
-                    foreach (UserApps app in model.Apps)
+                    foreach (UserApplication application in model.Apps)
                     {
-
-                        if (app.RoleId != Guid.Empty)
+                        if (application.RoleId != Guid.Empty)
                         {
-                            newRoleList.Add(new AppUserRoleEntity { UserId = model.DataUser.Id, ApplicationId = app.IdApplication, RoleId = app.RoleId });
+                            newRoleList.Add(new AppUserRoleEntity { UserId = model.DataUser.Id, ApplicationId = application.IdApplication, RoleId = application.RoleId });
                         }
                     }
 
                     RepositoryContext.Current.Applications.ResetUserRoles(model.DataUser, newRoleList);
-
 
                     return RedirectToAction("ListUsers");
                 }
@@ -204,6 +178,7 @@ namespace Wlog.Web.Controllers
                 }
             }
             ModelState.AddModelError(String.Empty, "Error");
+
             return View(model);
         }
 
@@ -294,18 +269,17 @@ namespace Wlog.Web.Controllers
             return View(user);
         }
 
-
         #region Application
         // Get  /Private/ListApps
         [AuthorizeRoles(Constants.Roles.Admin, Constants.Roles.ReadLog)]
-        public ActionResult ListApps(string serchMessage, int? page, int? pageSize)
+        public ActionResult ListApps(string searchMessage, int? page, int? pageSize)
         {
-            _logger.Debug("[Private]: ListApps({0},{1},{2})", serchMessage, page, pageSize);
+            _logger.Debug("[Private]: ListApps({0},{1},{2})", searchMessage, page, pageSize);
             string username = Membership.GetUser().UserName;
 
             ApplicationList model = new ApplicationList
             {
-                SerchMessage = serchMessage
+                SearchMessage = searchMessage
             };
             
             ApplicationSearchSettings settings = new ApplicationSearchSettings()
@@ -313,7 +287,7 @@ namespace Wlog.Web.Controllers
                 Orderby = Library.BLL.Enums.ApplicationFields.ApplicationName,
                 PageNumber = page ?? 1,
                 PageSize = pageSize ?? 30,
-                SerchFilter = serchMessage,
+                SerchFilter = searchMessage,
                 UserName = username
             };
 
@@ -485,7 +459,6 @@ namespace Wlog.Web.Controllers
         #region Info
 
         //Get Private/info
-
         public ActionResult Info()
         {
             var model = InfoHelper.GetInfoPage(InfoPageConfigurator.Configuration);

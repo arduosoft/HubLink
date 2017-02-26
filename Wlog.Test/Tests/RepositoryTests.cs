@@ -14,6 +14,7 @@ using Wlog.BLL.Entities;
 using Wlog.Library.BLL.Helpers;
 using Wlog.Library.BLL.Interfaces;
 using Wlog.Library.BLL.Reporitories;
+using Wlog.Test.Attributes;
 using Xunit;
 
 namespace Wlog.Test.Tests
@@ -51,7 +52,7 @@ namespace Wlog.Test.Tests
         }
 
 
-        [Fact]
+        [Fact, TestPriority(0), Trait("Category", "ExcludedFromCI")]
         public void TestAllBaseMethods()
         {
             foreach (string repoName in repoInstances.Keys)
@@ -71,7 +72,7 @@ namespace Wlog.Test.Tests
         }
 
 
-        [Fact]
+        [Fact, TestPriority(0), Trait("Category", "ExcludedFromCI")]
         public void TestApplication()
         {
             ApplicationRepository repository = new ApplicationRepository();

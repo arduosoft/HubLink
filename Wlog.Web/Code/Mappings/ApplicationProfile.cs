@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PagedList;
+using System.Web.Mvc;
 using Wlog.BLL.Classes;
 using Wlog.BLL.Entities;
 using Wlog.Web.Models;
@@ -21,6 +22,15 @@ namespace Wlog.Web.Code.Mappings
 
             CreateMap<ApplicationModel, ApplicationEntity>();
             CreateMap<ApplicationEntity, ApplicationModel>();
+            CreateMap<IPagedList<ApplicationEntity>, IPagedList<ApplicationModel>>()
+               .ConvertUsing<PagedListConverter<ApplicationEntity, ApplicationModel>>();
+
+            CreateMap<ProfilesEntity, SelectListItem>()
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Text, opts => opts.MapFrom(src => src.ProfileName));
+            CreateMap<SelectListItem, ProfilesEntity>()
+               .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.Value))
+               .ForMember(dest => dest.ProfileName, opts => opts.MapFrom(src => src.Text));
         }
     }
 }

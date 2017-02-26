@@ -7,7 +7,7 @@
 @{
     Layout = "~/Views/Shared/_LayoutInternal.cshtml";
 
-   
+
 
 }
 
@@ -20,136 +20,128 @@
     }
 
 
-    
+
     li.textcomplete-item.active > a, li.textcomplete-item.active > a:hover, li.textcomplete-item.active > a:focus {
-        background-color:#feb !important;
+        background-color: #feb !important;
     }
 
-    li.textcomplete-item  .dropdown-menu  {
-    border-bottom: 1px dashed #888 ;
-     color: #666 !important;
- }
+    li.textcomplete-item .dropdown-menu {
+        border-bottom: 1px dashed #888;
+        color: #666 !important;
+    }
 
 
-    li.textcomplete-item    h5 {
-    color: #666 !important;
-    font-weight: bold;
-   margin-bottom:0px;
-   margin-top:1px;
-   }
+    li.textcomplete-item h5 {
+        color: #666 !important;
+        font-weight: bold;
+        margin-bottom: 0px;
+        margin-top: 1px;
+    }
 
     li.textcomplete-item sub {
-         color: #666 !important;
-         line-height: 15px;
+        color: #666 !important;
+        line-height: 15px;
     }
-     li.textcomplete-item    .stop-words 
-    {
 
-    color: orange !important;
-   }
-
-
-    li.textcomplete-item    .field-names {
-    color: #666 !important;
-   }
-
-
-    .search-group input, .search-group select,  .search-group button
-    {
-        height:40px
-
+    li.textcomplete-item .stop-words {
+        color: orange !important;
     }
 
 
+    li.textcomplete-item .field-names {
+        color: #666 !important;
+    }
 
+
+    .search-group input, .search-group select, .search-group button {
+        height: 40px;
+    }
 </style>
 
 <script>
     var logTable;
-    function setMessageError()
-    {
-        $('#SerchMessage').parent("div").addClass("has-error");
+    function setMessageError() {
+        $('#SearchMessage').parent("div").addClass("has-error");
     }
 
     function resetMessageError() {
-        $('#SerchMessage').parent("div").removeClass("has-error");
+        $('#SearchMessage').parent("div").removeClass("has-error");
     }
 
     /* Table configuration*/
-    $(document).ready(function() {
-       logTable=  $('#example').DataTable( 
-            {
-                bFilter: false,
-                serverSide: true,
-                processing: true,
-                "ajax": {
-                    "url": "/private/Search",
-                    "type": "GET",
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        if (xhr.statusText == "Unable to parse Query")
-                        {
-                            setMessageError();
-                        }
-                    },
-                    "data": function (d) {
-                        
+    $(document).ready(function () {
+        logTable = $('#example').DataTable(
+             {
+                 bFilter: false,
+                 serverSide: true,
+                 processing: true,
+                 "ajax": {
+                     "url": "/private/Search",
+                     "type": "GET",
+                     error: function (xhr, ajaxOptions, thrownError) {
+                         if (xhr.statusText == "Unable to parse Query") {
+                             setMessageError();
+                         }
+                     },
+                     "data": function (d) {
 
-                        var settings =
-                            {
-                                "applicationId": $("#ApplicationId>option:selected").val(),
-                                "sortOrder": "desc",
-                                "sortBy": "SourceDate",
-                                "serchMessage": "",
-                                "page": 1,
-                                "pageSize": 10
-                            };
 
-                        if(logTable)
-                        {
-                            settings = {
-                                "applicationId": $("#ApplicationId>option:selected").val(),
-                                "sortOrder": d.order[0].dir,
-                                "sortBy": d.columns[d.order[0].column].name,
-                                "serchMessage":$("#SerchMessage").val(),
-                                "page": logTable.page()+1,
-                                "pageSize": logTable.page.len()
-                            }
-                        }
-                        
+                         var settings =
+                             {
+                                 "applicationId": $("#ApplicationId>option:selected").val(),
+                                 "sortOrder": "desc",
+                                 "sortBy": "SourceDate",
+                                 "searchMessage": "",
+                                 "page": 1,
+                                 "pageSize": 10
+                             };
 
-                        return $.extend({}, {}, {
-                            "applicationId": settings.applicationId,
-                            "sortOrder": settings.sortOrder,
-                            "sortBy": settings.sortBy,
-                            "serchMessage": settings.serchMessage,
-                            "page": settings.page,
-                            "pageSize": settings.pageSize,
-                            "draw":d.draw
-                        });
-                    }
-                },
-                "columns": [
-                {
-                    "title": "Source Date", name: "SourceDate", data: "SourceDate", visible: true,
-                    "width": "180px",
-                render: function (data, type, full, meta) {
+                         if (logTable) {
+                             settings = {
+                                 "applicationId": $("#ApplicationId>option:selected").val(),
+                                 "sortOrder": d.order[0].dir,
+                                 "sortBy": d.columns[d.order[0].column].name,
+                                 "searchMessage": $("#SearchMessage").val(),
+                                 "page": logTable.page() + 1,
+                                 "pageSize": logTable.page.len()
+                             }
+                         }
 
-                    var a;
-                    if (typeof data === 'string') {
-                        a = /\/Date\((\d*)\)\//.exec(data);
-                        if (a) {
-                            data= new Date(+a[1]);
-                        }
-                    }
-                    return moment( data).format("YYYY-MM-DD HH:mm:ss.SSS");
 
-                      
-                } },
-                { "title": "Level", name: "Level", data: "Level", visible: true, "width": "80px", },
-                { "title": "Message", name: "Message", data: "Message", visible: true },
-                
-                        ]
-            });
+                         return $.extend({}, {}, {
+                             "applicationId": settings.applicationId,
+                             "sortOrder": settings.sortOrder,
+                             "sortBy": settings.sortBy,
+                             "searchMessage": settings.searchMessage,
+                             "page": settings.page,
+                             "pageSize": settings.pageSize,
+                             "draw": d.draw
+                         });
+                     }
+                 },
+                 "columns": [
+                 {
+                     "title": "Source Date", name: "SourceDate", data: "SourceDate", visible: true,
+                     "width": "180px",
+                     render: function (data, type, full, meta) {
+
+                         var a;
+                         if (typeof data === 'string') {
+                             a = /\/Date\((\d*)\)\//.exec(data);
+                             if (a) {
+                                 data = new Date(+a[1]);
+                             }
+                         }
+                         return moment(data).format("YYYY-MM-DD HH:mm:ss.SSS");
+
+
+                     }
+                 },
+                 { "title": "Level", name: "Level", data: "Level", visible: true, "width": "80px", },
+                 { "title": "Message", name: "Message", data: "Message", visible: true },
+
+                 ]
+             });
 
 
 
@@ -158,12 +150,12 @@
     });
 
 
-    $(document).ready(function() {
-        $('#SerchMessage').textcomplete([
+    $(document).ready(function () {
+        $('#SearchMessage').textcomplete([
         { // emoji strategy
             id: 'field-names',
             match: /\b(\w{2,})$/,
-            words: ['Level', 'Message','SourceDate'],
+            words: ['Level', 'Message', 'SourceDate'],
             search: function (term, callback) {
                 callback($.map(this.words, function (word) {
                     return word.indexOf(term) === 0 ? word : null;
@@ -194,33 +186,30 @@
                 return word + ' ';
             }
         }
-    ], {
-        onKeydown: function (e, commands) {
-            if (e.ctrlKey && e.keyCode === 74) { // CTRL-J
-                return commands.KEY_ENTER;
+        ], {
+            onKeydown: function (e, commands) {
+                if (e.ctrlKey && e.keyCode === 74) { // CTRL-J
+                    return commands.KEY_ENTER;
+                }
             }
-        }
-    });
+        });
     });
 
     var timer = null;
-    
+
     $(document).ready(function () {
-        $(".searchButton").click(function ()
-        {
+        $(".searchButton").click(function () {
             search();
         });
 
-        $("#SerchMessage").bind('keypress keydown keyup', function (e)
-        {
+        $("#SearchMessage").bind('keypress keydown keyup', function (e) {
             resetMessageError();
             if (timer != null) clearTimeout(timer);
             if (e.keyCode == 13) {
 
                 search();
             }
-            else
-            {
+            else {
                 timer = setTimeout(search, 2000);
             }
         });
@@ -232,16 +221,14 @@
 
 
         $("#ContinuousRead").change(function (e) {
-            
-           search();
+
+            search();
         });
     });
-    function search()
-    {
+    function search() {
         logTable.ajax.reload();
-        var continuous=$("#ContinuousRead").is(":checked");
-        if (continuous)
-        {
+        var continuous = $("#ContinuousRead").is(":checked");
+        if (continuous) {
             timer = setTimeout(search, 2000);
         }
     }
@@ -251,54 +238,54 @@
     <h1>Log Messages</h1>
 </div>
 
+<div class="row">
+
+
+
+
     <div class="row">
-        
-     
+
+        <div class="col-md-12">
+
+            <div class="input-append search-group">
 
 
-            <div class="row">
-                
-                <div class="col-md-12">
 
-                        <div class="input-append search-group">
-                           
 
-                        
 
-                           
-                                <div class="input-group">
-                                    <div class="input-group-btn">
-                                        @Html.DropDownListFor(m => m.ApplicationId,
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        @Html.DropDownListFor(m => m.ApplicationId,
      new SelectList(Model.Apps, "Id", "ApplicationName", Model.ApplicationId),
      new { @class = " form-control ApplicationSelect", @style = "width:200px;background-color: #eee;" })
-                                    </div>
+                    </div>
 
-                                    <input type="text" name="SerchMessage" id="SerchMessage" class="form-control" placeholder="Type search query ie Level:Info AND SourceDate:[20020101 TO 20030101]" autocomplete="off">
-                                    
-                                     <span class="input-group-btn">
-                                        <button class="btn btn-default searchButton" type="button" style="background-color: #eee;"><i class="glyphicon glyphicon-search" style="font-size: 20px;"></i></button>
-                                    </span>
-                                </div><!-- /input-group -->
+                    <input type="text" name="SearchMessage" id="SearchMessage" class="form-control" placeholder="Type search query ie Level:Info AND SourceDate:[20020101 TO 20030101]" autocomplete="off">
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-default searchButton" type="button" style="background-color: #eee;"><i class="glyphicon glyphicon-search" style="font-size: 20px;"></i></button>
+                    </span>
+                </div><!-- /input-group -->
 
 
 
-                            </div>
-                    <p class="help-block"><input type="checkbox" id="ContinuousRead"> Continuous  | More info about query syntax  <a href="https://lucene.apache.org/core/2_9_4/queryparsersyntax.html">here</a> </p>
-                 
-                </div>
-                
             </div>
-        
-    </div>
-    <div class="row">
+            <p class="help-block"><input type="checkbox" id="ContinuousRead"> Continuous  | More info about query syntax  <a href="https://lucene.apache.org/core/2_9_4/queryparsersyntax.html">here</a> </p>
 
-
-
-
-        <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%"></table>
-
-
-
+        </div>
 
     </div>
+
+</div>
+<div class="row">
+
+
+
+
+    <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%"></table>
+
+
+
+
+</div>
 
