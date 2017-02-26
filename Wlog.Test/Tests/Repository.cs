@@ -85,6 +85,7 @@ namespace Wlog.Test.Tests
             ap.PublicKey = Guid.NewGuid();
             ap.ApplicationName = "TEST INSERT";
             result=apr.Save(ap);
+
             Assert.True(result);
             int count = apr.Count(x => x.ApplicationName == "TEST INSERT");
             Assert.Equal(count, 1);
