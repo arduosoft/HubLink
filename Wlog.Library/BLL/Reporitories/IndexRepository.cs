@@ -16,6 +16,11 @@ namespace Wlog.Library.BLL.Reporitories
     /// </summary>
     public class IndexRepository: IRepository
     {
+        public Type GetEntityType()
+        {
+            return typeof(LuceneIndexManager);
+        }
+
         public static Logger logger { get { return LogManager.GetCurrentClassLogger(); } }
 
         public static string BasePath { get; set; }

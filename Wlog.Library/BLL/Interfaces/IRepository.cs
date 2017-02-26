@@ -19,5 +19,6 @@ namespace Wlog.Library.BLL.Interfaces
     /// </summary>
     public interface IRepository
     {
+         Type GetEntityType();
     }
 }

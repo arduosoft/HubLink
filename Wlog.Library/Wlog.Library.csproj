@@ -190,6 +190,7 @@
     <Compile Include="BLL\Enums\UserFields.cs" />
     <Compile Include="BLL\Exceptions\UnableToParseQuery.cs" />
     <Compile Include="BLL\Helpers\InfoHelper.cs" />
+    <Compile Include="BLL\Helpers\ReflectionHelper.cs" />
     <Compile Include="BLL\Index\LuceneIndexManager.cs" />
     <Compile Include="BLL\Interfaces\IEntityBase.cs" />
     <Compile Include="BLL\Interfaces\IUnitOfWork.cs" />
@@ -202,6 +203,7 @@
     <Compile Include="BLL\Reporitories\ProfilesRepository.cs" />
     <Compile Include="BLL\Reporitories\RepositoryContext.cs" />
     <Compile Include="BLL\Reporitories\RolesRepository.cs" />
+    <Compile Include="BLL\Classes\SearchableEntityRepository.cs" />
     <Compile Include="BLL\Reporitories\SystemRepository.cs" />
     <Compile Include="BLL\Reporitories\UserRepository.cs" />
     <Compile Include="BLL\DataBase\NHibernateContext.cs" />

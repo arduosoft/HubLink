@@ -12,7 +12,7 @@
     /// <summary>
     /// Repository to store deleted logs
     /// </summary>
-    public class DeletedLogRepository : EntityRepository
+    public class DeletedLogRepository : EntityRepository<DeletedLogEntity>
     {
        
         /// <summary>
@@ -93,27 +93,7 @@
             }
         }
 
-        /// <summary>
-        /// Add or update deleted log
-        /// </summary>
-        /// <param name="deletedLog"></param>
-        public void Save(DeletedLogEntity deletedLog)
-        {
-            logger.Debug("[repo] entering Save");
-            try
-            {
-                using (IUnitOfWork uow = BeginUnitOfWork())
-                {
-                    uow.BeginTransaction();
-                    uow.SaveOrUpdate(deletedLog);
-                    uow.Commit();
-                }
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex);
-            }
-        }
+        
 
         /// <summary>
         /// Execute a job to clead recicle bing

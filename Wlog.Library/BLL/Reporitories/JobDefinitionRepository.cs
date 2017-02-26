@@ -7,51 +7,13 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    public class JobDefinitionRepository : EntityRepository
+    public class JobDefinitionRepository : EntityRepository<JobDefinitionEntity>
     {
-        public bool Save(JobDefinitionEntity entity)
-        {
-            logger.Debug("[repo] JobDefinitionEntity entering Save");
-
-            try
-            {
-
-                using (IUnitOfWork uow = BeginUnitOfWork())
-                {
-                    uow.BeginTransaction();
-                    uow.SaveOrUpdate(entity);
-                    uow.Commit();
-                }
-
-                return true;
-            }
-            catch (Exception err)
-            {
-                logger.Error(err);
-            }
-
-            return false;
-        }
+      
 
         public List<JobDefinitionEntity> GetAllJobDefinitions()
         {
-            var jobDefinitions = new List<JobDefinitionEntity>();
-
-            try
-            {
-                using (IUnitOfWork uow = BeginUnitOfWork())
-                {
-                    uow.BeginTransaction();
-                    jobDefinitions = uow.Query<JobDefinitionEntity>().Select(x => x).ToList();
-                    uow.Commit();
-                }
-            }
-            catch (Exception err)
-            {
-                logger.Error(err);
-            }
-
-            return jobDefinitions;
+            return this.QueryOver(null);
         }
 
         public IEnumerable<JobConfiguration> GetAllDefinitionsAndInstances()
@@ -78,23 +40,7 @@
 
         public JobDefinitionEntity GetJobDefinitionByName(string jobName)
         {
-            JobDefinitionEntity jobDefinition = null;
-
-            try
-            {
-                using (IUnitOfWork uow = BeginUnitOfWork())
-                {
-                    uow.BeginTransaction();
-                    jobDefinition = uow.Query<JobDefinitionEntity>().FirstOrDefault(x => x.Name == jobName);
-                    uow.Commit();
-                }
-            }
-            catch (Exception err)
-            {
-                logger.Error(err);
-            }
-
-            return jobDefinition;
+            return this.FirstOrDefault(x => jobName.Equals(x.Name));
         }
     }
 }

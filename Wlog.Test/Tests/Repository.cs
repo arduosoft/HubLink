@@ -9,10 +9,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Wlog.BLL.Entities;
+using Wlog.Library.BLL.Classes;
+using Wlog.Library.BLL.Helpers;
+using Wlog.Library.BLL.Interfaces;
 using Wlog.Library.BLL.Reporitories;
 using Xunit;
+
 namespace Wlog.Test.Tests
 {
 
@@ -21,10 +27,77 @@ namespace Wlog.Test.Tests
     /// </summary>
     public class Repository
     {
-        [Fact]
-        public void InitRepo()
+        Dictionary<string, object> repoInstances = new Dictionary<string, object>();
+        Dictionary<string, Type> entityTypes = new Dictionary<string, Type>();
+        Dictionary<string, Type> repoTypes = new Dictionary<string, Type>();
+
+
+        public Repository()
         {
-            
+
+            Assembly entityAssembly = Assembly.GetAssembly(typeof(LogEntity));
+            Type[] classes = ReflectionHelper.GetTypesInNamespace(entityAssembly, "Wlog.Library.BLL.Reporitories");
+
+            foreach (Type repoClass in classes)
+            {
+                object o = Activator.CreateInstance(repoClass);
+                if (o is IRepository && !(o is SystemRepository))
+                {
+
+                    repoInstances[repoClass.Name] = o;
+
+                    repoTypes[repoClass.Name] = repoClass;
+
+                    entityTypes[repoClass.Name] = ((IRepository)repoInstances[repoClass.Name]).GetEntityType();
+                }
+            }
+
+        }
+
+
+        [Fact]
+        public void TestAllBaseMethods()
+        {
+            foreach (string repoName in repoInstances.Keys)
+            {
+                object repoInstanceObj = repoInstances[repoName];
+                Assert.NotNull(repoInstanceObj);
+                Type typeEntity = entityTypes[repoName];
+                Type repoType = repoTypes[repoName];
+
+                object entity = Activator.CreateInstance(typeEntity);
+                Guid assignedid = Guid.NewGuid();
+                ((IEntityBase)entity).Id = assignedid;
+
+                MethodInfo methodInfo = repoType.GetMethod("Save", new[] { entity.GetType() });
+                methodInfo.Invoke(methodInfo, new object[] { entity });
+            }
+        }
+
+
+        [Fact]
+        public void TestApplication()
+        {
+            ApplicationRepository apr = new ApplicationRepository();
+            bool result = false;
+            ApplicationEntity ap = new ApplicationEntity();
+            ap.Id = Guid.NewGuid();
+            ap.PublicKey = Guid.NewGuid();
+            ap.ApplicationName = "TEST INSERT";
+            result=apr.Save(ap);
+            Assert.True(result);
+            int count = apr.Count(x => x.ApplicationName == "TEST INSERT");
+            Assert.Equal(count, 1);
+            ap.ApplicationName = "TEST UPDATED";
+            result = apr.Save(ap);
+            Assert.True(result);
+             count = apr.Count(x => x.ApplicationName == "TEST INSERT");
+            Assert.Equal(count, 0);
+            count = apr.Count(x => x.ApplicationName == "TEST UPDATED");
+            Assert.Equal(count, 1);
+            apr.Delete(ap);
+            count = apr.Count(x => x.ApplicationName == "TEST UPDATED");
+            Assert.Equal(count, 0);
         }
     }
 }

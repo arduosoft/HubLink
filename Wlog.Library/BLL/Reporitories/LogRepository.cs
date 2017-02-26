@@ -33,7 +33,7 @@ namespace Wlog.Library.BLL.Reporitories
     /// <summary>
     /// Repo used to store logs
     /// </summary>
-    public class LogRepository : EntityRepository
+    public class LogRepository : EntityRepository<LogEntity>
     {
         public LogRepository()
         {
@@ -48,21 +48,17 @@ namespace Wlog.Library.BLL.Reporitories
         public long CountByLevel(StandardLogLevels level)
         {
             logger.Debug("[repo] entering CountByLevel");
-            using (IUnitOfWork uow = BeginUnitOfWork())
-            {
-                uow.BeginTransaction();
-                return uow.Query<LogEntity>().Count(p => level == StandardLogLevels.ALL_LEVELS || (p.Level != null && p.Level.ToLower().Contains(level.ToString())));
-            }
+           return this.Count(p => level == StandardLogLevels.ALL_LEVELS || (p.Level != null && p.Level.ToLower().Contains(level.ToString())));
         }
 
         /// <summary>
         /// Save a log into database
         /// </summary>
         /// <param name="entToSave"></param>
-        public void Save(LogEntity entToSave)
+        public override bool Save(LogEntity entToSave)
         {
             logger.Debug("[repo] entering Save");
-            Save(new List<LogEntity>(new LogEntity[] { entToSave }));
+            return Save(new List<LogEntity>(new LogEntity[] { entToSave }));
 
         }
 
@@ -182,7 +178,7 @@ namespace Wlog.Library.BLL.Reporitories
         /// sava a list of logs
         /// </summary>
         /// <param name="logs"></param>
-        public void Save(List<LogEntity> logs)
+        public bool Save(List<LogEntity> logs)
         {
             logger.Debug("[repo] entering Save");
 
@@ -209,6 +205,8 @@ namespace Wlog.Library.BLL.Reporitories
 
                 RepositoryContext.Current.Index.CommitAllIndexChanges();
             }
+
+            return true;
         }
 
 
@@ -361,15 +359,7 @@ namespace Wlog.Library.BLL.Reporitories
         public List<LogEntity> GetAllLogEntities()
         {
             //TODO: should this have paging input? all rows could be taken with a page of infinite size
-            logger.Debug("[repo] entering GetAllLogEntities");
-            List<LogEntity> result = new List<LogEntity>();
-            using (IUnitOfWork uow = BeginUnitOfWork())
-            {
-                uow.BeginTransaction();
-                result = uow.Query<LogEntity>().ToList();
-            }
-
-            return result;
+           return this.QueryOver( null); 
         }
 
 

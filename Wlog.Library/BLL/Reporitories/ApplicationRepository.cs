@@ -25,7 +25,7 @@ namespace Wlog.Library.BLL.Reporitories
     /// <summary>
     /// Repository to store applications
     /// </summary>
-    public class ApplicationRepository: EntityRepository
+    public class ApplicationRepository: EntityRepository<ApplicationEntity>
     {
 
         public ApplicationRepository()
@@ -33,17 +33,7 @@ namespace Wlog.Library.BLL.Reporitories
             
         }
 
-        public ApplicationEntity GetById(Guid id)
-        {
-            logger.Debug("[repo] entering GetById");
-            ApplicationEntity app;
-            using (IUnitOfWork uow = BeginUnitOfWork())
-            {
-                uow.BeginTransaction();
-                app = uow.Query<ApplicationEntity>().Where(x => x.Id.Equals(id)).FirstOrDefault();
-                return app;
-            }
-        }
+       
 
         /// <summary>
         /// Reset user roles basing on role list
@@ -154,7 +144,7 @@ namespace Wlog.Library.BLL.Reporitories
         /// Delete one application from db, removing all relate data
         /// </summary>
         /// <param name="app"></param>
-        public void Delete(ApplicationEntity app)
+        public override bool Delete(ApplicationEntity app)
         {
             logger.Debug("[repo] entering Delete");
 
@@ -194,6 +184,7 @@ namespace Wlog.Library.BLL.Reporitories
                 uow.Delete(app);
 
                 uow.Commit();
+                return true;
             }
         }
 
@@ -233,16 +224,7 @@ namespace Wlog.Library.BLL.Reporitories
             return result;
         }
 
-        public void Save(ApplicationEntity app)
-        {
-            logger.Debug("[repo] entering Save");
-            using (IUnitOfWork uow = BeginUnitOfWork())
-            {
-                uow.BeginTransaction();
-                uow.SaveOrUpdate(app);
-                uow.Commit();
-            }
-        }
+      
 
         /// <summary>
         /// Give alist of application ids for username

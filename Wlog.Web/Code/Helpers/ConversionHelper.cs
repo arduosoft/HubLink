@@ -108,7 +108,7 @@ namespace Wlog.Web.Code.Helpers
         {
             try
             {
-                var jobInstance = RepositoryContext.Current.JobInstance.GetJobInstanceById(jobModel.JobInstanceId);
+                var jobInstance = RepositoryContext.Current.JobInstance.GetById(jobModel.JobInstanceId);
 
                 if (jobInstance == null)
                 {
