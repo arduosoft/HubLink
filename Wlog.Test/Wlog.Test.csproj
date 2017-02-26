@@ -148,7 +148,7 @@
     <Compile Include="Tests\MoveToBinJobTest.cs" />
     <Compile Include="Tests\LoadTest.cs" />
     <Compile Include="Tests\FakeTest.cs" />
-    <Compile Include="Tests\Repository.cs" />
+    <Compile Include="Tests\RepositoryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
