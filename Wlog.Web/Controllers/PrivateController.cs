@@ -29,6 +29,7 @@ using Wlog.Web.Filters;
 using NLog;
 using CronExpressionDescriptor;
 using Wlog.Web.Code.Enums;
+using Wlog.Library.Scheduler;
 
 namespace Wlog.Web.Controllers
 {
@@ -37,10 +38,10 @@ namespace Wlog.Web.Controllers
     /// </summary>
     public class PrivateController : Controller
     {
-
         private static Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly IJobConfigurationManager _jobManager = new JobConfigurationManager();
 
-        [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.WriteLog, Constants.Roles.ReadLog)]
+        [AuthorizeRoles(Constants.Roles.Admin, Constants.Roles.WriteLog, Constants.Roles.ReadLog)]
         public ActionResult Index()
         {
 
@@ -483,10 +484,10 @@ namespace Wlog.Web.Controllers
                 switch (command)
                 {
                     case ButtonCommands.Run:
-                        ConversionHelper.RunJobInstance(item);
+                        _jobManager.RunJobInstance(item);
                         break;
                     case ButtonCommands.Edit:
-                        ConversionHelper.UpdateJobInstance(item);
+                        _jobManager.UpdateJobInstance(item);
                         break;
                     default:
                         break;

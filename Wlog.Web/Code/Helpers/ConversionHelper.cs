@@ -103,57 +103,5 @@ namespace Wlog.Web.Code.Helpers
             }
             return result;
         }
-
-        public static bool UpdateJobInstance(JobConfiguration jobModel)
-        {
-            try
-            {
-                var jobInstance = RepositoryContext.Current.JobInstance.GetById(jobModel.JobInstanceId);
-
-                if (jobInstance == null)
-                {
-                    return false;
-                }
-
-                jobInstance.Active = jobModel.Active;
-
-                // deactivating job
-                if (!jobModel.Active)
-                {
-                    jobInstance.DeactivationDate = DateTime.UtcNow;
-                }
-
-                jobInstance.CronExpression = jobModel.CronExpression;
-
-                RepositoryContext.Current.JobInstance.Save(jobInstance);
-
-                JobConfigurationHelper.ReloadJob(jobModel);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex);
-                throw;
-            }
-        }
-
-        public static bool RunJobInstance(JobConfiguration jobModel)
-        {
-            try
-            {
-                bool updated = UpdateJobInstance(jobModel);
-                if (updated && jobModel.Instantiable)
-                {
-                    JobConfigurationHelper.TriggerJob(jobModel);
-                }
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex);
-                throw;
-            }
-        }
     }
 }

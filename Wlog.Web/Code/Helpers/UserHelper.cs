@@ -58,25 +58,6 @@ namespace Wlog.Web.Code.Helpers
         }
 
         /// <summary>
-        /// Update the User
-        /// </summary>
-        /// <param name="usr"></param>
-        /// <returns></returns>
-        /// 
-        //[Obsolete]
-        //public static bool UpdateUser(UserEntity user)
-        //{
-        //    logger.Debug("[UserHelper]: UpdateUser");
-        //    if (user.IsAdmin)
-        //    {
-        //        logger.Debug("[UserHelper]: Reset profile because (admin cannot be changed?)");
-        //        user.ProfileId = GetProfileByName("admin").Id;
-        //    }
-
-        //    return RepositoryContext.Current.Users.Save(user);
-        //}
-
-        /// <summary>
         /// given a user return list of app with role
         /// </summary>
         /// <param name="id"></param>
@@ -139,18 +120,5 @@ namespace Wlog.Web.Code.Helpers
 
             return profiles;
         }
-
-        //[Obsolete]
-        //public static bool IsUserAdmin(Guid profileGuid)
-        //{
-        //    logger.Debug("[UserHelper]: IsUserAdmin");
-        //    return GetProfileByName("admin").Id == profileGuid;
-        //}
-        //[Obsolete]
-        //private static ProfilesEntity GetProfileByName(string name)
-        //{
-        //    logger.Debug("[UserHelper]: GetProfileByName");
-        //    return RepositoryContext.Current.Profiles.GetAllProfiles().SingleOrDefault(x => x.ProfileName.ToLower() == name);
-        //}
     }
 }
