@@ -8,6 +8,7 @@ using Wlog.BLL.Entities;
 using Wlog.Library.BLL.DataBase;
 using Wlog.Library.BLL.Interfaces;
 using Wlog.Library.BLL.Classes;
+using Wlog.BLL.Classes;
 
 namespace Wlog.Library.BLL.Reporitories
 {
@@ -73,14 +74,17 @@ namespace Wlog.Library.BLL.Reporitories
         /// <returns></returns>
         public List<ProfilesEntity> GetAllProfiles()
         {
-
             //TODO: this method should take paging options
             logger.Debug("[repo] entering GetAllProfiles");
             return this.QueryOver(null);
         }
 
-       
+        public bool IsProfileIdAdmin(Guid profileGuid)
+        {
+            var profile = RepositoryContext.Current.Profiles.GetAllProfiles().SingleOrDefault(x => x.Id == profileGuid);
 
+            return profile.ProfileName == Constants.Roles.Admin;
+        }
 
         /// <summary>
         /// Assign multiple roles to a profile.

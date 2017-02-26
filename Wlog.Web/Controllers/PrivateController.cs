@@ -28,6 +28,7 @@ using Wlog.Library.BLL.Configuration;
 using Wlog.Web.Filters;
 using NLog;
 using CronExpressionDescriptor;
+using Wlog.Web.Code.Enums;
 
 namespace Wlog.Web.Controllers
 {
@@ -45,11 +46,11 @@ namespace Wlog.Web.Controllers
 
             _logger.Debug("[Private]: Index");
             string username = Membership.GetUser().UserName;
-            var applicationsForUser = UserHelper.GetAppsIdsForUser(username);
+            var applicationIdsForUser = RepositoryContext.Current.Applications.GetAppplicationsByUsername(username);
 
             LogsSearchSettings logSearch = new LogsSearchSettings()
             {
-                Applications = applicationsForUser,
+                Applications = applicationIdsForUser.Select(x => x.Id).ToList(),
                 PageNumber = 1,
                 PageSize = 10
             };
@@ -65,7 +66,8 @@ namespace Wlog.Web.Controllers
             dm.AppLastTen = new List<MessagesListModel>();
 
             IPagedList<LogEntity> logOfCurrentApp;
-            foreach (ApplicationEntity app in UserHelper.GetAppsForUser(username))
+
+            foreach (ApplicationEntity application in applicationIdsForUser)
             {
                 logSearch = new LogsSearchSettings()
                 {
@@ -74,15 +76,14 @@ namespace Wlog.Web.Controllers
 
                 };
 
-                logSearch.Applications.Add(app.Id);
+                logSearch.Applications.Add(application.Id);
                 logOfCurrentApp = RepositoryContext.Current.Logs.SearchLog(logSearch);
                 MessagesListModel list = new MessagesListModel();
-                list.ApplicationName = app.ApplicationName;
-                list.IdApplication = app.Id;
+                list.ApplicationName = application.ApplicationName;
+                list.IdApplication = application.Id;
 
                 list.Messages = ConversionHelper.ConvertLogEntityToMessage(logOfCurrentApp.ToList());
                 dm.AppLastTen.Add(list);
-
             }
 
             return View(dm);
@@ -94,17 +95,14 @@ namespace Wlog.Web.Controllers
         {
             _logger.Debug("[Private]: Logs");
             //TDOD: CHECK USER
-            List<Guid> alloweApps = UserHelper.GetAppsIdsForUser(Membership.GetUser().UserName);
+            List<Guid> alloweApps = RepositoryContext.Current.Applications.GetAppplicationsIdsByUsername(Membership.GetUser().UserName);
 
             LogListModel mm = new LogListModel()
             {
-                ApplicationId = applicationId ?? alloweApps.FirstOrDefault() 
+                ApplicationId = applicationId ?? alloweApps.FirstOrDefault()
             };
             MembershipUser current = Membership.GetUser();
-            mm.Apps = UserHelper.GetAppsForUser(current.UserName);
-
-
-            // mm.Items = LogHelper.GetLogs(mm.ApplicationId, mm.SortOrder, mm.SortBy, mm.SerchMessage??"", 30, page ?? 1);
+            mm.Apps = RepositoryContext.Current.Applications.GetAppplicationsByUsername(current.UserName);
 
             return View(mm);
         }
@@ -112,15 +110,13 @@ namespace Wlog.Web.Controllers
 
         public JsonResult Search(Guid? applicationId, string sortOrder, string sortBy, string serchMessage, int page, int pageSize)
         {
-
             _logger.Debug("[Private]: Search");
             //TDOD: CHECK USER
+            IPagedList list = RepositoryContext.Current.Logs.GetLogsForApplication(Membership.GetUser().UserName, applicationId.Value,
+                sortOrder, sortBy, serchMessage ?? "", pageSize, page);
+
             var result = new JsonResult();
-
-            IPagedList list = LogHelper.GetLogs(applicationId.Value, sortOrder, sortBy, serchMessage ?? "", pageSize, page);
-
             result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
-
             result.Data = new
             {
                 draw = Request["draw"],
@@ -128,8 +124,10 @@ namespace Wlog.Web.Controllers
                 recordsFiltered = list.TotalItemCount,
                 data = list
             };
+
             return result;
         }
+
 
         // Get  /Private/ListUsers
         [AuthorizeRolesAttribute(Constants.Roles.Admin)]
@@ -153,7 +151,7 @@ namespace Wlog.Web.Controllers
         public ActionResult EditUser(Guid id)
         {
             _logger.Debug("[Private]: EditUser({0})", id);
-            UserEntity user = UserHelper.GetById(id);
+            UserEntity user = RepositoryContext.Current.Users.GetById(id);
             ViewBag.Title = user.Username;
             EditUser model = new EditUser();
             model.DataUser = user;
@@ -165,7 +163,7 @@ namespace Wlog.Web.Controllers
         //Post Private/EditUser/
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AuthorizeRolesAttribute(Constants.Roles.Admin)]
+        [AuthorizeRoles(Constants.Roles.Admin)]
         public ActionResult EditUser(EditUser model)
         {
             _logger.Debug("[Private]: EditUser(model)");
@@ -173,7 +171,7 @@ namespace Wlog.Web.Controllers
             {
                 try
                 {
-                    UserHelper.UpdateUser(model.DataUser);
+                    RepositoryContext.Current.Users.Save(model.DataUser);
 
                     List<AppUserRoleEntity> newRoleList = new List<AppUserRoleEntity>();
 
@@ -202,7 +200,7 @@ namespace Wlog.Web.Controllers
 
         //Get Private/NewUser
         [HttpGet]
-        [AuthorizeRolesAttribute(Constants.Roles.Admin)]
+        [AuthorizeRoles(Constants.Roles.Admin)]
         public ActionResult NewUser()
         {
             _logger.Debug("[Private]: NewUser()");
@@ -212,7 +210,7 @@ namespace Wlog.Web.Controllers
         //Post Private/NewUser
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AuthorizeRolesAttribute(Constants.Roles.Admin)]
+        [AuthorizeRoles(Constants.Roles.Admin)]
         public ActionResult NewUser(NewUser user)
         {
             _logger.Debug("[Private]: NewUser(user)");
@@ -225,10 +223,10 @@ namespace Wlog.Web.Controllers
                     provider.CreateUser(user.UserName, user.Password, user.Email, null, null, true, null, out status);
                     if (status == MembershipCreateStatus.Success)
                     {
-                        UserEntity entity = UserHelper.GetByUsername(user.UserName);
-                        entity.IsAdmin = UserHelper.IsUserAdmin(user.Profile);
+                        UserEntity entity = RepositoryContext.Current.Users.GetByUsername(user.UserName);
+                        entity.IsAdmin = RepositoryContext.Current.Profiles.IsProfileIdAdmin(user.Profile);
                         entity.ProfileId = user.Profile;
-                        UserHelper.UpdateUser(entity);
+                        RepositoryContext.Current.Users.Save(entity);
                         return RedirectToAction("EditUser", "Private", new { Id = entity.Id });
                     }
                     else
@@ -249,12 +247,12 @@ namespace Wlog.Web.Controllers
 
         //Get Private/DeleteUser/1
         [HttpGet]
-        [AuthorizeRolesAttribute(Constants.Roles.Admin)]
+        [AuthorizeRoles(Constants.Roles.Admin)]
         public ActionResult DeleteUser(Guid id)
         {
             _logger.Debug("[Private]: DeleteUser({0})", id);
 
-            UserEntity user = UserHelper.GetById(id);
+            UserEntity user = RepositoryContext.Current.Users.GetById(id);
             UserData result = new UserData
             {
                 Id = user.Id,
@@ -270,11 +268,12 @@ namespace Wlog.Web.Controllers
 
         //Post Private/DeleteUser/1
         [HttpPost]
-        [AuthorizeRolesAttribute(Constants.Roles.Admin)]
+        [AuthorizeRoles(Constants.Roles.Admin)]
         public ActionResult DeleteUser(UserData user)
         {
             _logger.Debug("[Private]: DeleteUser(userdata)");
-            if (UserHelper.DeleteById(user.Id))
+
+            if (RepositoryContext.Current.Users.DeleteUserById(user.Id))
             {
                 return RedirectToAction("ListUsers");
             }
@@ -282,13 +281,14 @@ namespace Wlog.Web.Controllers
             {
                 ModelState.AddModelError(String.Empty, "Si è Verificato un Errore.");
             }
+
             return View(user);
         }
 
 
         #region Application
         // Get  /Private/ListApps
-        [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.ReadLog)]
+        [AuthorizeRoles(Constants.Roles.Admin, Constants.Roles.ReadLog)]
         public ActionResult ListApps(string serchMessage, int? page, int? pageSize)
         {
             _logger.Debug("[Private]: ListApps({0},{1},{2})", serchMessage, page, pageSize);
@@ -306,7 +306,7 @@ namespace Wlog.Web.Controllers
 
         //Get Private/NewApp
         [HttpGet]
-        [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.CreateApp)]
+        [AuthorizeRoles(Constants.Roles.Admin, Constants.Roles.CreateApp)]
         public ActionResult NewApp()
         {
             _logger.Debug("[Private]: NewApp()");
@@ -316,7 +316,7 @@ namespace Wlog.Web.Controllers
         //Post Private/NewApp
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.CreateApp)]
+        [AuthorizeRoles(Constants.Roles.Admin, Constants.Roles.CreateApp)]
         public ActionResult NewApp(ApplicationModel model)
         {
             _logger.Debug("[Private]: NewApp(model)");
@@ -330,7 +330,7 @@ namespace Wlog.Web.Controllers
                 entity.PublicKey = Guid.NewGuid();
                 RepositoryContext.Current.Applications.Save(entity);
 
-                UserEntity user = UserHelper.GetByUsername(Membership.GetUser().UserName);
+                UserEntity user = RepositoryContext.Current.Users.GetByUsername(Membership.GetUser().UserName);
 
                 if (!user.IsAdmin)
                 {
@@ -351,7 +351,7 @@ namespace Wlog.Web.Controllers
 
         //Get Private/EditApp/1
         [HttpGet]
-        [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.CreateApp)]
+        [AuthorizeRoles(Constants.Roles.Admin, Constants.Roles.CreateApp)]
         public ActionResult EditApp(Guid id)
         {
             _logger.Debug("[Private]: EditApp({0})", id);
@@ -362,7 +362,7 @@ namespace Wlog.Web.Controllers
         //Post Private/EditApp/
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.CreateApp)]
+        [AuthorizeRoles(Constants.Roles.Admin, Constants.Roles.CreateApp)]
         public ActionResult EditApp(ApplicationModel model)
         {
             _logger.Debug("[Private]: EditApp(model)");
@@ -387,7 +387,7 @@ namespace Wlog.Web.Controllers
 
         //Get Private/DeleteApp/1
         [HttpGet]
-        [AuthorizeRolesAttribute(Constants.Roles.Admin, Constants.Roles.CreateApp)]
+        [AuthorizeRoles(Constants.Roles.Admin, Constants.Roles.CreateApp)]
         public ActionResult DeleteApp(Guid id)
         {
             _logger.Debug("[Private]: DeleteApp({0})", id);

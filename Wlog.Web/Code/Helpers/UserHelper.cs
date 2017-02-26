@@ -27,31 +27,6 @@ namespace Wlog.Web.Code.Helpers
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        /// <summary>
-        /// Get User by Id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        /// 
-        [Obsolete]
-        public static UserEntity GetById(Guid id)
-        {
-            logger.Debug("[UserHelper]: GetById({0})",id);
-
-            return RepositoryContext.Current.Users.GetById(id);
-        }
-
-        /// <summary>
-        /// Get All User
-        /// </summary>
-        /// <returns></returns>
-        /// 
-        [Obsolete]
-        public static List<UserEntity> GetAll()
-        {
-            logger.Debug("[UserHelper]: GetAll");
-            return RepositoryContext.Current.Users.GetAll();
-        }
         [Obsolete]
         public static IPagedList<UserData> FilterUserList(string serchFilter, int pagenumber, int pagesize)
         {
@@ -83,69 +58,23 @@ namespace Wlog.Web.Code.Helpers
         }
 
         /// <summary>
-        /// Get User By Email
-        /// </summary>
-        /// <param name="email"></param>
-        /// <returns></returns>
-        /// 
-        [Obsolete]
-        public static UserEntity GetByEmail(string email)
-        {
-            logger.Debug("[UserHelper]: GetByEmail");
-            return RepositoryContext.Current.Users.GetByEmail(email);
-        }
-        [Obsolete]
-        public static List<ApplicationEntity> GetAppsForUser(string userName)
-        {
-            logger.Debug("[UserHelper]: GetAppsForUser");
-            return RepositoryContext.Current.Applications.GetAppplicationsByUsername(userName);
-
-        }
-        [Obsolete]
-        public static List<Guid> GetAppsIdsForUser(string userName)
-        {
-            logger.Debug("[UserHelper]: GetAppsIdsForUser");
-            return RepositoryContext.Current.Applications.GetAppplicationsIdsByUsername(userName);
-        }
-
-        /// <summary>
-        /// Get User by Username
-        /// </summary>
-        /// <param name="username"></param>
-        /// <returns></returns>
-        /// 
-        [Obsolete]
-        public static UserEntity GetByUsername(string username)
-        {
-            logger.Debug("[UserHelper]: GetByUsername");
-            return RepositoryContext.Current.Users.GetByUsername(username);
-        }
-
-        /// <summary>
         /// Update the User
         /// </summary>
         /// <param name="usr"></param>
         /// <returns></returns>
         /// 
-        [Obsolete]
-        public static bool UpdateUser(UserEntity user)
-        {
-            logger.Debug("[UserHelper]: UpdateUser");
-            if (user.IsAdmin)
-            {
-                logger.Debug("[UserHelper]: Reset profile because (admin cannot be changed?)");
-                user.ProfileId = GetProfileByName("admin").Id;
-            }
+        //[Obsolete]
+        //public static bool UpdateUser(UserEntity user)
+        //{
+        //    logger.Debug("[UserHelper]: UpdateUser");
+        //    if (user.IsAdmin)
+        //    {
+        //        logger.Debug("[UserHelper]: Reset profile because (admin cannot be changed?)");
+        //        user.ProfileId = GetProfileByName("admin").Id;
+        //    }
 
-            return RepositoryContext.Current.Users.Save(user);
-        }
-        [Obsolete]
-        public static bool DeleteById(Guid id)
-        {
-            logger.Debug("[UserHelper]: DeleteById");
-            UserEntity user = RepositoryContext.Current.Users.GetById(id);
-            return RepositoryContext.Current.Users.Delete(user);
-        }
+        //    return RepositoryContext.Current.Users.Save(user);
+        //}
 
         /// <summary>
         /// given a user return list of app with role
@@ -195,15 +124,9 @@ namespace Wlog.Web.Code.Helpers
 
             return result;
         }
+
         [Obsolete]
-        public static string EncodePassword(string password)
-        {
-            using (SHA1CryptoServiceProvider sha = new SHA1CryptoServiceProvider())
-            {
-                return Convert.ToBase64String(sha.ComputeHash(Encoding.ASCII.GetBytes(password)));
-            }
-        }
-        [Obsolete]
+
         public static IEnumerable<SelectListItem> GetAllUserProfiles()
         {
             logger.Debug("[UserHelper]: GetAllUserProfiles");
@@ -216,17 +139,18 @@ namespace Wlog.Web.Code.Helpers
 
             return profiles;
         }
-        [Obsolete]
-        public static bool IsUserAdmin(Guid profileGuid)
-        {
-            logger.Debug("[UserHelper]: IsUserAdmin");
-            return GetProfileByName("admin").Id == profileGuid;
-        }
-        [Obsolete]
-        private static ProfilesEntity GetProfileByName(string name)
-        {
-            logger.Debug("[UserHelper]: GetProfileByName");
-            return RepositoryContext.Current.Profiles.GetAllProfiles().SingleOrDefault(x => x.ProfileName.ToLower() == name);
-        }
+
+        //[Obsolete]
+        //public static bool IsUserAdmin(Guid profileGuid)
+        //{
+        //    logger.Debug("[UserHelper]: IsUserAdmin");
+        //    return GetProfileByName("admin").Id == profileGuid;
+        //}
+        //[Obsolete]
+        //private static ProfilesEntity GetProfileByName(string name)
+        //{
+        //    logger.Debug("[UserHelper]: GetProfileByName");
+        //    return RepositoryContext.Current.Profiles.GetAllProfiles().SingleOrDefault(x => x.ProfileName.ToLower() == name);
+        //}
     }
 }

@@ -48,7 +48,7 @@ namespace Wlog.Library.BLL.Reporitories
         public long CountByLevel(StandardLogLevels level)
         {
             logger.Debug("[repo] entering CountByLevel");
-           return this.Count(p => level == StandardLogLevels.ALL_LEVELS || (p.Level != null && p.Level.ToLower().Contains(level.ToString())));
+            return this.Count(p => level == StandardLogLevels.ALL_LEVELS || (p.Level != null && p.Level.ToLower().Contains(level.ToString())));
         }
 
         /// <summary>
@@ -59,7 +59,6 @@ namespace Wlog.Library.BLL.Reporitories
         {
             logger.Debug("[repo] entering Save");
             return Save(new List<LogEntity>(new LogEntity[] { entToSave }));
-
         }
 
         /// <summary>
@@ -73,9 +72,7 @@ namespace Wlog.Library.BLL.Reporitories
             logger.Debug("[repo] entering SearchLogindex");
 
             var idx = RepositoryContext.Current.Index.GetByName("Logs", applicationId.ToString());
-            // logsSearchSettings.
 
-            // Sort s = new Sort(new SortField(logsSearchSettings.OrderBy.ToString(), SortField.STRING, (logsSearchSettings.SortDirection == SortDirection.DESC)));
             try
             {
                 IPagedList<Document> docs = idx.Query(logsSearchSettings.FullTextQuery.Trim(),
@@ -106,6 +103,30 @@ namespace Wlog.Library.BLL.Reporitories
             return null;
         }
 
+        public IPagedList<LogEntity> GetLogsForApplication(string userName, Guid applicationId, string sortOrder, string sortBy, string serchMessage, int pageSize, int pageNumber)
+        {
+            logger.Debug("[ConversionHelper]: GetLogs");
+
+            List<Guid> allowedApps = RepositoryContext.Current.Applications.GetAppplicationsIdsByUsername(userName);
+
+            if (!allowedApps.Contains(applicationId))
+            {
+                return new StaticPagedList<LogEntity>(new LogEntity[] { }, 0, 0, 0);
+            }
+
+            LogsSearchSettings settings = new LogsSearchSettings()
+            {
+                Applications = allowedApps,
+                SerchMessage = serchMessage,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                FullTextQuery = serchMessage,
+                SortDirection = (Library.BLL.Enums.SortDirection)Enum.Parse(typeof(Library.BLL.Enums.SortDirection), sortOrder.ToUpper()),
+                OrderBy = sortBy
+            };
+
+            return SearchLogindex(applicationId, settings);
+        }
 
         /// <summary>
         /// Convert lucene document to log Entity item
@@ -209,8 +230,6 @@ namespace Wlog.Library.BLL.Reporitories
             return true;
         }
 
-
-
         /// <summary>
         /// Convert a log entity to a lucene document
         /// </summary>
@@ -259,7 +278,6 @@ namespace Wlog.Library.BLL.Reporitories
             }
             return doc;
         }
-
 
         /// <summary>
         /// mode logs to bin
@@ -329,7 +347,6 @@ namespace Wlog.Library.BLL.Reporitories
             }
         }
 
-
         /// <summary>
         /// Remove a log from database
         /// </summary>
@@ -359,9 +376,8 @@ namespace Wlog.Library.BLL.Reporitories
         public List<LogEntity> GetAllLogEntities()
         {
             //TODO: should this have paging input? all rows could be taken with a page of infinite size
-           return this.QueryOver( null); 
+            return this.QueryOver(null);
         }
-
 
         /// <summary>
         /// move logs to bin
@@ -397,6 +413,5 @@ namespace Wlog.Library.BLL.Reporitories
                 return false;
             }
         }
-
     }
 }

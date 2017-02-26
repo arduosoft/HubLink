@@ -212,6 +212,8 @@
     <Compile Include="BLL\Entities\RolesEntry.cs" />
     <Compile Include="BLL\Entities\UserEntry.cs" />
     <Compile Include="BLL\Interfaces\IRepository.cs" />
+    <Compile Include="BLL\Utils\PasswordManagement.cs" />
+    <Compile Include="BLL\Utils\SystemDataInitialisation.cs" />
     <Compile Include="DAL\Nhibernate\Mappings\ApplicationMap.cs" />
     <Compile Include="DAL\Nhibernate\Mappings\AppUserRoleMap.cs" />
     <Compile Include="DAL\Nhibernate\Mappings\DeletedLogMap.cs" />

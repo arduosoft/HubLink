@@ -18,6 +18,7 @@ using Wlog.Web.Code.Helpers;
 using Wlog.BLL.Entities;
 using Wlog.Library.BLL.Reporitories;
 using NLog;
+using Wlog.Library.BLL.Utils;
 
 namespace Wlog.Web.Code.Authentication
 {
@@ -125,7 +126,6 @@ namespace Wlog.Web.Code.Authentication
                 {
                     RepositoryContext.Current.Users.Save(user);
 
-
                     if (Guid.Empty.CompareTo(user.Id) == 0)
                     {
                         status = MembershipCreateStatus.UserRejected;
@@ -201,7 +201,7 @@ namespace Wlog.Web.Code.Authentication
         public override MembershipUser GetUser(string username, bool userIsOnline)
         {
             logger.Debug("[WLogMembershipProvider] GetUser({0},{1})  ",username,userIsOnline);
-            UserEntity usr = UserHelper.GetByUsername(username);
+            UserEntity usr = RepositoryContext.Current.Users.GetByUsername(username);
             if (usr == null)
             {
                 return null;
@@ -212,18 +212,18 @@ namespace Wlog.Web.Code.Authentication
         public override MembershipUser GetUser(object providerUserKey, bool userIsOnline)
         {
             logger.Debug("[WLogMembershipProvider] GetUser({0},{1})  ", providerUserKey, userIsOnline);
-            UserEntity usr = UserHelper.GetByUsername(providerUserKey as string);
+            UserEntity usr = RepositoryContext.Current.Users.GetByUsername(providerUserKey as string);
             return GetMembershipUserFromUser(usr);
         }
 
         public override string GetUserNameByEmail(string email)
         {
             logger.Debug("[WLogMembershipProvider] GetUser({0})  ", email);
-            string result = String.Empty;
-            UserEntity usr = UserHelper.GetByEmail(email);
-            if (usr != null)
+            string result = string.Empty;
+            UserEntity user = RepositoryContext.Current.Users.GetByEmail(email);
+            if (user != null)
             {
-                result = usr.Username;
+                result = user.Username;
             }
             return result;
         }
@@ -280,14 +280,13 @@ namespace Wlog.Web.Code.Authentication
 
         public override void UpdateUser(MembershipUser user)
         {
-
             logger.Debug("[WLogMembershipProvider] UpdateUser  ");
-            UserEntity usr = UserHelper.GetByUsername(user.UserName);
-            if (usr != null)
+            UserEntity entity = RepositoryContext.Current.Users.GetByUsername(user.UserName);
+            if (entity != null)
             {
-                usr.Email = user.Email;
-                usr.LastActivityDate = DateTime.Now;
-                UserHelper.UpdateUser(usr);
+                entity.Email = user.Email;
+                entity.LastActivityDate = DateTime.Now;
+                RepositoryContext.Current.Users.Save(entity);
             }
         }
 
@@ -295,7 +294,7 @@ namespace Wlog.Web.Code.Authentication
         {
             logger.Debug("[WLogMembershipProvider] ValidateUser  ");
             bool isValid = false;
-            UserEntity user = UserHelper.GetByUsername(username);
+            UserEntity user = RepositoryContext.Current.Users.GetByUsername(username);
 
             if (user == null)
             {
@@ -308,7 +307,7 @@ namespace Wlog.Web.Code.Authentication
             {
                 isValid = true;
                 user.LastLoginDate = DateTime.Now;
-                UserHelper.UpdateUser(user);
+                RepositoryContext.Current.Users.Save(user);
             }
 
             return isValid;
@@ -317,8 +316,7 @@ namespace Wlog.Web.Code.Authentication
 
         private string EncodePassword(string password)
         {
-
-            return UserHelper.EncodePassword(password);
+            return PasswordManagement.EncodePassword(password);
         }
 
         /// <summary>

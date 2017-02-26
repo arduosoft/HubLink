@@ -93,7 +93,7 @@ namespace Wlog.Web.Code.Authentication
             if (roleName == ADMIN)
             {
 
-                UserEntity usr = UserHelper.GetByUsername(username);
+                UserEntity usr = RepositoryContext.Current.Users.GetByUsername(username);
                 if (usr == null || !usr.IsAdmin)
                 {
                     return false;

@@ -42,7 +42,17 @@ namespace Wlog.Library.BLL.Reporitories
         {
             logger.Debug("[repo] entering GetById");
             return this.FirstOrDefault(x => x.Id.Equals(id));
-        
+        }
+
+        public bool DeleteUserById(Guid id)
+        {
+            var user = GetById(id);
+            if (user == null)
+            {
+                return false;
+            }
+
+            return Delete(user);
         }
 
         /// <summary>
@@ -54,11 +64,11 @@ namespace Wlog.Library.BLL.Reporitories
         {
             logger.Debug("[repo] entering Delete");
 
-            if (user.Username.Equals("admin",StringComparison.InvariantCultureIgnoreCase))
+            if (user.Username.Equals("admin", StringComparison.InvariantCultureIgnoreCase))
             {
                 throw new Exception("Is not possible to delete admin user.");
             }
-   
+
             bool result = true;
             try
             {
@@ -94,11 +104,11 @@ namespace Wlog.Library.BLL.Reporitories
         {
             //TODO: this should contains paging inputs
             logger.Debug("[repo] entering GetAll");
-            
-           return this.QueryOver(null);
-          
+
+            return this.QueryOver(null);
+
         }
-        
+
 
         /// <summary>
         /// Search for user.
@@ -149,9 +159,9 @@ namespace Wlog.Library.BLL.Reporitories
             logger.Debug("[repo] entering GetByEmail");
             return this.FirstOrDefault(x => x.Email == email);
 
-           
+
         }
 
-       
+
     }
 }
