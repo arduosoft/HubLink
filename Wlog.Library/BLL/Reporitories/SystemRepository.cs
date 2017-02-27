@@ -16,6 +16,9 @@ using Wlog.DAL.NHibernate.Helpers;
 using Wlog.Library.BLL.Classes;
 using Wlog.Library.BLL.DataBase;
 using Wlog.Library.BLL.Interfaces;
+using System.Reflection;
+using Wlog.Library.BLL.Helpers;
+using Wlog.BLL.Entities;
 
 namespace Wlog.Library.BLL.Reporitories
 {
@@ -49,7 +52,45 @@ namespace Wlog.Library.BLL.Reporitories
         {
             //TODO: what in case of mongo? in that case we should create collection insthead of tables.
             logger.Debug("[repo] entering ApplySchemaChanges");
-            NHibernateContext.ApplySchemaChanges();
+            var uof = new UnitFactory();
+            var unit = uof.GetUnit(RepositoryContext.Current.Applications);
+
+            if (unit is UnitOfMongo)
+            {
+                Assembly entityAssembly = Assembly.GetAssembly(typeof(LogEntity));
+                Type[] classes = ReflectionHelper.GetTypesInNamespace(entityAssembly, "Wlog.Library.BLL.Reporitories");
+
+                foreach (Type repoClass in classes)
+                {
+                    try
+                    {
+                        object o = Activator.CreateInstance(repoClass);
+                        if (o is IRepository && !(o is SystemRepository))
+                        {
+
+                            var enitityType = ((IRepository)o).GetEntityType();
+
+                            string collectionName = enitityType.Name;
+
+                            //Create collection
+                            MongoContext.Current.CreateCollectionIfNotExists(collectionName);
+                        }
+                    }
+                    catch (Exception err)
+                    {
+                        logger.Warn("Unable to create collection for repo" + repoClass.FullName, err);
+                    }
+                }
+            }
+            else if (unit is UnitFactory)
+            {
+                NHibernateContext.ApplySchemaChanges();
+            }
+            else
+            {
+                throw new Exception("Unkwnow unit type");
+            }
         }
+
     }
 }

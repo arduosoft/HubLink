@@ -45,5 +45,20 @@ namespace Wlog.Library.BLL.DataBase
                 return current ?? (current = CreateNewContext());
             }
         }
+
+
+
+        /// <summary>
+        /// Create a collection if it do not exists
+        /// </summary>
+        /// <param name="CollectionName">name of the collection to create</param>
+        public void CreateCollectionIfNotExists(string CollectionName)
+        {
+            var lists = MongoContext.Current.DataBase.ListCollections().ToList();
+            if (!lists.Any(x => CollectionName.Equals(x[0].ToString())))
+            {
+                this.DataBase.CreateCollection(CollectionName);
+            }
+        }
     }
 }
