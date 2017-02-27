@@ -1,8 +1,5 @@
 ﻿using NLog;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using Wlog.Library.BLL.Reporitories;
 
 namespace Wlog.Library.Scheduler.Jobs
@@ -15,9 +12,8 @@ namespace Wlog.Library.Scheduler.Jobs
     {
         private Logger _logger =LogManager.GetCurrentClassLogger();
 
-        private int _rowsToKeep { get; set; }
-
-        private int _daysToKeep { get; set; }
+        private int _rowsToKeep;
+        private int _daysToKeep;
 
         public EmptyBinJob(int rowsToKeep, int daysToKeep)
         {
@@ -27,8 +23,8 @@ namespace Wlog.Library.Scheduler.Jobs
 
         public EmptyBinJob()
         {
-            _rowsToKeep = 1000000;
-            _daysToKeep = 30;
+            _rowsToKeep = Settings.Default.EmptyBinJob_RowsToKeep;
+            _daysToKeep = Settings.Default.EmptyBinJob_DaysToKeep;
         }
 
         public override bool Execute()

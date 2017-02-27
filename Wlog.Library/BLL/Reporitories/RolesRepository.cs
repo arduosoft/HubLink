@@ -24,7 +24,7 @@ namespace Wlog.Library.BLL.Reporitories
     /// <summary>
     /// Repo used to store roles
     /// </summary>
-    public class RolesRepository : EntityRepository
+    public class RolesRepository : EntityRepository<RolesEntity>
     {
         
 
@@ -66,11 +66,13 @@ namespace Wlog.Library.BLL.Reporitories
         public List<AppUserRoleEntity> GetApplicationRolesForUser(UserEntity userEntity)
         {
             logger.Debug("[repo] entering GetApplicationRolesForUser");
+
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
                 return uow.Query<AppUserRoleEntity>().Where(c => c.UserId.Equals(userEntity.Id)).ToList();
             }
+           
         }
 
         /// <summary>
@@ -81,41 +83,9 @@ namespace Wlog.Library.BLL.Reporitories
         public RolesEntity GetRoleByName(string rolename)
         {
             logger.Debug("[repo] entering GetRoleByName");
-            using (IUnitOfWork uow = BeginUnitOfWork())
-            {
-                uow.BeginTransaction();
-                return uow.Query<RolesEntity>().FirstOrDefault(x => x.RoleName == rolename);
-            }
+            return this.FirstOrDefault(x => x.RoleName == rolename);
         }
 
-
-        /// <summary>
-        /// Save one role
-        /// </summary>
-        /// <param name="rolesEntity"></param>
-        /// <returns></returns>
-        public bool Save(RolesEntity rolesEntity)
-        {
-            logger.Debug("[repo] entering Save");
-            try
-            {
-
-                using (IUnitOfWork uow = BeginUnitOfWork())
-                {
-                    uow.BeginTransaction();
-                    uow.SaveOrUpdate(rolesEntity);
-                    uow.Commit();
-                }
-
-                return true;
-            }
-            catch (Exception err)
-            {
-                logger.Error(err);
-            }
-
-            return false;
-        }
 
         /// <summary>
         /// Return list of all roles

@@ -159,6 +159,7 @@
     <Compile Include="BLL\Classes\EntityRepository.cs" />
     <Compile Include="BLL\Classes\InfoPageConfiguration.cs" />
     <Compile Include="BLL\Classes\JobConfiguration.cs" />
+    <Compile Include="BLL\Classes\UserApplication.cs" />
     <Compile Include="BLL\Configuration\InfoPageConfigurator.cs" />
     <Compile Include="BLL\Classes\InfoPageModel.cs" />
     <Compile Include="BLL\Classes\LogMessage.cs" />
@@ -190,6 +191,7 @@
     <Compile Include="BLL\Enums\UserFields.cs" />
     <Compile Include="BLL\Exceptions\UnableToParseQuery.cs" />
     <Compile Include="BLL\Helpers\InfoHelper.cs" />
+    <Compile Include="BLL\Helpers\ReflectionHelper.cs" />
     <Compile Include="BLL\Index\LuceneIndexManager.cs" />
     <Compile Include="BLL\Interfaces\IEntityBase.cs" />
     <Compile Include="BLL\Interfaces\IUnitOfWork.cs" />
@@ -211,6 +213,8 @@
     <Compile Include="BLL\Entities\RolesEntry.cs" />
     <Compile Include="BLL\Entities\UserEntry.cs" />
     <Compile Include="BLL\Interfaces\IRepository.cs" />
+    <Compile Include="BLL\Utils\PasswordManagement.cs" />
+    <Compile Include="BLL\Utils\SystemDataInitialisation.cs" />
     <Compile Include="DAL\Nhibernate\Mappings\ApplicationMap.cs" />
     <Compile Include="DAL\Nhibernate\Mappings\AppUserRoleMap.cs" />
     <Compile Include="DAL\Nhibernate\Mappings\DeletedLogMap.cs" />
@@ -225,8 +229,9 @@
     <Compile Include="Scheduler\ApplicationPreload.cs" />
     <Compile Include="Scheduler\HangFireAuthorizationFilter.cs" />
     <Compile Include="Scheduler\HangfireBootstrapper.cs" />
+    <Compile Include="Scheduler\IJobConfigurationManager.cs" />
     <Compile Include="Scheduler\Job.cs" />
-    <Compile Include="Scheduler\JobConfigurationHelper.cs" />
+    <Compile Include="Scheduler\JobConfigurationManager.cs" />
     <Compile Include="Scheduler\Jobs\EmptyBinJob.cs" />
     <Compile Include="Scheduler\Jobs\MoveToBinJob.cs" />
     <Compile Include="Scheduler\Startup.cs" />

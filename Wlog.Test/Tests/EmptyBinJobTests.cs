@@ -64,7 +64,8 @@
         [Fact, Trait("Category", "ExcludedFromCI")]
         public void MoveToBinJob_CheckLogsTable_Success()
         {
-            var allLogs = RepositoryContext.Current.DeletedLogs.GetAllDeletedLogEntities();
+            
+            var allLogs = RepositoryContext.Current.DeletedLogs.QueryOver(x => x.ApplictionId != null);
 
             Assert.True(allLogs.Any(x => x.Uid == _logs[0].Uid));
             Assert.False(allLogs.Any(x => x.Uid == _logs[1].Uid));

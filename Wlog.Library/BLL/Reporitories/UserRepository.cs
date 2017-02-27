@@ -24,7 +24,7 @@ namespace Wlog.Library.BLL.Reporitories
     /// <summary>
     /// Repo used to store user
     /// </summary>
-    public class UserRepository : EntityRepository
+    public class UserRepository : EntityRepository<UserEntity>
     {
 
 
@@ -41,13 +41,18 @@ namespace Wlog.Library.BLL.Reporitories
         public UserEntity GetById(Guid id)
         {
             logger.Debug("[repo] entering GetById");
-            UserEntity entity = null;
-            using (IUnitOfWork uow = BeginUnitOfWork())
+            return this.FirstOrDefault(x => x.Id.Equals(id));
+        }
+
+        public bool DeleteUserById(Guid id)
+        {
+            var user = GetById(id);
+            if (user == null)
             {
-                uow.BeginTransaction();
-                entity = uow.Query<UserEntity>().Where(x => x.Id.Equals(id)).FirstOrDefault();
+                return false;
             }
-            return entity;
+
+            return Delete(user);
         }
 
         /// <summary>
@@ -55,15 +60,15 @@ namespace Wlog.Library.BLL.Reporitories
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public bool Delete(UserEntity user)
+        public override bool Delete(UserEntity user)
         {
             logger.Debug("[repo] entering Delete");
 
-            if (user.Username.Equals("admin",StringComparison.InvariantCultureIgnoreCase))
+            if (user.Username.Equals("admin", StringComparison.InvariantCultureIgnoreCase))
             {
                 throw new Exception("Is not possible to delete admin user.");
             }
-   
+
             bool result = true;
             try
             {
@@ -99,44 +104,11 @@ namespace Wlog.Library.BLL.Reporitories
         {
             //TODO: this should contains paging inputs
             logger.Debug("[repo] entering GetAll");
-            List<UserEntity> result = new List<UserEntity>();
-            using (IUnitOfWork uow = BeginUnitOfWork())
-            {
-                uow.BeginTransaction();
-                result = uow.Query<UserEntity>().ToList();
-            }
 
-            return result;
+            return this.QueryOver(null);
+
         }
 
-        /// <summary>
-        /// Save an user
-        /// </summary>
-        /// <param name="usr"></param>
-        /// <returns></returns>
-        public bool Save(UserEntity usr)
-        {
-            logger.Debug("[repo] entering Save");
-
-            bool result = false;
-
-            using (IUnitOfWork uow = BeginUnitOfWork())
-            {
-                uow.BeginTransaction();
-                try
-                {
-                    uow.SaveOrUpdate(usr);
-                    uow.Commit();
-                }
-                catch (Exception ee)
-                {
-                    logger.Error(ee);
-                    result = false;
-                }
-            }
-
-            return result;
-        }
 
         /// <summary>
         /// Search for user.
@@ -173,11 +145,8 @@ namespace Wlog.Library.BLL.Reporitories
         public UserEntity GetByUsername(string userneame)
         {
             logger.Debug("[repo] entering GetByUsername");
-            using (IUnitOfWork uow = BeginUnitOfWork())
-            {
-                uow.BeginTransaction();
-                return uow.Query<UserEntity>().Where(x => x.Username == userneame).FirstOrDefault();
-            }
+
+            return this.FirstOrDefault(x => x.Username == userneame);
         }
 
         /// <summary>
@@ -188,13 +157,11 @@ namespace Wlog.Library.BLL.Reporitories
         public UserEntity GetByEmail(string email)
         {
             logger.Debug("[repo] entering GetByEmail");
-            using (IUnitOfWork uow = BeginUnitOfWork())
-            {
-                uow.BeginTransaction();
-                return uow.Query<UserEntity>().Where(x => x.Email == email).FirstOrDefault();
-            }
+            return this.FirstOrDefault(x => x.Email == email);
+
+
         }
 
-        //TODO: can all "GetByXXX" methods be overlod of an unique method that take labda for FirstOrDefault?
+
     }
 }

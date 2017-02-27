@@ -25,25 +25,15 @@ namespace Wlog.Library.BLL.Reporitories
     /// <summary>
     /// Repository to store applications
     /// </summary>
-    public class ApplicationRepository: EntityRepository
+    public class ApplicationRepository : EntityRepository<ApplicationEntity>
     {
 
         public ApplicationRepository()
         {
-            
+
         }
 
-        public ApplicationEntity GetById(Guid id)
-        {
-            logger.Debug("[repo] entering GetById");
-            ApplicationEntity app;
-            using (IUnitOfWork uow = BeginUnitOfWork())
-            {
-                uow.BeginTransaction();
-                app = uow.Query<ApplicationEntity>().Where(x => x.Id.Equals(id)).FirstOrDefault();
-                return app;
-            }
-        }
+
 
         /// <summary>
         /// Reset user roles basing on role list
@@ -55,7 +45,7 @@ namespace Wlog.Library.BLL.Reporitories
             logger.Debug("[repo] entering ResetUserRoles");
             try
             {
-                Guid idapp=role.Select(x=>x.ApplicationId).Distinct().First();
+                Guid idapp = role.Select(x => x.ApplicationId).Distinct().First();
                 using (IUnitOfWork uow = BeginUnitOfWork())
                 {
                     uow.BeginTransaction();
@@ -96,7 +86,7 @@ namespace Wlog.Library.BLL.Reporitories
                 uow.BeginTransaction();
 
                 List<AppUserRoleEntity> deleterole = uow.Query<AppUserRoleEntity>()
-                        .Where(x =>  x.ApplicationId.Equals(app.Id)).ToList();
+                        .Where(x => x.ApplicationId.Equals(app.Id)).ToList();
 
                 foreach (AppUserRoleEntity del in deleterole)
                 {
@@ -154,19 +144,15 @@ namespace Wlog.Library.BLL.Reporitories
         /// Delete one application from db, removing all relate data
         /// </summary>
         /// <param name="app"></param>
-        public void Delete(ApplicationEntity app)
+        public override bool Delete(ApplicationEntity app)
         {
             logger.Debug("[repo] entering Delete");
 
-         
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
-                ApplicationEntity appToDelete = uow.Query<ApplicationEntity>().Where(x => x.Id.Equals(app.Id)).FirstOrDefault();
-
-
                 //TODO: for performance issuea could be better to: 1. use a batch statment 2. use a sessionless transaction
-                
+
                 List<LogEntity> logs;
                 while ((logs = uow.Query<LogEntity>().Where(x => x.ApplictionId.Equals(app.Id)).ToList()) != null)
                 {
@@ -184,17 +170,22 @@ namespace Wlog.Library.BLL.Reporitories
                 }
 
                 //Delete file system index
-                var activeIndex= RepositoryContext.Current.Index.GetByName("Logs", app.Id.ToString());
+                var activeIndex = RepositoryContext.Current.Index.GetByName("Logs", app.Id.ToString());
                 activeIndex.Dispose();
                 Directory.Delete(activeIndex.Path, true);
-                    
 
                 DeleteApplicationRole(app);
 
                 uow.Delete(app);
-
                 uow.Commit();
+                return true;
             }
+        }
+
+        public bool DeleteApplicationById(Guid applicationId)
+        {
+            ApplicationEntity app = RepositoryContext.Current.Applications.GetById(applicationId);
+            return Delete(app);
         }
 
         /// <summary>
@@ -220,7 +211,7 @@ namespace Wlog.Library.BLL.Reporitories
             logger.Debug("[repo] entering GetByIds");
 
             List<ApplicationEntity> result = new List<ApplicationEntity>();
-     
+
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
@@ -228,21 +219,12 @@ namespace Wlog.Library.BLL.Reporitories
                 {
                     result.Add(GetById(id));
                 }
-                
+
             }
             return result;
         }
 
-        public void Save(ApplicationEntity app)
-        {
-            logger.Debug("[repo] entering Save");
-            using (IUnitOfWork uow = BeginUnitOfWork())
-            {
-                uow.BeginTransaction();
-                uow.SaveOrUpdate(app);
-                uow.Commit();
-            }
-        }
+
 
         /// <summary>
         /// Give alist of application ids for username
@@ -312,7 +294,7 @@ namespace Wlog.Library.BLL.Reporitories
         {
             logger.Debug("[repo] entering GetByApplicationKey");
             Guid pk = new Guid(applicationKey);
-       
+
             using (IUnitOfWork uow = BeginUnitOfWork())
             {
                 uow.BeginTransaction();
@@ -333,7 +315,7 @@ namespace Wlog.Library.BLL.Reporitories
             logger.Debug("[repo] entering AssignRoleToUser");
             try
             {
-          
+
                 using (IUnitOfWork uow = BeginUnitOfWork())
                 {
                     uow.BeginTransaction();
@@ -356,6 +338,47 @@ namespace Wlog.Library.BLL.Reporitories
                 return false;
             }
             return true;
+        }
+
+        public List<UserApplication> GetUserApplications(Guid userId)
+        {
+            logger.Debug("[repo]: GetApp");
+            List<UserApplication> result = new List<UserApplication>();
+
+            UserEntity user = RepositoryContext.Current.Users.GetById(userId);
+            List<ApplicationEntity> applications = RepositoryContext.Current.Applications.GetAppplicationForUser(user);
+            List<RolesEntity> roles = RepositoryContext.Current.Roles.GetAllRoles();
+            List<AppUserRoleEntity> applicationsForUser = RepositoryContext.Current.Roles.GetApplicationRolesForUser(user);
+
+            AppUserRoleEntity current;
+            RolesEntity roleEntity;
+            foreach (ApplicationEntity application in applications)
+            {
+                current = applicationsForUser.FirstOrDefault(x => x.ApplicationId == application.Id);
+                if (current != null)
+                {
+                    roleEntity = roles.FirstOrDefault(x => x.Id == current.RoleId);
+                    result.Add(new UserApplication
+                    {
+                        ApplicationName = application.ApplicationName,
+                        IdApplication = application.Id,
+                        RoleId = roleEntity.Id,
+                        RoleName = roleEntity.RoleName
+                    });
+                }
+                else
+                {
+                    result.Add(new UserApplication
+                    {
+                        ApplicationName = application.ApplicationName,
+                        IdApplication = application.Id,
+                        RoleId = Guid.Empty,
+                        RoleName = "No Role"
+                    });
+                }
+            }
+
+            return result;
         }
     }
 }

@@ -15,12 +15,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Wlog.DAL.NHibernate.Helpers;
 using Wlog.Library.BLL.Interfaces;
+using NLog;
 
 //Wlog.Library.BLL.DataBase.UnitOfNhibernate
 namespace Wlog.Library.BLL.DataBase
 {
     internal class UnitOfNhibernate : IUnitOfWork
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private ITransaction transaction;
 
@@ -48,8 +50,9 @@ namespace Wlog.Library.BLL.DataBase
             {
                 transaction.Commit();
             }
-            catch
+            catch(Exception err)
             {
+                logger.Error(err);
                 transaction.Rollback();
                 throw;
             }

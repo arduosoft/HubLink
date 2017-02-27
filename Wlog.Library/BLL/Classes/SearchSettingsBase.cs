@@ -16,7 +16,6 @@ namespace Wlog.Library.BLL.Classes
 {
     public class SearchSettingsBase
     {
-
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
     }

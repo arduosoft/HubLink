@@ -20,6 +20,6 @@ namespace Wlog.Web.Models.Application
     public class ApplicationList
     {
         public IPagedList<ApplicationModel> AppList { get; set; }
-        public string SerchMessage { get; set; }
+        public string SearchMessage { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Wlog.Web.Code.Helpers
+﻿namespace Wlog.Web.Code.Enums
 {
     public enum ButtonCommands
     {

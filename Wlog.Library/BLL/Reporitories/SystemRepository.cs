@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NLog;
 using Wlog.DAL.NHibernate.Helpers;
 using Wlog.Library.BLL.Classes;
 using Wlog.Library.BLL.DataBase;
@@ -21,8 +22,15 @@ namespace Wlog.Library.BLL.Reporitories
     /// <summary>
     /// Repository used to apply schema changes.
     /// </summary>
-    public class SystemRepository : EntityRepository
+    public class SystemRepository : IRepository
     {
+
+        public Type GetEntityType()
+        {
+            throw new Exception("SystemRepository dont manage entities");
+        }
+
+        public static Logger logger { get { return LogManager.GetCurrentClassLogger(); } }
         public SystemRepository()
         {
 

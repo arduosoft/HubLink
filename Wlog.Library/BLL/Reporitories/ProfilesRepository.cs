@@ -8,13 +8,14 @@ using Wlog.BLL.Entities;
 using Wlog.Library.BLL.DataBase;
 using Wlog.Library.BLL.Interfaces;
 using Wlog.Library.BLL.Classes;
+using Wlog.BLL.Classes;
 
 namespace Wlog.Library.BLL.Reporitories
 {
     /// <summary>
     /// Repo used to store profiles
     /// </summary>
-    public class ProfilesRepository : EntityRepository
+    public class ProfilesRepository : EntityRepository<ProfilesEntity>
     {
        
 
@@ -27,11 +28,8 @@ namespace Wlog.Library.BLL.Reporitories
         public ProfilesEntity GetProfileByName(string profileName)
         {
             logger.Debug("[repo] entering GetProfileByName");
-            using (IUnitOfWork uow = this.BeginUnitOfWork())
-            {
-                uow.BeginTransaction();
-                return uow.Query<ProfilesEntity>().FirstOrDefault(x => x.ProfileName == profileName);
-            }
+            return this.FirstOrDefault(x => x.ProfileName == profileName);
+            
         }
 
         /// <summary>
@@ -39,7 +37,7 @@ namespace Wlog.Library.BLL.Reporitories
         /// </summary>
         /// <param name="profile"></param>
         /// <returns></returns>
-        public bool Delete(ProfilesEntity profile)
+        public override bool Delete(ProfilesEntity profile)
         {
             logger.Debug("[repo] entering Delete");
             bool result = true;
@@ -76,52 +74,17 @@ namespace Wlog.Library.BLL.Reporitories
         /// <returns></returns>
         public List<ProfilesEntity> GetAllProfiles()
         {
-
             //TODO: this method should take paging options
             logger.Debug("[repo] entering GetAllProfiles");
-            List<ProfilesEntity> result = new List<ProfilesEntity>();
-            try
-            {
-                using (IUnitOfWork uow = this.BeginUnitOfWork())
-                {
-                    result.AddRange(uow.Query<ProfilesEntity>().ToList());
-                }
-            }
-            catch (Exception err)
-            {
-                logger.Error(err);
-            }
-
-            return result;
+            return this.QueryOver(null);
         }
 
-        /// <summary>
-        /// Save one profile entity
-        /// </summary>
-        /// <param name="profilesEntity"></param>
-        /// <returns></returns>
-        public bool Save(ProfilesEntity profilesEntity)
+        public bool IsProfileIdAdmin(Guid profileGuid)
         {
-            logger.Debug("[repo] entering Save");
-            try
-            {
-                using (IUnitOfWork uow = this.BeginUnitOfWork())
-                {
-                    uow.BeginTransaction();
-                    uow.SaveOrUpdate(profilesEntity);
-                    uow.Commit();
-                }
+            var profile = RepositoryContext.Current.Profiles.GetAllProfiles().SingleOrDefault(x => x.Id == profileGuid);
 
-                return true;
-            }
-            catch (Exception err)
-            {
-                logger.Error(err);
-            }
-
-            return false;
+            return profile.ProfileName == Constants.Roles.Admin;
         }
-
 
         /// <summary>
         /// Assign multiple roles to a profile.

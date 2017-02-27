@@ -22,7 +22,7 @@ using Hangfire;
 
 namespace Wlog.BLL.Classes
 {
-    public class LogQueue : EntityRepository
+    public class LogQueue : IRepository
     {
         private Queue<LogMessage> queque = new Queue<LogMessage>();
         public List<QueueLoad> QueueLoad { get; set; }
@@ -176,6 +176,11 @@ namespace Wlog.BLL.Classes
         public LogMessage Dequeue()
         {
             return queque.Dequeue();
+        }
+
+        public Type GetEntityType()
+        {
+            return typeof(LogMessage);
         }
 
         private static LogQueue current = null;

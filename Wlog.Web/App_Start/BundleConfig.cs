@@ -21,14 +21,14 @@ namespace Wlog.Web
         {
 
             bundles.IgnoreList.Clear();
- 
+
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/DataTables/jquery.dataTables.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrapjs").Include(
                         "~/Scripts/bootstrap.min.js"));
- 
+
             bundles.Add(new StyleBundle("~/Content/bootstrapcss").Include(
                         "~/Content/bootstrap.min.css",
                         "~/Content/bootstrap-responsive.min.css"));
@@ -49,7 +49,7 @@ namespace Wlog.Web
 
                        "~/Scripts/DataTables/dataTables.buttons.min.js",
                           "~/Scripts/DataTables/buttons.bootstrap.min.js",
-                      
+
                        "~/Scripts/DataTables/buttons.colVis.min.js"
                        }
                        ));
@@ -57,9 +57,8 @@ namespace Wlog.Web
             bundles.Add(new StyleBundle("~/bundles/datatables/css").Include(
                         "~/Content/DataTables/css/dataTables.bootstrap.min.css"));
 
-              bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-                        "~/Scripts/modernizr-*"));
-
+            bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
+                      "~/Scripts/modernizr-*"));
         }
     }
 }

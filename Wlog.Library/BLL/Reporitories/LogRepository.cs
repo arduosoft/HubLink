@@ -33,7 +33,7 @@ namespace Wlog.Library.BLL.Reporitories
     /// <summary>
     /// Repo used to store logs
     /// </summary>
-    public class LogRepository : EntityRepository
+    public class LogRepository : EntityRepository<LogEntity>
     {
         public LogRepository()
         {
@@ -48,22 +48,17 @@ namespace Wlog.Library.BLL.Reporitories
         public long CountByLevel(StandardLogLevels level)
         {
             logger.Debug("[repo] entering CountByLevel");
-            using (IUnitOfWork uow = BeginUnitOfWork())
-            {
-                uow.BeginTransaction();
-                return uow.Query<LogEntity>().Count(p => level == StandardLogLevels.ALL_LEVELS || (p.Level != null && p.Level.ToLower().Contains(level.ToString())));
-            }
+            return this.Count(p => level == StandardLogLevels.ALL_LEVELS || (p.Level != null && p.Level.ToLower().Contains(level.ToString())));
         }
 
         /// <summary>
         /// Save a log into database
         /// </summary>
         /// <param name="entToSave"></param>
-        public void Save(LogEntity entToSave)
+        public override bool Save(LogEntity entToSave)
         {
             logger.Debug("[repo] entering Save");
-            Save(new List<LogEntity>(new LogEntity[] { entToSave }));
-
+            return Save(new List<LogEntity>(new LogEntity[] { entToSave }));
         }
 
         /// <summary>
@@ -77,9 +72,7 @@ namespace Wlog.Library.BLL.Reporitories
             logger.Debug("[repo] entering SearchLogindex");
 
             var idx = RepositoryContext.Current.Index.GetByName("Logs", applicationId.ToString());
-            // logsSearchSettings.
 
-            // Sort s = new Sort(new SortField(logsSearchSettings.OrderBy.ToString(), SortField.STRING, (logsSearchSettings.SortDirection == SortDirection.DESC)));
             try
             {
                 IPagedList<Document> docs = idx.Query(logsSearchSettings.FullTextQuery.Trim(),
@@ -110,6 +103,30 @@ namespace Wlog.Library.BLL.Reporitories
             return null;
         }
 
+        public IPagedList<LogEntity> GetLogsForApplication(string userName, Guid applicationId, string sortOrder, string sortBy, string searchMessage, int pageSize, int pageNumber)
+        {
+            logger.Debug("[ConversionHelper]: GetLogs");
+
+            List<Guid> allowedApps = RepositoryContext.Current.Applications.GetAppplicationsIdsByUsername(userName);
+
+            if (!allowedApps.Contains(applicationId))
+            {
+                return new StaticPagedList<LogEntity>(new LogEntity[] { }, 0, 0, 0);
+            }
+
+            LogsSearchSettings settings = new LogsSearchSettings()
+            {
+                Applications = allowedApps,
+                SearchMessage = searchMessage,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                FullTextQuery = searchMessage,
+                SortDirection = (Library.BLL.Enums.SortDirection)Enum.Parse(typeof(Library.BLL.Enums.SortDirection), sortOrder.ToUpper()),
+                OrderBy = sortBy
+            };
+
+            return SearchLogindex(applicationId, settings);
+        }
 
         /// <summary>
         /// Convert lucene document to log Entity item
@@ -150,10 +167,10 @@ namespace Wlog.Library.BLL.Reporitories
 
 
 
-                if (!String.IsNullOrWhiteSpace(logsSearchSettings.SerchMessage))
+                if (!String.IsNullOrWhiteSpace(logsSearchSettings.SearchMessage))
                 {
                     query = uow.Query<LogEntity>().Where(p => logsSearchSettings.Applications.Contains(p.ApplictionId) &&
-                            (logsSearchSettings.SerchMessage != null && p.Message != null && p.Message.ToLower().Contains(logsSearchSettings.SerchMessage)));
+                            (logsSearchSettings.SearchMessage != null && p.Message != null && p.Message.ToLower().Contains(logsSearchSettings.SearchMessage)));
 
                 }
                 else
@@ -182,7 +199,7 @@ namespace Wlog.Library.BLL.Reporitories
         /// sava a list of logs
         /// </summary>
         /// <param name="logs"></param>
-        public void Save(List<LogEntity> logs)
+        public bool Save(List<LogEntity> logs)
         {
             logger.Debug("[repo] entering Save");
 
@@ -209,9 +226,9 @@ namespace Wlog.Library.BLL.Reporitories
 
                 RepositoryContext.Current.Index.CommitAllIndexChanges();
             }
+
+            return true;
         }
-
-
 
         /// <summary>
         /// Convert a log entity to a lucene document
@@ -261,7 +278,6 @@ namespace Wlog.Library.BLL.Reporitories
             }
             return doc;
         }
-
 
         /// <summary>
         /// mode logs to bin
@@ -331,7 +347,6 @@ namespace Wlog.Library.BLL.Reporitories
             }
         }
 
-
         /// <summary>
         /// Remove a log from database
         /// </summary>
@@ -361,17 +376,8 @@ namespace Wlog.Library.BLL.Reporitories
         public List<LogEntity> GetAllLogEntities()
         {
             //TODO: should this have paging input? all rows could be taken with a page of infinite size
-            logger.Debug("[repo] entering GetAllLogEntities");
-            List<LogEntity> result = new List<LogEntity>();
-            using (IUnitOfWork uow = BeginUnitOfWork())
-            {
-                uow.BeginTransaction();
-                result = uow.Query<LogEntity>().ToList();
-            }
-
-            return result;
+            return this.QueryOver(null);
         }
-
 
         /// <summary>
         /// move logs to bin
@@ -407,6 +413,5 @@ namespace Wlog.Library.BLL.Reporitories
                 return false;
             }
         }
-
     }
 }

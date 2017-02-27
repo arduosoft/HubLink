@@ -23,11 +23,12 @@ namespace Wlog.Library.Scheduler
         private readonly object _lockObject = new object();
         private bool _started;
         private static Logger logger = LogManager.GetCurrentClassLogger();
-
+        private readonly IJobConfigurationManager _jobManager;
         private BackgroundJobServer _backgroundJobServer;
 
         private HangfireBootstrapper()
         {
+            _jobManager = new JobConfigurationManager();
         }
 
      
@@ -53,7 +54,7 @@ namespace Wlog.Library.Scheduler
                 JobStorage.Current = new MemoryStorage();
                 logger.Debug("[HangfireBootstrapper]:  Registering jobs (hard coded)");
                 RecurringJob.AddOrUpdate(() => LogQueue.Current.Run(), "*/1 * * * *");
-                JobConfigurationHelper.LoadAllJobs();
+                _jobManager.LoadAllJobsFromDatabase();
 
                 logger.Debug("[HangfireBootstrapper]: starting BackgroundJobServer");
                 _backgroundJobServer = new BackgroundJobServer();
