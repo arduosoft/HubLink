@@ -49,6 +49,15 @@ namespace Wlog.Web.Areas.HelpPage
         /// <param name="parameterNames">The parameter names.</param>
         public HelpPageSampleKey(SampleDirection sampleDirection, string controllerName, string actionName, IEnumerable<string> parameterNames)
         {
+            ValidateInputs(sampleDirection, controllerName, actionName, parameterNames);
+            ControllerName = controllerName;
+            ActionName = actionName;
+            ParameterNames = new HashSet<string>(parameterNames, StringComparer.OrdinalIgnoreCase);
+            SampleDirection = sampleDirection;
+        }
+
+        private static void ValidateInputs(SampleDirection sampleDirection, string controllerName, string actionName, IEnumerable<string> parameterNames)
+        {
             if (!Enum.IsDefined(typeof(SampleDirection), sampleDirection))
             {
                 throw new InvalidEnumArgumentException("sampleDirection", (int)sampleDirection, typeof(SampleDirection));
@@ -65,10 +74,6 @@ namespace Wlog.Web.Areas.HelpPage
             {
                 throw new ArgumentNullException("parameterNames");
             }
-            ControllerName = controllerName;
-            ActionName = actionName;
-            ParameterNames = new HashSet<string>(parameterNames, StringComparer.OrdinalIgnoreCase);
-            SampleDirection = sampleDirection;
         }
 
         /// <summary>
@@ -81,26 +86,7 @@ namespace Wlog.Web.Areas.HelpPage
         /// <param name="parameterNames">The parameter names.</param>
         public HelpPageSampleKey(MediaTypeHeaderValue mediaType, SampleDirection sampleDirection, string controllerName, string actionName, IEnumerable<string> parameterNames)
         {
-            if (mediaType == null)
-            {
-                throw new ArgumentNullException("mediaType");
-            }
-            if (!Enum.IsDefined(typeof(SampleDirection), sampleDirection))
-            {
-                throw new InvalidEnumArgumentException("sampleDirection", (int)sampleDirection, typeof(SampleDirection));
-            }
-            if (controllerName == null)
-            {
-                throw new ArgumentNullException("controllerName");
-            }
-            if (actionName == null)
-            {
-                throw new ArgumentNullException("actionName");
-            }
-            if (parameterNames == null)
-            {
-                throw new ArgumentNullException("parameterNames");
-            }
+            ValidateInputs(sampleDirection, controllerName, actionName, parameterNames);
             ControllerName = controllerName;
             ActionName = actionName;
             MediaType = mediaType;
