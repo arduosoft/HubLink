@@ -16,6 +16,7 @@ using Wlog.Library.BLL.Reporitories;
 using Wlog.Web.Code.Authentication;
 using Wlog.Web.Models;
 using Wlog.Web.Models.User;
+using Wlog.Web.Resources;
 
 namespace Wlog.Web.Controllers
 {
@@ -25,20 +26,17 @@ namespace Wlog.Web.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         // GET: /Account/Login
-
         [AllowAnonymous]
         public ActionResult Login()
         {
             return View();
         }
 
-        
-        // POST: /Account/Login
 
+        // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -56,14 +54,13 @@ namespace Wlog.Web.Controllers
                 return RedirectToLocal(returnUrl);
             }
 
-            // Se si arriva a questo punto, significa che si è verificato un errore, rivisualizzare il form
-            ModelState.AddModelError(String.Empty, "Il nome utente o la password fornita non è corretta.");
+            // If you get to this point, it means that an error has occurred, redisplay the form
+            ModelState.AddModelError(String.Empty, Labels.IncorrectCredentials);
             return View(model);
         }
 
 
         // POST: /Account/LogOff
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
@@ -76,7 +73,6 @@ namespace Wlog.Web.Controllers
 
 
         //Get: /Account/Manage
-
         [HttpGet]
         public ActionResult Manage()
         {
@@ -98,14 +94,13 @@ namespace Wlog.Web.Controllers
             if (!provider.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword))
             {
                 UserProfileContext.Current.Refresh();
-                ModelState.AddModelError(String.Empty, "Unable to change password. Old password provided may be uncorrect.");
-                return View("Manage",new LocalPasswordModel() { Password=model });
+                ModelState.AddModelError(String.Empty, Labels.UnableToChangePassword);
+                return View("Manage", new LocalPasswordModel() { Password = model });
             }
             else
             {
                 return RedirectToAction("Index", "Private");
             }
-            return View(new LocalPasswordModel());
         }
 
         //Post: /Account/ChangeEmail
@@ -116,20 +111,20 @@ namespace Wlog.Web.Controllers
             logger.Debug("[Account]: ChangeEmail");
             if (ModelState.IsValid)
             {
-               
-                    UserEntity entity = RepositoryContext.Current.Users.GetByUsername(User.Identity.Name);
-                    entity.Email = model.Address;
-                    entity.LastActivityDate = DateTime.Now;
+
+                UserEntity entity = RepositoryContext.Current.Users.GetByUsername(User.Identity.Name);
+                entity.Email = model.Address;
+                entity.LastActivityDate = DateTime.Now;
                 RepositoryContext.Current.Users.Save(entity);
 
-              UserProfileContext.Current.Refresh();
+                UserProfileContext.Current.Refresh();
                 return RedirectToAction("Index", "Private");
             }
             else
             {
                 ModelState.AddModelError(String.Empty, "Error");
             }
-            
+
             return View();
         }
 
@@ -158,9 +153,6 @@ namespace Wlog.Web.Controllers
                 return RedirectToAction("Index", "Private");
             }
         }
-
-
-        
         #endregion
     }
 }

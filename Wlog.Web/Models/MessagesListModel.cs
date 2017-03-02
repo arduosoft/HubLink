@@ -19,7 +19,9 @@ namespace Wlog.Web.Models
     public class MessagesListModel
     {
         public string ApplicationName { get; set; }
-        public Guid IdApplication { get; set; }                
+
+        public Guid IdApplication { get; set; }          
+              
         public List<LogMessage> Messages {get;set;}
     }
 }

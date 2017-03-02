@@ -25,9 +25,12 @@ namespace Wlog.Library.BLL.Helpers
     public static class InfoHelper
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-        public static string GetAssemblyAttribute<T>(Func<T, string> value, Assembly a)
-     where T : Attribute
+        public static string GetAssemblyAttribute<T>(Func<T, string> value, Assembly a) where T : Attribute
         {
+            if (a == null)
+            {
+                return string.Empty;
+            }
             logger.Debug("[ih] entering GetAssemblyAttribute");
             T attribute = (T)Attribute.GetCustomAttribute(a, typeof(T));
             return value.Invoke(attribute);
@@ -74,7 +77,7 @@ namespace Wlog.Library.BLL.Helpers
             string content = File.ReadAllText(path);
 
             var settings = CommonMark.CommonMarkSettings.Default.Clone();
-            settings.OutputFormat  = CommonMark.OutputFormat.Html;
+            settings.OutputFormat = CommonMark.OutputFormat.Html;
 
             return CommonMark.CommonMarkConverter.Convert(content, settings);
         }
@@ -107,7 +110,7 @@ namespace Wlog.Library.BLL.Helpers
 
         public static string ResolveUrl(string path)
         {
-            logger.Debug("[ih] entering ResolveUrl({0})",path);
+            logger.Debug("[ih] entering ResolveUrl({0})", path);
             return HttpContext.Current.Server.MapPath(path);
         }
     }

@@ -13,6 +13,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using Wlog.BLL.Entities;
 using Wlog.Library.BLL.Reporitories;
+using Wlog.Web.Resources;
 
 namespace Wlog.Web.Models.User
 {
@@ -22,30 +23,30 @@ namespace Wlog.Web.Models.User
     public class NewUser
     {
         [Required]
-        [Display(Name = "Nome utente")]
+        [Display(ResourceType = typeof(Labels), Name = "UserName")]
         public string UserName { get; set; }
 
-        [Required(ErrorMessage = "The email address is required")]
+        [Required(ErrorMessageResourceType = typeof(Labels), ErrorMessageResourceName = "EmailRequired")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "La lunghezza di {0} deve essere di almeno {2} caratteri.", MinimumLength = 6)]
+        [StringLength(100, MinimumLength = 6, ErrorMessageResourceType = typeof(Labels), ErrorMessageResourceName = "MinLength")]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(ResourceType = typeof(Labels), Name = "Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Conferma password")]
-        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "La password e la password di conferma non corrispondono.")]
+        [Display(ResourceType = typeof(Labels), Name = "ConfirmPassword")]
+        [System.ComponentModel.DataAnnotations.Compare("Password",  ErrorMessageResourceType = typeof(Labels), ErrorMessageResourceName = "NoMatchPassword")]
         public string ConfirmPassword { get; set; }
 
-        [Display(Name = "Is Admin")]
+        [Display(Name = "IsAdmin")]
         public bool IsAdmin { get; set; }
 
         public IEnumerable<SelectListItem> Profiles { get; set; }
 
-        [Display(Name = "User Profile")]
+        [Display(ResourceType = typeof(Labels), Name = "UserProfile")]
         public Guid Profile { get; set; }
 
         public NewUser()

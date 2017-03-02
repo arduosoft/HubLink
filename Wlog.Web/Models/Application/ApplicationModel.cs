@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using Wlog.Web.Filters;
+using Wlog.Web.Resources;
 
 namespace Wlog.Web.Models
 {
@@ -20,30 +22,30 @@ namespace Wlog.Web.Models
     public class ApplicationModel
     {
         [Required]
-        [Display(Name = "Application Id")]
+        [Display(ResourceType = typeof(Labels), Name = "ApplicationId")]
         public virtual Guid IdApplication { get; set; }
 
         [Required]
-        [Display(Name = "Application name")]
+        [Display(ResourceType = typeof(Labels), Name = "ApplicationName")]
         public virtual string ApplicationName { get; set; }
 
         [Required]
-        [Display(Name = "Active")]
+        [Display(ResourceType = typeof(Labels), Name = "Active")]
         public virtual bool IsActive { get; set; }
 
         [Required]
-        [Display(Name = "Start Date")]
+        [Display(ResourceType = typeof(Labels), Name = "StartDate")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public virtual DateTime StartDate { get; set; }
 
-        [Display(Name = "End Date")]
+        [Display(ResourceType = typeof(Labels), Name = "EndDate")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public virtual System.Nullable<DateTime> EndDate { get; set; }
 
         [Required]
-        [Display(Name="Public Key")]
+        [Display(ResourceType = typeof(Labels), Name = "PublicKey")]
         public virtual Guid PublicKey { get; set; }
 
         public ApplicationModel()

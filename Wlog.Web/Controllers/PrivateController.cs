@@ -29,6 +29,7 @@ using Wlog.Web.Filters;
 using Wlog.Web.Models;
 using Wlog.Web.Models.Application;
 using Wlog.Web.Models.User;
+using Wlog.Web.Resources;
 
 namespace Wlog.Web.Controllers
 {
@@ -174,10 +175,10 @@ namespace Wlog.Web.Controllers
                 }
                 catch (Exception e)
                 {
-                    ModelState.AddModelError(String.Empty, "Error");
+                    ModelState.AddModelError(String.Empty, Labels.ErrorOccurred);
                 }
             }
-            ModelState.AddModelError(String.Empty, "Error");
+            ModelState.AddModelError(String.Empty, Labels.ErrorOccurred);
 
             return View(model);
         }
@@ -263,7 +264,7 @@ namespace Wlog.Web.Controllers
             }
             else
             {
-                ModelState.AddModelError(String.Empty, "Si è Verificato un Errore.");
+                ModelState.AddModelError(String.Empty, Labels.ErrorOccurred);
             }
 
             return View(user);
@@ -284,7 +285,7 @@ namespace Wlog.Web.Controllers
             
             ApplicationSearchSettings settings = new ApplicationSearchSettings()
             {
-                Orderby = Library.BLL.Enums.ApplicationFields.ApplicationName,
+                Orderby = ApplicationFields.ApplicationName,
                 PageNumber = page ?? 1,
                 PageSize = pageSize ?? 30,
                 SerchFilter = searchMessage,
@@ -335,7 +336,7 @@ namespace Wlog.Web.Controllers
             }
             else
             {
-                ModelState.AddModelError(String.Empty, "error");
+                ModelState.AddModelError(String.Empty, Labels.ErrorOccurred);
             }
 
             return View(model);
@@ -372,7 +373,7 @@ namespace Wlog.Web.Controllers
             }
             else
             {
-                ModelState.AddModelError(String.Empty, "Error");
+                ModelState.AddModelError(String.Empty, Labels.ErrorOccurred);
             }
 
             return View(model);
@@ -402,7 +403,7 @@ namespace Wlog.Web.Controllers
             }
             else
             {
-                ModelState.AddModelError(String.Empty, "Unexpected exception");
+                ModelState.AddModelError(String.Empty, Labels.ErrorOccurred);
             }
             return View(model);
         }
@@ -417,34 +418,34 @@ namespace Wlog.Web.Controllers
             switch (createStatus)
             {
                 case MembershipCreateStatus.DuplicateUserName:
-                    return Resources.Private.DuplicateUserName;
+                    return Labels.DuplicateUserName;
 
                 case MembershipCreateStatus.DuplicateEmail:
-                    return Resources.Private.DuplicateEmail;
+                    return Labels.DuplicateEmail;
 
                 case MembershipCreateStatus.InvalidPassword:
-                    return Resources.Private.InvalidPassword;
+                    return Labels.InvalidPassword;
 
                 case MembershipCreateStatus.InvalidEmail:
-                    return Resources.Private.InvalidEmail;
+                    return Labels.InvalidEmail;
 
                 case MembershipCreateStatus.InvalidAnswer:
-                    return Resources.Private.InvalidAnswer;
+                    return Labels.InvalidAnswer;
 
                 case MembershipCreateStatus.InvalidQuestion:
-                    return Resources.Private.InvalidQuestion;
+                    return Labels.InvalidQuestion;
 
                 case MembershipCreateStatus.InvalidUserName:
-                    return Resources.Private.InvalidUserName;
+                    return Labels.InvalidUserName;
 
                 case MembershipCreateStatus.ProviderError:
-                    return Resources.Private.ProviderError;
+                    return Labels.ProviderError;
 
                 case MembershipCreateStatus.UserRejected:
-                    return Resources.Private.UserRejected;
+                    return Labels.UserRejected;
 
                 default:
-                    return Resources.Private.UnknownAuthorizationError;
+                    return Labels.UnknownAuthorizationError;
             }
         }
 
@@ -495,12 +496,12 @@ namespace Wlog.Web.Controllers
             }
             catch (FormatException)
             {
-                ModelState.AddModelError("Error", Resources.Private.InvalidCron);
+                ModelState.AddModelError("Error", Labels.InvalidCron);
             }
             catch (Exception ex)
             {
                 _logger.Error(ex);
-                ModelState.AddModelError("Error", Resources.Private.ErrorJobManagement);
+                ModelState.AddModelError("Error", Labels.ErrorJobManagement);
             }
 
             var models = RepositoryContext.Current.JobDefinition.GetAllDefinitionsAndInstances();
