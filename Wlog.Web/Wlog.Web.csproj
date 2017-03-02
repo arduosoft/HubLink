@@ -221,7 +221,6 @@
     <Compile Include="Code\Enums\ManageMessageId.cs" />
     <Compile Include="Code\Mappings\ApplicationProfile.cs" />
     <Compile Include="Code\Mappings\PagedListConverter.cs" />
-    <Compile Include="Filters\ResourceDisplayNameAttribute.cs" />
     <Compile Include="Resources\Labels.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
