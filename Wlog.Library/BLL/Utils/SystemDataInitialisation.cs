@@ -10,7 +10,7 @@ namespace Wlog.Library.BLL.Utils
     public class SystemDataInitialisation
     {
         private static volatile SystemDataInitialisation _instance;
-        private static object lockObject;
+        private static object lockObject = new object();
         private Logger _logger = LogManager.GetCurrentClassLogger();
 
         private SystemDataInitialisation()

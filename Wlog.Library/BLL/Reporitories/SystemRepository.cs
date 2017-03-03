@@ -82,7 +82,7 @@ namespace Wlog.Library.BLL.Reporitories
                     }
                 }
             }
-            else if (unit is UnitFactory)
+            else if (unit is UnitOfNhibernate)
             {
                 NHibernateContext.ApplySchemaChanges();
             }
