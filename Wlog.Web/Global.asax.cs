@@ -42,7 +42,7 @@ namespace Wlog.Web
                 Mapper.Initialize(cfg => cfg.AddProfile(new ApplicationProfile()));
 
                 _logger.Info("Apply schema changes");
-                RepositoryContext.Current.System.ApplySchemaChanges();
+                SystemDataInitialisation.Instance.ApplySchemaChanges();
 
                 _logger.Info("Setup info config");
 

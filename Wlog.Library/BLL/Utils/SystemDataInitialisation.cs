@@ -1,8 +1,13 @@
-﻿using NLog;
+﻿using NHibernate.Linq;
+using NLog;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Wlog.BLL.Classes;
 using Wlog.BLL.Entities;
+using Wlog.DAL.NHibernate.Helpers;
+using Wlog.Library.BLL.DataBase;
+using Wlog.Library.BLL.Interfaces;
 using Wlog.Library.BLL.Reporitories;
 
 namespace Wlog.Library.BLL.Utils
@@ -30,6 +35,50 @@ namespace Wlog.Library.BLL.Utils
                 }
 
                 return _instance;
+            }
+        }
+
+
+        /// <summary>
+        /// Apply schema changes
+        /// </summary>
+        public void ApplySchemaChanges()
+        {
+            //TODO: what in case of mongo? in that case we should create collection insthead of tables.
+            _logger.Debug("[repo] entering ApplySchemaChanges");
+            var uof = new UnitFactory();
+            var unit = uof.GetUnit(RepositoryContext.Current.Applications);
+
+            if (unit is UnitOfMongo)
+            {
+                Assembly entityAssembly = Assembly.GetAssembly(typeof(LogEntity));
+                Type[] classes = Helpers.ReflectionHelper.GetTypesInNamespace(entityAssembly, "Wlog.BLL.Entities");
+
+                foreach (Type enityClass in classes)
+                {
+                    try
+                    {
+                        object o = Activator.CreateInstance(enityClass);
+                        if (o is IEntityBase)
+                        {
+                            string collectionName = o.GetType().Name;
+                            //Create collection
+                            MongoContext.Current.CreateCollectionIfNotExists(collectionName);
+                        }
+                    }
+                    catch (Exception err)
+                    {
+                        _logger.Warn(err, "Unable to create collection for repo" + enityClass.FullName);
+                    }
+                }
+            }
+            else if (unit is UnitOfNhibernate)
+            {
+                NHibernateContext.ApplySchemaChanges();
+            }
+            else
+            {
+                throw new Exception("Unkwnow unit type");
             }
         }
 
