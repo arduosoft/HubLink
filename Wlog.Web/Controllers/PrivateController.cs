@@ -319,7 +319,7 @@ namespace Wlog.Web.Controllers
                 ApplicationEntity entity = new ApplicationEntity();
                 entity.ApplicationName = model.ApplicationName;
                 entity.IsActive = true;
-                entity.StartDate = model.StartDate;
+                entity.StartDate = DateTime.Now;
                 entity.PublicKey = model.PublicKey;
                 entity.PublicKey = Guid.NewGuid();
                 RepositoryContext.Current.Applications.Save(entity);
@@ -365,8 +365,14 @@ namespace Wlog.Web.Controllers
                 ApplicationEntity entity = RepositoryContext.Current.Applications.GetById(model.IdApplication);
                 entity.ApplicationName = model.ApplicationName;
                 entity.IsActive = model.IsActive;
-                entity.StartDate = model.StartDate;
-                entity.EndDate = model.EndDate;
+                if (entity.IsActive)
+                {
+                    entity.EndDate = null;
+                }
+                else if (!entity.IsActive && entity.EndDate == null)
+                {
+                    entity.EndDate = DateTime.Now;
+                }
                 //entity.PublicKey=model.PublicKey; Do not change this is not editable
                 RepositoryContext.Current.Applications.Save(entity);
                 return RedirectToAction("ListApps");

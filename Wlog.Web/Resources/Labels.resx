@@ -120,9 +120,6 @@
   <data name="Active" xml:space="preserve">
     <value>Active</value>
   </data>
-  <data name="ApplicationId" xml:space="preserve">
-    <value>Application Id</value>
-  </data>
   <data name="ApplicationName" xml:space="preserve">
     <value>Application name</value>
   </data>
@@ -155,6 +152,9 @@
   </data>
   <data name="ErrorOccurred" xml:space="preserve">
     <value>Un error occurred</value>
+  </data>
+  <data name="IdApplication" xml:space="preserve">
+    <value>Application Id</value>
   </data>
   <data name="IncorrectCredentials" xml:space="preserve">
     <value>The user name or password supplied is incorrect.</value>
