@@ -22,7 +22,7 @@ namespace Wlog.Web.Models
     public class ApplicationModel
     {
         [Required]
-        [Display(ResourceType = typeof(Labels), Name = "ApplicationId")]
+        [Display(ResourceType = typeof(Labels), Name = "IdApplication")]
         public virtual Guid IdApplication { get; set; }
 
         [Required]

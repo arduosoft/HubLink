@@ -38,7 +38,7 @@ namespace Wlog.Test.Tests
             foreach (Type repoClass in classes)
             {
                 object o = Activator.CreateInstance(repoClass);
-                if (o is IRepository && !(o is SystemRepository))
+                if (o is IRepository )
                 {
 
                     repoInstances[repoClass.Name] = o;

@@ -44,7 +44,7 @@ namespace Wlog.Library.BLL.Utils
         /// </summary>
         public void ApplySchemaChanges()
         {
-            //TODO: what in case of mongo? in that case we should create collection insthead of tables.
+            //TODO:if the entity change structure....in mongo what happen??
             _logger.Debug("[repo] entering ApplySchemaChanges");
             var uof = new UnitFactory();
             var unit = uof.GetUnit(RepositoryContext.Current.Applications);
