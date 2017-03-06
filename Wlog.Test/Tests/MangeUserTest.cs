@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Wlog.BLL.Classes;
 using Wlog.BLL.Entities;
 using Wlog.Library.BLL.Reporitories;
+using Wlog.Test.Attributes;
 using Wlog.Web.Code.Mappings;
 using Wlog.Web.Controllers;
 using Wlog.Web.Models.User;
@@ -23,7 +24,7 @@ namespace Wlog.Test.Tests
         }
 
 
-        [Fact]
+        [Fact, TestPriority(1), Trait("Category", "ExcludedFromCI")]
         public void MangeUser()
         {
             NewUser user = new NewUser();
