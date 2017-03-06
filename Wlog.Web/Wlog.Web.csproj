@@ -235,7 +235,6 @@
     <Compile Include="Code\Authentication\WLogMembershipProvider.cs" />
     <Compile Include="Code\Authentication\WLogRoleProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PrivateController.cs" />
     <Compile Include="Filters\AuthorizeRolesAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -596,12 +595,7 @@
     <Content Include="Views\Account\Manage.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
-    <Content Include="Views\Home\About.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutInternal.cshtml" />
     <Content Include="Views\Private\Logs.cshtml" />
     <Content Include="Views\Private\Index.cshtml" />
