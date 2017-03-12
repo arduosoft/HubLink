@@ -3,18 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Items", "Items", "{50FF6233-1042-4AC2-92F8-2F5043693E82}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\..\DanieleFontani\Documents\InvokeLogWLog.xml = ..\..\..\DanieleFontani\Documents\InvokeLogWLog.xml
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wlog.Web", "Wlog.Web\Wlog.Web.csproj", "{915395A4-2E47-470C-B91C-12964CE0C644}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wlog.Test", "Wlog.Test\Wlog.Test.csproj", "{4E0840A0-4D2C-4351-ABCE-5D11E95EF5B5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wlog.Library", "Wlog.Library\Wlog.Library.csproj", "{E331B212-3AF2-468D-9A5E-519162B2C8D1}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{940141B3-9970-46CE-A15E-A9CAA83906CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

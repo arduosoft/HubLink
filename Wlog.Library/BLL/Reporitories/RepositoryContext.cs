@@ -25,7 +25,7 @@ namespace Wlog.Library.BLL.Reporitories
     /// </summary>
     public class RepositoryContext
     {
-      
+
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -40,6 +40,8 @@ namespace Wlog.Library.BLL.Reporitories
         public RolesRepository Roles { get; private set; }
 
         public ProfilesRepository Profiles { get; private set; }
+
+        public SystemRepository System { get; private set; }
 
         public IndexRepository Index { get; private set; }
 
@@ -56,7 +58,7 @@ namespace Wlog.Library.BLL.Reporitories
             get
             {
                 if (current != null && current.Applications != null && current.Users != null
-                    && current.Logs != null && current.Roles != null)
+                    && current.Logs != null && current.Roles != null && current.System != null)
                 {
 
                 }
@@ -68,6 +70,7 @@ namespace Wlog.Library.BLL.Reporitories
                     current.Users = new UserRepository();
                     current.Logs = new LogRepository();
                     current.Roles = new RolesRepository();
+                    current.System = new SystemRepository();
                     current.Profiles = new ProfilesRepository();
                     current.Index = new IndexRepository();
                     current.JobDefinition = new JobDefinitionRepository();

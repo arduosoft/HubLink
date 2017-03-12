@@ -62,10 +62,17 @@ namespace Wlog.Web
                 {
                     //TODO: move this in installation process
 
+
                     _logger.Info("Apply schema changes");
                     RepositoryContext.Current.System.ApplySchemaChanges();
 
-                  
+                    _logger.Info("Setup info config");
+
+                    InfoPageConfigurator.Configure(c =>
+                    {
+                        c.ApplicationName = "Wlog";
+
+                    });
 
                     _logger.Info("Start background jobs");
 
@@ -75,12 +82,13 @@ namespace Wlog.Web
                     IndexRepository.BasePath = HttpContext.Current.Server.MapPath("~/App_Data/Index/");
 
 
-                _logger.Info("install missing data");
-                SystemDataHelper.InsertRolesAndProfiles();
-                SystemDataHelper.EnsureSampleData();
-                SystemDataHelper.InsertJobsDefinitions();
+                    _logger.Info("Insert seed data");
+                    SystemDataInitialisation.Instance.InsertRolesAndProfiles();
+                    SystemDataInitialisation.Instance.EnsureSampleData();
+                    SystemDataInitialisation.Instance.InsertJobsDefinitions();
 
-                _logger.Info("application started");
+                    _logger.Info("Application started");
+                }
             }
             catch (Exception ex)
             {

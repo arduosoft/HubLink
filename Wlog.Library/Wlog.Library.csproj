@@ -206,6 +206,7 @@
     <Compile Include="BLL\Reporitories\ProfilesRepository.cs" />
     <Compile Include="BLL\Reporitories\RepositoryContext.cs" />
     <Compile Include="BLL\Reporitories\RolesRepository.cs" />
+    <Compile Include="BLL\Reporitories\SystemRepository.cs" />
     <Compile Include="BLL\Reporitories\UserRepository.cs" />
     <Compile Include="BLL\DataBase\NHibernateContext.cs" />
     <Compile Include="BLL\Entities\ApplicationEntity.cs" />
@@ -252,6 +253,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Settings.StyleCop" />
     <None Include="Wlog.Library.licenseheader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

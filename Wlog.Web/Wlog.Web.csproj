@@ -217,12 +217,12 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Code\Helpers\ButtonCommands.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Labels.resx</DependentUpon>
-    </Compile>
+    <Compile Include="Code\Authentication\ApplicationContext.cs" />
+    <Compile Include="Code\Enums\ButtonCommands.cs" />
+    <Compile Include="Code\Enums\ManageMessageId.cs" />
+    <Compile Include="Code\Mappings\ApplicationProfile.cs" />
+    <Compile Include="Code\Mappings\PagedListConverter.cs" />
+    <Compile Include="Resources\Labels.Designer.cs" />
     <Compile Include="Resources\Labels.it.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
