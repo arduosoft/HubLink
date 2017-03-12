@@ -1,0 +1,337 @@
+﻿@model Wlog.Web.Models.Install.InstallModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+
+    @Styles.Render("~/Content/bootstrap.css")
+    @Styles.Render("~/Content/morris.css")
+    @Styles.Render("~/Content/font-awesome.css")
+
+    @Scripts.Render("~/Scripts/jquery-1.8.2.min.js")
+
+    <title></title>
+    <style>
+             .scrollable {
+              width: 100%;
+    height: 200px;
+    overflow: scroll;
+    border: 1px solid #999;
+    padding: 20px;
+    margin: 10px;
+    background: #eee;
+    overflow-x: hidden;
+        }
+
+        ul {
+            list-style:none;
+        }
+        li {
+            line-height:26px;
+        }
+        span.label {
+            font-size:13px;
+            font-weight:bold;
+            margin:10px;
+        }
+
+     
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="page-title">
+            <h1>wlog: install</h1>
+            <p class="lead">We are ready to install this application. Please fill some basic information and start setup. Configuration can be changed at anytime by editing manually web.config file.</p>
+
+        </div>
+
+        <div class="row marketing">
+            <div class="panel panel-default">
+
+            <div class="panel-body">
+
+                @using (Html.BeginForm())
+                {
+
+
+
+                    <div class="form-group">
+                        <label for="DriverDDL">Database Driver</label>
+
+                        @Html.DropDownList("DriverDDL", new SelectList(string.Empty, "Value", "Text"), "Please select a database driver", new { @class = "form-control" })
+                        <p class="help-block">Database driver </p>
+                    </div>
+                    <div class="form-group">
+                        <label for="DialectDDL">Dialect</label>
+
+                        @Html.DropDownList("DialectDDL", new SelectList(string.Empty, "Value", "Text"), "Please select a dialect", new { @class = "form-control" })
+                        <p class="help-block">Dialect used for selected database </p>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputFile">Connection string</label>
+                        @Html.EditorFor(model => model.ConnectionString, new { htmlAttributes = new { @class = "form-control labellength" } })
+                        <p class="help-block">connection string used to log in into database</p>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>License</label>
+
+                        <div class="row scrollable">
+                            @Html.Raw(Model.License)
+                        </div>
+                        <div class="row">
+                            <div class=" col-sm-12">
+                                <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="LicenseAccepted" value="option1" name="LicenseAccepted">
+                                    <b> I understood and accept all terms of license.</b>
+                                </label>
+                            </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                        <button type="button" class="btn btn-warning" onclick="check();">Check</button>
+                        <button type="button" class="btn btn-default save" disabled onclick="__submit();">Install</button>
+
+
+
+
+
+
+
+                }
+
+                </div>
+            </div>
+
+                <div id="errorResult" style="display:none" class="panel panel-default">
+
+                    <div class="panel-body">
+                        <h3>Validation result</h3>
+                        <ul>
+                            <li>
+
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+
+
+
+
+                <script type="text/javascript">
+
+                    function __submit()
+                    {
+                        if (validate())
+                        {
+                            $("form button").attr("disabled","true");
+
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("Install")', // we are calling json method
+
+                                dataType: 'json',
+
+                                data: {
+                                    driver: $("#DriverDDL").val(),
+                                    dialect: $("#DialectDDL").val(),
+                                    connectionString: $("#ConnectionString").val()
+                                },
+                                success: function (errors) {
+
+                                    document.location.href = document.location.href.replace("/install", "");
+                                }
+                            });
+                           
+                        }
+
+                        return false;
+                    }
+
+
+                    function validate()
+                    {
+                        $("input[name=LicenseAccepted]").parents("div.form-group").removeClass("has-error");
+
+                        if (!$("input[name=LicenseAccepted]").is(":checked"))
+                        {
+                            $("input[name=LicenseAccepted]").parents("div.form-group").addClass("has-error");
+                        }
+
+
+                        $("#DriverDDL").parents("div.form-group").removeClass("has-error");
+
+                        if ($("#DriverDDL").val()=="") {
+                            $("#DriverDDL").parents("div.form-group").addClass("has-error");
+                        }
+
+                        $("#DialectDDL").parents("div.form-group").removeClass("has-error");
+
+                        if ($("#DialectDDL").val() == "") {
+                            $("#DialectDDL").parents("div.form-group").addClass("has-error");
+                        }
+
+
+                        $("#ConnectionString").parents("div.form-group").removeClass("has-error");
+
+                        if ($("#ConnectionString").val().length<5) {
+                            $("#ConnectionString").parents("div.form-group").addClass("has-error");
+                        }
+
+                        return $("form div.form-group.has-error").length==0;
+                    }
+
+                    function check() {
+                        if (!validate())
+                        {
+                            alert("Please check configuration.");
+                            return false;
+                        }
+
+                        $("#errorResult ul").empty();
+
+
+
+                        $.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("Validate")', // we are calling json method
+
+                            dataType: 'json',
+
+                            data: {
+                                driver: $("#DriverDDL").val(),
+                                dialect: $("#DialectDDL").val(),
+                                connectionString: $("#ConnectionString").val()
+                            },
+                            // here we are get value of selected country and passing same value
+                            //as inputto json method GetStates.
+
+                            success: function (errors) {
+                                $("#errorResult").show();
+                           
+                               
+                                if (errors && errors.length > 0)
+                                {
+                                    $.each(errors, function () {
+                                        $("#errorResult ul").append("<li>" + this + "</li>");
+                                    });
+                                }
+
+                                if ($("#errorResult span.label-error").length)
+                                {
+
+                                   
+
+                                    $("button.save").attr("disabled");
+                                    $("#errorResult").fadeTo(100, 0.4).fadeTo(500, 1.0);
+                                  
+                                }
+                                else {
+                                    $("#errorResult").append("<ul>");
+                                    $("button.save").removeAttr("disabled");
+                                    $("button.save").fadeTo(100, 0.4).fadeTo(500, 1.0);
+                                }
+
+                            }
+                        });
+
+                    }
+                    $(function () {
+
+                        $("span.field-validation-valid, span.field-validation-error").addClass('help-block');
+                        $("div.form-group").has("span.field-validation-error").addClass('has-error');
+                        $("div.validation-summary-errors").has("li:visible").addClass("alert alert-block alert-error");
+                        $("form input[type=text]").addClass("form-control");
+
+                    });
+
+
+                    $(document).ready(function () {
+                        //Dropdownlist Selectedchange event
+                        $("#DriverDDL").change(function () {
+                            $("#DialectDDL").empty();
+
+
+
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetDialects")', // we are calling json method
+
+                                dataType: 'json',
+
+                                data: { Driver: $("#DriverDDL").val() },
+                                // here we are get value of selected country and passing same value
+                                //as inputto json method GetStates.
+
+                                success: function (states) {
+                                    // states contains the JSON formatted list
+                                    // of states passed from the controller
+
+                                    $("#DialectDDL").append('<option value=""> -- SELECT ONE OPTION --</option>');
+
+                                    $.each(states, function (i, state) {
+                                        $("#DialectDDL").append('<option value="' + state.Value + '">' +
+                                         state.Text + '</option>');
+                                        // here we are adding option for States
+
+                                    });
+                                },
+                                error: function (ex) {
+                                    alert('Failed to retrieve states.' + ex);
+                                }
+                            });
+                            return false;
+                        });
+
+                        $("#DriverDDL").empty();
+                        $.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("GetDrivers")', // we are calling json method
+
+                            dataType: 'json',
+
+                            data: {},
+                            // here we are get value of selected country and passing same value
+                            //as inputto json method GetStates.
+
+                            success: function (states) {
+                                // states contains the JSON formatted list
+                                // of states passed from the controller
+                                $("#DriverDDL").append('<option value=""> -- SELECT ONE OPTION --</option>');
+                                $.each(states, function (i, state) {
+                                    $("#DriverDDL").append('<option value="' + state.Value + '">' +
+                                     state.Text + '</option>');
+                                    // here we are adding option for States
+
+                                });
+                            },
+                            error: function (ex) {
+                                alert('Failed to retrieve states.' + ex);
+                            }
+                        });
+                        return false;
+                    })
+
+                </script>
+
+
+            </div>
+
+                <footer class="footer">
+                    <p>&copy; 2016 Company, Inc.</p>
+                </footer>
+            </div>
+</body>
+</html>

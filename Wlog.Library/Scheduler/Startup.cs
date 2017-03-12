@@ -15,6 +15,8 @@ using System.Linq;
 using System.Web;
 //using InfoPage.Configuration;
 using Microsoft.Owin;
+using NLog;
+using System.Configuration;
 
 // Wlog.Library.Scheduler.Startup
 namespace Wlog.Library.Scheduler
@@ -25,24 +27,40 @@ namespace Wlog.Library.Scheduler
     /// </summary>
     public class Startup
     {
+
+        Logger logger = LogManager.GetCurrentClassLogger();
+
         public void Configuration(IAppBuilder app)
         {
-            HangfireBootstrapper.Instance.Start();
-            var options = new DashboardOptions
+            bool installed = "True".Equals(ConfigurationManager.AppSettings["WlogInstalled"], StringComparison.InvariantCultureIgnoreCase);
+            if (!installed)
             {
-                //trick to disable "back button" in dashboard (otherwise it will refresh just iframe).
-                AppPath = "javascript:parent.document.location.href='" + VirtualPathUtility.ToAbsolute("~")+"';",
-                AuthorizationFilters = new[]
+                logger.Info("Hangfire not started up. install wlog first.");
+                return;
+            }
+            try
+            {
+                HangfireBootstrapper.Instance.Start();
+                var options = new DashboardOptions
                 {
-                
+                    //trick to disable "back button" in dashboard (otherwise it will refresh just iframe).
+                    AppPath = "javascript:parent.document.location.href='" + VirtualPathUtility.ToAbsolute("~") + "';",
+                    AuthorizationFilters = new[]
+                    {
+
                     new HangFireAuthorizationFilter()
                 },
-              
-       
-            };
 
-            app.UseHangfireDashboard("/private/hangfire", options);
-            app.UseHangfireServer();
+
+                };
+
+                app.UseHangfireDashboard("/private/hangfire", options);
+                app.UseHangfireServer();
+            }
+            catch (Exception err)
+            {
+                logger.Error(err);
+            }
         }
     }
 }
