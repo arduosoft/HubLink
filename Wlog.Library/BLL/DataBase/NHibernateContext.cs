@@ -45,12 +45,12 @@ namespace Wlog.DAL.NHibernate.Helpers
             //}
 
 
-            ModelMapper mapper = new ModelMapper();
-            mapper.AddMappings(Assembly.GetExecutingAssembly().GetExportedTypes());
+            //ModelMapper mapper = new ModelMapper();
+            //mapper.AddMappings(Assembly.GetExecutingAssembly().GetExportedTypes());
 
-            HbmMapping domainMapping =
-              mapper.CompileMappingForAllExplicitlyAddedEntities();
-            cfg.AddMapping(domainMapping);
+            //HbmMapping domainMapping =
+            //  mapper.CompileMappingForAllExplicitlyAddedEntities();
+            //cfg.AddMapping(domainMapping);
             cfg.Configure();
 
             return cfg;
