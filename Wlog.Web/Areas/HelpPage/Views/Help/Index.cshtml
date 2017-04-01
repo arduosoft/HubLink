@@ -5,35 +5,29 @@
 @model Collection<ApiDescription>
 
 @{
-    ViewBag.Title = "ASP.NET Web API Help Page";
+    ViewBag.Title = "HubLink Api docs";
 
     // Group APIs by controller
     ILookup<string, ApiDescription> apiGroups = Model.ToLookup(api => api.ActionDescriptor.ControllerDescriptor.ControllerName);
 }
 
-<header>
-    <div class="content-wrapper">
-        <div class="float-left">
-            <h1>@ViewBag.Title</h1>
-        </div>
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header"><i class="fa fa-link fa-fw" aria-hidden="true"></i> &nbsp; API</h1>
     </div>
-</header>
-<div id="body">
-    <section class="featured">
-        <div class="content-wrapper">
-            <h2>Introduction</h2>
-            <p>
-                Provide a general description of your APIs here.
-            </p>
-        </div>
-    </section>
+    <!-- /.col-lg-12 -->
+</div>
+
+
     <section class="content-wrapper main-content clear-fix">
         @foreach (var group in apiGroups)
         {
             @Html.DisplayFor(m => group, "ApiGroup")
         }
     </section>
-</div>
+
 
 @section Scripts {
     <link type="text/css" href="~/Areas/HelpPage/HelpPage.css" rel="stylesheet" />

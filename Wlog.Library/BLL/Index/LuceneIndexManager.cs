@@ -73,6 +73,7 @@ namespace Wlog.Library.BLL.Index
         public bool Autocommit { get; set; }
 
 
+        private object reopen="";
 
         public bool IsDirty
         {
@@ -98,11 +99,14 @@ namespace Wlog.Library.BLL.Index
 
         private void Init()
         {
-            //TODO: [LOW] use factory or DI to  setup analyzer, query parse, and other tuning attribute. 
-            logger.Debug("[IndexManager] init");
-            analyzer = new StandardAnalyzer(global::Lucene.Net.Util.Version.LUCENE_30);
-            InitIndex();
-            parser = new QueryParser(global::Lucene.Net.Util.Version.LUCENE_30, "", analyzer);
+            lock (reopen)
+            {
+                //TODO: [LOW] use factory or DI to  setup analyzer, query parse, and other tuning attribute. 
+                logger.Debug("[IndexManager] init");
+                analyzer = new StandardAnalyzer(global::Lucene.Net.Util.Version.LUCENE_30);
+                InitIndex();
+                parser = new QueryParser(global::Lucene.Net.Util.Version.LUCENE_30, "", analyzer);
+            }
         }
 
         private void InitIndex()
@@ -113,9 +117,22 @@ namespace Wlog.Library.BLL.Index
             logger.Debug("[IndexManager] Opening {0}", Path);
             luceneIndexDirectory = settings.GetLuceneIndexDirectory(Path);
             logger.Debug("[IndexManager] Creating IndexWriter");
-            writer = new IndexWriter(luceneIndexDirectory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED);
+            if (writer == null)
+            {
+                writer = new IndexWriter(luceneIndexDirectory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED);
+            }
+            else
+            {
+                writer.Commit();
+            }
             logger.Debug("[IndexManager] Creating IndexReader");
-            reader = IndexReader.Open(luceneIndexDirectory, true);
+            if (reader != null)
+            {
+                reader.Close();
+            }
+
+                reader = IndexReader.Open(luceneIndexDirectory, true);
+            
             logger.Debug("[IndexManager] Creating IndexSearcher");
             searcher = new IndexSearcher(reader);
         }
@@ -278,11 +295,15 @@ namespace Wlog.Library.BLL.Index
 
         private void ReopenIndex()
         {
+            lock (reopen)
+            {
 
-            logger.Debug("[IndexManager] Reopen index");
+                logger.Debug("[IndexManager] Reopen index");
 
-            DisposeIndex();
-            InitIndex();
+               // DisposeIndex();
+              
+                InitIndex();
+            }
         }
 
         public void Dispose()
@@ -306,6 +327,7 @@ namespace Wlog.Library.BLL.Index
                 {
                     writer.Commit();
                     writer.Dispose();
+                    
                 }
                 catch (Exception err)
                 {

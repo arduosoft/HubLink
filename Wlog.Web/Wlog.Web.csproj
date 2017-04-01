@@ -222,6 +222,8 @@
     <Compile Include="Code\Enums\ManageMessageId.cs" />
     <Compile Include="Code\Mappings\ApplicationProfile.cs" />
     <Compile Include="Code\Mappings\PagedListConverter.cs" />
+    <Compile Include="Controllers\InstallController.cs" />
+    <Compile Include="Models\Install\InstallModel.cs" />
     <Compile Include="Resources\Labels.Designer.cs" />
     <Compile Include="Resources\Labels.it.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -394,6 +396,7 @@
     <Content Include="Content\DataTables\images\sort_desc.png" />
     <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
+    <Content Include="Images\HubLinkLogo.png" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.min.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap4.js" />

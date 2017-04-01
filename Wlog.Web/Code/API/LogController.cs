@@ -8,11 +8,13 @@
 //******************************************************************************
 using NLog;
 using System;
+using System.Collections.Generic;
 using System.Web.Http;
 using Wlog.BLL.Classes;
 using Wlog.Library.BLL.Reporitories;
 using Wlog.Library.Scheduler;
 using Wlog.Web.Resources;
+using System.Linq;
 
 namespace Wlog.Web.Code.API
 {
@@ -51,8 +53,22 @@ namespace Wlog.Web.Code.API
         {
             if (value == null) throw new Exception(Labels.LogMessageNull);
 
+            IEnumerable<string> headerValues;
+            var appKey = "";
+            var globalKey = false;
+            if (Request.Headers.TryGetValues("X-ApplicationKey",out headerValues))
+            {
+                appKey= headerValues.FirstOrDefault();
+                globalKey=appKey != null;
+            }
+           
+
             if (LogQueue.Current.MaxQueueSize > LogQueue.Current.Count)
             {
+                if (globalKey)
+                {
+                    value.SetApplication( appKey);
+                }
                 LogQueue.Current.Enqueue(value);
             }
             else

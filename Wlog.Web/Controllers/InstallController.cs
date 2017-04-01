@@ -118,6 +118,10 @@ namespace Wlog.Web.Controllers
             {
                 
                 var  basePath = this.HttpContext.Server.MapPath("~/App_Data/Index/");
+                if (!Directory.Exists(basePath))
+                {
+                    Directory.CreateDirectory(basePath);
+                }
                 var rdm = DateTime.Now.ToString("yyyyMMddHHmmss");
                 var testFile = System.IO.Path.Combine(basePath, rdm + "testfile.txt");
                 System.IO.File.WriteAllText(testFile, "xxx");

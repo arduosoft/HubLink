@@ -39,6 +39,7 @@ namespace Wlog.Library.BLL.Helpers
 
         public static AssemblyMetadata GetAssemblyMetadata(Assembly assembly)
         {
+            if (assembly == null) return null;
             logger.Debug("[ih] entering GetAssemblyMetadata");
             AssemblyMetadata aa = new AssemblyMetadata();
             aa.Title = GetAssemblyAttribute<AssemblyTitleAttribute>(a => (a != null) ? a.Title : String.Empty, assembly);

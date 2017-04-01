@@ -4,9 +4,16 @@
     Layout = "~/Views/Shared/_LayoutInternal.cshtml";
 }
 
-<div class="page-header">
-    <h1><i class="fa fa-user" aria-hidden="true"></i> &nbsp; Delete User: <i>@Model.Username</i></h1>
+
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header"><i class="fa fa-user" aria-hidden="true"></i> &nbsp; Delete User: <i>@Model.Username</i></h1>
+    </div>
+    <!-- /.col-lg-12 -->
 </div>
+
 <div class="row">
 
     <h3>Are you sure you want to delete user <i> @Html.DisplayFor(model => model.Username, new { @class = "form-control" }) </i>?</h3>
@@ -78,3 +85,4 @@
         </p>
     }
 
+    </div>

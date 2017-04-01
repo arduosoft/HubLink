@@ -14,7 +14,7 @@ namespace Wlog.Library.BLL.Classes
 {
     public class LogsSearchSettings:SearchSettingsBase
     {
-        public string SearchMessage { get; set; }
+       public string SearchMessage { get; set; }
         public List<Guid> Applications { get; set; }
         public string OrderBy { get; set; }
         public SortDirection SortDirection { get; set; }

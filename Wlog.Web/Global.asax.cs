@@ -46,22 +46,12 @@ namespace Wlog.Web
 
                 Mapper.Initialize(cfg => cfg.AddProfile(new ApplicationProfile()));
 
-                _logger.Info("Apply schema changes");
-                SystemDataInitialisation.Instance.ApplySchemaChanges();
-
-                _logger.Info("Setup info config");
-
-                InfoPageConfigurator.Configure(c =>
-                {
-                    c.ApplicationName = "Wlog";
-
-                });
+               
 
 
                 if (installed)
                 {
-                    //TODO: move this in installation process
-
+                   
 
                     _logger.Info("Apply schema changes");
                     RepositoryContext.Current.System.ApplySchemaChanges();

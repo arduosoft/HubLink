@@ -270,6 +270,42 @@ namespace Wlog.Web.Controllers
             return View(user);
         }
 
+        #region Logs
+        public JsonResult Search(Guid? applicationId, string sortOrder, string sortBy, string serchMessage, int page, int pageSize)
+        {
+
+            _logger.Debug("[Private]: Search");
+            //TDOD: CHECK USER
+            var result = new JsonResult();
+
+            LogsSearchSettings lss = new LogsSearchSettings();
+            if (applicationId.HasValue)
+            {
+                lss.Applications = new List<Guid>();
+                lss.Applications.Add(applicationId.Value);
+            }
+            lss.OrderBy = sortBy;
+            lss.PageNumber = page;
+            lss.PageSize = pageSize;
+            lss.FullTextQuery = serchMessage??"";
+            lss.SortDirection = ("ASC".Equals(sortOrder, StringComparison.InvariantCultureIgnoreCase)) ? SortDirection.ASC : SortDirection.DESC;
+
+            IPagedList list = RepositoryContext.Current.Logs.SearchLogindex(applicationId.Value, lss);
+
+            result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+
+            result.Data = new
+            {
+                draw = Request["draw"],
+                recordsTotal = list.TotalItemCount,
+                recordsFiltered = list.TotalItemCount,
+                data = list
+            };
+            return result;
+        }
+
+        #endregion
+
         #region Application
         // Get  /Private/ListApps
         [AuthorizeRoles(Constants.Roles.Admin, Constants.Roles.ReadLog)]
