@@ -2,7 +2,7 @@
 
 
 [![Build status](https://ci.appveyor.com/api/projects/status/c4v8ill28a9wbjaj?svg=true)](https://ci.appveyor.com/project/zeppaman/wlog)
-[![Code Quality](https://scan.coverity.com/projects/9697/badge.svg)](https://scan.coverity.com/projects/arduosoft-wlog)
+[![Build status](https://www.codefactor.io/Content/badges/A.svg)](https://www.codefactor.io/repository/github/arduosoft/hublink/overview/release/v1.0)
       
 ### Project Description
 Hublink born as an easy-to-install, intuitive and lightweight remote log serivice made in asp.net. Later more feature was added so became an Hub of services that can be easily plugged into applications.
