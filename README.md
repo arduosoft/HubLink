@@ -68,3 +68,37 @@ It is easy to implement a Monolog logger,just follow this [guide](https://github
 
 #### Java
 Logging in java is quite easy using log4j framework. We are planing to implement an appender for it, but rightnow there isn't something ready. You can write your own appender simply by following this [tutorial](http://www.wideskills.com/log4j-tutorial/10-custom-appender-and-layout-in-log4j)
+
+
+## Error reporting
+Please open an issue to report us error. This channel can be used also for asking for documentation.
+
+
+## Contributions
+Any forms of contributions are welcome. Also error reporting or new feature request are an help for us. Of course we need to develop and mantain, so dev contributions are needed, but I put in your shoes so I suggest following way to give su help without spending lot of time. 
+
+  * Create documentation
+  * Telling us about your esperince (good or not, we are open to critiques!)
+  * Tell to a friend about this project, or better write a post!
+  * Report any issues yuou'll find
+  * Ask for new feature if missing
+  * Implement client libraries 
+
+## License
+
+ * This program is free software: you can redistribute it and/or modify  
+ * it under the terms of the GNU Lesser General Public License as   
+ * published by the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful, but 
+ * WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+ * Lesser General Lesser Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ 
+
+## Off Topic: where you found the "download count badge"?
+The download badge [![Downloads](http://github-analytics.apphb.com/badges/RepositoryDownloads/51643460.svg)](http//github-analytics.apphb.com/Stats) is part of "GitHub Analytics" one small application that give statistic about your github profile.
+[Please try this also and let me know what you think about! | http//github-analytics.apphb.com/Stats]
