@@ -1,19 +1,23 @@
-# wlog
+# HubLink
 [![Build status](https://ci.appveyor.com/api/projects/status/c4v8ill28a9wbjaj?svg=true)](https://ci.appveyor.com/project/zeppaman/wlog)
 [![Code Quality](https://scan.coverity.com/projects/9697/badge.svg)](https://scan.coverity.com/projects/arduosoft-wlog)
       
 ### Project Description
-Wlog is an easy-to-install, intuitive and lightweight remote log serivice made in asp.net.
+Hublink born as an easy-to-install, intuitive and lightweight remote log serivice made in asp.net. Later more feature was added so became an Hub of services that can be easily plugged into applications.
 
-Wlog is a simple platform tha allow to log remotely from all kind of application, without any technological limitation.
+It's purpose it to reduce the work about standard features (full text search, log collecting, key pair store, etc..) moving from inside application to an external system that exposes services.
 
-You just need to configure your application (desktop or web) to log into wlog server, Nlog integration is provided. Since that all log will be sent to wlog server and displayed in a web application. 
+There are many product that cover single functionality, but in most cases to integrate all it is complex, and you'll have a lot of external system to manage. Using HubLink you'll manage only one external system  and you'll have all feature ready to be activated on demand. 
+
+Moreover, HubLink manage multitenancy at application level, so you can attach many consumers to the same application.
+
+Another benefit about Hublink is that it doesn't require any external system, just installa a simple .net application on your server.
+
+HubLink doesn't introduce any technological limitation on the client side. Rest service can be consumed by any language. Log collectin is integrated with standard tools like nxlog.
 
 
-##How it work
 
-
-###How to install server
+### How to install server
 
 Because wlog is a simple web site installation is easy, database independent. Please see documentation to discover how to install
 How to integrate in your application
