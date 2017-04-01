@@ -33,5 +33,38 @@ You do not use a log framework? Easy, start to use it; even if you won't to empl
 
 Your project are not written in .net? No problems, our client library integrate throug a simple api call, so you just need to make a REST call to store log or extend your current log library. See Integrate wlog in your application with custom access
 
-#
-#
+
+
+### Documentation
+You can look at [[wiki | https://github.com/arduosoft/HubLink/wiki]] to find all official docs.
+
+### Server side:
+
+ * [[Install and configure your wlog server (windows)|install-and-configure-wlog-server]]
+ * [[Install and configure your wlog server (Linux)|install-and-configure-wlog-linux]]
+
+### Client Side:
+
+#### Agent based solution
+Installing an agent that monitor some log file you do not need to change anything into your application. Here some options:
+
+   * [[Agent integration using nxlog|wlog-nxlog-integration-using-agent]]
+
+#### .Net
+
+ * [[Integrate wlog in your application using Nlog|integrate-wlog-using-nlog]]
+ * [[Integrate wlog in your application using log4net|integrate-wlog-using-log4net]]
+ * [[Integrate wlog in your application with custom access|integrate-wlog-with-custom-access]]
+
+#### PHP
+There isn't any logger for PHP, yet. We are planning to implement following appenders:
+
+  * Monolog appender
+  * [Wordpress plugin to log into wlog](https://github.com/arduosoft/wlog.wordpress) 
+  * Drupal log integration
+
+It is easy to implement a Monolog logger,just follow this [guide](https://github.com/Seldaek/monolog/blob/master/doc/04-extending.md). If you need to implement it please add an issues, we will support you to develop the appender.
+
+
+#### Java
+Logging in java is quite easy using log4j framework. We are planing to implement an appender for it, but rightnow there isn't something ready. You can write your own appender simply by following this [tutorial](http://www.wideskills.com/log4j-tutorial/10-custom-appender-and-layout-in-log4j)
