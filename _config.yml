@@ -1,0 +1,8 @@
+title: "Wlog: Remote log made easy"
+description: Remote logging service platform to install on-premise or in the cloud
+google_analytics: UA-73763104-1
+show_downloads: true
+theme: jekyll-theme-tactile
+
+gems:
+  - jekyll-mentions
