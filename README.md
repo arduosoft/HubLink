@@ -40,21 +40,21 @@ You can look at [wiki](https://github.com/arduosoft/HubLink/wiki) to find all of
 
 ### Server side:
 
- * [[Install and configure your wlog server (windows)|install-and-configure-wlog-server]]
- * [[Install and configure your wlog server (Linux)|install-and-configure-wlog-linux]]
+ * [Install and configure your wlog server (windows)](https://github.com/arduosoft/HubLink/wiki/install-and-configure-wlog-server)
+ * [Install and configure your wlog server (Linux)](https://github.com/arduosoft/HubLink/wiki/install-and-configure-wlog-linux)
 
 ### Client Side:
 
 #### Agent based solution
 Installing an agent that monitor some log file you do not need to change anything into your application. Here some options:
 
-   * [[Agent integration using nxlog|wlog-nxlog-integration-using-agent]]
+   * [Agent integration using nxlog|wlog-nxlog-integration-using-agent](https://github.com/arduosoft/HubLink/wiki/wlog-nxlog-integration-using-agent)
 
 #### .Net
 
- * [[Integrate wlog in your application using Nlog|integrate-wlog-using-nlog]]
- * [[Integrate wlog in your application using log4net|integrate-wlog-using-log4net]]
- * [[Integrate wlog in your application with custom access|integrate-wlog-with-custom-access]]
+ * [Integrate wlog in your application using Nlog](https://github.com/arduosoft/HubLink/wiki/integrate-wlog-using-nlog)
+ * [Integrate wlog in your application using log4net](https://github.com/arduosoft/HubLink/wiki/integrate-wlog-using-log4net)
+ * [Integrate wlog in your application with custom access](https://github.com/arduosoft/HubLink/wiki/integrate-wlog-with-custom-access)
 
 #### PHP
 There isn't any logger for PHP, yet. We are planning to implement following appenders:
