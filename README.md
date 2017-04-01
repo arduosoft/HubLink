@@ -36,7 +36,7 @@ Your project are not written in .net? No problems, our client library integrate 
 
 
 ### Documentation
-You can look at [[wiki | https://github.com/arduosoft/HubLink/wiki]] to find all official docs.
+You can look at [wiki](https://github.com/arduosoft/HubLink/wiki) to find all official docs.
 
 ### Server side:
 
@@ -101,4 +101,4 @@ Any forms of contributions are welcome. Also error reporting or new feature requ
 
 ## Off Topic: where you found the "download count badge"?
 The download badge [![Downloads](http://github-analytics.apphb.com/badges/RepositoryDownloads/51643460.svg)](http//github-analytics.apphb.com/Stats) is part of "GitHub Analytics" one small application that give statistic about your github profile.
-[Please try this also and let me know what you think about! | http//github-analytics.apphb.com/Stats]
+[Please try this also and let me know what you think about! ]( http//github-analytics.apphb.com/Stats)
