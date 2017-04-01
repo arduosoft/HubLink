@@ -1,5 +1,6 @@
-# HubLink
-![](https://github.com/arduosoft/HubLink/blob/release/v1.0/Wlog.Web/Images/HubLinkLogo.png | width=100)
+<img src="https://github.com/arduosoft/HubLink/blob/release/v1.0/Wlog.Web/Images/HubLinkLogo.png" width="200"> 
+
+
 [![Build status](https://ci.appveyor.com/api/projects/status/c4v8ill28a9wbjaj?svg=true)(https://ci.appveyor.com/project/zeppaman/wlog)
 [![Code Quality](https://scan.coverity.com/projects/9697/badge.svg)](https://scan.coverity.com/projects/arduosoft-wlog)
       
