@@ -18,7 +18,7 @@ Another benefit about Hublink is that it doesn't require any external system, ju
 
 HubLink doesn't introduce any technological limitation on the client side. Rest service can be consumed by any language. Log collectin is integrated with standard tools like nxlog.
 
-[Download it!] (https://github.com/arduosoft/HubLink/releases)
+[Download it !](https://github.com/arduosoft/HubLink/releases)
 
 
 
