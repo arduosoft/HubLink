@@ -113,7 +113,10 @@ namespace Wlog.Library.BLL.Index
         {
 
             logger.Debug("[IndexManager] InitIndex");
-
+            if (!string.IsNullOrEmpty(Path) && !System.IO.Directory.Exists(Path))
+            {
+                System.IO.Directory.CreateDirectory(Path);
+            }
             logger.Debug("[IndexManager] Opening {0}", Path);
             luceneIndexDirectory = settings.GetLuceneIndexDirectory(Path);
             logger.Debug("[IndexManager] Creating IndexWriter");

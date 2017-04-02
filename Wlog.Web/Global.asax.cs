@@ -51,7 +51,8 @@ namespace Wlog.Web
 
                 if (installed)
                 {
-                   
+                    _logger.Info("Setup index configuration");
+                    IndexRepository.BasePath = HttpContext.Current.Server.MapPath("~/App_Data/Index/");
 
                     _logger.Info("Apply schema changes");
                     RepositoryContext.Current.System.ApplySchemaChanges();
@@ -68,8 +69,7 @@ namespace Wlog.Web
 
                     HangfireBootstrapper.Instance.Start();
 
-                    _logger.Info("Setup index configuration");
-                    IndexRepository.BasePath = HttpContext.Current.Server.MapPath("~/App_Data/Index/");
+                  
 
 
                     _logger.Info("Insert seed data");
