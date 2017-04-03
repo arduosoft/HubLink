@@ -157,6 +157,11 @@ namespace Wlog.Web.Controllers
             {
                 try
                 {
+
+                    var profile = model.DataUser.IsAdmin ? RepositoryContext.Current.Profiles.GetProfileByName(Constants.Profiles.Admin) : RepositoryContext.Current.Profiles.GetProfileByName(Constants.Profiles.StandardUser);
+                    model.DataUser.ProfileId = profile.Id;
+
+
                     RepositoryContext.Current.Users.Save(model.DataUser);
 
                     List<AppUserRoleEntity> newRoleList = new List<AppUserRoleEntity>();

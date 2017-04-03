@@ -106,6 +106,7 @@ namespace Wlog.Library.BLL.Utils
                 user.IsApproved = true;
                 user.IsLockedOut = false;
                 user.Password = PasswordManagement.EncodePassword("12345678");
+                user.ProfileId = RepositoryContext.Current.Profiles.GetProfileByName(Constants.Profiles.Admin).Id;
                 user.Username = "admin";
 
                 RepositoryContext.Current.Users.Save(user);
