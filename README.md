@@ -21,7 +21,6 @@ HubLink doesn't introduce any technological limitation on the client side. Rest 
 [Download it !](https://github.com/arduosoft/HubLink/releases)
 
 
-
 ### How to install server
 
 Because wlog is a simple web site installation is easy, database independent. Please see documentation to discover how to install
@@ -35,7 +34,7 @@ You do not use a log framework? Easy, start to use it; even if you won't to empl
 
 Your project are not written in .net? No problems, our client library integrate throug a simple api call, so you just need to make a REST call to store log or extend your current log library. See Integrate wlog in your application with custom access
 
-
+Are you lazy? Just try the [demo!](http://wlog-devlop.apphb.com/). You can access using admin\12345678
 
 ### Documentation
 You can look at [wiki](https://github.com/arduosoft/HubLink/wiki) to find all official docs.
