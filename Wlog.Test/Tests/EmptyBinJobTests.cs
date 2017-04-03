@@ -8,7 +8,7 @@
     using Library.Scheduler.Jobs;
     using Xunit;
 
-    public class EmptyBinJobTests 
+    public class EmptyBinJobTests : InMemoryDatabase<DeletedLogEntity>
     {
         private readonly List<DeletedLogEntity> _logs = new List<DeletedLogEntity>();
 
