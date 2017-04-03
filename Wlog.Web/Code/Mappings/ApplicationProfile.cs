@@ -20,8 +20,9 @@ namespace Wlog.Web.Code.Mappings
             CreateMap<LogMessage, LogEntity>();
             CreateMap<LogEntity, LogMessage>();
 
-            CreateMap<ApplicationModel, ApplicationEntity>();
-            CreateMap<ApplicationEntity, ApplicationModel>();
+            CreateMap<ApplicationModel, ApplicationEntity>().ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.IdApplication));
+            CreateMap<ApplicationEntity, ApplicationModel>().ForMember(dest => dest.IdApplication, opts => opts.MapFrom(src => src.Id));
+
             CreateMap<IPagedList<ApplicationEntity>, IPagedList<ApplicationModel>>()
                .ConvertUsing<PagedListConverter<ApplicationEntity, ApplicationModel>>();
 
