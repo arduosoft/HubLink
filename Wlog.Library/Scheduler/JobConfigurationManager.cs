@@ -20,7 +20,7 @@ namespace Wlog.Library.Scheduler
                 {
                     if (job.Active)
                     {
-                        _logger.Info($"[JobConfigurationManager]: Loading job {job.JobInstanceId}");
+                        _logger.Info("[JobConfigurationManager]: Loading job " +job.JobInstanceId);
                         LoadJob(job);
                     }
                 }
@@ -56,7 +56,7 @@ namespace Wlog.Library.Scheduler
                 RepositoryContext.Current.JobInstance.Save(jobInstance);
 
                 ReloadJob(jobModel);
-                _logger.Info($"[JobConfigurationManager]: Updated job {jobModel.JobInstanceId}");
+                _logger.Info("[JobConfigurationManager]: Updated job "+jobModel.JobInstanceId);
 
                 return true;
             }
@@ -75,7 +75,7 @@ namespace Wlog.Library.Scheduler
                 if (updated && jobModel.Instantiable)
                 {
                     TriggerJob(jobModel);
-                    _logger.Info($"[JobConfigurationManager]: Run job {jobModel.JobInstanceId}");
+                    _logger.Info("[JobConfigurationManager]: Run job "+jobModel.JobInstanceId);
                 }
 
                 return true;
@@ -91,7 +91,7 @@ namespace Wlog.Library.Scheduler
         {
             try
             {
-                _logger.Info($"[JobConfigurationManager]: Reloading job {jobConfiguration.JobInstanceId}");
+                _logger.Info("[JobConfigurationManager]: Reloading job "+jobConfiguration.JobInstanceId);
                 RecurringJob.RemoveIfExists(jobConfiguration.JobInstanceId.ToString());
                 LoadJob(jobConfiguration);
             }
@@ -104,7 +104,7 @@ namespace Wlog.Library.Scheduler
 
         private void LoadJob(JobConfiguration jobConfiguration)
         {
-            _logger.Info($"[JobConfigurationManager]: Loading job {jobConfiguration.JobInstanceId}");
+            _logger.Info("[JobConfigurationManager]: Loading job "+jobConfiguration.JobInstanceId);
             var jobType = Type.GetType(jobConfiguration.FullClassName);
             var job = new Hangfire.Common.Job(jobType, jobType.GetMethod("Execute"));
             var manager = new RecurringJobManager();
@@ -114,7 +114,7 @@ namespace Wlog.Library.Scheduler
 
         private void TriggerJob(JobConfiguration jobConfiguration)
         {
-            _logger.Info($"[JobConfigurationManager]: Trigger job {jobConfiguration.JobInstanceId}");
+            _logger.Info("[JobConfigurationManager]: Trigger job "+jobConfiguration.JobInstanceId);
             RecurringJob.Trigger(jobConfiguration.JobInstanceId.ToString());
         }
     }
