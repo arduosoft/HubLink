@@ -407,13 +407,16 @@ namespace Wlog.Library.BLL.Reporitories
                         //Repeat until all logs before date are deleted
                     }
 
+                    int remaining = 0;
 
-                    while (uow.Query<LogEntity>().Count()> rowsToKeep)
+                    while ( (remaining=uow.Query<LogEntity>().Count()- rowsToKeep) >0)
                     {
+                         var tmpBatchSize = Math.Min(remaining, batchSize);
+                            
                         //After I May need to remove addictional data to keep no more than x rows
                         var logsForBin = uow.Query<LogEntity>()
                             .OrderBy(x => x.SourceDate)
-                            .Take(batchSize).ToList();                    
+                            .Take(tmpBatchSize).ToList();                    
 
 
                         if (logsForBin.Any())

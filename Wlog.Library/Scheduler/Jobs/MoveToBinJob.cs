@@ -1,6 +1,7 @@
 ﻿using NLog;
 using System;
 using Wlog.Library.BLL.Reporitories;
+using Hangfire;
 
 namespace Wlog.Library.Scheduler.Jobs
 {
@@ -27,6 +28,7 @@ namespace Wlog.Library.Scheduler.Jobs
             _daysToKeep = daysToKeep;
         }
 
+        [DisableConcurrentExecution(7200)]
         public override bool Execute()
         {
             try

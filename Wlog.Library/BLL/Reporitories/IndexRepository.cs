@@ -16,6 +16,7 @@ namespace Wlog.Library.BLL.Reporitories
     /// </summary>
     public class IndexRepository: IRepository
     {
+        string indexLock = "";
         public Type GetEntityType()
         {
             return typeof(LuceneIndexManager);
@@ -78,8 +79,13 @@ namespace Wlog.Library.BLL.Reporitories
             var path = Path.Combine(BasePath, name);
             var idx = new LuceneIndexManager(name, path);
             idx.CommitSize = int.MaxValue; //commit is owned by the caller.
-           
-            indexList.Add(name,idx );
+           lock(indexLock)
+            {
+                if (!indexList.ContainsKey(name))
+                {
+                    indexList.Add(name, idx);
+                }
+            }
         }
 
         /// <summary>
