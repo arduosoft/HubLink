@@ -276,7 +276,7 @@ namespace Wlog.Web.Controllers
         }
 
         #region Logs
-        public JsonResult Search(Guid? applicationId, string sortOrder, string sortBy, string serchMessage, int page, int pageSize)
+        public JsonResult Search(Guid? applicationId, string sortOrder, string sortBy, string searchMessage, int page, int pageSize)
         {
 
             _logger.Debug("[Private]: Search");
@@ -292,7 +292,7 @@ namespace Wlog.Web.Controllers
             lss.OrderBy = sortBy;
             lss.PageNumber = page;
             lss.PageSize = pageSize;
-            lss.FullTextQuery = serchMessage??"";
+            lss.FullTextQuery = searchMessage ?? "";
             lss.SortDirection = ("ASC".Equals(sortOrder, StringComparison.InvariantCultureIgnoreCase)) ? SortDirection.ASC : SortDirection.DESC;
 
             IPagedList list = RepositoryContext.Current.Logs.SearchLogindex(applicationId.Value, lss);
