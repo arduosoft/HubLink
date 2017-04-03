@@ -115,11 +115,37 @@
                     //one solution could be limit the numeber of row to take (but could avoid complete bin flush) or invoke nhibernate batch statement
 
                     uow.BeginTransaction();
-                    var entitiesToKeep = uow.Query<DeletedLogEntity>().Where(x => x.SourceDate > (DateTime.UtcNow.AddDays(-daysToKeep)))
-                        .OrderByDescending(x => x.SourceDate).Take(rowsToKeep).ToList();
-                    var entitiesToDelete = uow.Query<DeletedLogEntity>().Where(x => !entitiesToKeep.Contains(x)).ToList();
 
-                    BatchRemoveDeletedLogEntities(entitiesToDelete);
+                   
+
+                    int batchSize = 1000;
+                    //Delete all logs older than a date 
+
+                    while (uow.Query<DeletedLogEntity>().Any(x => x.SourceDate < (DateTime.UtcNow.AddDays(-daysToKeep))))
+                    {
+                        //For performance issues, no matter about order
+                        var logsBeforeDate = uow.Query<DeletedLogEntity>().Where(x => x.SourceDate < (DateTime.UtcNow.AddDays(-daysToKeep)))
+                            .Take(batchSize).ToList();
+                        BatchRemoveDeletedLogEntities(logsBeforeDate);
+                        //Repeat until all logs before date are deleted
+                    }
+
+
+                    while (uow.Query<DeletedLogEntity>().Count() > rowsToKeep)
+                    {
+                        //After I May need to remove addictional data to keep no more than x rows
+                        var logsForBin = uow.Query<DeletedLogEntity>()
+                            .OrderBy(x => x.SourceDate)
+                            .Take(batchSize).ToList();
+
+
+                        if (logsForBin.Any())
+                        {
+                            BatchRemoveDeletedLogEntities(logsForBin);
+                        }
+                    }
+
+                  
                     Debug.Write("ExecuteEmptyBinJob");
                     return true;
                 }

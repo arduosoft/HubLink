@@ -393,15 +393,33 @@ namespace Wlog.Library.BLL.Reporitories
                 using (IUnitOfWork uow = BeginUnitOfWork())
                 {
                     uow.BeginTransaction();
-                    var entitiesToKeep = uow.Query<LogEntity>().Where(x => x.SourceDate > (DateTime.UtcNow.AddDays(-daysToKeep)))
-                        .OrderByDescending(x => x.SourceDate).Take(rowsToKeep).ToList();
-
-                    var logsForBin = uow.Query<LogEntity>().Where(x => !entitiesToKeep.Contains(x)).ToList();
 
 
-                    if (logsForBin.Any())
+                    int batchSize = 1000;
+                    //Delete all logs older than a date 
+
+                    while (uow.Query<LogEntity>().Any(x => x.SourceDate < (DateTime.UtcNow.AddDays(-daysToKeep))))
                     {
-                        MoveLogsToBin(logsForBin);
+                        //For performance issues, no matter about order
+                        var logsBeforeDate = uow.Query<LogEntity>().Where(x => x.SourceDate < (DateTime.UtcNow.AddDays(-daysToKeep)))
+                            .Take(batchSize).ToList();
+                        MoveLogsToBin(logsBeforeDate);
+                        //Repeat until all logs before date are deleted
+                    }
+
+
+                    while (uow.Query<LogEntity>().Count()> rowsToKeep)
+                    {
+                        //After I May need to remove addictional data to keep no more than x rows
+                        var logsForBin = uow.Query<LogEntity>()
+                            .OrderBy(x => x.SourceDate)
+                            .Take(batchSize).ToList();                    
+
+
+                        if (logsForBin.Any())
+                        {
+                            MoveLogsToBin(logsForBin);
+                        }
                     }
 
                     return true;
