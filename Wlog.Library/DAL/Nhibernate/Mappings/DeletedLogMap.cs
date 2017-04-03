@@ -13,8 +13,8 @@ namespace Wlog.Library.DAL.Nhibernate.Mappings
     {
         public DeletedLogMap()
         {
-            Table("WL_DeletedLog");
-            Schema("dbo");
+            Table("wl_deletedlog");
+           // Schema("dbo");
 
             Id(x => x.Uid, map => { map.Generator(Generators.Guid); });
             Property(x => x.Message);

@@ -251,7 +251,7 @@ namespace Wlog.Web.Controllers
             {
                 if (d.IsSubclassOf(typeof(NHibernate.Dialect.Dialect)))
                 {
-                    if (d.Name.Contains(dbName))
+                    if (d.Name.ToLower().Contains(dbName.ToLower()))
                     {
                         dialectsList.Add(new SelectListItem()
                         {

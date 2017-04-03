@@ -8,8 +8,9 @@
     {
         public JobDefinitionMap()
         {
-            Table("WL_JobDefinition");
-            Schema("dbo");
+            Table("wl_jobdefinition");
+            //Schema("dbo");
+
             Id(x => x.Id, map => { map.Generator(Generators.Guid); });
             Property(x => x.Name);
             Property(x => x.System);

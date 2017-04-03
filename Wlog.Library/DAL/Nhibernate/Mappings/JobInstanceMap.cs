@@ -8,8 +8,9 @@
     {
         public JobInstanceMap()
         {
-            Table("WL_JobInstance");
-            Schema("dbo");
+            Table("wl_jobinstance");
+            //Schema("dbo");
+
             Id(x => x.Id, map => { map.Generator(Generators.Guid); });
             Property(x => x.Active);
             Property(x => x.CronExpression);

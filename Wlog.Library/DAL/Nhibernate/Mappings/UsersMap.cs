@@ -21,8 +21,9 @@ namespace Wlog.Library.DAL.Nhibernate.Mappings
     {
         public UsersMap()
         {
-            Table("WL_User");
-            Schema("dbo");
+            Table("wl_user");
+            //Schema("dbo");
+
             Id(x => x.Id, map => { map.Column("IdUser"); map.Generator(Generators.Guid); });
             Property(x => x.Username);
             Property(x => x.Email);

@@ -475,6 +475,7 @@
     <Content Include="Scripts\jquery.textcomplete.min.js" />
     <Content Include="Views\Install\Install.cshtml" />
     <Content Include="License.md" />
+    <Content Include="Ext\README.md" />
     <None Include="Scripts\jquery.textcomplete.min.map" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />

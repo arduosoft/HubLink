@@ -21,8 +21,9 @@ namespace Wlog.Library.DAL.Nhibernate.Mappings
     {
         public AppUserRoleMap()
         {
-            Table("WL_AppUserRole");
-            Schema("dbo");
+            Table("wl_appuserrole");
+           // Schema("dbo");
+
             Id(x => x.Id, map => map.Generator(Generators.Guid));
             Property(x => x.ApplicationId, map => { map.Column("IdApplication");  });
             Property(x => x.UserId, map => { map.Column("IdUser");  });

@@ -13,8 +13,9 @@ namespace Wlog.Library.DAL.Nhibernate.Mappings
     {
         public ProfilesRolesMap()
         {
-            Table("WL_ProfilesRoles");
-            Schema("dbo");
+            Table("wl_profilesroles");
+            //Schema("dbo");
+
             Id(x => x.Id, map => map.Generator(Generators.Guid));
             Property(x => x.ProfileId, map => { map.Column("IdProfile"); });
             Property(x => x.RoleId, map => { map.Column("IdRole"); });

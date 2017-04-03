@@ -21,8 +21,9 @@ namespace Wlog.Library.DAL.Nhibernate.Mappings
     {
         public ApplicationMap()
         {
-            Table("WL_Application");
-            Schema("dbo");
+            Table("wl_application");
+            //Schema("dbo");
+
             Id(x => x.Id, map => { map.Column("IdApplication"); map.Generator(Generators.Guid); });
             Property(x => x.ApplicationName);
             Property(x => x.IsActive);
