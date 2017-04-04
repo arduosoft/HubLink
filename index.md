@@ -12,6 +12,7 @@ It's purpose it to reduce the work about standard features (full text search, lo
 
 There are many product that cover single functionality, but in most cases to integrate all it is complex, and you'll have a lot of external system to manage. Using HubLink you'll manage only one external system  and you'll have all feature ready to be activated on demand. 
 
+
 Moreover, HubLink manage multitenancy at application level, so you can attach many consumers to the same application.
 
 Another benefit about Hublink is that it doesn't require any external system, just installa a simple .net application on your server.
