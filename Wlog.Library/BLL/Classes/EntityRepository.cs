@@ -92,7 +92,7 @@ namespace Wlog.Library.BLL.Classes
                 int rowCount = count.Count();
                 List<T> result = query.ToList();
 
-                return new StaticPagedList<T>(result, pageNumber, pageSize, rowCount);
+                return new StaticPagedList<T>(result, pageNumber+1, pageSize, rowCount);
             }
 
 
@@ -165,7 +165,7 @@ namespace Wlog.Library.BLL.Classes
 
             if (numberOfRow > 0)
             {
-                query = query.Skip(numberOfRow);
+                query = query.Take(numberOfRow);
             }
 
             if (sortField != null && sordDirection == SortDirection.ASC)

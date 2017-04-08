@@ -30,6 +30,7 @@ using Wlog.Web.Models;
 using Wlog.Web.Models.Application;
 using Wlog.Web.Models.User;
 using Wlog.Web.Resources;
+using Wlog.Web.Models.Dictionary;
 
 namespace Wlog.Web.Controllers
 {
@@ -275,7 +276,169 @@ namespace Wlog.Web.Controllers
             return View(user);
         }
 
-        #region Logs
+        [AuthorizeRoles(Constants.Roles.Admin, Constants.Roles.WriteLog, Constants.Roles.ReadLog)]
+        public ActionResult Dictionary(Guid? applicationId, string level, string sortOrder, string sortBy, string searchMessage, int? page, int? pageSize)
+        {
+            _logger.Debug("[Private]: Logs");
+            //TDOD: CHECK USER
+            List<Guid> alloweApps = RepositoryContext.Current.Applications.GetAppplicationsIdsByUsername(Membership.GetUser().UserName);
+
+            LogListModel mm = new LogListModel()
+            {
+                ApplicationId = applicationId ?? alloweApps.FirstOrDefault()
+            };
+            MembershipUser current = Membership.GetUser();
+            mm.Apps = RepositoryContext.Current.Applications.GetAppplicationsByUsername(current.UserName);
+
+            return View(mm);
+        }
+
+
+        #region Dictionary
+
+        [AuthorizeRoles(Constants.Roles.Admin, Constants.Roles.ReadLog)]
+        public JsonResult DeleteDictionaryItemById(Guid id)
+        {
+            var result = new JsonResult();
+            result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+
+            try
+            {
+                var value = RepositoryContext.Current.KeyPairRepository.GetById(id);
+
+                RepositoryContext.Current.KeyPairRepository.Delete(value);
+
+                result.Data = value;
+            }
+            catch (Exception err)
+            {
+                _logger.Error(err);
+                result.Data = new { error = true, message = err.Message };
+            }
+
+            return result;
+        }
+
+
+        [AuthorizeRoles(Constants.Roles.Admin, Constants.Roles.ReadLog)]
+        public JsonResult GetDictionaryItemById(Guid id)
+        {
+            var result = new JsonResult();
+            result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+
+
+
+
+
+            try
+            {
+                var value = RepositoryContext.Current.KeyPairRepository.GetById(id);
+
+                result.Data = value;
+            }
+            catch (Exception err)
+            {
+                _logger.Error(err);
+                result.Data = new { error = true, message = err.Message };
+            }
+
+            return result;
+        }
+
+        [AuthorizeRoles(Constants.Roles.Admin, Constants.Roles.ReadLog)]
+        public JsonResult GetDictionaryItem(Guid dictionaryId, string key)
+        {
+
+            var result = new JsonResult();
+            result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+
+          
+           
+
+
+            try
+            {
+                var value=RepositoryContext.Current.KeyPairRepository.GetByKey(dictionaryId, key);
+
+                result.Data = value;
+            }
+            catch (Exception err)
+            {
+                _logger.Error(err);
+                result.Data = new { error = true, message = err.Message };
+            }
+
+            return result;
+        }
+        [HttpPost]
+        [AuthorizeRoles(Constants.Roles.Admin, Constants.Roles.ReadLog)]
+        public JsonResult SaveDictionaryItem(KeyValueItemModel itemToSave)
+        {
+            var appId= new Guid(itemToSave.ApplicationId);
+            List<Guid> alloweApps = RepositoryContext.Current.Applications.GetAppplicationsIdsByUsername(Membership.GetUser().UserName);
+            
+            if (!alloweApps.Contains(appId)) throw new Exception("Application Not Allowed");
+
+
+            var dictionary=RepositoryContext.Current.KeyPairRepository.GetDictionaries(appId, itemToSave.DictionaryName, 0, 1);
+            if (dictionary == null || dictionary.Count!=1) throw new Exception("Dictionary not found");
+
+            var result = new JsonResult();
+
+            try
+            {
+                RepositoryContext.Current.KeyPairRepository.Save(dictionary[0].Id, itemToSave.ItemKey, itemToSave.ItemValue);
+
+                result.Data = new { error = false, message = "" };
+            }
+            catch (Exception err)
+            {
+                _logger.Error(err);
+                result.Data = new { error = true, message = err.Message};
+            }
+
+            return result;
+
+        }
+
+        [AuthorizeRoles(Constants.Roles.Admin, Constants.Roles.ReadLog)]
+        public JsonResult SearchDictionary(Guid? applicationId, string sortOrder, string sortBy, string key, int page, int pageSize)
+        {
+            _logger.Debug("[Private]: Search");
+            //TDOD: CHECK USER
+            var result = new JsonResult();
+
+      
+            if (!applicationId.HasValue)
+            {
+                throw new Exception("Missing app id");
+            }
+
+            List<Guid> alloweApps = RepositoryContext.Current.Applications.GetAppplicationsIdsByUsername(Membership.GetUser().UserName);
+            if (!alloweApps.Contains(applicationId.Value)) throw new Exception("Application Not Allowed");
+
+
+            var dict =RepositoryContext.Current.KeyPairRepository.GetDictionaries(applicationId.Value, Constants.DictionaryNames.Main, 0, 0);
+            if (dict == null || dict.Count != 1) throw new Exception("unexpected number of dictionaries");
+
+
+
+            IPagedList list = RepositoryContext.Current.KeyPairRepository.Search(dict[0].Id, key, (page-1) * pageSize, pageSize);
+            result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+
+            result.Data = new
+            {
+                draw = Request["draw"],
+                recordsTotal = list.TotalItemCount,
+                recordsFiltered = list.TotalItemCount,
+                data = list
+            };
+            return result;
+        }
+        #endregion
+
+            #region Logs
+        [AuthorizeRoles(Constants.Roles.Admin, Constants.Roles.ReadLog)]
         public JsonResult Search(Guid? applicationId, string sortOrder, string sortBy, string searchMessage, int page, int pageSize)
         {
 

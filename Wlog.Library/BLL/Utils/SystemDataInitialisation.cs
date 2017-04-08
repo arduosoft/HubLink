@@ -116,6 +116,25 @@ namespace Wlog.Library.BLL.Utils
             }
         }
 
+        public void InsertMissingDictionary()
+        {
+            var apps=RepositoryContext.Current.Applications.Find(null, 0, int.MaxValue, null, Enums.SortDirection.ASC);
+            foreach(var app in apps)
+            {
+                var dict=RepositoryContext.Current.KeyPairRepository.GetDictionaries(app.Id,Constants.DictionaryNames.Main,0,0);
+                if (dict == null || dict.Count == 0)
+                {
+                    DictionaryEntity d = new DictionaryEntity()
+                    {
+                        ApplicationId = app.Id,
+                        Name = Constants.DictionaryNames.Main
+                    };
+
+                    RepositoryContext.Current.KeyPairRepository.CreateDictionary(d);
+                }
+            }
+        }
+
         private RolesEntity InsertRoleIfNotExists(string rolename, bool global, bool application)
         {
             _logger.Debug("[SystemDataHelper]: InsertRoleIfNotExists");

@@ -8,6 +8,7 @@
     using Interfaces;
     using NLog;
     using System.Diagnostics;
+    using BLL.Interfaces;
 
     /// <summary>
     /// Repository to store deleted logs

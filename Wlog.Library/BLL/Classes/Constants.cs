@@ -15,7 +15,11 @@ namespace Wlog.BLL.Classes
 {
     public static class Constants
     {
-        public static class Roles
+        public static class DictionaryNames
+        {
+            public const string Main = "MAIN";
+        }
+            public static class Roles
         {
             public const string Admin = "ADMIN";
             public const string WriteLog = "WRITELOG";

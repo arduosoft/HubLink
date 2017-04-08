@@ -50,7 +50,11 @@ namespace Wlog.Web
                        "~/Scripts/DataTables/dataTables.buttons.min.js",
                           "~/Scripts/DataTables/buttons.bootstrap.min.js",
 
-                       "~/Scripts/DataTables/buttons.colVis.min.js"
+                       "~/Scripts/DataTables/buttons.colVis.min.js",
+                            "~/Scripts/DataTables/buttons.colVis.min.js",
+
+
+                           "~/Scripts/DataTables/dataTables.select.min.js",
                        }
                        ));
 

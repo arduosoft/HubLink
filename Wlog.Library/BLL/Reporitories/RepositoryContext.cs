@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NLog;
+using Wlog.Library.BLL.Reporitories.Interfaces;
 
 namespace Wlog.Library.BLL.Reporitories
 {
@@ -51,6 +52,8 @@ namespace Wlog.Library.BLL.Reporitories
 
         public JobInstanceRespository JobInstance { get; private set; }
 
+        public IKeyPairRepository KeyPairRepository { get; private set; }
+
         private static RepositoryContext current;
 
         public static RepositoryContext Current
@@ -76,6 +79,7 @@ namespace Wlog.Library.BLL.Reporitories
                     current.JobDefinition = new JobDefinitionRepository();
                     current.DeletedLogs = new DeletedLogRepository();
                     current.JobInstance = new JobInstanceRespository();
+                    current.KeyPairRepository = new DBKeyPairRepository();
                 }
 
                 return current;

@@ -28,7 +28,7 @@ namespace Wlog.Web
         private static Logger _logger = LogManager.GetCurrentClassLogger();
         private bool installed = "True".Equals(ConfigurationManager.AppSettings["WlogInstalled"], StringComparison.InvariantCultureIgnoreCase);
 
-        protected void Application_Start()
+        protected void Application_Start(object sender, EventArgs e)
         {
            
                 try
@@ -45,6 +45,8 @@ namespace Wlog.Web
                     BundleConfig.RegisterBundles(BundleTable.Bundles);
 
                 Mapper.Initialize(cfg => cfg.AddProfile(new ApplicationProfile()));
+
+
 
                
 
@@ -76,6 +78,8 @@ namespace Wlog.Web
                     SystemDataInitialisation.Instance.InsertRolesAndProfiles();
                     SystemDataInitialisation.Instance.EnsureSampleData();
                     SystemDataInitialisation.Instance.InsertJobsDefinitions();
+                    SystemDataInitialisation.Instance.InsertMissingDictionary();
+
 
                     _logger.Info("Application started");
                 }

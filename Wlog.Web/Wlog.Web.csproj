@@ -223,6 +223,7 @@
     <Compile Include="Code\Mappings\ApplicationProfile.cs" />
     <Compile Include="Code\Mappings\PagedListConverter.cs" />
     <Compile Include="Controllers\InstallController.cs" />
+    <Compile Include="Models\Dictionary\KeyValueItem.cs" />
     <Compile Include="Models\Install\InstallModel.cs" />
     <Compile Include="Resources\Labels.Designer.cs" />
     <Compile Include="Resources\Labels.it.Designer.cs">
@@ -397,6 +398,7 @@
     <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
     <Content Include="Images\HubLinkLogo.png" />
+    <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.min.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap4.js" />
@@ -489,6 +491,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Private\BackgroundJobs.cshtml" />
+    <Content Include="Views\Private\Dictionary.cshtml" />
     <None Include="Wlog.Library.licenseheader" />
   </ItemGroup>
   <ItemGroup>
@@ -617,6 +620,7 @@
   <ItemGroup>
     <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\DataTables\extensions\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
