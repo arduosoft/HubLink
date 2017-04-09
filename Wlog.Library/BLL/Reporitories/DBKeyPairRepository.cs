@@ -26,7 +26,7 @@ namespace Wlog.Library.BLL.Reporitories
         {
             using (var op = this.BeginUnitOfWork())
             {
-                var item = op.Query<KeyPairEntity>().Where(x => x.DictionaryId.CompareTo(dictionaryId) == 0 && x.ItemKey.Equals(key)).FirstOrDefault();
+                var item = op.Query<KeyPairEntity>().Where(x => x.DictionaryId.Equals(dictionaryId)  && x.ItemKey.Equals(key)).FirstOrDefault();
                 if (item == null) return null;
                 return item.ItemValue;
             }
