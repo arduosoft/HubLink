@@ -20,7 +20,8 @@ HubLink doesn't introduce any technological limitation on the client side. Rest 
 
 [Download it !](https://github.com/arduosoft/HubLink/releases)
 
-[<img src="https://www.slideshare.net/sintradf/hub-link-a-new-way-to-develop-service-oriented-applications" width="200"> ](https://www.slideshare.net/sintradf/hub-link-a-new-way-to-develop-service-oriented-applications)
+[[https://github.com/arduosoft/HubLink/blob/release/v1.0/slideshare-as-a.gif|alt=octocat]]
+[<img src="https://github.com/arduosoft/HubLink/blob/release/v1.0/slideshare-as-a.gif" width="200"> ](https://www.slideshare.net/sintradf/hub-link-a-new-way-to-develop-service-oriented-applications)
 
 ### How to install server
 
