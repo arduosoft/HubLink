@@ -20,6 +20,7 @@ HubLink doesn't introduce any technological limitation on the client side. Rest 
 
 [Download it !](https://github.com/arduosoft/HubLink/releases)
 
+[<img src="https://www.slideshare.net/sintradf/hub-link-a-new-way-to-develop-service-oriented-applications" width="200"> ](https://www.slideshare.net/sintradf/hub-link-a-new-way-to-develop-service-oriented-applications)
 
 ### How to install server
 
@@ -35,6 +36,8 @@ You do not use a log framework? Easy, start to use it; even if you won't to empl
 Your project are not written in .net? No problems, our client library integrate throug a simple api call, so you just need to make a REST call to store log or extend your current log library. See Integrate wlog in your application with custom access
 
 Are you lazy? Just try the [demo!](http://wlog-devlop.apphb.com/). You can access using admin\12345678
+
+https://github.com/arduosoft/HubLink/blob/release/v1.0/slideshare-as-a.gif
 
 ### Documentation
 You can look at [wiki](https://github.com/arduosoft/HubLink/wiki) to find all official docs.
