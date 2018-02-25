@@ -125,6 +125,24 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
+
+                        <li>
+                            <a href="/private/dictionary"><i class="fa fa-list-alt fa-fw"></i>Dictionaries<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+
+                                @if (Membership.GetUser() != null)
+                                {
+                                    foreach (var app in RepositoryContext.Current.Applications.GetAppplicationsByUsername(Membership.GetUser().UserName))
+                                    {
+                                        <li>
+                                            <a href="/private/dictionary?applicationId=@app.Id">@app.ApplicationName </a>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+
                         @if (UserProfileContext.Current.IsEditorUser)
                         {
                             <li>

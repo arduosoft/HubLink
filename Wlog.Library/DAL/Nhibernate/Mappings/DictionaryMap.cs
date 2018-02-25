@@ -26,8 +26,9 @@ namespace Wlog.Library.DAL.Nhibernate.Mappings
 
             Id(x => x.Id, map => { map.Column("DictionaryId"); map.Generator(Generators.Guid); });
 
-            Property(x => x.ApplicationId);
-            Property(x => x.Name,m=> { m.Index("idx_name");m.Unique(true); });
+            Property(x => x.ApplicationId, m => {  m.UniqueKey("idx_name_app"); });
+            
+            Property(x => x.Name,m=> {  m.UniqueKey("idx_name_app"); });
         }
     }
 }

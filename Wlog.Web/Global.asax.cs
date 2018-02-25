@@ -51,7 +51,7 @@ namespace Wlog.Web
                
 
 
-                if (installed)
+               if (installed)
                 {
                     _logger.Info("Setup index configuration");
                     IndexRepository.BasePath = HttpContext.Current.Server.MapPath("~/App_Data/Index/");
