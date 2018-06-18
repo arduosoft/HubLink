@@ -1,5 +1,6 @@
 <img src="https://github.com/arduosoft/HubLink/blob/release/v1.0/Wlog.Web/Images/HubLinkLogo.png" width="200"> 
 
+** WARNING: Project is discontinued. Not indeed for be used in production.**
 
 [![Build status](https://ci.appveyor.com/api/projects/status/c4v8ill28a9wbjaj?svg=true)](https://ci.appveyor.com/project/zeppaman/wlog)
 [![Build status](https://www.codefactor.io/Content/badges/A.svg)](https://www.codefactor.io/repository/github/arduosoft/hublink/overview/release/v1.0)
